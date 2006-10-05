@@ -1,0 +1,45 @@
+<document>
+  <properties>
+    <title>Download Nividic source</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+  <body>
+    <section name="Download Nividic source">
+      <p>
+        Nividic source is distributed in several formats for your convenience.
+      </p>
+      <ul>
+        <li>
+          <a href="../leburon/downloads/nividic-0.6-src.tar.gz">
+            <code>.tar.gz</code> archive
+          </a>
+          <span style="font-size: smaller">
+            <!--(
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-src.tar.gz.md5">checksum</a>)
+            (
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-src.tar.gz.asc">PGP</a>)-->
+          </span>
+        </li>
+        <li>
+          <a href="../leburon/downloads/nividic-0.6-src.zip">
+            <code>.zip</code> archive
+          </a>
+          <span style="font-size: smaller">
+            <!--(
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-src.zip.md5">checksum</a>)
+            (
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-src.zip.asc">PGP</a>)-->
+          </span>
+        </li>
+      </ul>
+      <p>
+        Nividic is distributed under the
+        <a href="license.html">Lesser General Public License</a>.
+      </p>
+      <subsection name="Compilation">
+        <p>You'll find more information about how compile Nividic in the <a href="compiling.html">compiling section</a>.</p>
+      </subsection>
+    </section>
+  </body>
+</document>
+

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="latin1"?>
+<!--
+/*
+ *                      Nividic development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Nividic project and its aims,
+ * or to join the Nividic mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/nividic
+ *
+ */
+ -->
+<!--
+ For more information about changes.xml tags see:
+ http://maven.apache.org/reference/plugins/changes/
+ -->
+
+
+<document>
+  <properties>
+    <title>Change log</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+  <body>
+
+    <release version="0.6" date="in CVS">
+      <action dev="jourdren" type="add">
+        BioAssay fields can be renamed.
+      </action>
+      <action dev="jourdren" type="add">
+        Imagene Output files can be loaded.
+      </action>
+      <action dev="jourdren" type="add">
+        Imagene Gene ID files can be loaded.
+      </action>
+      <action dev="jourdren" type="fix">
+        Fix bug with scrollbar in html documentation widget.
+      </action>
+      <action dev="jourdren" type="fix">
+        Fix bug with custom empty identifiers.
+      </action>
+      <action dev="jourdren" type="add">
+        New widget to display information about a module and to browser HTML pages.
+      </action>
+      <action dev="jourdren" type="update">
+        AboutModule contains now a method to get HTML documentation of the module.
+      </action>
+      <action dev="jourdren" type="update">
+        Renaming conditions and parameter is an ExperimentDesign is now safe.
+      </action>
+      <action dev="jourdren" type="update">
+        GenericEvent and SimpleGenericEvent are now in their own package : fr.ens.transcriptome.nividic.utils.event
+      </action>
+      <action dev="jourdren" type="add">
+        Annotations is now in a separate object. Add Annotations to Biological lists and Experiment Design.
+      </action>
+      <action dev="jourdren" type="update">
+        Workflow add now annotations. Add type and version field to Workflow objects.
+      </action>
+     <action dev="jourdren" type="add">
+        Add a framework that allow developer to create his own method to test if a spot is empty.
+      </action>
+      <action dev="jourdren" type="update">
+        No more use of for/while loops to create array from Collection. Now use the toArray(Object[]) method.
+      </action>
+      <action dev="jourdren" type="update">
+        Enable antialisiasing in output array plot.
+      </action>
+      <action dev="montout" type="add">
+        Add Writer for Goulphar files (and other ID-M-A file).
+      </action>
+      <action dev="montout" type="add">
+        Add Reader for Goulphar files (and other ID-M-A file).
+      </action>
+      <action dev="jourdren" type="update">
+        Update maven configuration files.
+      </action>
+      <action dev="jourdren" type="fix">
+        Fix Graphics plots.
+      </action>
+    </release>
+
+    <release version="0.5" date="2003-03-25">
+      <action dev="jourdren" type="add">
+        Initial realease.
+      </action>
+      <action dev="jourdren" type="update">
+        Change Romde licence : LGPL.
+      </action>
+      
+      <!-- romdeom -->
+      
+      <action dev="jourdren" type="add">
+        New test: test data new BioAssayImpl for loading data directly from Genepix.
+      </action>
+      <action dev="jourdren" type="update">
+        Rewrite BioAssayLoadDataWhenNeed.
+      </action>
+      <action dev="jourdren" type="update">
+        Rewrite ATF IO, more generic like Genespring file reader.
+      </action>
+      <action dev="jourdren" type="add">
+        Interface BioAssay : add field description, M and A for MA plots.
+      </action>
+      <action dev="jourdren" type="update">
+        Translate javadoc in french (BioAssay and BioAssayBase Interfaces).
+      </action>
+      <action dev="jourdren" type="add">
+        Manage list of gene operations(intersections, exclusion, uniq) load/save.
+      </action>
+      <action dev="jourdren" type="add">
+        BioAssay filtering interface and implementation.
+      </action>
+      <action dev="jourdren" type="add">
+        New test: Biological list.
+      </action>
+      <action dev="jourdren" type="add">
+        Spot object.
+      </action>
+      <action dev="jourdren" type="update">
+        GPR reader : use initial capacity with ArrayList.
+      </action>
+      <action dev="jourdren" type="update">
+        Use RomdeRuntimeException when needed.
+      </action>
+      <action dev="jourdren" type="update">
+        Replace new RomdeException("foo is null") with new RomdeRuntimeException(NullPointerException,"toto").
+      </action>
+      <action dev="jourdren" type="update">
+        Replace new RomdeException("foo : invalid argument") with new RomdeRuntimeException(IllegalArgumentException).
+      </action>
+      <action dev="jourdren" type="add">
+        New Object : BioAssayIterator.
+      </action>
+      <action dev="jourdren" type="update">
+        Factory must have statics methods.
+      </action>
+      
+      <!-- romde platform -->
+      
+      <action dev="jourdren" type="update">
+        Workflow stop/start/pause/resume must use Listeners.
+      </action>
+      <action dev="jourdren" type="update">
+        Automatic instanciation of the algorithm while add to a workflow.
+      </action>
+      <action dev="jourdren" type="add">
+        Read configuration files for the registery.
+      </action>
+      <action dev="jourdren" type="update">
+        New file structure organisation (bin,lib,conf,plugins).
+      </action>
+      <action dev="jourdren" type="update">
+        Plugins operational.
+      </action>
+      <action dev="jourdren" type="update">
+        Log file in /log if user can create it.
+      </action>
+      <action dev="jourdren" type="update">
+        Use threads for Workflows.
+      </action>
+      
+      
+      
+    </release>
+  </body>
+</document>

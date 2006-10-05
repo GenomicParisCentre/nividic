@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+/*
+ *                      Nividic development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Nividic project and its aims,
+ * or to join the Nividic mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/nividic
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Spot and SpotIterator tutorial</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+  
+    <section name="Getting a Spot object">
+   
+    <p>The Spot offer all necessary methods to handles data about one spot. You can access to a <code>Spot</code> object from a <code>BioAssay</code> with 2 methods:</p>
+    
+    <p>With the index of the spot
+    <source>Spot s = getSpot(index);</source>
+    </p>
+    
+    <p>With the location of the spot
+    <source>Spot s = getSpot(index);</source>
+    </p>
+    
+  
+    </section>
+    
+    <section name="Methods provided by Spot for standard BioAssay Fields">
+        
+    
+    <p>Like <code>BioAssay</code> objects, <code>Spot</code> defines shortcuts for communs fields:</p>
+ 
+      <source>
+      // Test if XXX field exits.
+      isXXXs();     
+      // Get the XXX data.
+      getXXXs();  
+      // Set the XXX data.  
+      setXXXs();    
+      </source>
+      
+      <p>You can replace XXX with the following values:</p>
+      
+      <table><title/>
+        <tr><th>Field Name</th><th>const name</th><th>BioAssayBase field name</th><th>Description</th></tr>
+            <tr>
+              <td>red</td>
+              <td>FIELD_NAME_RED</td>
+              <td>red</td>
+              <td>red data</td>
+            </tr>
+            <tr>
+              <td>green</td>
+              <td>FIELD_NAME_GREEN</td>
+              <td>green</td>
+              <td>green data</td>
+            </tr>
+            <tr>
+              <td>flags</td>
+              <td>FIELD_NAME_FLAG</td>
+              <td>flags</td>
+              <td>flags data</td>
+            </tr>
+            <tr>
+              <td>id</td>
+              <td>FIELD_NAME_ID</td>
+              <td>id</td>
+              <td>name data</td>
+            </tr>
+            <tr>
+              <td>ratio</td>
+              <td>FIELD_NAME_RATIO</td>
+              <td>ratio</td>
+              <td>ratio data</td>
+            </tr>
+            <tr>
+              <td>bright</td>
+              <td>FIELD_NAME_BRIGHT</td>
+              <td>bright</td>
+              <td>bright data</td>
+            </tr>
+            <tr>
+              <td>description</td>
+              <td>FIELD_NAME_DESCRIPTION</td>
+              <td>description</td>
+              <td>description data</td>
+            </tr>
+            <tr>
+              <td>a</td> 
+              <td>FIELD_NAME_A</td>
+              <td>a</td>
+              <td>A coordinate of a MA plot</td>
+            </tr>
+            <tr>
+              <td>m</td>
+              <td>FIELD_NAME_M</td>
+              <td>m</td>
+              <td>M coordinate of a MA plot</td>
+            </tr>
+          
+      </table>
+    
+    </section>
+    
+    <section name="Access to other fields">
+      
+      <p>You can access to others field with following methods:</p>
+      
+      <p>To set an integer value</p>
+      <source>spot.setDataFieldInt(field, value);</source>
+      
+      <p>To set a double value</p>
+      <source>spot.setDataFieldDouble(field, value);</source>
+      
+      <p>To set a string value</p>
+      <source>spot.setDataFieldString(field, value);</source>
+      
+      <p>To get an integer value</p>
+      <source>int value = spot.getDataFieldInt(field);</source>
+      
+      <p>To get an double value</p>
+      <source>double value = spot.getDataFieldDouble(field);</source>
+      
+      <p>To get a string value</p>
+      <source>String value = spot.getDataFieldString(field);</source>
+      
+      <p>To test if a field exits</p>
+      <source>boolean exists = spot.idField(field);</source>
+    
+    
+    </section>
+    
+    <section name="Spot index and location">
+    
+      <p>You can get and set the index of the spot with</p>
+      <source>
+      
+      int index = spot.getIndex();
+      spot.setIndex(index);
+      </source>
+      
+      <p>You also can get and the location of the spot:</p>
+      <source>
+      
+      int location = spot.getLocation();      // Get the encoded location
+      spot.setLocation(location);             // set an encoded location
+      
+      int metaRow = getMetaRow();             // Get the meta row
+      int metaColunm = spot.getMetaColumn();  // Get the meta column
+      int row = spot.getRow();                // Get the row
+      int column = spot.getColumn();          // Get the column
+
+      setMetaRow(metaRow);                    // Set the meta row
+      setMetaColumn(metaColumn);              // Set the meta column
+      setRow(row);                            // Set the row
+      setColumn(column);                      // Set the column
+      
+      </source>
+    
+    </section>
+    
+    
+    
+    <section name="SpotIterator">
+    
+      <p>The <code>SpotIterator</code> objects have all methods of <code>Spot</code> and methods to iterate over a <code>BioAssay</code> object.</p>
+      
+      <source>
+  
+        spotIterator.hasNext();      // Test if there is another next spot
+        spotIterator.next();         // Set the index to the next spot
+    
+        spotIterator.hasPrevious();  // Test if there is another previous spot
+        spotIterator.previous();     // Set the index to the previous spot
+    
+        spotIterator.first();        // Set the index to the first element
+        spotIterator.last();         // Set the index to the first element
+    
+        spotIterator.isEmpty();      // Test if the bioAssay is empty
+    
+      </source>
+      
+      <p>You can easyly iterate over a <code>BioAssay</code>object:</p>
+      
+      <source>
+      
+      SpotIterator spotIterator = bioAssay.iterator();
+      
+      while (spotIterator.hasNext()) {
+        spotIterator.next();
+        System.out.println(si.getId());
+      }
+      </source>
+    
+    </section>  
+    
+  </body>
+</document>

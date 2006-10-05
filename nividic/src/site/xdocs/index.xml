@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+/*
+ *                      Nividic development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Nividic project and its aims,
+ * or to join the Nividic mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/nividic
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Welcome to Nividic</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+  
+    <section name="Welcome to Nividic">
+    
+    <p>Nividic is a framework for DNA microarray analysis. This project is devide in three main components:</p>
+    <ul>
+      <li><b>om</b> for the object model to represent biological data.</li>
+      <li><b>platform</b> for the framework to manipulate workflows of biological data.</li>
+      <li><b>utils</b> for common utility classes.</li>
+    </ul>
+    
+    <p><b>WARNING: This site is under development.</b></p>
+   
+    </section>
+
+    <section name="Availabality">
+
+    <p>Nividic is distributed under the <a href="license.html">Lesser General Public Licence</a>.</p>
+
+    </section>
+    
+    <!--<section name="History">
+
+    <p>The Nividic was born as the Romde project in the <a href="http://www-dsv.cea.fr/content/cea/d_dep/d_drr/d_sgf/">Service de Génomique Fonctionnelle (SGF)</a> at the <a href="http://www.cea.fr">Commissariat à l'Energie Atomique</a> as C++ library. Then in 2004, the École Normale Supérieure  microarray platform and the SGF decide to collaborate for rewriting from scratch the project in Java. This project is now available on most platforms (Windows, Linux, MacOs X...) and our goal is to link this library with main projects use for microarray data analysis and exchange such R and MAGE-OM.</p>
+    
+    </section>  -->
+   
+  </body>
+</document>

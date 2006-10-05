@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"
+"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created with Sodipodi ("http://www.sodipodi.com/") -->
+<svg
+   id="svg559"
+   sodipodi:version="0.33"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="210mm"
+   height="297mm"
+   sodipodi:docbase="/home/jourdren/progs/romde/images"
+   sodipodi:docname="/home/jourdren/progs/romde/images/romde.svg">
+  <defs
+     id="defs561">
+    <linearGradient
+       id="linearGradient563">
+      <stop
+         style="stop-color:#ffe2a5;stop-opacity:0.2471;"
+         offset="0"
+         id="stop564" />
+      <stop
+         style="stop-color:#6d8a67;stop-opacity:0.1647;"
+         offset="1"
+         id="stop565" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient563"
+       id="linearGradient566" />
+    <radialGradient
+       xlink:href="#linearGradient563"
+       id="radialGradient567"
+       cx="0.871795"
+       cy="0.476185"
+       r="0.583455"
+       fx="0.871795"
+       fy="0.476185"
+       spreadMethod="pad" />
+  </defs>
+  <sodipodi:namedview
+     id="base" />
+  <rect
+     style="font-size:12.000;fill:url(#linearGradient566);fill-rule:evenodd;stroke:#000000;stroke-width:1;fill-opacity:1.0000;"
+     id="rect619"
+     width="339.336639"
+     height="126.518097"
+     x="195.223297"
+     y="450.772797" />
+  <text
+     style="fill:black;stroke:none;font-family:Century Schoolbook L;font-style:italic;font-weight:normal;font-size:72;fill-opacity:1;stroke-opacity:1;stroke-width:1pt;stroke-linejoin:miter;stroke-linecap:butt;text-anchor:start;writing-mode:lr;"
+     x="241.306046"
+     y="539.586823"
+     id="text604"
+     sodipodi:linespacing="100%">
+    <tspan
+       x="241.306046"
+       y="539.586853"
+       sodipodi:role="line"
+       id="tspan617">Romde</tspan>
+  </text>
+</svg>

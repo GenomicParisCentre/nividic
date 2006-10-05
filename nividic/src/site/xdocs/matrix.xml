@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Ideas for matrix object</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+
+	  <p>
+        This document contains the Feature Plan of the project.
+      </p>
+
+    <section name="Matrix ideas">
+    
+      <ul>
+        <li>concat a large number of scan</li>    
+        <li>Define a matrix operator</li>
+        <li>Combine two matrix</li>
+        <li>Merge replicates</li>
+        <li>Extract part of a matrix (some rows or lines) -> a new matrix</li>
+        <li>Join (and, or, xor..) 2 matrix</li>
+        <li>handle dye-swaps</li>
+	  </ul>
+
+	<ul>
+        <li>concat a large number of scan</li>   
+    </ul>
+    
+    </section>
+  </body>
+</document>

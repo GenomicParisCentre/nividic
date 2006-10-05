@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="latin1"?>
+<!--
+/*
+ *                      Romde development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Romde project and its aims,
+ * or to join the Romde mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/romde
+ *
+ */
+ -->
+
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+
+    <faq id="whats-romde">
+      <question>
+        What is Romde?
+      </question>
+      <answer>
+        <p>A framework for DNA chips analysis</p>
+      </answer>
+    </faq>
+
+    <faq id="how-create-bioassay">
+      <question>
+        How create BioAssay object ?
+      </question>
+      <answer>
+        <p>You can simply create a BioAssay Object with:</p>
+
+        <source>
+        import fr.ens.transcriptome.romde.romdeom.BioAssay;
+        import fr.ens.transcriptome.romde.romdeom.BioAssayFactory;
+
+
+        public class BioAssayDemo {
+
+          private BioAssay b = BioAssayFactory.createBioAssay();
+
+        }
+        </source>
+      </answer>
+    </faq>
+  </part>
+
+
+</faqs>

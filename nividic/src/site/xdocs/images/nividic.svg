@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="nividic.svg"
+   sodipodi:docbase="/home/jourdren/Desktop"
+   inkscape:version="0.41"
+   sodipodi:version="0.32"
+   id="svg1291"
+   height="64px"
+   width="64px">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:window-height="991"
+     inkscape:window-width="1226"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:current-layer="layer1"
+     inkscape:cy="75.447135"
+     inkscape:cx="24.980619"
+     inkscape:zoom="14.674737"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF
+       id="RDF5">
+      <cc:Work
+         id="Work6"
+         rdf:about="">
+        <dc:format
+           id="format7">image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+           id="type9" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1"
+     id="layer1">
+    <path
+       id="rect2144"
+       d="M -4.2560031,-18.752740 C -0.13944560,-18.752740 3.9771116,-18.752740 8.0936695,-18.752740 C 8.0936695,-14.635032 8.0936695,-10.517325 8.0936695,-6.3996185 C 3.9771116,-6.3996185 -0.13944560,-6.3996185 -4.2560031,-6.3996185 C -4.2560031,-10.517325 -4.2560031,-14.635032 -4.2560031,-18.752740 z "
+       style="fill:#ffc000;fill-opacity:0.92880261;fill-rule:nonzero;stroke:#000000;stroke-opacity:1.0000000" />
+    <path
+       id="path2156"
+       d="M -1.0566219,-17.336076 C -1.0470491,-14.129621 -1.0374757,-10.923165 -1.0279029,-7.7167099"
+       style="stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:0.99000000;stroke:#000000;fill-rule:evenodd;fill-opacity:0.75000000;fill:none" />
+    <path
+       id="path2160"
+       d="M 4.8655689,-17.382347 C 4.8751417,-14.175892 4.8847144,-10.969436 4.8942872,-7.7629805"
+       style="stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:0.99000000;stroke:#000000;fill-rule:evenodd;fill-opacity:0.75000000;fill:none" />
+    <path
+       id="path2162"
+       d="M 1.9213817,-17.336076 C 1.9309551,-14.129621 1.9405279,-10.923165 1.9501007,-7.7167099"
+       style="stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:0.99000000;stroke:#000000;fill-rule:evenodd;fill-opacity:0.75000000;fill:none" />
+    <text
+       sodipodi:linespacing="100%"
+       id="text2124"
+       y="-8.1699219"
+       x="11.240234"
+       style="line-height:100%;writing-mode:lr;text-anchor:start;font-variant:normal;font-stretch:normal;font-family:Bitstream Vera Sans;stroke-opacity:1.0000000;stroke-linejoin:miter;stroke-linecap:butt;stroke-width:1.0000000px;stroke:none;fill-opacity:1.0000000;fill:#000000;font-weight:normal;font-style:normal;font-size:12.000000"
+       xml:space="preserve"><tspan
+         y="-8.1699219"
+         x="11.240234"
+         id="tspan2126"
+         sodipodi:role="line">NIVIDIC</tspan></text>
+  </g>
+</svg>

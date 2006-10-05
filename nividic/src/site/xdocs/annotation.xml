@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+/*
+ *                      Nividic development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Nividic project and its aims,
+ * or to join the Nividic mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/nividic
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Annotation tutorial</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+  
+    <section name="How Get an annotation">
+    
+      <p>All object which implements the <code>Annotatable</code> interface (e.g. BioAssay, BiologicalList, ExpressionMatrix) have a <code>getAnnotation()</code> method. The result of this method can't be null.</p>
+    
+      <source>
+      
+      BioAssay b = BioAssayFactory.createBioAssay();
+      Annotation annotation = b.getAnnotation();
+      </source>
+    
+      <p>You can also create a standalone <code>Annotation</code> object with:</p>
+      
+      <source>Annotation annotation = AnnotationFactory.createAnnotation();</source>
+    
+    </section>
+  
+    <section name="Set properties of an annotation">
+    
+      <p><code>Annotation</code> objects use a key/value to store information, so the basic method to add information in an annotation object is:</p>
+    
+      <source>
+      
+      Annotation annotation = AnnotationFactory.createAnnotation();
+      annotation.setProperty("author","Nividic team");
+      </source>
+      
+      <p><code>Annotation</code> objects store the order of the adding of property. Sometimes you need to use annotation without key, the <code>Annotation</code> object allow you handle this information. In this case the key of the property is <b>"#"</b> + the number of elements in the <code>Annotation</code></p>.
+      
+      <source>
+      
+      Annotation annotation = AnnotationFactory.createAnnotation();
+      annotation.addProperty("created by Nividic team");
+      </source>
+    
+    </section>  
+    
+    <section name="Get properties of an annotation">
+    
+      <p>To get one property of an <code>Annotation</code> object use:</p>
+      
+      <source>
+      
+      Annotation annotation = AnnotationFactory.createAnnotation();
+      annotation.setProperty("author","Nividic team");
+      
+      String author = annotation.getProperty("author");
+      </source>
+      
+      <p>To get all the properties, you can use an iterator. <code>Annotation</code> objects not use the common Java iterator but the <code>OrderedMapIterator</code> of the Apache Jakarta Common project.</p>
+      
+      <source>
+      
+      Annotation a = AnnotationFactory.createAnnotation();
+      a.setProperty("author", "The Nividic Team");
+      a.setProperty("generator", "Nividic tutorial");
+
+      OrderedMapIterator it = a.iterator();
+      while (it.hasNext()) {
+        String key = (String) it.next();
+        String value = a.getProperty(key);
+        System.out.println(key + "=" + value);
+      }      
+      </source>
+    
+      
+      <p>There is another method to get all the annotation keys:</p>
+      
+      <source>
+      
+      String[] keys = annotations.getPropertiesKeys()
+      for (int i = 0; i &lt; keys.length; i++) {
+        String value = a.getProperty(keys[i]);
+        System.out.println(keys[i] + "=" + value);
+      }      
+      </source>
+      
+    </section>
+    
+    <section name="Other methods">
+    
+      <p><code>Annotation</code> objects contains other methods. For example, you can get the size of the annotation:</p>
+      
+      <source>annotation.size();</source>
+      
+      <p>You can clear the object:</p>
+      
+      <source>annotation.clear();</source>
+      
+      <p>Remove a property:</p>
+      
+      <source>annotation.removeProperty("author");</source>
+    
+      <p>Test if the annotation contains a property:</p>
+      
+      <source>annotation.containsProperty("author");</source>
+      
+    </section>
+    
+  </body>
+</document>
