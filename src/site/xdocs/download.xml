@@ -1,0 +1,71 @@
+<document>
+  <properties>
+    <title>Download Nividic</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+  <body>
+    <section name="Download Nividic latest version">
+      <p>
+        Nividic is distributed in several formats for your convenience.
+      </p>
+      <ul>
+        <li>
+          <a href="../leburon/downloads/nividic-0.6.tar.gz">
+            <code>.tar.gz</code> archive
+          </a>
+          <span style="font-size: smaller">
+            <!--(
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-bin.tar.gz.md5">checksum</a>)
+            (
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-bin.tar.gz.asc">PGP</a>)-->
+          </span>
+        </li>
+        <li>
+          <a href="../leburon/downloads/nividic-0.6.zip">
+            <code>.zip</code> archive
+          </a>
+          <span style="font-size: smaller">
+            <!--(
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-bin.zip.md5">checksum</a>)
+            (
+            <a href="http://www.transcriptome.ens.fr/sgdb/download.php?doelan/doelan-1.0-rc8-bin.zip.asc">PGP</a>)-->
+          </span>
+        </li>
+      </ul>
+      <p>
+        Nividic is distributed under the
+        <a href="http://www.gnu.org/copyleft/lesser.html">Lesser General Public License</a>.
+      </p>
+      <a name="requirements"/>
+      <subsection name="System Requirements">
+        <table>
+	  <tr>
+	    <th>Component</th>
+	    <th>Comment</th>
+	  </tr>
+          <tr>
+            <td>Java Runtime Environment</td>
+            <td>1.4 or above (Nividic might run under Java 5.0 but no test has been realized). </td>
+          </tr>
+          <tr>
+            <td>Memory</td>
+            <td>No minimum requirement.</td>
+          </tr>
+          <tr>
+            <td>Disk Space</td>
+            <td>
+              No minimum requirement. Approximately 250 KiB will be used by Nividic.
+            </td>
+          </tr>
+          <tr>
+            <td>Operating System</td>
+            <td>
+              No minimum requirement. Tested on Windows XP, Debian testing and Mac OS X.
+            </td>
+          </tr>
+        </table>
+      </subsection>
+    </section>
+  </body>
+</document>
+

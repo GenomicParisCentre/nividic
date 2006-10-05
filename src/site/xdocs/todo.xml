@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Feature Plan</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+
+      <p>
+        This document contains the Feature Plan of the project.
+      </p>
+
+    <section name="TODO">
+      
+      <subsection name="General">
+        <ul>
+          <li>Write tutorials (see TeMV developer documentation).</li>
+          <li>Write documention (see TeMV developer documentation).</li>
+          <li>Write more unit tests.</li>
+          <li>Write an article.</li>
+          <li>Update cvs/subversion.</li>
+          <li>Change project name to Nividic</li>
+        </ul>
+      </subsection>
+
+      <subsection name="Platform">
+        <ul>
+          <li>Workflow graph optimization.</li>
+          <li>Move parameters tests to the discover module section.</li>
+          <li>Save data container.</li>
+          <li>Synchronization, Multithreading.</li>
+          <li>Networking.</li>
+          <li>Algorithm must be used without Workflow.</li>
+          <li>Write tests : BioAssay Filter</li>
+          <li>Write tests : Experiement design</li>
+          <li>Data must be serializable.</li>
+        </ul>
+      </subsection>
+
+      <subsection name="OM">
+        <ul>
+          <li>Write IO for experiemnt design</li>
+          <li>Add equals and hashcode methods for all objects(BioAssay, Annotation, ExperimentDesign...)</li>
+          <li>Create listeners and events for all biological objects(BioAssay, Annotation, ExperimentDesign...)</li>
+          <li>Comment in english BioAssayImpl</li>
+          <li>Finish wrappers for Genepix GPR and GAL.</li>
+          <li>Write object to handle GAL data.</li>
+          <li>New object : Expression Matrix.</li>
+          <li>Finish writing javascript annotation reader for Genepix data import.</li>
+          <li>New object : Experiment description. [In progress]</li>
+          <li>New object : Translator (e.g. GeneID / Locuslink)</li>     
+          <li>BioAssay object setLocation with Genepix block numerotation</li>
+          <li>Write IO for BiologicalLists.</li>
+          <li>JAVA 5.0 : BioAssayBase can remove rows.</li>
+          <li>JAVA 5.0 : BioAssayBaseImpl use ArrayList&lt;T&gt; than array of ints, doubles or strings.</li>
+          <li>JAVA 5.0 : Optimize BioAssayReader and BioAssayWriter.</li>
+          <li>JAVA 5.0 : Next BioAssayBase version : use Collections.unmodifiableSet(Set s)</li>
+          <li>Create a thread safe version of bioAssayBase</li>
+          <li>Find memory leaks, find automaticaly bugs</li>
+          <li>Optimize Containts</li>
+          <li>Optimize BioAssay writer.</li>
+          <li>New BioAssay transformation : concat 2 bioAssay object (columns or lines)</li>
+          <li>New BioAssay transformation : remove a list of column</li>
+          <li>Serialize all main biological objects.</li>
+          <li>Override all the toString() of all main biological objects.</li>
+          <li>Add HachCode and equals method for BioAssay and other objects</li>
+          <li>Add documentation and tests for new fields of BioAssay (Standard deviation)</li>
+          <li>Add documentation and tests for new filter (replicates, empty identifiers)</li>
+          <li>Add documentation for lims webservices</li>
+          <li>Add maven dependencies for web services and stats.</li>
+        </ul>
+      </subsection>
+      
+      <subsection name="Util">
+        <ul>
+          <li>Parameters can be cloned.</li>
+          <li>R integration.</li>
+          <li>Interface TeMV algorithm with nividic algorithm.</li>
+        </ul>
+      </subsection>
+      
+    </section>
+
+  </body>
+</document>

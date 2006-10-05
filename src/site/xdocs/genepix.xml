@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Genepix integration</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Modify the security permissions for the applet">
+     
+      <p>To configure Genepix integration, you need to allow your applet in Genepix to read and write on your filesystem and set the path to the doelan report page in Genepix.</p>
+    
+      <subsection name="Modify Applet security permissions">
+      
+    
+        <p>To allow a normal execution of your application in Genepix, you need to modify the security permissions for the applet. Edit the <code>{JAVA_HOME}/lib/security/java.policy</code> and add the following lines:</p>
+     
+        <source>
+// Nividic applet permissions
+grant codebase "{PATH_TO_YOUR_APPLICATION}/lib/*" {
+  permission java.lang.RuntimePermission "*";
+  permission java.io.FilePermission "&lt;&lt;ALL FILES&gt;&gt;", "read";
+  permission java.io.FilePermission "&lt;&lt;ALL FILES&gt;&gt;", "write";
+  permission java.util.PropertyPermission "*", "read";
+
+};
+        </source>
+        
+  <p><code>{JAVA_HOME}i</code> is the path to your java installation and <code>{PATH_TO_YOUR_APPLICATION}</code> is the path to your application on your filesystem.</p>
+   
+      </subsection>
+      <subsection name="Add the link to your application in Genepix">
+            
+        <p>To have an access to your application in the report tab of Genepix, you must modify the index of the genepix report file: <code>C:\Axon\Scripts\GenePixPro5\Default.htm</code></p> and add the following line in <b>Analysis Reports</b> section:
+      
+        <source>
+&lt;li&gt;
+  &lt;a href="{PATH_TO_YOUR_APPLICATION}\appletcall.html"&gt;
+  Nividic applet&lt;/a&gt;.
+&lt;/li&gt;
+        </source>
+        
+      </subsection>
+    
+    </section>
+  
+  </body>
+</document>

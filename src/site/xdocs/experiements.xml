@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+/*
+ *                      Nividic development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Nividic project and its aims,
+ * or to join the Nividic mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/nividic
+ *
+ */
+ -->
+
+<document>
+
+  <properties>
+    <title>Experiments tutorial</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+  
+    <section name="Creating a ExperimentDesign">
+    
+      <p>The <code>ExperiementDesign</code> allow to describe an microarray experiement. You can create an empty <code>ExperimentDesign</code> with:</p>
+      
+      <source>
+      ExperimentDesign ed = new ExperimentDesign();
+      </source>
+      
+      <p>Now you must add one more parameter:</p>
+      
+      <source>    
+      ExperimentParameter ep1 = new ExperimentParameter("Time");
+      ExperimentParameter ep2 = new ExperimentParameter("Drug");
+      ed.addParameter(ep1);
+      ed.addParameter(ep2);
+      </source>
+      
+      <p>and one or more condition:</p>
+      
+      <source>
+      ed.addCondition("condition1");
+      Condition c2 = new Condition("condition2");
+      ed.addCondition(c2);
+      </source>
+      
+      <p>Once the dimensions of the design are create you can set the values. You also create and remove conditions and parameter after setting the values. When you create a dimention (parameter or condition), all the values of this dimension takes the default value (the default value is define by the type of <code>ExperimentParameter</code>.</p>
+      
+      <source>
+      ed.set("condition1", "Time", "1 hour");
+      ed.set(c2, "Drug", "TTX");
+      ed.set("c2", "Time", "30 minutes");
+      </source>
+    
+    </section>
+    
+    <section name="ExperimentParameter">
+    
+      <p><code>ExperimentParameter</code> is the more complex type of dimension in a <code>ExperiementDesign</code>, it has several fiels:</p>
+      
+      <ul>
+        <li><b>name</b> Define the name of the parameter</li>
+        <li><b>type</b> Define the type of parameter</li>
+        <li><b>unit</b> Define the unit used by the value of the parameter</li>
+      </ul>
+    
+      <p>The <b>type</b> allow to verify if the values for a parameter in an experiment design is correct. The type if define using a class implementing the <code>ExperimentParameterType</code> interface. For example to define a parameter type for dye-swap you can use the following class:</p>
+      <source>
+      
+      public class DyeSwapParameterType implements ExperimentParameterType{
+  
+        /**
+         * Get the name of the experiment parameter type
+         * @return Returns the name of the experiement parameter
+         */
+        String getName() {
+          return "Dye swap";
+        }
+  
+        /**
+         * Get the default value of the parameter.
+         * @return The default value of the parameter
+         */
+        String getDefaultValue() {
+          return "Cy3/Cy5";
+        }
+
+        /**
+        * Get the type (integer, double, string) of the value.
+        * @return The type of the value
+        */
+        Class getValueType() {
+          return String.class;
+        }
+
+        /**
+         * Test if the value of parameter is correct.
+         * @param value Value to test
+         * @return true if the value of the parameter is correct
+         */
+        boolean isCorrectValue(String value) {
+          return "Cy3/Cy5".equals(value) || "Cy5/Cy3".equals(value);
+        }
+
+      }
+      </source>
+      
+      <p>EveryTime</p>
+      
+    </section>
+    
+  </body>
+</document>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="latin1"?>
+<!--
+/*
+ *                      Nividic development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Nividic project and its aims,
+ * or to join the Nividic mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/nividic
+ *
+ */
+ -->
+ 
+<document>
+
+  <properties>
+    <title>News and Status</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+
+    <section name="News and Status">
+      <p>
+        This document contains the latest news and status regarding the
+        Nividic project.  It is here you'll find announcements related to
+        Nividic.
+      </p>
+
+      <subsection name="Current Status">
+        <p>
+          Nous travaillons actuellement sur les premiers prototypes de Nividic.
+        </p>
+      </subsection>
+
+      <subsection name="22 Juin 2004 - Seconde version alpha de Nividic en Java">
+
+        La seconde version de Nividic en Java vient de sortir. Voici les nouveautés :
+
+	<ol>
+	  <li>Ajout des logos, liens vers les sites des labos, copyrights...</li>
+	  <li>Corrections des bogues liés à la lecture et à l'ecriture de fichiers GPR.</li>
+	  <li>Configuration réaliste de checkstyle.</li>
+	  <li>Formatage du code et annotation de la javadoc selon les règles de checkstyle</li>
+	  <li>Amelioration de la configuration de Maven.</li>	  
+	</ol>
+
+      </subsection>
+
+      <subsection name="11 Juin 2004 - Un logo pour le projet">
+        <p>Ce n'est pas le plus joli logo du monde, mais il a le mérite d'être simple et clair. Si vous êtes plus inspirés, montrez-nous vos talents d'artiste !</p>
+	<p>Voici le nouveau logo :</p>
+	<img src="images/nividic.png"/>
+	<p>Il est disponible au format <a href="images/Nividic.png">png</a> et <a href="images/nividic.svg">svg</a>.</p>
+      </subsection>
+
+      <subsection name="10 Juin 2004 - Première version alpha de Nividic en java">
+
+	La première version de Nividic vient de sortir.
+
+        <ol>
+          <li>Nouveautés</li>
+          <p>La première version du projet, elle contient :</p>
+	  <ul>
+	    <li>L'objet BioAssay (utilise des tableaux pour stockage des données)</li>
+	    <li>Des classes pour les entrées sortie. Il reste quelques bogues en écriture :</li>
+	      <ul>
+	        <li>Ordre des annotations</li>
+	        <li>La transformation les locations en block row et column</li>
+	        <li>Le renommage du noms des champs internes à BioAssay vers les noms usuels dans les fichiers gpr.</li>
+	      </ul>
+	    <li>Un prototype de Gestion de Workflow :</li>
+	    <ul>
+	      <li>App.java est programme de test du workflow</li>
+	      <li>Le package plateforme contient le moteur du workflow</li>
+	      <li>Le package elements contient les algorithmes du workflow de test</li>
+	      <li>Le package data contient les classes encapsulant les données</li>
+	    </ul>
+	  </ul>
+	  
+	</ol>
+      </subsection>
+
+
+    </section>
+
+  </body>
+</document>
