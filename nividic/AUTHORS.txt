@@ -1,9 +1,0 @@
-
-* Main authors 
-
-Laurent Jourdren                       jourdren@biologie.ens.fr
-Vincent Frouin                         frouin@dsvidf.cea.fr
-Miriame Allouche                       allouche@dsvidf.cea.fr
-
-* Contributors
-
