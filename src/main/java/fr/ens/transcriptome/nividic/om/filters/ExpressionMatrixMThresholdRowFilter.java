@@ -34,11 +34,12 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 public class ExpressionMatrixMThresholdRowFilter extends
     ExpressionMatrixRowFilter {
 
-  private static final double THRESHOLD_DEFAULT = 5.0;
+  private static final double THRESHOLD_DEFAULT = 1.0;
   private static final double RATE_DEFAULT = 2.0 / 3.0;
 
   private double threshold = THRESHOLD_DEFAULT;
   private double rate = RATE_DEFAULT;
+  private boolean abs = true;
 
   /**
    * Test the values of a Row.
@@ -50,21 +51,29 @@ public class ExpressionMatrixMThresholdRowFilter extends
       throws ExpressionMatrixRuntimeException {
 
     if (values == null)
-      throw new ExpressionMatrixRuntimeException("ratioValue is null");
+      throw new ExpressionMatrixRuntimeException("no values to test");
 
-    final int ratioLenght = values.length;
+    final int size = values.length;
 
-    int isLower = 0;
+    int count = 0;
+    final boolean abs = isAbs();
+    final double threshold = getThreshold();
+    final double rate = getRate();
 
-    for (int i = 0; i < ratioLenght; i++) {
-      if (values[i] <= getThreshold())
-        isLower++;
+    for (int i = 0; i < size; i++) {
+
+      final double value = abs ? Math.abs(values[i]) : values[i];
+
+      if (value >= threshold)
+        count++;
     }
 
-    if (((double) isLower / (double) ratioLenght) >= getRate())
-      return false;
+    final double ratio = (double) count / (double) size;
 
-    return true;
+    if (ratio >= rate)
+      return true;
+
+    return false;
   }
 
   /**
@@ -119,4 +128,20 @@ public class ExpressionMatrixMThresholdRowFilter extends
     this.threshold = threshold;
   }
 
+  /**
+   * Test if the absolute value of the data must be used.
+   * @return Returns if the absolute value of the data must be used
+   */
+  public boolean isAbs() {
+    return abs;
+  }
+
+  /**
+   * Set if the absolute value of the data must be used.
+   * @param abs The abs to set
+   */
+  public void setAbs(final boolean abs) {
+    this.abs = abs;
+  }
+  
 }
