@@ -39,7 +39,7 @@ public class ExpressionMatrixMThresholdRowFilter extends
 
   private double threshold = THRESHOLD_DEFAULT;
   private double rate = RATE_DEFAULT;
-  private boolean abs = true;
+  private boolean absoluteThreshold = true;
 
   /**
    * Test the values of a Row.
@@ -56,7 +56,7 @@ public class ExpressionMatrixMThresholdRowFilter extends
     final int size = values.length;
 
     int count = 0;
-    final boolean abs = isAbs();
+    final boolean abs = isAbsoluteThreshold();
     final double threshold = getThreshold();
     final double rate = getRate();
 
@@ -132,16 +132,62 @@ public class ExpressionMatrixMThresholdRowFilter extends
    * Test if the absolute value of the data must be used.
    * @return Returns if the absolute value of the data must be used
    */
-  public boolean isAbs() {
-    return abs;
+  public boolean isAbsoluteThreshold() {
+    return absoluteThreshold;
   }
 
   /**
    * Set if the absolute value of the data must be used.
-   * @param abs The abs to set
+   * @param absoluteThreshold The absoluteThreshold to set
    */
-  public void setAbs(final boolean abs) {
-    this.abs = abs;
+  public void setAbsoluteThreshold(final boolean absoluteThreshold) {
+    this.absoluteThreshold = absoluteThreshold;
   }
-  
+
+  //
+  // Constructor
+  //
+
+  /**
+   * Default constructor.
+   */
+  public ExpressionMatrixMThresholdRowFilter() {
+  }
+
+  /**
+   * Constructor.
+   * @param threshold The threshold of the filter
+   */
+  public ExpressionMatrixMThresholdRowFilter(final double threshold) {
+
+    setThreshold(threshold);
+    setRate(rate);
+  }
+
+  /**
+   * Constructor.
+   * @param threshold The threshold of the filter
+   * @param rate The rate of the filter
+   */
+  public ExpressionMatrixMThresholdRowFilter(final double threshold,
+      final double rate) {
+
+    setThreshold(threshold);
+    setRate(rate);
+  }
+
+  /**
+   * Constructor.
+   * @param threshold The threshold of the filter
+   * @param rate The rate of the filter
+   * @param absoluteThreshold if test absolute values or not
+   */
+  public ExpressionMatrixMThresholdRowFilter(final double threshold,
+      final double rate, final boolean absoluteThreshold) {
+
+    setThreshold(threshold);
+    setRate(rate);
+    setAbsoluteThreshold(absoluteThreshold);
+  }
+
 }

@@ -47,18 +47,18 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
       throws ExpressionMatrixRuntimeException {
 
     if (values == null)
-      throw new ExpressionMatrixRuntimeException("ratioValue is null");
+      throw new ExpressionMatrixRuntimeException("values is null");
 
-    final int ratioLenght = values.length;
+    final int size = values.length;
 
-    int isNA = 0;
+    int count = 0;
 
-    for (int i = 0; i < ratioLenght; i++) {
+    for (int i = 0; i < size; i++) {
       if (Double.isNaN(values[i]))
-        isNA++;
+        count++;
     }
 
-    if (((double) isNA / (double) ratioLenght) >= getRate())
+    if (((double) count / (double) size) >= getRate())
       return false;
 
     return true;
@@ -97,6 +97,25 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
   public void setRate(final double rate) {
 
     this.rate = rate;
+  }
+
+  //
+  // Constructor
+  //
+
+  /**
+   * Default constructor.
+   */
+  public ExpressionMatrixNARowFilter() {
+  }
+
+  /**
+   * Constructor.
+   * @param rate The rate of the filter
+   */
+  public ExpressionMatrixNARowFilter(final double rate) {
+
+    setRate(rate);
   }
 
 }
