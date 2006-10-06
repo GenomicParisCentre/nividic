@@ -47,7 +47,7 @@ public class ExpressionMatrixMThresholdFilter extends TestCase {
     filter = new ExpressionMatrixMThresholdRowFilter();
     double[] data3 = {-1.5, 0.6, -2.0, 0.8, 3.0, 1.0};
     assertTrue(filter.testRow(data3));
-    filter.setAbs(false);
+    filter.setAbsoluteThreshold(false);
     assertFalse(filter.testRow(data3));
     
   }

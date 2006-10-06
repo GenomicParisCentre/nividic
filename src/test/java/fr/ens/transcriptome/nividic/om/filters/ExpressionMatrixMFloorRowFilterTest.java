@@ -51,7 +51,7 @@ public class ExpressionMatrixMFloorRowFilterTest extends TestCase {
     filter = new ExpressionMatrixMFloorRowFilter();
     double[] data3 = {-1.5, 0.6, -2.0, 0.8, 3.0, 1.0};
     assertFalse(filter.testRow(data3));
-    filter.setAbs(false);
+    filter.setAbsoluteThreshold(false);
     assertTrue(filter.testRow(data3));
     
   }
