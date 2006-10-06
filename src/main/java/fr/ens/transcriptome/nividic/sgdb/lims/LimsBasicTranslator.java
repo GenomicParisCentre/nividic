@@ -28,7 +28,7 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.translators.BasicTranslator;
 import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType;
 
-public abstract class LimsBasicFeatureAnnotation extends BasicTranslator {
+public abstract class LimsBasicTranslator extends BasicTranslator {
 
   private LimsConnection limsConnection;
 
