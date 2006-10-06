@@ -111,13 +111,22 @@ public abstract class BasicTranslator implements Translator {
    */
   public String[] translateField(final String[] ids, final String field) {
 
-    if (ids == null || !isField(field))
+    if (ids == null)
+      return null;
+
+    final String lField;
+    if (field == null)
+      lField = getDefaultField();
+    else
+      lField = field;
+
+    if (lField == null || !isField(lField))
       return null;
 
     String[] result = new String[ids.length];
 
     for (int i = 0; i < ids.length; i++) {
-      result[i] = translateField(ids[i], field);
+      result[i] = translateField(ids[i], lField);
     }
 
     return result;
@@ -129,10 +138,10 @@ public abstract class BasicTranslator implements Translator {
    * @return An array with the annotation of the Feature
    */
   public String translateField(final String id) {
-    
+
     return translateField(id, getDefaultField());
   }
-  
+
   /**
    * Test if the field exists.
    * @param field Field to test
