@@ -50,7 +50,7 @@ class Test {
 
     
     
-    SpotProbeFeatureAnnotation pfa = new SpotProbeFeatureAnnotation();
+    SpotProbeTranslator pfa = new SpotProbeTranslator();
 
     // System.out.println(pfa.getAnnotation("7777",
     // pfa.getAnnotationFields()[0]));

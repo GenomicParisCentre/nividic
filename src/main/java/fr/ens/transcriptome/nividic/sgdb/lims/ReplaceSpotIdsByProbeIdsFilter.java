@@ -39,7 +39,7 @@ public class ReplaceSpotIdsByProbeIdsFilter implements BioAssayFilter {
   /** New name for unknown spotId. */
   public static final String NEW_IDENTIFIER_UNKNOWN_SPOTID = "unknown";
 
-  private SpotProbeFeatureAnnotation annot;
+  private SpotProbeTranslator annot;
   private boolean removeUnknownSpotId;
   private boolean renameUnknownSpotId;
   private String newNameUnknownSpotId = NEW_IDENTIFIER_UNKNOWN_SPOTID;
@@ -121,7 +121,7 @@ public class ReplaceSpotIdsByProbeIdsFilter implements BioAssayFilter {
     String[] ids = bioAssay.getIds();
 
     String[] newIds = this.annot.getAnnotations(ids,
-        SpotProbeFeatureAnnotation.PROBE_ID_FIELD);
+        SpotProbeTranslator.PROBE_ID_FIELD);
 
     System.out.println("newids: " + newIds);
     if (newIds == null)
@@ -162,7 +162,7 @@ public class ReplaceSpotIdsByProbeIdsFilter implements BioAssayFilter {
    */
   public ReplaceSpotIdsByProbeIdsFilter(final LimsConnection connection) {
 
-    this.annot = new SpotProbeFeatureAnnotation(connection);
+    this.annot = new SpotProbeTranslator(connection);
   }
 
   /**
