@@ -33,8 +33,8 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * This class define how to retrieve probe id from the spot id.
  * @author Laurent Jourdren
  */
-public class ProbeDescriptionFeatureAnnotation extends
-    LimsBasicFeatureAnnotation {
+public class ProbeDescriptionTranslator extends
+    LimsBasicTranslator {
 
   /** Probe name field. */
   public static final String PROBE_NAME_FIELD = "ProbeName";
@@ -207,14 +207,14 @@ public class ProbeDescriptionFeatureAnnotation extends
    * Public constructor.
    * @param limsConnection connection to the lims
    */
-  public ProbeDescriptionFeatureAnnotation(final LimsConnection limsConnection) {
+  public ProbeDescriptionTranslator(final LimsConnection limsConnection) {
     setLimsConnection(limsConnection);
   }
 
   /**
    * Public constructor.
    */
-  public ProbeDescriptionFeatureAnnotation() {
+  public ProbeDescriptionTranslator() {
     this(null);
   }
 
