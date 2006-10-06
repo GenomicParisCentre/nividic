@@ -30,7 +30,7 @@ import fr.ens.transcriptome.nividic.om.translators.BasicTranslator;
 
 public class SGDBYeastBioAssayTranslator extends BasicTranslator {
 
-  private static final String[] FIELDS = {"Probe", "ORF", "Protein", "Ontology"};
+  private static final String[] FIELDS = {"Probe", "ORF", "Description"};
   private HashMap annotations = new HashMap();
 
   /**
