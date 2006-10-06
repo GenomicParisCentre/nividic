@@ -22,7 +22,7 @@ public class LimsServiceLocator extends org.apache.axis.client.Service implement
     }
 
     // Use to get a proxy class for LimsPort
-    private java.lang.String LimsPort_address = "http://skadi.ens.fr/lims/webservices/lims.php";
+    private java.lang.String LimsPort_address = "http://www.genomic.ens.fr/lims/webservices/lims.php";
 
     public java.lang.String getLimsPortAddress() {
         return LimsPort_address;
