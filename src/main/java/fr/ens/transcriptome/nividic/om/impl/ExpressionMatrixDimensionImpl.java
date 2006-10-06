@@ -34,14 +34,11 @@ import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
-import fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 public class ExpressionMatrixDimensionImpl implements
     ExpressionMatrixDimension, ExpressionMatrixListener {
 
-  private static int count = 0;
-
-  private int id = count++;
   private String name;
   private ExpressionMatrixImpl matrix;
 
@@ -577,8 +574,10 @@ public class ExpressionMatrixDimensionImpl implements
     final ArrayDoubleList columnToFill = (ArrayDoubleList) referencesToColumnNamesMap
         .get(columnName);
 
-    for (int i = 0; i < ids.length; i++)
-      setValue(ids[i], columnToFill, data[i]);
+    for (int i = 0; i < ids.length; i++) {
+      if (ids[i] != null)
+        setValue(ids[i], columnToFill, data[i]);
+    }
 
   }
 
@@ -758,10 +757,37 @@ public class ExpressionMatrixDimensionImpl implements
    */
   public void addBioAssay(final BioAssay bioAssay) {
 
-    if (bioAssay == null)
-      throw new ExpressionMatrixRuntimeException("The BioAssay to add is null");
-
     addBioAssay(bioAssay, bioAssay.getName());
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator) {
+
+    addBioAssay(bioAssay, bioAssay.getName(), null, translator, null);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator,
+      final String translatorFieldName) {
+
+    addBioAssay(bioAssay, bioAssay.getName(), null, translator,
+        translatorFieldName);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   */
+  public void addBioAssay(final BioAssay bioAssay, final String newColumnName,
+      final Translator translator, final String translatorFieldName) {
+
+    addBioAssay(bioAssay, null, newColumnName, translator, translatorFieldName);
   }
 
   /**
@@ -771,15 +797,31 @@ public class ExpressionMatrixDimensionImpl implements
    */
   public void addBioAssay(final BioAssay bioAssay, final String newColumnName) {
 
-    if (bioAssay == null)
-      throw new ExpressionMatrixRuntimeException("The BioAssay to add is null");
+    addBioAssay(bioAssay, null, newColumnName, null, null);
+  }
 
-    if (newColumnName == null)
-      throw new ExpressionMatrixRuntimeException(
-          "The name of the new column is null");
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param newColumnName The name of the new column to add
+   */
+  public void addBioAssay(final BioAssay bioAssay,
+      final String bioAssayColumnToAdd, final String newColumnName) {
 
-    addBioAssay(bioAssay, getDimensionName(), newColumnName);
+    addBioAssay(bioAssay, bioAssayColumnToAdd, newColumnName, null);
+  }
 
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param newColumnName The name of the new column to add
+   * @param translator Translator to use to define rowId
+   */
+  public void addBioAssay(final BioAssay bioAssay,
+      final String bioAssayColumnToAdd, final String newColumnName,
+      final Translator translator) {
+
+    addBioAssay(bioAssay, bioAssayColumnToAdd, newColumnName, translator, null);
   }
 
   /**
@@ -787,17 +829,41 @@ public class ExpressionMatrixDimensionImpl implements
    * @param bioAssay The new column to add
    * @param bioAssayColumnToAdd The name of the column of the bioAssay to add
    * @param newColumnName The name of the new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
    */
   public void addBioAssay(final BioAssay bioAssay,
-      final String bioAssayColumnToAdd, final String newColumnName) {
+      final String bioAssayColumnToAdd, final String newColumnName,
+      final Translator translator, final String translatorField) {
 
     if (bioAssay == null)
       throw new ExpressionMatrixRuntimeException("The BioAssay to add is null");
 
-    final String[] ids = bioAssay.getIds();
-    final double[] values = bioAssay.getDataFieldDouble(bioAssayColumnToAdd);
+    // Define new column name if not set
+    final String lNewColumnName;
 
-    addColumn(newColumnName, ids, values);
+    if (newColumnName == null)
+      lNewColumnName = bioAssay.getName();
+    else
+      lNewColumnName = newColumnName;
+
+    // Define bioAssayColumnToAdd if not set
+    final String lbioAssayColumnToAdd;
+
+    if (bioAssayColumnToAdd == null)
+      lbioAssayColumnToAdd = getDimensionName();
+    else
+      lbioAssayColumnToAdd = newColumnName;
+
+    // Create the array od identifers
+    String[] ids = bioAssay.getIds();
+
+    if (translator != null)
+      ids = translator.translateField(ids, translatorField);
+
+    final double[] values = bioAssay.getDataFieldDouble(lbioAssayColumnToAdd);
+
+    addColumn(lNewColumnName, ids, values);
   }
 
   //

@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om;
 
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 public interface ExpressionMatrix extends ExpressionMatrixBase {
 
@@ -55,6 +56,40 @@ public interface ExpressionMatrix extends ExpressionMatrixBase {
   void addBioAssay(BioAssay bioAssay, String columnName);
 
   /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowIds
+   */
+  void addBioAssay(BioAssay bioAssay, Translator translator);
+
+  /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  void addBioAssay(BioAssay bioAssay,  Translator translator,
+      String translatorField);
+  
+  /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param columnName The name of column to add
+   * @param translator Translator to use to define rowIds
+   */
+  void addBioAssay(BioAssay bioAssay, String columnName, Translator translator);
+
+  /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param columnName The name of column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  void addBioAssay(BioAssay bioAssay, String columnName, Translator translator,
+      String translatorField);
+
+  /**
    * Get a dimension.
    * @param dimensionName Name of the dimension to get
    * @return a dimension
@@ -66,13 +101,13 @@ public interface ExpressionMatrix extends ExpressionMatrixBase {
    * @param dimensionName Name of the dimension to add
    */
   void addDimension(String dimensionName);
-  
+
   /**
    * Add a new dimension to the matrix with the values of another dimension.
    * @param dimension Dimension to add
    */
   void addDimension(ExpressionMatrixDimension dimension);
-  
+
   /**
    * Add a new dimension to the matrix with the values of another dimension.
    * @param dimension Dimension to add
@@ -131,7 +166,7 @@ public interface ExpressionMatrix extends ExpressionMatrixBase {
    * @return An ExpressionMatrixDimension object
    */
   ExpressionMatrix subMatrixColumns(String[] columns);
-  
+
   /**
    * Create a sub matrix, choosing the dimension that you want to keep in it
    * @param dimensionName Dimension that you want to keep
@@ -163,7 +198,7 @@ public interface ExpressionMatrix extends ExpressionMatrixBase {
    * @return An array of the dimension of the matrix
    */
   ExpressionMatrixDimension[] getDimensions();
-  
+
   /**
    * Create a submatrix of the matrix as the result of a filter.
    * @param filter Filter to apply

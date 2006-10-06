@@ -22,6 +22,8 @@
 
 package fr.ens.transcriptome.nividic.om;
 
+import fr.ens.transcriptome.nividic.om.translators.Translator;
+
 /**
  * This interface discribe a ExpressionMatrixDimension object. extends
  * ExpressionMatrixBase
@@ -62,6 +64,43 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
    */
   void addBioAssay(BioAssay bioAssay, String bioAssayColumn,
       String newColumnName);
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowId
+   */
+  public void addBioAssay(BioAssay bioAssay, Translator translator);
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowId
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(BioAssay bioAssay, Translator translator,
+      String translatorField);
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param bioAssayColumnToAdd The name of the column of the bioAssay to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(BioAssay bioAssay, String newColumnName,
+      Translator translator, String translatorField);
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param bioAssayColumnToAdd The name of the column of the bioAssay to add
+   * @param newColumnName The name of the new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(BioAssay bioAssay, String bioAssayColumnToAdd,
+      String newColumnName, Translator translator, String translatorField);
 
   /**
    * extract a row from the matrix

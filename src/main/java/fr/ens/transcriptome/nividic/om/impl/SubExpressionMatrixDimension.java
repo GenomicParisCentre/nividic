@@ -24,13 +24,12 @@ package fr.ens.transcriptome.nividic.om.impl;
 
 import org.apache.commons.collections.primitives.ArrayDoubleList;
 
-import sun.security.action.GetIntegerAction;
-
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
 
@@ -403,6 +402,60 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    *           used in a SubExpressionMatrix object
    */
   public void addBioAssay(final BioAssay bioAssay, final String newColumnName) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+    // this.subMatrix.addBioAssay(bioAssay, newColumnName);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowId
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+    // this.subMatrix.addBioAssay(bioAssay, newColumnName);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowId
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator,
+      final String translatorField) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+    // this.subMatrix.addBioAssay(bioAssay, newColumnName);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param bioAssayColumnToAdd The name of the column of the bioAssay to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay, final String newColumnName,
+      final Translator translator, final String translatorField) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+    // this.subMatrix.addBioAssay(bioAssay, newColumnName);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param bioAssayColumnToAdd The name of the column of the bioAssay to add
+   * @param newColumnName The name of the new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay,
+      final String bioAssayColumnToAdd, final String newColumnName,
+      final Translator translator, final String translatorField) {
 
     throwsExpressionMatrixRuntimeExceptionForIllegalActions();
     // this.subMatrix.addBioAssay(bioAssay, newColumnName);

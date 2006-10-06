@@ -39,6 +39,7 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 /**
  * Implementation class for ExpressionMatrixDimension objects.
@@ -503,33 +504,79 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param columnName The name of column to add
    */
   public void addBioAssay(final BioAssay bioAssay) {
 
-    if (bioAssay == null)
-      return;
+    addBioAssay(bioAssay, null, null, null);
+  }
 
-    String[] dimensionNames = getDimensionNames();
-    for (int i = 0; i < dimensionNames.length; i++)
-      if (bioAssay.isField(dimensionNames[i]))
-        getDimension(dimensionNames[i]).addBioAssay(bioAssay);
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   */
+  public void addBioAssay(final BioAssay bioAssay, final String columnName) {
 
+    addBioAssay(bioAssay, columnName, null, null);
   }
 
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
    * @param columnName The name of column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
    */
-  public void addBioAssay(final BioAssay bioAssay, final String columnName) {
+  public void addBioAssay(final BioAssay bioAssay, final String columnName,
+      final Translator translator) {
 
-    if (bioAssay == null || columnName == null)
+    addBioAssay(bioAssay, columnName, translator, null);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator) {
+
+    addBioAssay(bioAssay, null, translator, null);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator,
+      final String translatorField) {
+
+    addBioAssay(bioAssay, null, translator, translatorField);
+  }
+
+  /**
+   * Add a column to the matrix
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay, final String columnName,
+      final Translator translator, final String translatorField) {
+
+    if (bioAssay == null)
       return;
 
     String[] dimensionNames = getDimensionNames();
     for (int i = 0; i < dimensionNames.length; i++)
-      if (bioAssay.isField(dimensionNames[i]))
-        getDimension(dimensionNames[i]).addBioAssay(bioAssay, columnName);
+      if (bioAssay.isField(dimensionNames[i])) {
+
+        final ExpressionMatrixDimension dimension = getDimension(dimensionNames[i]);
+
+        dimension
+            .addBioAssay(bioAssay, columnName, translator, translatorField);
+      }
   }
 
   /**
@@ -634,7 +681,6 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     return sem;
   }
 
-  
   /**
    * Create a sub matrix, choosing the dimension that you want to keep in it
    * @param dimensionName Dimension that you want to keep
@@ -648,7 +694,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     return sem;
   }
-  
+
   /**
    * Give the first dimention of the matrix, the number of rows.
    * @return an int , the number of rows of the matrix
@@ -898,12 +944,13 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @return an expression matrix
    */
   public ExpressionMatrix filter(final ExpressionMatrixFilter filter) {
-    
-    if (filter==null) return null;
-    
+
+    if (filter == null)
+      return null;
+
     return filter.filter(this);
   }
-  
+
   //
   // Listeners
   //

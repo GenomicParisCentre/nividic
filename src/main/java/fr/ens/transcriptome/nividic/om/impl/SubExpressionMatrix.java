@@ -37,6 +37,7 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 /**
  * implementation of the SubExpressionMatrix class
@@ -266,6 +267,53 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param columnName The name of column to add
    */
   public void addBioAssay(final BioAssay bioAssay, final String columnName) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowIds
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay, final Translator translator,
+      final String translatorField) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param columnName The name of column to add
+   * @param translator Translator to use to define rowIds
+   */
+  public void addBioAssay(final BioAssay bioAssay, final String columnName,
+      final       Translator translator) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
+   * Add a column to the matrix.
+   * @param bioAssay The new column to add
+   * @param columnName The name of column to add
+   * @param translator Translator to use to define rowIds
+   * @param translatorField Field of the translator to use
+   */
+  public void addBioAssay(final BioAssay bioAssay, final String columnName,
+      final Translator translator, final String translatorField) {
 
     throwsExpressionMatrixRuntimeExceptionForIllegalActions();
   }
