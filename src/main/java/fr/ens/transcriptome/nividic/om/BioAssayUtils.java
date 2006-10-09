@@ -688,34 +688,32 @@ public final class BioAssayUtils {
   }
 
   public static void printBioAssay(final BioAssay bioAssay) {
-    
-    if (bioAssay==null) return;
-    
-    String [] fields = bioAssay.getFields();
-    String [] ids = bioAssay.getIds();
-    
-    System.out.print("ids");
+
+    if (bioAssay == null)
+      return;
+
+    String[] fields = bioAssay.getFields();
+    String[] ids = bioAssay.getIds();
+
     for (int i = 0; i < fields.length; i++) {
-      System.out.print("\t"+fields[i]);
+      if (i>0) System.out.print("\t");
+      System.out.print( fields[i]);
     }
     System.out.println();
-    
-    
+
     for (int i = 0; i < ids.length; i++) {
-      
+
       for (int j = 0; j < fields.length; j++) {
-        
-       
-        
+
         switch (bioAssay.getFieldType(fields[j])) {
         case BioAssayBase.DATATYPE_DOUBLE:
           System.out.print(bioAssay.getDataFieldDouble(fields[j])[i]);
           break;
-          
+
         case BioAssayBase.DATATYPE_INTEGER:
           System.out.print(bioAssay.getDataFieldInt(fields[j])[i]);
           break;
-          
+
         case BioAssayBase.DATATYPE_STRING:
           System.out.print(bioAssay.getDataFieldString(fields[j])[i]);
           break;
@@ -723,16 +721,16 @@ public final class BioAssayUtils {
         default:
           break;
         }
-        
+
         System.out.print("\t");
-        
+
       }
       System.out.println();
-      
+
     }
-    
+
   }
-  
+
   //
   // Constructor
   //
