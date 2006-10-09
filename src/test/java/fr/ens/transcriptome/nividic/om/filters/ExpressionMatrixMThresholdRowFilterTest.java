@@ -24,7 +24,7 @@ package fr.ens.transcriptome.nividic.om.filters;
 
 import junit.framework.TestCase;
 
-public class ExpressionMatrixMThresholdFilter extends TestCase {
+public class ExpressionMatrixMThresholdRowFilterTest extends TestCase {
 
   public void testTestRow() {
 
