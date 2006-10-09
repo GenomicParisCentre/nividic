@@ -58,10 +58,12 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
         count++;
     }
 
-    if (((double) count / (double) size) >= getRate())
-      return false;
+    final double ratio = (double) count / (double) size;
 
-    return true;
+    if (ratio < getRate())
+      return true;
+
+    return false;
   }
 
   /**
