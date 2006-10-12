@@ -86,6 +86,7 @@ public class ExpressionMatrixMFloorRowFilter extends ExpressionMatrixRowFilter {
 
   /**
    * Test if filtered identifiers must be removed.
+   * @return true if filtered row must be removed
    */
   public boolean removeFilteredRows() {
 
@@ -138,10 +139,10 @@ public class ExpressionMatrixMFloorRowFilter extends ExpressionMatrixRowFilter {
    * Set if the absolute value of the data must be used.
    * @param absoluteThreshold The absoluteThreshold to set
    */
-  public void setAbsoluteThreshold(final boolean abs) {
-    this.absoluteThreshold = abs;
+  public void setAbsoluteThreshold(final boolean absoluteThreshold) {
+    this.absoluteThreshold = absoluteThreshold;
   }
-  
+
   //
   // Constructor
   //

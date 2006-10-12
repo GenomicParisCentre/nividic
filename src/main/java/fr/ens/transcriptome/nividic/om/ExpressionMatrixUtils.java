@@ -31,34 +31,11 @@ import java.io.PrintStream;
 public final class ExpressionMatrixUtils {
 
   /**
-   * Compare two spot-id to know if they refer to the same prob-id
-   * @param id1 first id to compare
-   * @param id2 second id to compare
-   * @return true if those spot-ids have the same prob-id
-   */
-  public boolean compareRef(final String id1, final String id2) {
-
-    // TODO implement it !!!
-
-    return true;
-  };
-
-  /**
-   * filter the matrix thanks to a value
-   * @param value the value used to filter your matrix
-   * @param tolerance the tolerance of your fitering
-   */
-  public void filter(final double value, final double tolerance) {
-  };
-
-  // TODO we have to check if it's a M or an A value
-
-  /**
    * Print the an expression matrix dimension on the output stream.
    * @param dimension Dimension to print
    */
   public static void printExpressionMatrixDimension(
-      ExpressionMatrixDimension dimension) {
+      final ExpressionMatrixDimension dimension) {
 
     printExpressionMatrixDimension(dimension, System.out);
   }
@@ -69,7 +46,7 @@ public final class ExpressionMatrixUtils {
    * @param out Output stream
    */
   public static void printExpressionMatrixDimension(
-      ExpressionMatrixDimension dimension, final PrintStream out) {
+      final ExpressionMatrixDimension dimension, final PrintStream out) {
 
     String[] ids = dimension.getRowIds();
     String[] columnNames = dimension.getColumnNames();
@@ -113,7 +90,7 @@ public final class ExpressionMatrixUtils {
    * @param matrix to print
    * @param out Output stream
    */
-  public static void printExpressionMatrix(ExpressionMatrix matrix,
+  public static void printExpressionMatrix(final ExpressionMatrix matrix,
       final PrintStream out) {
 
     if (matrix == null || out == null)
@@ -130,7 +107,6 @@ public final class ExpressionMatrixUtils {
   /**
    * Print an expression matrix on a output stream.
    * @param matrix to print
-   * @param out Output stream
    */
   public static void printExpressionMatrix(final ExpressionMatrix matrix) {
 
@@ -194,12 +170,18 @@ public final class ExpressionMatrixUtils {
   /**
    * Print the dimensions names of an expression matrix.
    * @param matrix Matrix to display
-   * @param out The output stream
    */
   public static void printExpressionMatrixDimensionsNames(
       final ExpressionMatrix matrix) {
 
     printExpressionMatrixDimensionsNames(matrix, System.out);
+  }
+
+  //
+  // Constructor
+  //
+
+  private ExpressionMatrixUtils() {
   }
 
 }

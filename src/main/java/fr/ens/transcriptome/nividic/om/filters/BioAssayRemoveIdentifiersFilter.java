@@ -39,7 +39,6 @@ public class BioAssayRemoveIdentifiersFilter extends BioAssayIdentifiersFilter {
     return true;
   }
 
-  
   //
   // Constructors
   //
@@ -48,7 +47,7 @@ public class BioAssayRemoveIdentifiersFilter extends BioAssayIdentifiersFilter {
    * Public constructor.
    */
   public BioAssayRemoveIdentifiersFilter() {
-    
+
     setFilterNull(true);
   }
 

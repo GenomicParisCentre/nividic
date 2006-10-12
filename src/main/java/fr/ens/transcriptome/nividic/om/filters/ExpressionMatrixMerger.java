@@ -22,7 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +33,11 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 
+/**
+ * This class defined a class used to merge rows, columns or dimensions inside
+ * an ExpressionMatrix Object.
+ * @author Laurent Jourdren
+ */
 public class ExpressionMatrixMerger {
 
   private boolean medianMode = true;
@@ -83,12 +87,25 @@ public class ExpressionMatrixMerger {
   //
   // Other methods
   //
-  
+
+  /**
+   * Merge columns of an ExpressionMatrix.
+   * @param columnNames Columns to merge. The result merged column will be the
+   *          first column of the array of columns names.
+   * @return The merger object.
+   */
   public ExpressionMatrixMerger mergeColumns(final String[] columnNames) {
-    
-    return  mergeColumns(columnNames,null);
+
+    return mergeColumns(columnNames, null);
   }
 
+  /**
+   * Merge columns of an ExpressionMatrix.
+   * @param columnNames Columns to merge. The result merged column will be the
+   *          first column of the array of columns names.
+   *  @param newColumnName The name of the new column
+   * @return The merger object.
+   */
   public ExpressionMatrixMerger mergeColumns(final String[] columnNames,
       final String newColumnName) {
 
@@ -152,26 +169,36 @@ public class ExpressionMatrixMerger {
 
     System.out.println("Col not filtered: ");
     for (int i = 0; i < columnsToremove.length; i++) {
-      System.out.println(columnsToremove[i]+"\t");
+      System.out.println(columnsToremove[i] + "\t");
     }
-    
+
     setMatrix(matrix.subMatrixColumns(columnsToremove));
 
-    /*if (newColumnName != null) {
-      
-      
-      
-      this.matrix.renameColumn(columnNames[0], newColumnName);
-    }*/
+    /*
+     * if (newColumnName != null) { this.matrix.renameColumn(columnNames[0],
+     * newColumnName); }
+     */
 
     return this;
   }
 
+  /**
+   * Merge rows of an ExpressionMatrix.
+   * @param RowIds Row to merge. The result merged row will be the
+   *          first row of the array of row names.
+   * @return The merger object.
+   */
   public ExpressionMatrixMerger mergeRows(String[] RowIds) {
 
     return this;
   }
 
+  /**
+   * Merge dimensions of an ExpressionMatrix.
+   * @param dimensionNames Dimensions to merge. The result merged row will be the
+   *          first dimension of the array of dimensions names.
+   * @return The merger object.
+   */
   public ExpressionMatrixMerger mergeDimension(String[] dimensionNames) {
 
     return this;

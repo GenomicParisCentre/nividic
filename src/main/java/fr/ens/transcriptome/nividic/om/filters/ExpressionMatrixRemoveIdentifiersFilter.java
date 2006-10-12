@@ -24,11 +24,16 @@ package fr.ens.transcriptome.nividic.om.filters;
 
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
+/**
+ * This class implements a filter using rows identifier as a filter.
+ * @author Laurent Jourdren
+ */
 public class ExpressionMatrixRemoveIdentifiersFilter extends
     ExpressionMatrixIdentifersFilter {
 
   /**
-   * Test if filtered identifiers must be removed.
+   * Test if filtered identifiers must be removed. *
+   * @return true if filtered row must be removed
    */
   public boolean removeFoundId() {
 
@@ -49,8 +54,9 @@ public class ExpressionMatrixRemoveIdentifiersFilter extends
 
   /**
    * Default constructor.
+   * @param translator Translator to set
    */
-  public ExpressionMatrixRemoveIdentifiersFilter(Translator translator) {
+  public ExpressionMatrixRemoveIdentifiersFilter(final Translator translator) {
 
     this();
     setTranslator(translator);

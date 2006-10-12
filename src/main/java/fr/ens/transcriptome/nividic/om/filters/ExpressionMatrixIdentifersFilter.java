@@ -25,11 +25,16 @@ package fr.ens.transcriptome.nividic.om.filters;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class define a filter of an ExpressionMatrix which filter with the rows
+ * indentifiers.
+ * @author Laurent Jourdren
+ */
 public abstract class ExpressionMatrixIdentifersFilter extends
     ExpressionMatrixIdFilter {
 
   private Set idsToFilter = new HashSet();
-  private boolean selectNull = false;
+  private boolean selectNull;
 
   /**
    * Add an identifier to the filtering list
@@ -109,12 +114,14 @@ public abstract class ExpressionMatrixIdentifersFilter extends
    * @param filterNull The value
    */
   public void setFilterNull(final boolean filterNull) {
-    
+
     this.selectNull = filterNull;
   }
-  
+
   /**
    * Test if an identifier must be filtered.
+   * @param id Identifier to test
+   * @return true if the identifier must be filtered
    */
   public boolean testId(final String id) {
 

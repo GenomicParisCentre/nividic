@@ -115,11 +115,11 @@ public class DefaultSpotEmptyTester implements SpotEmptyTester {
    * @param descriptionToTest true if the value to test is the description
    */
   public DefaultSpotEmptyTester(final boolean descriptionToTest) {
-    
+
     this();
-    this.descriptionToTest=descriptionToTest;
+    this.descriptionToTest = descriptionToTest;
   }
-  
+
   /**
    * Default contructor. Use as empty identify, the default value in BioAssay
    * interface.

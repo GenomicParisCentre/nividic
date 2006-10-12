@@ -70,7 +70,7 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
    * @param bioAssay The new column to add
    * @param translator Translator to use to define rowId
    */
-  public void addBioAssay(BioAssay bioAssay, Translator translator);
+  void addBioAssay(BioAssay bioAssay, Translator translator);
 
   /**
    * Add a column to the matrix
@@ -78,17 +78,17 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
    * @param translator Translator to use to define rowId
    * @param translatorField Field of the translator to use
    */
-  public void addBioAssay(BioAssay bioAssay, Translator translator,
+  void addBioAssay(BioAssay bioAssay, Translator translator,
       String translatorField);
 
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
-   * @param bioAssayColumnToAdd The name of the column of the bioAssay to add
+   * @param newColumnName The name of the new column to add
    * @param translator Translator to use to define rowIds
    * @param translatorField Field of the translator to use
    */
-  public void addBioAssay(BioAssay bioAssay, String newColumnName,
+  void addBioAssay(BioAssay bioAssay, String newColumnName,
       Translator translator, String translatorField);
 
   /**
@@ -99,7 +99,7 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
    * @param translator Translator to use to define rowIds
    * @param translatorField Field of the translator to use
    */
-  public void addBioAssay(BioAssay bioAssay, String bioAssayColumnToAdd,
+  void addBioAssay(BioAssay bioAssay, String bioAssayColumnToAdd,
       String newColumnName, Translator translator, String translatorField);
 
   /**
@@ -161,8 +161,6 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
    * @param columnName The name of the column where you want to insert your
    *          value
    * @param values the values to set in the matrix
-   * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
    */
   void setValues(String[] ids, String columnName, double[] values);
 
@@ -196,10 +194,8 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
    * @param columnNumber The index of the column where you want to insert your
    *          value
    * @param values the values to set in the matrix
-   * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
    */
-  public void setValues(String[] ids, int columnNumber, double[] values);
+  void setValues(String[] ids, int columnNumber, double[] values);
 
   /**
    * Add a column in the matrix, all the values are at NA

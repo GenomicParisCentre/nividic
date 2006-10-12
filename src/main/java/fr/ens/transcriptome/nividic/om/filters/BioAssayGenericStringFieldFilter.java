@@ -29,14 +29,14 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
-import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
  * This class implements a generic filter for filtering using the value of a
  * string field.
  * @author Laurent Jourdren
  */
-public abstract class BioAssayGenericStringFieldFilter implements BioAssayFilter {
+public abstract class BioAssayGenericStringFieldFilter implements
+    BioAssayFilter {
 
   private Translator translator;
   private String translatorField;
@@ -112,9 +112,9 @@ public abstract class BioAssayGenericStringFieldFilter implements BioAssayFilter
       final String id = translate ? translator.translateField(data[i],
           translatorField) : data[i];
 
-      if (!testValueofStringField(id)) 
+      if (!testValueofStringField(id))
         al.add(new Integer(i));
-      
+
     }
 
     int[] toRemove = new int[al.size()];
@@ -128,7 +128,7 @@ public abstract class BioAssayGenericStringFieldFilter implements BioAssayFilter
     return BioAssayUtils.removeRowsFromBioAssay(bioAssay, toRemove);
   }
 
-  private static int[] inverseIntArray(int[] pos, int len) {
+  private static int[] inverseIntArray(final int[] pos, final int len) {
 
     int[] result = new int[len - pos.length];
     Arrays.sort(pos);

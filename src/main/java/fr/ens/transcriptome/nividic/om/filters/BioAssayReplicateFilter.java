@@ -330,14 +330,13 @@ public class BioAssayReplicateFilter implements BioAssayFilter {
    * Public constructor.
    * @param translator Translator to use
    */
-  public BioAssayReplicateFilter(Translator translator) {
+  public BioAssayReplicateFilter(final Translator translator) {
 
     setTranslator(translator);
   }
 
   /**
    * Public constructor.
-   * @param translator Translator to use
    * @param medianMode Set merge algorithm to use
    * @param standardDeviations set the standard Deviations
    */
@@ -353,7 +352,7 @@ public class BioAssayReplicateFilter implements BioAssayFilter {
    * @param medianMode Set merge algorithm to use
    * @param standardDeviations set the standard Deviations
    */
-  public BioAssayReplicateFilter(Translator translator,
+  public BioAssayReplicateFilter(final Translator translator,
       final boolean medianMode, final boolean standardDeviations) {
 
     setTranslator(translator);

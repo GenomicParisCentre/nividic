@@ -78,13 +78,14 @@ public abstract class ExpressionMatrixRowFilter implements
   public abstract String getDimensionToFilter();
 
   /**
-   * Test if filtered identifiers must be removed.
+   * Test if filtered identifiers must be removed. 
+   * @return true if filtered row must be removed
    */
   public abstract boolean removeFilteredRows();
 
   /**
    * Test the values of a Row.
-   * @param ratioValues Values of M to test
+   * @param values Values of M to test
    * @return true if the values must be selected
    */
   public abstract boolean testRow(final double[] values);

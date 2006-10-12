@@ -25,10 +25,16 @@ package fr.ens.transcriptome.nividic.om;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
+/**
+ * This interface define an expression matrix.
+ * @author Laurent Jourdren
+ */
 public interface ExpressionMatrix extends ExpressionMatrixBase {
 
-  public final String DIMENSION_A = BioAssay.FIELD_NAME_A;
-  public final String DIMENSION_M = BioAssay.FIELD_NAME_M;
+  /** Constant for name of the dimension for A values. */
+  String DIMENSION_A = BioAssay.FIELD_NAME_A;
+  /** Constant for name of the dimension for M values. */
+  String DIMENSION_M = BioAssay.FIELD_NAME_M;
 
   /**
    * Get the name of the ExpressionMatrixDimension.
@@ -68,9 +74,9 @@ public interface ExpressionMatrix extends ExpressionMatrixBase {
    * @param translator Translator to use to define rowIds
    * @param translatorField Field of the translator to use
    */
-  void addBioAssay(BioAssay bioAssay,  Translator translator,
+  void addBioAssay(BioAssay bioAssay, Translator translator,
       String translatorField);
-  
+
   /**
    * Add a column to the matrix.
    * @param bioAssay The new column to add
@@ -169,7 +175,7 @@ public interface ExpressionMatrix extends ExpressionMatrixBase {
 
   /**
    * Create a sub matrix, choosing the dimension that you want to keep in it
-   * @param dimensionName Dimension that you want to keep
+   * @param dimensionNames Dimensions that you want to keep
    * @return An ExpressionMatrixDimension object
    */
   ExpressionMatrix subMatrixDimensions(String[] dimensionNames);

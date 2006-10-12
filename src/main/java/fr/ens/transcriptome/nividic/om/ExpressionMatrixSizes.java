@@ -22,6 +22,11 @@
 
 package fr.ens.transcriptome.nividic.om;
 
+/**
+ * This interface defines methods that are share by ExpressionMatrix and
+ * ExpressionMatrixDimension.
+ * @author Laurent Jourdren
+ */
 public interface ExpressionMatrixSizes {
 
   /**

@@ -254,11 +254,11 @@ public interface BioAssayBase extends Annotatable {
    * Clear data in the object
    */
   void clear();
-  
+
   /**
    * Rename a field.
-   * @param oldName
-   * @param newName
+   * @param oldName The old name of the field
+   * @param newName The new name of the field
    */
   void renameField(String oldName, String newName);
 

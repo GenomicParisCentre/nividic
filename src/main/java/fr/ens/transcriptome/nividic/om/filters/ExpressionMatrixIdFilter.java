@@ -29,6 +29,11 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
+/**
+ * This class implements an abstract class to filter expressionMatrix based on
+ * the rows identifiers.
+ * @author Laurent Jourdren
+ */
 public abstract class ExpressionMatrixIdFilter implements
     ExpressionMatrixFilter {
 
@@ -130,6 +135,7 @@ public abstract class ExpressionMatrixIdFilter implements
 
   /**
    * Test the id of a Row.
+   * @param id Identifier to test
    * @return true if the values must be selected
    */
   public abstract boolean testId(final String id);

@@ -40,6 +40,10 @@ import fr.ens.transcriptome.nividic.om.Spot;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
+/**
+ * This class define a class to merge 2 or more bioAssay into one BioAssay.
+ * @author Laurent Jourdren
+ */
 public class BioAssayReplicateMerger implements BioAssayMerger {
 
   private boolean medianMode = true;
@@ -50,7 +54,7 @@ public class BioAssayReplicateMerger implements BioAssayMerger {
 
   private SpotFilter spotFilter = new SpotFilter() {
 
-    public boolean filter(Spot spot) {
+    public boolean filter(final Spot spot) {
 
       if (!spot.isFlag())
         return true;
@@ -170,10 +174,6 @@ public class BioAssayReplicateMerger implements BioAssayMerger {
     this.translatorField = translatorField;
   }
 
-  // 
-  //
-  //
-
   //
   // Method from BioAssayMerger
   //
@@ -189,14 +189,14 @@ public class BioAssayReplicateMerger implements BioAssayMerger {
 
   /**
    * Set the spot filter of the merger
-   * @param spotFilter
+   * @param spotFilter the spot filter to apply
    */
   public void setSpotFilter(final SpotFilter spotFilter) {
 
     this.spotFilter = spotFilter;
   }
 
-  private void testLayoutLayout(BioAssay[] bioAssays) {
+  private void testLayoutLayout(final BioAssay[] bioAssays) {
 
     int size = -1;
     String[] ids = null;
@@ -229,7 +229,14 @@ public class BioAssayReplicateMerger implements BioAssayMerger {
 
   }
 
-  public BioAssay filter(BioAssay[] bioAssays) throws BioAssayRuntimeException {
+  /**
+   * Filter bioAssays.
+   * @param bioAssays BioAssay to filter
+   * @return a bioAssay filtered
+   * @throws if one of the bioAssays is null
+   */
+  public BioAssay filter(final BioAssay[] bioAssays)
+      throws BioAssayRuntimeException {
 
     if (bioAssays == null || bioAssays.length == 0)
       throw new BioAssayRuntimeException("No BioAssay to filter");
@@ -287,8 +294,8 @@ public class BioAssayReplicateMerger implements BioAssayMerger {
           }
 
           final double valueM = si[i].getM();
-          //if (!Double.isNaN(valueM) && !Double.isInfinite(valueM))
-            ms.add(valueM);
+          // if (!Double.isNaN(valueM) && !Double.isInfinite(valueM))
+          ms.add(valueM);
 
           if (isA) {
 
@@ -300,8 +307,8 @@ public class BioAssayReplicateMerger implements BioAssayMerger {
             }
 
             final double valueA = si[i].getA();
-            //if (!Double.isNaN(valueA) && !Double.isInfinite(valueA))
-              as.add(valueA);
+            // if (!Double.isNaN(valueA) && !Double.isInfinite(valueA))
+            as.add(valueA);
 
           }
 
@@ -378,7 +385,7 @@ public class BioAssayReplicateMerger implements BioAssayMerger {
 
   //
   // Constructors
-  // 
+  //
 
   public BioAssayReplicateMerger() {
 

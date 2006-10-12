@@ -38,7 +38,7 @@ public interface BioAssayMerger {
    * @return A new filtered bioAssay object
    * @throws BioAssayRuntimeException if an error occurs while filtering data
    */
-  public BioAssay filter(BioAssay[] bioAssays)
+  BioAssay filter(BioAssay[] bioAssays)
       throws BioAssayRuntimeException;
 
 }

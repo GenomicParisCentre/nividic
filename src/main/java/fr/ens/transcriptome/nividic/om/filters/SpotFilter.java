@@ -30,12 +30,11 @@ import fr.ens.transcriptome.nividic.om.Spot;
  */
 public interface SpotFilter {
 
-  
   /**
-   * Test if a spot must be selected. 
+   * Test if a spot must be selected.
    * @param spot Spot to test
    * @return true is the spot must be selected
    */
   boolean filter(Spot spot);
-  
+
 }

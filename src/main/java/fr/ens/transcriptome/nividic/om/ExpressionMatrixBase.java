@@ -47,9 +47,9 @@ public interface ExpressionMatrixBase extends ExpressionMatrixSizes {
 
   /**
    * Add a column.
-   * @param ColumnName Name of the new column
+   * @param columnName Name of the new column
    */
-  void addColumn(String ColumnName);
+  void addColumn(String columnName);
 
   /**
    * Add a row.

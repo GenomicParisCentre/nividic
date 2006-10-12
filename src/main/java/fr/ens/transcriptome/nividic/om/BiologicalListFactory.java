@@ -25,10 +25,11 @@ package fr.ens.transcriptome.nividic.om;
 import fr.ens.transcriptome.nividic.om.impl.BiologicalListImpl;
 
 /**
- * This allow to create instances of concrete classes of BiologicalList interface.
+ * This allow to create instances of concrete classes of BiologicalList
+ * interface.
  * @author Laurent Jourdren
  */
-public class BiologicalListFactory {
+public final class BiologicalListFactory {
 
   /**
    * Create a BiologicalList Object.
@@ -36,6 +37,9 @@ public class BiologicalListFactory {
    */
   public static BiologicalList createBiologicalList() {
     return new BiologicalListImpl();
+  }
+
+  private BiologicalListFactory() {
   }
 
 }

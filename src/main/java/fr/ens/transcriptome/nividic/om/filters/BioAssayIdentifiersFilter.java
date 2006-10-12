@@ -27,6 +27,10 @@ import java.util.Set;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
+/**
+ * This class define a class that filter row of a bioAssay that are in a list.
+ * @author Laurent Jourdren
+ */
 public abstract class BioAssayIdentifiersFilter extends
     BioAssayGenericStringFieldFilter {
 

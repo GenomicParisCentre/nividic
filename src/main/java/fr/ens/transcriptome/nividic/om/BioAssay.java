@@ -415,5 +415,5 @@ public interface BioAssay extends BioAssayBase {
    * @return a new bioAssay filtered
    */
   BioAssay filter(BioAssayFilter filter);
-  
+
 }

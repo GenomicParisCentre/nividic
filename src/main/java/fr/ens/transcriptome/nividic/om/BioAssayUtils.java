@@ -560,6 +560,7 @@ public final class BioAssayUtils {
    * Merge two bioAssay to a BioAssay
    * @param a First BioAssay to merge
    * @param b First BioAssay to merge
+   * @param newBioAssay if a new BioAssay must be created
    * @return a new BioAssay
    */
   public static BioAssay merge(final BioAssay a, final BioAssay b,
@@ -687,6 +688,10 @@ public final class BioAssayUtils {
     return -1;
   }
 
+  /**
+   * Print a BioAssay object.
+   * @param bioAssay BioAssay to print
+   */
   public static void printBioAssay(final BioAssay bioAssay) {
 
     if (bioAssay == null)
@@ -696,8 +701,9 @@ public final class BioAssayUtils {
     String[] ids = bioAssay.getIds();
 
     for (int i = 0; i < fields.length; i++) {
-      if (i>0) System.out.print("\t");
-      System.out.print( fields[i]);
+      if (i > 0)
+        System.out.print("\t");
+      System.out.print(fields[i]);
     }
     System.out.println();
 
