@@ -38,7 +38,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * This implement a class to read ExpressionMatrixDimension objects
  * @author Lory Montout
  */
-public class StandardExpressionMatrixReader extends ExpressionMatrixReader {
+public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
 
   /** Dimension separator. */
   public static final String DIMENSION_SEPARATOR = "$";
@@ -198,7 +198,7 @@ public class StandardExpressionMatrixReader extends ExpressionMatrixReader {
    * @throws NividicIOException if an error occurs while reading the file or if
    *           the file is null.
    */
-  public StandardExpressionMatrixReader(final File file)
+  public SimpleExpressionMatrixReader(final File file)
       throws NividicIOException {
     super(file);
   }
@@ -208,7 +208,7 @@ public class StandardExpressionMatrixReader extends ExpressionMatrixReader {
    * @param is Input stream to read
    * @throws NividicIOException if the stream is null
    */
-  public StandardExpressionMatrixReader(final InputStream is)
+  public SimpleExpressionMatrixReader(final InputStream is)
       throws NividicIOException {
     super(is);
   }

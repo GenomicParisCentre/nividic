@@ -42,7 +42,7 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
-import fr.ens.transcriptome.nividic.om.io.StandardExpressionMatrixWriter;
+import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixWriter;
 import fr.ens.transcriptome.nividic.om.r.RExpressionMatrix;
 
 /**
@@ -140,7 +140,7 @@ public final class MatrixDemo {
 
       OutputStream os = new FileOutputStream(outputFile);
 
-      StandardExpressionMatrixWriter emw = new StandardExpressionMatrixWriter(
+      SimpleExpressionMatrixWriter emw = new SimpleExpressionMatrixWriter(
           os);
 
       emw.write(em);
@@ -226,7 +226,7 @@ public final class MatrixDemo {
 
       OutputStream os2 = new FileOutputStream(outputFile2);
 
-      StandardExpressionMatrixWriter emMAw = new StandardExpressionMatrixWriter(
+      SimpleExpressionMatrixWriter emMAw = new SimpleExpressionMatrixWriter(
           os2);
 
       emMAw.write(em);

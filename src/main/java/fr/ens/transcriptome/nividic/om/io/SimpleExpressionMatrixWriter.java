@@ -36,7 +36,7 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
  * This implement a class to write ExpressionMatrixDimension objects
  * @author Lory Montout
  */
-public class StandardExpressionMatrixWriter extends ExpressionMatrixWriter {
+public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
   private BufferedWriter bw;
   private static final String SEPARATOR = "\t";
@@ -63,7 +63,7 @@ public class StandardExpressionMatrixWriter extends ExpressionMatrixWriter {
     final String[] ids = em.getRowIds();
     final String[] columnNames = em.getColumnNames();
     final ExpressionMatrixDimension[] dimensions = em.getDimensions();
-    final Translator annot = getFeatureAnnotation();
+    final Translator annot = getTranslator();
 
     try {
 
@@ -128,7 +128,7 @@ public class StandardExpressionMatrixWriter extends ExpressionMatrixWriter {
    * @throws NividicIOException if an error occurs while reading the file or if
    *           the file is null.
    */
-  public StandardExpressionMatrixWriter(final File file) throws NividicIOException {
+  public SimpleExpressionMatrixWriter(final File file) throws NividicIOException {
     super(file);
   }
 
@@ -137,7 +137,7 @@ public class StandardExpressionMatrixWriter extends ExpressionMatrixWriter {
    * @param is Input stream to read
    * @throws NividicIOException if the stream is null
    */
-  public StandardExpressionMatrixWriter(final OutputStream is)
+  public SimpleExpressionMatrixWriter(final OutputStream is)
       throws NividicIOException {
     super(is);
   }

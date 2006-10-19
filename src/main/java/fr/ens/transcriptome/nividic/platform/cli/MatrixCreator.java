@@ -38,7 +38,7 @@ import fr.ens.transcriptome.nividic.om.filters.BioAssayRemoveIdentifiersFilter;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayReplicateFilter;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
-import fr.ens.transcriptome.nividic.om.io.StandardExpressionMatrixWriter;
+import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixWriter;
 import fr.ens.transcriptome.nividic.om.translators.DescriptionBioAssayTranslator;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 import fr.ens.transcriptome.nividic.sgdb.lims.LimsConnection;
@@ -309,8 +309,8 @@ public class MatrixCreator {
       matrix.addBioAssay(ba);
     }
 
-    StandardExpressionMatrixWriter mw = new StandardExpressionMatrixWriter(os);
-    mw.setFeatureAnnotation(annotations);
+    SimpleExpressionMatrixWriter mw = new SimpleExpressionMatrixWriter(os);
+    mw.setTranslator(annotations);
     mw.write(matrix);
 
   }
