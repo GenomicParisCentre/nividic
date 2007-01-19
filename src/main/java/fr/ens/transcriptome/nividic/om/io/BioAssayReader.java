@@ -59,6 +59,7 @@ public abstract class BioAssayReader {
   private InputStream is;
   private BufferedReader bufferedReader;
   private Map data = new HashMap();
+  private boolean commaDecimalSeparator;
 
   private static final int INITIAL_CAPACITY = 1000;
 
@@ -71,7 +72,7 @@ public abstract class BioAssayReader {
    * @return Returns the bioAssay
    */
   protected BioAssay getBioAssay() {
-    return bioAssay;
+    return this.bioAssay;
   }
 
   /**
@@ -87,7 +88,7 @@ public abstract class BioAssayReader {
    * @return Returns the input stream
    */
   private InputStream getInputStream() {
-    return is;
+    return this.is;
   }
 
   /**
@@ -95,7 +96,15 @@ public abstract class BioAssayReader {
    * @return Returns the bufferedReader
    */
   public BufferedReader getBufferedReader() {
-    return bufferedReader;
+    return this.bufferedReader;
+  }
+
+  /**
+   * Test if the comma is the decimal separator.
+   * @return true if the comma is the decimal separator
+   */
+  public boolean isCommaDecimalSeparator() {
+    return this.commaDecimalSeparator;
   }
 
   //
@@ -127,6 +136,15 @@ public abstract class BioAssayReader {
    */
   private void setBufferedReader(final BufferedReader bufferedReader) {
     this.bufferedReader = bufferedReader;
+  }
+
+  /**
+   * Set if the comma is the decimal separator.
+   * @param enable the value to set
+   */
+  public void setCommaDecimalSeparator(final boolean enable) {
+
+    this.commaDecimalSeparator = enable;
   }
 
   //
@@ -335,6 +353,8 @@ public abstract class BioAssayReader {
     if (getInputStream() == null)
       throw new NividicIOException("No stream to read");
 
+    final boolean comma = isCommaDecimalSeparator();
+
     addFieldToRead(getMetaRowField());
     addFieldToRead(getRowField());
     addFieldToRead(getMetaColumnField());
@@ -383,12 +403,14 @@ public abstract class BioAssayReader {
 
         for (int i = 0; i < data.length; i++) {
 
+          final String s = data[i].trim();
+
           if (arrayFieldsToRead[i])
             if (arrayIntFields[i]) {
               int value;
               // integer values
               try {
-                value = Integer.parseInt(data[i].trim());
+                value = Integer.parseInt(s);
               } catch (NumberFormatException e) {
                 value = 0;
               }
@@ -398,7 +420,11 @@ public abstract class BioAssayReader {
               double value;
               // Double values
               try {
-                value = Double.parseDouble(data[i].trim());
+
+                if (comma)
+                  value = Double.parseDouble(s.replace(',', '.'));
+                else
+                  value = Double.parseDouble(s);
 
               } catch (NumberFormatException e) {
                 value = Double.NaN;
@@ -408,11 +434,10 @@ public abstract class BioAssayReader {
             } else {
 
               // String values
-              String value = data[i].trim();
-              if (isStringQuotesBeRemoved())
-                value = new String(StringUtils.removeDoubleQuotes(value));
 
-              addDatafield(existingFields[i], value);
+              if (isStringQuotesBeRemoved())
+                addDatafield(existingFields[i], new String(StringUtils
+                    .removeDoubleQuotes(s)));
             }
 
         }
