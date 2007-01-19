@@ -616,9 +616,9 @@ public class BioAssayBaseImpl implements BioAssayBase, Serializable {
         || FIELD_NAME_LOCATION.equals(newName))
       throw new BioAssayRuntimeException("You can't rename the locations field");
 
-    final int FieldType = getFieldType(oldName);
+    final int fieldType = getFieldType(oldName);
 
-    switch (FieldType) {
+    switch (fieldType) {
 
     case BioAssayBase.DATATYPE_INTEGER:
 

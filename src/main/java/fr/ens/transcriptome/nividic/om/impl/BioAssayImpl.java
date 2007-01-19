@@ -23,9 +23,13 @@
 package fr.ens.transcriptome.nividic.om.impl;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Hashtable;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 import fr.ens.transcriptome.nividic.om.DefaultSpotEmptyTester;
@@ -33,6 +37,7 @@ import fr.ens.transcriptome.nividic.om.Spot;
 import fr.ens.transcriptome.nividic.om.SpotEmptyTester;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayFilter;
+import fr.ens.transcriptome.nividic.om.filters.SpotComparator;
 
 /**
  * @author Laurent Jourdren
@@ -560,6 +565,87 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
       return null;
 
     return filter.filter(this);
+  }
+
+  /**
+   * Sort the bioAssay.
+   * @param comparator Object used to do the sort
+   * @return a new bioAssay sorted
+   */
+  public BioAssay sorter(final SpotComparator comparator) {
+
+    if (comparator == null)
+      throw new NividicRuntimeException("Comparator is null");
+
+    final int n = size();
+
+    Integer order[] = new Integer[n];
+
+    for (int i = 0; i < order.length; i++)
+      order[i] = new Integer(i);
+
+    // Sort the order of the rows
+    Arrays.sort(order, new Comparator() {
+
+      public int compare(Object arg0, Object arg1) {
+
+        final int i0 = ((Integer) arg0).intValue();
+        final int i1 = ((Integer) arg1).intValue();
+
+        return comparator.compare(getSpot(i0), getSpot(i1));
+      }
+    });
+
+    BioAssay ba = BioAssayFactory.createBioAssay();
+    ba.getAnnotation().addProperties(getAnnotation());
+    final String[] fields = getFields();
+
+    for (int i = 0; i < fields.length; i++) {
+
+      final String fieldName = fields[i];
+
+      switch (getFieldType(fieldName)) {
+
+      case BioAssay.DATATYPE_DOUBLE:
+
+        final double[] fieldDouble = getDataFieldDouble(fieldName);
+        final double[] newFieldDouble = new double[n];
+        for (int j = 0; j < n; j++)
+          newFieldDouble[j] = fieldDouble[order[j].intValue()];
+
+        ba.setDataFieldDouble(fieldName, newFieldDouble);
+        break;
+
+      case BioAssay.DATATYPE_INTEGER:
+
+        final int[] fieldInt = getDataFieldInt(fieldName);
+        final int[] newFieldInt = new int[n];
+        for (int j = 0; j < n; j++)
+          newFieldInt[j] = fieldInt[order[j].intValue()];
+
+        ba.setDataFieldInt(fieldName, newFieldInt);
+        break;
+
+      case BioAssay.DATATYPE_STRING:
+
+        final String[] fieldString = getDataFieldString(fieldName);
+        final String[] newFieldString = new String[n];
+        for (int j = 0; j < n; j++)
+          newFieldString[j] = fieldString[order[j].intValue()];
+
+        ba.setDataFieldString(fieldName, newFieldString);
+        break;
+
+      default:
+        throw new NividicRuntimeException("Invalid BioAssay Type");
+      }
+
+    }
+
+    ba.setReferenceField(getReferenceField());
+    ba.setSpotEmptyTester(getSpotEmptyTester());
+
+    return ba;
   }
 
   //
