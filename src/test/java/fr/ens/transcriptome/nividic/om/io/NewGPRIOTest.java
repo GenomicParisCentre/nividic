@@ -22,29 +22,20 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Arrays;
+
+import junit.framework.TestCase;
 
 import org.apache.commons.collections.OrderedMap;
 import org.apache.commons.collections.map.LinkedMap;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
-import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
-import fr.ens.transcriptome.nividic.om.io.BioAssayWriter;
-import fr.ens.transcriptome.nividic.om.io.GALReader;
-import fr.ens.transcriptome.nividic.om.io.GALWriter;
-import fr.ens.transcriptome.nividic.om.io.GPRReader;
-import fr.ens.transcriptome.nividic.om.io.GPRWriter;
-
-import junit.framework.TestCase;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * @author Laurent Jourdren
@@ -59,40 +50,10 @@ public class NewGPRIOTest extends TestCase {
     super(arg0);
   }
 
-  private boolean compareFile(InputStream a, InputStream b) throws Exception {
-
-    BufferedReader bra = new BufferedReader(new InputStreamReader(a));
-    BufferedReader brb = new BufferedReader(new InputStreamReader(b));
-
-    StringBuffer sba = new StringBuffer();
-    StringBuffer sbb = new StringBuffer();
-
-    String line;
-    while ((line = bra.readLine()) != null) {
-      sba.append(line);
-    }
-    bra.close();
-
-    while ((line = brb.readLine()) != null) {
-      sbb.append(line);
-    }
-    brb.close();
-
-    return sba.toString().equals(sbb.toString());
-  }
-
-  private boolean compareFile(String a, String b) throws Exception {
-    return compareFile(new FileInputStream(a), new FileInputStream(b));
-  }
-
-  private boolean compareFile(InputStream a, String b) throws Exception {
-    return compareFile(a, new FileInputStream(b));
-  }
-
   public void testReadWriteGPR() {
 
     try {
-      //  get access to the test file
+      // get access to the test file
       String file1 = "/files/testGPR14" + ".gpr";
 
       InputStream is = this.getClass().getResourceAsStream(file1);
@@ -142,7 +103,7 @@ public class NewGPRIOTest extends TestCase {
       baw2.write(b2);
       os2.close();
 
-      assertTrue(compareFile("/tmp/test3.gpr", "/tmp/test4.gpr"));
+      assertTrue(NividicUtils.compareFile("/tmp/test3.gpr", "/tmp/test4.gpr"));
 
     } catch (Exception e) {
 
@@ -154,7 +115,7 @@ public class NewGPRIOTest extends TestCase {
 
   private void ReadWriteGAL() throws Exception {
 
-    //  get access to the test file
+    // get access to the test file
     String file1 = "/files/testGAL3.gal";
 
     InputStream is = this.getClass().getResourceAsStream(file1);
@@ -168,7 +129,7 @@ public class NewGPRIOTest extends TestCase {
 
     BioAssay b2 = BioAssayFactory.createBioAssay();
 
-    //  Set the annotations
+    // Set the annotations
     String[] aKeys = b1.getAnnotation().getPropertiesKeys();
     for (int i = 0; i < aKeys.length; i++) {
       b2.getAnnotation().setProperty(aKeys[i],
@@ -190,8 +151,8 @@ public class NewGPRIOTest extends TestCase {
     baw2.write(b2);
     os2.close();
 
-    assertTrue(compareFile(this.getClass().getResourceAsStream(file1),
-        "/tmp/test4.gpr"));
+    assertTrue(NividicUtils.compareFile(this.getClass().getResourceAsStream(
+        file1), new FileInputStream("/tmp/test4.gpr")));
 
   }
 
