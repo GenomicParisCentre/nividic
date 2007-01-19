@@ -49,21 +49,33 @@ public class IDMAReaderTest extends TestCase {
     idma.nbOptionalheaders = 0;
     idma.totalNbLines = 13441;
 
-    read(idma);
+    read(idma,false);
+  }
+  
+  public void testGoulpharComma() {
+    IDMAFileToTest idma = new IDMAFileToTest();
+    idma.name = "/files/testID_M_A-comma.txt";
+    idma.nbFields = 3;
+    idma.nbOptionalheaders = 0;
+    idma.totalNbLines = 13441;
+
+    read(idma,true);
   }
 
   /**
    * read an ID-M-A file
    * @param idma the file to read
+   * @param comma true if the decimal separator is a comma
    * @return a bioAssay object
    */
-  private BioAssay read(final IDMAFileToTest idma) {
+  private BioAssay read(final IDMAFileToTest idma,boolean comma) {
 
     try {
 
       InputStream is = this.getClass().getResourceAsStream(idma.name);
 
       IDMAReader idmar = new IDMAReader(is);
+      idmar.setCommaDecimalSeparator(comma);
 
       BioAssay b = idmar.read();
 

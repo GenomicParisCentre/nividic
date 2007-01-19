@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.om.io;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -32,10 +33,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 import fr.ens.transcriptome.nividic.om.BioAssay;
-import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
-import fr.ens.transcriptome.nividic.om.io.BioAssayWriter;
-import fr.ens.transcriptome.nividic.om.io.IDMAReader;
-import fr.ens.transcriptome.nividic.om.io.IDMAWriter;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * Test class for IDMAIO classes
@@ -51,40 +49,12 @@ public class IDMAIOTest extends TestCase {
     super(arg0);
   }
 
-  private boolean compareFile(InputStream a, InputStream b) throws Exception {
-
-    BufferedReader bra = new BufferedReader(new InputStreamReader(a));
-    BufferedReader brb = new BufferedReader(new InputStreamReader(b));
-
-    StringBuffer sba = new StringBuffer();
-    StringBuffer sbb = new StringBuffer();
-
-    String line;
-    while ((line = bra.readLine()) != null) {
-      sba.append(line);
-    }
-    bra.close();
-
-    while ((line = brb.readLine()) != null) {
-      sbb.append(line);
-    }
-    brb.close();
-
-    return sba.toString().equals(sbb.toString());
-  }
-
-  private boolean compareFile(String a, String b) throws Exception {
-    return compareFile(new FileInputStream(a), new FileInputStream(b));
-  }
-
-  private boolean compareFile(InputStream a, String b) throws Exception {
-    return compareFile(a, new FileInputStream(b));
-  }
+  
 
   public void testReadWriteIDMA() {
 
     try {
-      //  get access to the test file
+      // get access to the test file
       String file1 = "/files/testID_M_A.txt";
 
       InputStream is = this.getClass().getResourceAsStream(file1);
@@ -134,7 +104,7 @@ public class IDMAIOTest extends TestCase {
       os2.close();
       os.close();
 
-      assertTrue(compareFile(outputFile2, outputFile));
+      assertTrue(NividicUtils.compareFile(outputFile2, outputFile));
 
     } catch (Exception e) {
 
@@ -147,7 +117,7 @@ public class IDMAIOTest extends TestCase {
   public void testReadWriteAllIDMA() {
 
     try {
-      //  get access to the test file
+      // get access to the test file
 
       String file1 = "/files/testID_M_A.txt";
 
@@ -183,21 +153,21 @@ public class IDMAIOTest extends TestCase {
       baw2.write(b);
       os2.close();
 
-      //Do a written copy of an IDMA file is the same as the readed one
-      assertTrue(compareFile(outputFile, outputFile2));
+      // Do a written copy of an IDMA file is the same as the readed one
+      assertTrue(NividicUtils.compareFile(outputFile, outputFile2));
 
-      //      assertTrue(compareFile(
+      // assertTrue(compareFile(
       //
-      //      this.getClass().getResourceAsStream("/files/testID_M_A.txt"),
-      //          new FileInputStream("/tmp/testWriteIDMA.txt")));
+      // this.getClass().getResourceAsStream("/files/testID_M_A.txt"),
+      // new FileInputStream("/tmp/testWriteIDMA.txt")));
 
-      //System.out.println("good");
+      // System.out.println("good");
 
     } catch (Exception e) {
 
       System.out.println(e.getMessage());
       e.printStackTrace();
-      //assertTrue(false);
+      // assertTrue(false);
     }
   }
 
