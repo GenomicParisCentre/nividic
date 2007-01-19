@@ -50,7 +50,7 @@ public final class EasyIO {
 
     final OutputStream os = new FileOutputStream(file);
 
-    StandardExpressionMatrixWriter semw = new StandardExpressionMatrixWriter(os);
+    SimpleExpressionMatrixWriter semw = new SimpleExpressionMatrixWriter(os);
 
     semw.write(matrix);
 
