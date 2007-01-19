@@ -37,7 +37,7 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
 public abstract class ExpressionMatrixWriter {
 
   private OutputStream outputStream;
-  private Translator featureAnnotation;
+  private Translator translator;
 
   //
   // Getters
@@ -55,8 +55,8 @@ public abstract class ExpressionMatrixWriter {
    * Get the feature annotation object.
    * @return the feature annotation object.
    */
-  public Translator getFeatureAnnotation() {
-    return featureAnnotation;
+  public Translator getTranslator() {
+    return translator;
   }
 
   //
@@ -65,10 +65,10 @@ public abstract class ExpressionMatrixWriter {
 
   /**
    * Set the feature annotation object.
-   * @param featureAnnotation the feature annotation object.
+   * @param translator the feature annotation object.
    */
-  public void setFeatureAnnotation(final Translator featureAnnotation) {
-    this.featureAnnotation = featureAnnotation;
+  public void setTranslator(final Translator translator) {
+    this.translator = translator;
   }
 
   /**
