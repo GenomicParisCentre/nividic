@@ -37,12 +37,12 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils;
 import fr.ens.transcriptome.nividic.om.impl.ExpressionMatrixImpl;
-import fr.ens.transcriptome.nividic.om.io.StandardExpressionMatrixReader;
-import fr.ens.transcriptome.nividic.om.io.StandardExpressionMatrixWriter;
+import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixReader;
+import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixWriter;
 
 /**
- * JUnit class for StandardExpressionMatrixReader and
- * StandardExpressionMatrixWriter objects
+ * JUnit class for SimpleExpressionMatrixReader and
+ * SimpleExpressionMatrixWriter objects
  * @author Lory Montout
  */
 public class ExpressionMatrixIOTest extends TestCase {
@@ -123,13 +123,13 @@ public class ExpressionMatrixIOTest extends TestCase {
 
     OutputStream os = new FileOutputStream(outputFile);
 
-    StandardExpressionMatrixWriter emw = new StandardExpressionMatrixWriter(os);
+    SimpleExpressionMatrixWriter emw = new SimpleExpressionMatrixWriter(os);
 
     emw.write(em);
     os.close();
 
     InputStream is = new FileInputStream(outputFile);
-    StandardExpressionMatrixReader emr = new StandardExpressionMatrixReader(is);
+    SimpleExpressionMatrixReader emr = new SimpleExpressionMatrixReader(is);
     ExpressionMatrix em2 = emr.read();
     is.close();
 
