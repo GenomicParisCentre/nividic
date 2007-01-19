@@ -22,6 +22,10 @@
 
 package fr.ens.transcriptome.nividic.util;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Utilitity class.
  * @author Laurent jourdren
@@ -132,6 +136,58 @@ public final class NividicUtils {
     }
 
     return result;
+  }
+
+  /**
+   * Test if two stream are equals
+   * @param a First stream to compare
+   * @param b Second stream to compare
+   * @return true if the two stream are equals
+   * @throws IOException if an error occors while reading the streams
+   */
+  public static boolean compareFile(final InputStream a, final InputStream b)
+      throws IOException {
+
+    if (a == null && b == null)
+      return true;
+    if (a == null || b == null)
+      return false;
+
+    boolean end = false;
+    boolean result = true;
+
+    while (!end) {
+
+      int ca = a.read();
+      int cb = b.read();
+
+      if (ca != cb) {
+        result = false;
+        end = true;
+      }
+
+      if (ca == -1)
+        end = true;
+
+    }
+
+    a.close();
+    b.close();
+
+    return result;
+  }
+
+  /**
+   * Test if two stream are equals
+   * @param a First filename to compare
+   * @param b Second filename to compare
+   * @return true if the two stream are equals
+   * @throws IOException if an error occors while reading the streams
+   */
+  public static boolean compareFile(final String filenameA, final String filenameB)
+      throws Exception {
+    return compareFile(new FileInputStream(filenameA), new FileInputStream(
+        filenameB));
   }
 
   //
