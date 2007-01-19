@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om;
 
 import fr.ens.transcriptome.nividic.om.filters.BioAssayFilter;
+import fr.ens.transcriptome.nividic.om.filters.SpotComparator;
 
 /**
  * This interface discribe a bioassay object. This code is based on previous
@@ -410,10 +411,17 @@ public interface BioAssay extends BioAssayBase {
   SpotEmptyTester getSpotEmptyTester();
 
   /**
-   * Filter the bioAssay
+   * Filter the bioAssay.
    * @param filter Filter to apply
    * @return a new bioAssay filtered
    */
   BioAssay filter(BioAssayFilter filter);
+
+  /**
+   * Sort the bioAssay.
+   * @param comparator Object used to do the sort
+   * @return a new bioAssay sorted
+   */
+  BioAssay sorter(SpotComparator comparator);
 
 }
