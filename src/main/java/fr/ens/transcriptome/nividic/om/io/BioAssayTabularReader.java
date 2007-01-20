@@ -34,7 +34,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * This abstract class define a reader for generic tabular files.
  * @author Laurent Jourdren
  */
-public abstract class BioAssayTabularReader extends BioAssayReader {
+public abstract class BioAssayTabularReader extends BioAssayTextReader {
 
   private boolean readHeadersDone;
 

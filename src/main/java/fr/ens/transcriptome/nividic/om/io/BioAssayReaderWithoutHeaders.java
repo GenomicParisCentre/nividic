@@ -27,15 +27,14 @@ import java.io.InputStream;
 
 /**
  * Define an abstract class to read BioAssay without headers.
- *
  * @author Laurent Jourdren
  */
-public abstract class BioAssayReaderWithoutHeaders extends BioAssayReader {
+public abstract class BioAssayReaderWithoutHeaders extends BioAssayTextReader {
 
-  public  static final String META_ROW_FIELD = "metaRowField";
-  public static final String META_COLUMN_FIELD = "metaColumnField";
-  public static final String ROW_FIELD = "rowField";
-  public static final String COLUMN_FIELD = "columnField";
+  protected static final String META_ROW_FIELD = "metaRowField";
+  protected static final String META_COLUMN_FIELD = "metaColumnField";
+  protected static final String ROW_FIELD = "rowField";
+  protected static final String COLUMN_FIELD = "columnField";
 
   /**
    * Read the header of the file.

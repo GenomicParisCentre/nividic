@@ -22,13 +22,10 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,14 +49,12 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  */
 public abstract class BioAssayReader {
 
-  private BioAssay bioAssay = BioAssayFactory.createBioAssay();;
+  private BioAssay bioAssay = BioAssayFactory.createBioAssay();
   private Set fieldsToRead = new HashSet();
   private boolean readAllFields;
   // private String[] fields;
   private InputStream is;
-  private BufferedReader bufferedReader;
   private Map data = new HashMap();
-  private boolean commaDecimalSeparator;
 
   private static final int INITIAL_CAPACITY = 1000;
 
@@ -87,29 +82,9 @@ public abstract class BioAssayReader {
    * Get the input stream.
    * @return Returns the input stream
    */
-  private InputStream getInputStream() {
+  protected InputStream getInputStream() {
     return this.is;
   }
-
-  /**
-   * Get the buffered reader of the stream.
-   * @return Returns the bufferedReader
-   */
-  public BufferedReader getBufferedReader() {
-    return this.bufferedReader;
-  }
-
-  /**
-   * Test if the comma is the decimal separator.
-   * @return true if the comma is the decimal separator
-   */
-  public boolean isCommaDecimalSeparator() {
-    return this.commaDecimalSeparator;
-  }
-
-  //
-  // Setters
-  //
 
   /**
    * Add all the field to read.
@@ -130,32 +105,9 @@ public abstract class BioAssayReader {
     this.is = is;
   }
 
-  /**
-   * Set the buffered reader of the stream.
-   * @param bufferedReader The bufferedReader to set
-   */
-  private void setBufferedReader(final BufferedReader bufferedReader) {
-    this.bufferedReader = bufferedReader;
-  }
-
-  /**
-   * Set if the comma is the decimal separator.
-   * @param enable the value to set
-   */
-  public void setCommaDecimalSeparator(final boolean enable) {
-
-    this.commaDecimalSeparator = enable;
-  }
-
   //
   // Abstract methods
   //
-
-  /**
-   * ReadHeaders of the file.
-   * @throws NividicIOException if an error occurs while reading ATF stream
-   */
-  public abstract void readHeader() throws NividicIOException;
 
   /**
    * Get the names of the integer fields.
@@ -218,16 +170,11 @@ public abstract class BioAssayReader {
   protected abstract String getSeparatorField();
 
   /**
-   * Test if the Strings quotes must be removed.
-   * @return true if the quotes of the strings must be removed
+   * Read data
+   * @return A BioAssay object
+   * @throws NividicIOException if an error occurs while reading the stream
    */
-  protected abstract boolean isStringQuotesBeRemoved();
-
-  /**
-   * Get the end tag of the stream. Null is not exists.
-   * @return the end tag of the stream. Null is not exists
-   */
-  protected abstract String getEndTag();
+  public abstract BioAssay read() throws NividicIOException;
 
   //
   // Other methods
@@ -344,125 +291,11 @@ public abstract class BioAssayReader {
   }
 
   /**
-   * Read data
-   * @return A BioAssay object
-   * @throws NividicIOException if an error occurs while reading the stream
-   */
-  public BioAssay read() throws NividicIOException {
-
-    if (getInputStream() == null)
-      throw new NividicIOException("No stream to read");
-
-    final boolean comma = isCommaDecimalSeparator();
-
-    addFieldToRead(getMetaRowField());
-    addFieldToRead(getRowField());
-    addFieldToRead(getMetaColumnField());
-    addFieldToRead(getColumnField());
-
-    setBufferedReader(new BufferedReader(
-        new InputStreamReader(getInputStream())));
-
-    readHeader();
-    final String[] existingFields = getFieldNamesOrder();
-
-    if (existingFields == null || existingFields.length == 0)
-      return getBioAssay();
-
-    final boolean[] arrayFieldsToRead = createArrayOfFieldsToRead(existingFields);
-    final boolean[] arrayIntFields = createArrayOfTypeFields(existingFields,
-        getIntFieldNames());
-    final boolean[] arrayDoubleFields = createArrayOfTypeFields(existingFields,
-        getDoubleFieldNames());
-
-    // Flag location fields as integer fields
-    searchFieldAndFlagIt(existingFields, getMetaRowField(), arrayIntFields);
-    searchFieldAndFlagIt(existingFields, getRowField(), arrayIntFields);
-    searchFieldAndFlagIt(existingFields, getMetaColumnField(), arrayIntFields);
-    searchFieldAndFlagIt(existingFields, getColumnField(), arrayIntFields);
-
-    BufferedReader br = getBufferedReader();
-    final String separator = getSeparatorField();
-    String line = null;
-
-    final int columnCount = getFieldNamesOrder() == null ? 0
-        : getFieldNamesOrder().length;
-
-    final String endTag = getEndTag();
-
-    try {
-      while ((line = br.readLine()) != null) {
-
-        if (endTag != null && line.startsWith(endTag))
-          break;
-
-        String[] data = line.split(separator);
-
-        if (data.length != columnCount)
-          continue;
-
-        for (int i = 0; i < data.length; i++) {
-
-          final String s = data[i].trim();
-
-          if (arrayFieldsToRead[i])
-            if (arrayIntFields[i]) {
-              int value;
-              // integer values
-              try {
-                value = Integer.parseInt(s);
-              } catch (NumberFormatException e) {
-                value = 0;
-              }
-              addDatafield(existingFields[i], value);
-
-            } else if (arrayDoubleFields[i]) {
-              double value;
-              // Double values
-              try {
-
-                if (comma)
-                  value = Double.parseDouble(s.replace(',', '.'));
-                else
-                  value = Double.parseDouble(s);
-
-              } catch (NumberFormatException e) {
-                value = Double.NaN;
-              }
-              addDatafield(existingFields[i], value);
-
-            } else {
-
-              // String values
-
-              if (isStringQuotesBeRemoved())
-                addDatafield(existingFields[i], new String(StringUtils
-                    .removeDoubleQuotes(s)));
-            }
-
-        }
-
-      }
-    } catch (IOException e) {
-      // e.printStackTrace();
-      throw new NividicIOException("Error while reading the file");
-    }
-
-    try {
-      getBufferedReader().close();
-    } catch (IOException e1) {
-      throw new NividicIOException("Error while closing the file");
-    }
-
-    return settingReadedDataInBioAssay();
-  }
-
-  /**
    * Add an int value to the data.
    * @param field Field of the value to add
    * @param value Value to add
    */
-  private void addDatafield(final String field, final int value) {
+  protected final void addDatafield(final String field, final int value) {
 
     if (field == null)
       return;
@@ -480,7 +313,7 @@ public abstract class BioAssayReader {
    * @param field Field of the value to add
    * @param value Value to add
    */
-  private void addDatafield(final String field, final double value) {
+  protected final void addDatafield(final String field, final double value) {
 
     if (field == null)
       return;
@@ -498,7 +331,7 @@ public abstract class BioAssayReader {
    * @param field Field of the value to add
    * @param value Value to add
    */
-  private void addDatafield(final String field, final String value) {
+  protected final void addDatafield(final String field, final String value) {
 
     if (field == null)
       return;
@@ -511,7 +344,8 @@ public abstract class BioAssayReader {
     l.add(value);
   }
 
-  private BioAssay settingReadedDataInBioAssay() throws NividicIOException {
+  protected final BioAssay settingReadedDataInBioAssay()
+      throws NividicIOException {
 
     int[] metaRow = null;
     int[] metaColumn = null;

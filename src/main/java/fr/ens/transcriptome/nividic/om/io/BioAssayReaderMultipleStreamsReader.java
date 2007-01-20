@@ -24,7 +24,6 @@ package fr.ens.transcriptome.nividic.om.io;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
@@ -35,7 +34,7 @@ import fr.ens.transcriptome.nividic.om.BioAssayUtils;
  * @author Laurent Jourdren
  */
 public abstract class BioAssayReaderMultipleStreamsReader extends
-    BioAssayReader {
+    BioAssayTextReader {
 
   private ArrayList streams = new ArrayList();
 

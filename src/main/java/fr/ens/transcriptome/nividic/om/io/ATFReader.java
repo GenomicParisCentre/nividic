@@ -34,7 +34,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * This implements a BioAssay reader for ATF files.
  * @author Laurent Jourdren
  */
-public class ATFReader extends BioAssayReader {
+public class ATFReader extends BioAssayTextReader {
 
   private boolean readHeadersDone;
   private String atfVersion;
@@ -426,7 +426,7 @@ public class ATFReader extends BioAssayReader {
   }
 
   //
-  // Constructor
+  // Constructors
   //
 
   /**
