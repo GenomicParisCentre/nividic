@@ -152,6 +152,18 @@ public class ReplaceSpotIdsByProbeIdsFilter implements BioAssayFilter {
     return bioAssay;
   }
 
+  /**
+   * Count the number of spots that pass the filter.
+   * @param bioAssay The bioAssay to filter
+   * @return the number of spot that pass the filter
+   */
+  public int count(final BioAssay bioAssay) {
+
+    BioAssay result = filter(bioAssay);
+
+    return result == null ? 0 : result.size();
+  }
+
   //
   // Constructors
   //
