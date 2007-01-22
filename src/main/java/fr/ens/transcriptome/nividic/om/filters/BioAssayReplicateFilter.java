@@ -35,6 +35,7 @@ import org.apache.commons.math.stat.descriptive.rank.Median;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
+import fr.ens.transcriptome.nividic.om.SpotIterator;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 /**
@@ -277,6 +278,18 @@ public class BioAssayReplicateFilter implements BioAssayFilter {
     }
 
     return result;
+  }
+
+  /**
+   * Count the number of spots that pass the filter.
+   * @param bioAssay The bioAssay to filter
+   * @return the number of spot that pass the filter
+   */
+  public int count(final BioAssay bioAssay) {
+
+    BioAssay result = filter(bioAssay);
+
+    return result == null ? 0 : result.size();
   }
 
   //

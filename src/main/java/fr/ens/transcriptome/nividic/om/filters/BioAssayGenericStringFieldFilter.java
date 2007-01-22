@@ -112,7 +112,7 @@ public abstract class BioAssayGenericStringFieldFilter implements
       final String id = translate ? translator.translateField(data[i],
           translatorField) : data[i];
 
-      if (!testValueofStringField(id))
+      if (!test(id))
         al.add(new Integer(i));
 
     }
@@ -146,6 +146,29 @@ public abstract class BioAssayGenericStringFieldFilter implements
   }
 
   /**
+   * Count the number of spots that pass the filter.
+   * @param bioAssay The bioAssay to filter
+   * @return the number of spot that pass the filter
+   */
+  public int count(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return 0;
+
+    int count = 0;
+
+    final String[] data = bioAssay.getDataFieldString(getFieldToFilter());
+
+    int size = bioAssay.size();
+
+    for (int i = 0; i < size; i++)
+      if (!test(data[i]))
+        count++;
+
+    return count;
+  }
+
+  /**
    * Get the field to filer
    * @return The field to filer
    */
@@ -156,7 +179,7 @@ public abstract class BioAssayGenericStringFieldFilter implements
    * @param value Value to test
    * @return true if the value must be selected
    */
-  public abstract boolean testValueofStringField(final String value);
+  public abstract boolean test(final String value);
 
   /**
    * Test if found identifiers must be removed.

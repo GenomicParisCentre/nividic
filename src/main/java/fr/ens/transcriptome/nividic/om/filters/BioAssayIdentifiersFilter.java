@@ -125,7 +125,7 @@ public abstract class BioAssayIdentifiersFilter extends
    * @param value Value to test
    * @return true if the value must be selected
    */
-  public boolean testValueofStringField(final String value) {
+  public boolean test(final String value) {
 
     if (value == null)
       return this.selectNull;

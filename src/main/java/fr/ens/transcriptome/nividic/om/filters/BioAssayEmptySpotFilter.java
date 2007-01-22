@@ -66,4 +66,29 @@ public class BioAssayEmptySpotFilter implements BioAssayFilter {
     return BioAssayUtils.removeRowsFromBioAssay(bioAssay, toRemove);
   }
 
+  /**
+   * Count the number of spots that pass the filter.
+   * @param bioAssay The bioAssay to filter
+   * @return the number of spot that pass the filter
+   */
+  public int count(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return 0;
+
+    final SpotIterator si = bioAssay.iterator();
+
+    int count = 0;
+
+    while (si.hasNext()) {
+
+      si.next();
+
+      if (si.isEmpty())
+        count++;
+    }
+
+    return count;
+  }
+
 }

@@ -418,10 +418,17 @@ public interface BioAssay extends BioAssayBase {
   BioAssay filter(BioAssayFilter filter);
 
   /**
+   * Count the entries of the bioAssay that pass the filter.
+   * @param filter Filter to apply
+   * @return a new bioAssay filtered
+   */
+  int count(BioAssayFilter filter);
+
+  /**
    * Sort the bioAssay.
    * @param comparator Object used to do the sort
    * @return a new bioAssay sorted
    */
-  BioAssay sorter(SpotComparator comparator);
+  BioAssay sort(SpotComparator comparator);
 
 }

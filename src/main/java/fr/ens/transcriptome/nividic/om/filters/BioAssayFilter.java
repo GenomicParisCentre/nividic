@@ -25,7 +25,6 @@ package fr.ens.transcriptome.nividic.om.filters;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 
-
 /**
  * This interface defines how to filter BioAssay Objects
  * @author Laurent Jourdren
@@ -39,5 +38,12 @@ public interface BioAssayFilter {
    * @throws BioAssayRuntimeException if an error occurs while filtering data
    */
   BioAssay filter(BioAssay bioAssay) throws BioAssayRuntimeException;
+
+  /**
+   * Count the number of spots that pass the filter.
+   * @param bioAssay The bioAssay to filter
+   * @return the number of spot that pass the filter
+   */
+  int count(BioAssay bioAssay);
 
 }

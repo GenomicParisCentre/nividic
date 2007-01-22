@@ -22,21 +22,21 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
+import fr.ens.transcriptome.nividic.om.BioAssay;
 
 /**
- * This class implements a filter which remove all rows of a bioarray with a
- * flag value lesser than 0.
+ * Define a filter on M field for BioAssay
  * @author Laurent Jourdren
  */
-public class BioAssayBadFlagsFilter extends BioAssayFlagsFilter {
+public abstract class BioAssayMFilter extends BioAssayGenericDoubleFieldFilter {
 
   /**
-   * Test the flag value.
-   * @param flag Value to test
-   * @return true if the value must be selected
+   * Define the field to filter.
+   * @return the field to filter
    */
-  public boolean test(final int flag) {
-    return flag >= 0;
+  public String getFieldToFilter() {
+
+    return BioAssay.FIELD_NAME_M;
   }
 
 }

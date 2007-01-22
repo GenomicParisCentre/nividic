@@ -28,13 +28,13 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 
-
 /**
  * This class implements a generic filter for filtering using the value of a
  * double field.
  * @author Laurent Jourdren
  */
-public abstract class BioAssayGenericDoubleFieldFilter implements BioAssayFilter {
+public abstract class BioAssayGenericDoubleFieldFilter implements
+    BioAssayFilter {
 
   /**
    * Filter a bioAssay object using value of the double field.
@@ -42,18 +42,19 @@ public abstract class BioAssayGenericDoubleFieldFilter implements BioAssayFilter
    * @return A new filtered bioAssay object
    * @throws BioAssayRuntimeException if an error occurs while filtering data
    */
-  public BioAssay filter(final BioAssay bioAssay) throws BioAssayRuntimeException {
+  public BioAssay filter(final BioAssay bioAssay)
+      throws BioAssayRuntimeException {
 
     if (bioAssay == null)
       return null;
 
-    double[] data = bioAssay.getDataFieldDouble(getFieldToFilter());
+    final double[] data = bioAssay.getDataFieldDouble(getFieldToFilter());
 
     int size = bioAssay.size();
     ArrayList al = new ArrayList();
 
     for (int i = 0; i < size; i++)
-      if (!testValueofDoubleField(data[i]))
+      if (!test(data[i]))
         al.add(new Integer(i));
 
     int[] toRemove = new int[al.size()];
@@ -61,6 +62,29 @@ public abstract class BioAssayGenericDoubleFieldFilter implements BioAssayFilter
       toRemove[i] = ((Integer) al.get(i)).intValue();
 
     return BioAssayUtils.removeRowsFromBioAssay(bioAssay, toRemove);
+  }
+
+  /**
+   * Count the number of spots that pass the filter.
+   * @param bioAssay The bioAssay to filter
+   * @return the number of spot that pass the filter
+   */
+  public int count(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return 0;
+
+    int count = 0;
+
+    final double[] data = bioAssay.getDataFieldDouble(getFieldToFilter());
+
+    int size = bioAssay.size();
+
+    for (int i = 0; i < size; i++)
+      if (!test(data[i]))
+        count++;
+
+    return count;
   }
 
   /**
@@ -74,6 +98,6 @@ public abstract class BioAssayGenericDoubleFieldFilter implements BioAssayFilter
    * @param value Value to test
    * @return true if the value must be selected
    */
-  public abstract boolean testValueofDoubleField(final double value);
+  public abstract boolean test(final double value);
 
 }
