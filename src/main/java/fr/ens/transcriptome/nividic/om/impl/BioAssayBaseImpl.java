@@ -174,7 +174,7 @@ public class BioAssayBaseImpl implements BioAssayBase, Serializable {
    */
   public boolean isField(final String field) {
 
-    if (name == null)
+    if (field == null)
       return false;
     return this.hashDir.containsKey(field);
   }
