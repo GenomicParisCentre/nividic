@@ -57,6 +57,8 @@ public class SimpleBiologicalListWriter implements BiologicalListWriter {
       while (it.hasNext())
         out.write(it.next() + "\n");
 
+      out.close();
+
     } catch (IOException e) {
       throw new NividicRuntimeException("Error while writing the stream");
     }
