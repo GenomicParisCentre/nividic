@@ -28,7 +28,7 @@ import java.util.Iterator;
  * This interface defines a biological list.
  * @author Laurent Jourdren
  */
-public interface BiologicalList extends Annotatable {
+public interface BiologicalList extends BiologicalObject {
 
   /**
    * Add an element.

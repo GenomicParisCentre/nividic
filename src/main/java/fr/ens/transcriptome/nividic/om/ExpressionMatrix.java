@@ -29,24 +29,13 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
  * This interface define an expression matrix.
  * @author Laurent Jourdren
  */
-public interface ExpressionMatrix extends ExpressionMatrixBase {
+public interface ExpressionMatrix extends ExpressionMatrixBase,
+    BiologicalObject {
 
   /** Constant for name of the dimension for A values. */
   String DIMENSION_A = BioAssay.FIELD_NAME_A;
   /** Constant for name of the dimension for M values. */
   String DIMENSION_M = BioAssay.FIELD_NAME_M;
-
-  /**
-   * Get the name of the ExpressionMatrixDimension.
-   * @return The name of the ExpressionMatrixDimension.
-   */
-  String getName();
-
-  /**
-   * Give a name to the matrix.
-   * @param name name of the matrix
-   */
-  void setName(String name);
 
   /**
    * Add a column to the matrix.

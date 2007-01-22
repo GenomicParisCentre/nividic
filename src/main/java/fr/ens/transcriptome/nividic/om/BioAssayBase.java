@@ -31,7 +31,7 @@ package fr.ens.transcriptome.nividic.om;
  * @author Vincent Frouin
  * @author Miriame Allouche
  */
-public interface BioAssayBase extends Annotatable {
+public interface BioAssayBase extends BiologicalObject {
 
   /*
    * TODO Use generic with java 1.5 ( x3 setData ans getData methods) TODO
@@ -60,11 +60,6 @@ public interface BioAssayBase extends Annotatable {
   //
   // Getters
   //
-  /**
-   * Get the name of the BioAssay. This field can't be null.
-   * @return The name of the DNA chip
-   */
-  String getName();
 
   /**
    * Return an integer array with all data from a field.
@@ -127,12 +122,6 @@ public interface BioAssayBase extends Annotatable {
   //
   // Setters
   //
-
-  /**
-   * Set the name of the BioDefinit le nom de la biopuce.
-   * @param name The DNA chip name
-   */
-  void setName(String name);
 
   /**
    * Set the data for a field.

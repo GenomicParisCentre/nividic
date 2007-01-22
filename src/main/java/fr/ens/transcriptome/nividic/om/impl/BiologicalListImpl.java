@@ -39,15 +39,36 @@ import fr.ens.transcriptome.nividic.om.BiologicalList;
  */
 public class BiologicalListImpl implements BiologicalList, Serializable {
 
+  
+  
   /** serial version for serialization. */
   static final long serialVersionUID = -8974757475594863469L;
 
   private static final int HASHCODE_ODD_NUMBER_1 = 812204;
   private static final int HASHCODE_ODD_NUMBER_2 = 1235;
 
+  private String name;
   private Set list = new HashSet();
   private Annotation annotation = AnnotationFactory.createAnnotation();
 
+  /**
+   * Get the name of the list.
+   * @return the name of list
+   */
+  public String getName() {
+    
+    return this.name;
+  }
+  
+  /**
+   * Set the name of the list.
+   * @param name The name of the list
+   */
+  public void setName(final String name) {
+    
+    this.name = name;
+  }
+  
   /**
    * Add an element.
    * @param element Element to add

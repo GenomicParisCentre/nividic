@@ -555,6 +555,19 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   }
 
   /**
+   * Count the entries of the bioAssay that pass the filter.
+   * @param filter Filter to apply
+   * @return the number of entries that pass the filter
+   */
+  public int count(BioAssayFilter filter) {
+    
+    if (filter == null)
+      return 0;
+
+    return filter.count(this);
+  }
+  
+  /**
    * Filter the bioAssay
    * @param filter Filter to apply
    * @return a new bioAssay filtered
@@ -572,7 +585,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
    * @param comparator Object used to do the sort
    * @return a new bioAssay sorted
    */
-  public BioAssay sorter(final SpotComparator comparator) {
+  public BioAssay sort(final SpotComparator comparator) {
 
     if (comparator == null)
       throw new NividicRuntimeException("Comparator is null");
