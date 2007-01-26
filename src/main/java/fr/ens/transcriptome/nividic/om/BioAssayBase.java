@@ -60,7 +60,6 @@ public interface BioAssayBase extends BiologicalObject {
   //
   // Getters
   //
-
   /**
    * Return an integer array with all data from a field.
    * @param field The field to get
@@ -250,5 +249,12 @@ public interface BioAssayBase extends BiologicalObject {
    * @param newName The new name of the field
    */
   void renameField(String oldName, String newName);
+
+  /**
+   * Swap two fields
+   * @param fieldA First field to swap
+   * @param fieldB Second field to swap
+   */
+  void swapFields(String fieldA, String fieldB);
 
 }

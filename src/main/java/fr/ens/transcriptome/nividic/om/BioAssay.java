@@ -431,4 +431,9 @@ public interface BioAssay extends BioAssayBase {
    */
   BioAssay sort(SpotComparator comparator);
 
+  /**
+   * Swap Identifiers and Description columns
+   */
+  void swapIdentifiersAndDescription();
+
 }

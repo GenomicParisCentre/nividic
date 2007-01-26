@@ -559,14 +559,14 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
    * @param filter Filter to apply
    * @return the number of entries that pass the filter
    */
-  public int count(BioAssayFilter filter) {
-    
+  public int count(final BioAssayFilter filter) {
+
     if (filter == null)
       return 0;
 
     return filter.count(this);
   }
-  
+
   /**
    * Filter the bioAssay
    * @param filter Filter to apply
@@ -592,7 +592,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
 
     final int n = size();
 
-    Integer order[] = new Integer[n];
+    Integer[] order = new Integer[n];
 
     for (int i = 0; i < order.length; i++)
       order[i] = new Integer(i);
@@ -600,7 +600,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     // Sort the order of the rows
     Arrays.sort(order, new Comparator() {
 
-      public int compare(Object arg0, Object arg1) {
+      public int compare(final Object arg0, final Object arg1) {
 
         final int i0 = ((Integer) arg0).intValue();
         final int i1 = ((Integer) arg1).intValue();
@@ -659,6 +659,14 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     ba.setSpotEmptyTester(getSpotEmptyTester());
 
     return ba;
+  }
+
+  /**
+   * Swap Identifiers and Description columns
+   */
+  public void swapIdentifiersAndDescription() {
+
+    swapFields(BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_DESCRIPTION);
   }
 
   //

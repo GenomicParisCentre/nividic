@@ -649,6 +649,55 @@ public class BioAssayBaseImpl implements BioAssayBase, Serializable {
       this.referenceField = newName;
   }
 
+  /**
+   * Swap two fields
+   * @param fieldA First field to swap
+   * @param fieldB Second field to swap
+   */
+  public void swapFields(final String fieldA, final String fieldB) {
+
+    if (fieldA == null || fieldB == null)
+      throw new NullPointerException("One or more fieldname is null");
+
+    if (!isField(fieldA) || !isField(fieldB))
+      new NividicRuntimeException("One ore more field doesn't exists");
+
+    if (this.getFieldType(fieldA) != this.getFieldType(fieldB))
+      throw new NividicRuntimeException(
+          "The types of the two fields are not the same");
+
+    switch (getFieldType(fieldA)) {
+
+    case BioAssayBase.DATATYPE_DOUBLE:
+
+      double[] da = getDataFieldDouble(fieldA);
+      double[] db = getDataFieldDouble(fieldB);
+      setDataFieldDouble(fieldA, db);
+      setDataFieldDouble(fieldB, da);
+      break;
+
+    case BioAssayBase.DATATYPE_INTEGER:
+
+      int[] ia = getDataFieldInt(fieldA);
+      int[] ib = getDataFieldInt(fieldB);
+      setDataFieldInt(fieldA, ib);
+      setDataFieldInt(fieldB, ia);
+      break;
+
+    case BioAssayBase.DATATYPE_STRING:
+
+      String[] sa = getDataFieldString(fieldA);
+      String[] sb = getDataFieldString(fieldB);
+      setDataFieldString(fieldA, sb);
+      setDataFieldString(fieldB, sa);
+      break;
+
+    default:
+      break;
+    }
+
+  }
+
   //
   // Constructors
   //
