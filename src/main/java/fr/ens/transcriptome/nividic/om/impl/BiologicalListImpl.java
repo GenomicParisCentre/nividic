@@ -26,12 +26,19 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BiologicalList;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListEndsWithFilter;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListGrepFilter;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListStartsWithFilter;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListToLowerCaseFilter;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListTrimFilter;
 
 /**
  * This class implement a biological list.
@@ -39,8 +46,6 @@ import fr.ens.transcriptome.nividic.om.BiologicalList;
  */
 public class BiologicalListImpl implements BiologicalList, Serializable {
 
-  
-  
   /** serial version for serialization. */
   static final long serialVersionUID = -8974757475594863469L;
 
@@ -56,19 +61,19 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    * @return the name of list
    */
   public String getName() {
-    
+
     return this.name;
   }
-  
+
   /**
    * Set the name of the list.
    * @param name The name of the list
    */
   public void setName(final String name) {
-    
+
     this.name = name;
   }
-  
+
   /**
    * Add an element.
    * @param element Element to add
@@ -316,4 +321,100 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
 
     return hcb.toHashCode();
   }
+
+  /**
+   * Apply a filter on the list.
+   * @param filter Filter to apply
+   * @return a new Biological list
+   */
+  public BiologicalList filter(final BiologicalListFilter filter) {
+
+    if (filter == null)
+      return null;
+
+    return filter.filter(this);
+
+  }
+
+  /**
+   * Filter the member of the list with a regular expression.
+   * @param regex Regex to use
+   * @return a new Biological list
+   */
+  public BiologicalList grep(final String regex) {
+
+    final BiologicalListFilter filter = new BiologicalListGrepFilter(regex);
+
+    return filter.filter(this);
+  }
+
+  /**
+   * Filter the member of the list with a regular expression.
+   * @param pattern Compiled regex to use
+   * @return a new Biological list
+   */
+  public BiologicalList grep(final Pattern pattern) {
+
+    final BiologicalListFilter filter = new BiologicalListGrepFilter(pattern);
+
+    return filter.filter(this);
+  }
+
+  /**
+   * Filter the member of the list with a defined prefix.
+   * @param prefix Prefix to use
+   * @return a new Biological list
+   */
+  public BiologicalList startsWith(final String prefix) {
+
+    final BiologicalListFilter filter = new BiologicalListStartsWithFilter(prefix);
+
+    return filter.filter(this);
+  }
+
+  /**
+   * Filter the member of the list with a defined suffix.
+   * @param suffix Suffix to use
+   * @return a new Biological list
+   */
+  public BiologicalList endsWith(final String suffix) {
+
+    final BiologicalListFilter filter = new BiologicalListEndsWithFilter(suffix);
+
+    return filter.filter(this);
+  }
+
+  /**
+   * Transform the members of the list to lower case.
+   * @return a new Biological list
+   */
+  public BiologicalList toLowerCase() {
+
+    final BiologicalListFilter filter = new BiologicalListToLowerCaseFilter();
+
+    return filter.filter(this);
+  }
+
+  /**
+   * Transform the members of the list to upper case.
+   * @return a new Biological list
+   */
+  public BiologicalList toUpperCase() {
+
+    final BiologicalListFilter filter = new BiologicalListToLowerCaseFilter();
+
+    return filter.filter(this);
+  }
+
+  /**
+   * Trim all the member of a list.
+   * @return a new Biological list
+   */
+  public BiologicalList trim() {
+
+    final BiologicalListFilter filter = new BiologicalListTrimFilter();
+
+    return filter.filter(this);
+  }
+
 }

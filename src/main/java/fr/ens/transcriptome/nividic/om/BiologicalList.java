@@ -23,6 +23,9 @@
 package fr.ens.transcriptome.nividic.om;
 
 import java.util.Iterator;
+import java.util.regex.Pattern;
+
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
 
 /**
  * This interface defines a biological list.
@@ -94,21 +97,21 @@ public interface BiologicalList extends BiologicalObject {
    * @param element Element to test
    * @return true if the list contains the element
    */
-  boolean contains(final String element);
+  boolean contains(String element);
 
   /**
    * Concat the current list and another list in a new list
    * @param list Other list to concat
    * @return an new list with the element of the two lists
    */
-  BiologicalList concat(final BiologicalList list);
+  BiologicalList concat(BiologicalList list);
 
   /**
    * Create an new list with the elements which are in the two lists.
    * @param list Second list
    * @return An an new list with the element which are in the two lists
    */
-  BiologicalList include(final BiologicalList list);
+  BiologicalList include(BiologicalList list);
 
   /**
    * Create an new list with the elements which aren't in the argument list but
@@ -116,7 +119,7 @@ public interface BiologicalList extends BiologicalObject {
    * @param list Second list
    * @return An an new list with the element which are in the two lists
    */
-  BiologicalList exclude(final BiologicalList list);
+  BiologicalList exclude(BiologicalList list);
 
   /**
    * Create an new list with the elements which aren't in the argument list but
@@ -124,12 +127,65 @@ public interface BiologicalList extends BiologicalObject {
    * @param list Second list
    * @return An an new list with the element which are in the two lists
    */
-  BiologicalList excludeAllLists(final BiologicalList list);
+  BiologicalList excludeAllLists(BiologicalList list);
+
+  /**
+   * Apply a filter on the list.
+   * @param filter Filter to apply
+   * @return a new Biological list
+   */
+  BiologicalList filter(BiologicalListFilter filter);
+
+  /**
+   * Filter the member of the list with a regular expression.
+   * @param regex Regex to use
+   * @return a new Biological list
+   */
+  BiologicalList grep(String regex);
+
+  /**
+   * Filter the member of the list with a regular expression.
+   * @param pattern Compiled regex to use
+   * @return a new Biological list
+   */
+  BiologicalList grep(Pattern pattern);
+
+  /**
+   * Filter the member of the list with a defined prefix.
+   * @param prefix Prefix to use
+   * @return a new Biological list
+   */
+  BiologicalList startsWith(String prefix);
+
+  /**
+   * Filter the member of the list with a defined suffix.
+   * @param suffix Suffix to use
+   * @return a new Biological list
+   */
+  BiologicalList endsWith(String suffix);
+
+  /**
+   * Transform the members of the list to lower case.
+   * @return a new Biological list
+   */
+  BiologicalList toLowerCase();
+
+  /**
+   * Transform the members of the list to upper case.
+   * @return a new Biological list
+   */
+  BiologicalList toUpperCase();
+
+  /**
+   * Trim all the member of a list.
+   * @return a new Biological list
+   */
+  BiologicalList trim();
 
   /**
    * Test if two list are equals.
    * @param list List to test
    * @return true if the two list are equals
    */
-  boolean equals(final BiologicalList list);
+  boolean equals(BiologicalList list);
 }
