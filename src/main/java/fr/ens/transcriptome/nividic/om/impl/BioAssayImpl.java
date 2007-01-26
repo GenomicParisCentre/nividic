@@ -664,7 +664,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   /**
    * Swap Identifiers and Description columns
    */
-  public void swapIdentifiersAndDescription() {
+  public void swapIdentifiersAndDescriptions() {
 
     swapFields(BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_DESCRIPTION);
   }
