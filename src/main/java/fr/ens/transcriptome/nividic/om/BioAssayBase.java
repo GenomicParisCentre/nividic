@@ -31,7 +31,7 @@ package fr.ens.transcriptome.nividic.om;
  * @author Vincent Frouin
  * @author Miriame Allouche
  */
-public interface BioAssayBase extends BiologicalObject {
+public interface BioAssayBase {
 
   /*
    * TODO Use generic with java 1.5 ( x3 setData ans getData methods) TODO

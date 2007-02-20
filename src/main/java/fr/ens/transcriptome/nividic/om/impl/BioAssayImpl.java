@@ -33,10 +33,12 @@ import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 import fr.ens.transcriptome.nividic.om.DefaultSpotEmptyTester;
+import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.Spot;
 import fr.ens.transcriptome.nividic.om.SpotEmptyTester;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayFilter;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.SpotComparator;
 
 /**
@@ -54,6 +56,8 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   private Hashtable indexLoc = new Hashtable();
 
   private SpotEmptyTester spotEmptyTester;
+
+  private HistoryImpl history = new HistoryImpl();
 
   /**
    * Return some int vectors containing coordinates of the array spot.
@@ -559,12 +563,46 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
    * @param filter Filter to apply
    * @return the number of entries that pass the filter
    */
+  public int count(final BiologicalFilter filter) {
+
+    if (filter == null)
+      return 0;
+
+    if (!(filter instanceof BioAssayFilter))
+      throw new NividicRuntimeException(
+          "Only BioAssayfilter can filter BioAssay");
+
+    return count((BioAssayFilter) filter);
+  }
+
+  /**
+   * Count the entries of the bioAssay that pass the filter.
+   * @param filter Filter to apply
+   * @return the number of entries that pass the filter
+   */
   public int count(final BioAssayFilter filter) {
 
     if (filter == null)
       return 0;
 
     return filter.count(this);
+  }
+
+  /**
+   * Filter the bioAssay
+   * @param filter Filter to apply
+   * @return a new bioAssay filtered
+   */
+  public BioAssay filter(final BiologicalFilter filter) {
+
+    if (filter == null)
+      return null;
+
+    if (!(filter instanceof BioAssayFilter))
+      throw new NividicRuntimeException(
+          "Only BioAssayfilter can filter BioAssay");
+
+    return filter((BioAssayFilter) filter);
   }
 
   /**
@@ -667,6 +705,24 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   public void swapIdentifiersAndDescriptions() {
 
     swapFields(BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_DESCRIPTION);
+  }
+
+  /**
+   * Copy the BioAssay Object.
+   * @return a copy of the biological object
+   */
+  public BioAssay copy() {
+
+    throw new NividicRuntimeException("copy() is not yet implemented.");
+  }
+
+  /**
+   * Get the history of the biological object.
+   * @return The history object of the object
+   */
+  public History getHistory() {
+
+    return this.history;
   }
 
   //

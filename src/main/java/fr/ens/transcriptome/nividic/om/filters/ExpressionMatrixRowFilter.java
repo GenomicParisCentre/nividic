@@ -72,13 +72,37 @@ public abstract class ExpressionMatrixRowFilter implements
   }
 
   /**
+   * Count the number of the row that pass the filter
+   * @param em The matrix to filter
+   * @return the number of rows that pass the filter
+   */
+  public int count(final ExpressionMatrix em) {
+
+    if (em == null)
+      return -1;
+
+    ExpressionMatrixDimension d = em.getDimension(getDimensionToFilter());
+
+    String[] rowIds = d.getRowIds();
+
+    final int size = d.getRowCount();
+    int count = 0;
+
+    for (int i = 0; i < size; i++)
+      if (testRow(d.getRow(rowIds[i])))
+        count++;
+
+    return count;
+  }
+
+  /**
    * Get the dimension to filter.
    * @return The dimension to filter
    */
   public abstract String getDimensionToFilter();
 
   /**
-   * Test if filtered identifiers must be removed. 
+   * Test if filtered identifiers must be removed.
    * @return true if filtered row must be removed
    */
   public abstract boolean removeFilteredRows();

@@ -22,11 +22,13 @@
 
 package fr.ens.transcriptome.nividic.om;
 
+import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
+
 /**
  * This interface define a biological Object.
  * @author Laurent Jourdren
  */
-public interface BiologicalObject extends Annotatable {
+public interface BiologicalObject extends Annotable {
 
   /**
    * Get the name of the Biological object.
@@ -39,5 +41,31 @@ public interface BiologicalObject extends Annotatable {
    * @param name The name of the biological object
    */
   void setName(String name);
+
+  /**
+   * Get the history of the biological object.
+   * @return The history object of the object
+   */
+  History getHistory();
+
+  /**
+   * Copy the biological Object.
+   * @return a copy of the biological object
+   */
+  BiologicalObject copy();
+
+  /**
+   * Filter the object with a biological filter
+   * @param filter Filter to apply
+   * @return the biological object filtered
+   */
+  BiologicalObject filter(BiologicalFilter filter);
+
+  /**
+   * Count the number that the object pass the filter.
+   * @param filter Filter to apply
+   * @return the count the number that the object pass the filter
+   */
+  int count(BiologicalFilter filter);
 
 }

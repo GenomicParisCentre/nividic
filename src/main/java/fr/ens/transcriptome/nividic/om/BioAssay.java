@@ -34,7 +34,7 @@ import fr.ens.transcriptome.nividic.om.filters.SpotComparator;
  * @author Vincent Frouin
  * @author Miriame Allouche
  */
-public interface BioAssay extends BioAssayBase {
+public interface BioAssay extends BioAssayBase, BiologicalObject {
 
   /** Column name for red data. */
   String FIELD_NAME_RED = "red";
@@ -434,6 +434,6 @@ public interface BioAssay extends BioAssayBase {
   /**
    * Swap Identifiers and Description columns
    */
-  void swapIdentifiersAndDescription();
+  void swapIdentifiersAndDescriptions();
 
 }

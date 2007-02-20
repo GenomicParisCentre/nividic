@@ -30,9 +30,13 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
+import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BiologicalList;
+import fr.ens.transcriptome.nividic.om.History;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListEndsWithFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListGrepFilter;
@@ -49,12 +53,13 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
   /** serial version for serialization. */
   static final long serialVersionUID = -8974757475594863469L;
 
-  private static final int HASHCODE_ODD_NUMBER_1 = 812204;
+  private static final int HASHCODE_ODD_NUMBER_1 = 812203;
   private static final int HASHCODE_ODD_NUMBER_2 = 1235;
 
   private String name;
   private Set list = new HashSet();
   private Annotation annotation = AnnotationFactory.createAnnotation();
+  private HistoryImpl history = new HistoryImpl();
 
   /**
    * Get the name of the list.
@@ -327,13 +332,59 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    * @param filter Filter to apply
    * @return a new Biological list
    */
+  public BiologicalList filter(final BiologicalFilter filter) {
+
+    if (filter == null)
+      return null;
+
+    if (!(filter instanceof BiologicalListFilter))
+      throw new NividicRuntimeException(
+          "Only BiologicalListFilter can filter BiologicalList");
+
+    return filter((BiologicalListFilter) filter);
+  }
+
+  /**
+   * Apply a filter on the list.
+   * @param filter Filter to apply
+   * @return a new Biological list
+   */
   public BiologicalList filter(final BiologicalListFilter filter) {
 
     if (filter == null)
       return null;
 
     return filter.filter(this);
+  }
 
+  /**
+   * Count the entries of the bioAssay that pass the filter.
+   * @param filter Filter to apply
+   * @return the number of entries that pass the filter
+   */
+  public int count(final BiologicalFilter filter) {
+
+    if (filter == null)
+      return 0;
+
+    if (!(filter instanceof BiologicalListFilter))
+      throw new NividicRuntimeException(
+          "Only BioAssayfilter can filter BioAssay");
+
+    return count((BiologicalListFilter) filter);
+  }
+
+  /**
+   * Count the entries of the bioAssay that pass the filter.
+   * @param filter Filter to apply
+   * @return the number of entries that pass the filter
+   */
+  public int count(final BiologicalListFilter filter) {
+
+    if (filter == null)
+      return 0;
+
+    return filter.count(this);
   }
 
   /**
@@ -367,7 +418,8 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    */
   public BiologicalList startsWith(final String prefix) {
 
-    final BiologicalListFilter filter = new BiologicalListStartsWithFilter(prefix);
+    final BiologicalListFilter filter = new BiologicalListStartsWithFilter(
+        prefix);
 
     return filter.filter(this);
   }
@@ -415,6 +467,24 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
     final BiologicalListFilter filter = new BiologicalListTrimFilter();
 
     return filter.filter(this);
+  }
+
+  /**
+   * Get the history of the biological object.
+   * @return The history object of the object
+   */
+  public History getHistory() {
+
+    return this.history;
+  }
+
+  /**
+   * Copy the BioAssay Object.
+   * @return a copy of the biological object
+   */
+  public BioAssay copy() {
+
+    throw new NividicRuntimeException("copy() is not yet implemented.");
   }
 
 }

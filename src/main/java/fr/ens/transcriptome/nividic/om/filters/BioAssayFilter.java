@@ -29,7 +29,7 @@ import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
  * This interface defines how to filter BioAssay Objects
  * @author Laurent Jourdren
  */
-public interface BioAssayFilter {
+public interface BioAssayFilter extends BiologicalFilter<BioAssay>{
 
   /**
    * Filter a bioAssay object.

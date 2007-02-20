@@ -134,6 +134,44 @@ public abstract class ExpressionMatrixIdFilter implements
   }
 
   /**
+   * Count the number of the row that pass the filter
+   * @param em The matrix to filter
+   * @return the number of rows that pass the filter
+   */
+  public int count(final ExpressionMatrix em) {
+
+    if (em == null)
+      return -1;
+
+    final String[] rowIds = em.getRowIds();
+
+    final int size = rowIds.length;
+
+    final Translator translator = getTranslator();
+    final boolean translate = translator != null;
+    String translatorField = getTranslatorField();
+
+    if (translate && translatorField == null)
+      translatorField = translator.getDefaultField();
+
+    int count = 0;
+
+    for (int i = 0; i < size; i++) {
+
+      final String id = rowIds[i];
+
+      if (testId(translate ? translator.translateField(id, translatorField)
+          : id))
+        count++;
+    }
+
+    if (removeFoundId())
+      return size - count;
+
+    return count;
+  }
+
+  /**
    * Test the id of a Row.
    * @param id Identifier to test
    * @return true if the values must be selected

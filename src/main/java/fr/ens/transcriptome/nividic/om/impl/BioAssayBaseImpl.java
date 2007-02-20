@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Random;
 
 import org.apache.commons.collections.primitives.ArrayDoubleList;
 import org.apache.commons.collections.primitives.ArrayIntList;
@@ -42,7 +41,7 @@ import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
  * @author Vincent Frouin
  * @author Miriame Allouche
  */
-public class BioAssayBaseImpl implements BioAssayBase, Serializable {
+class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
   /** serial version for serialization. */
   static final long serialVersionUID = -7886253794891000605L;
@@ -66,7 +65,6 @@ public class BioAssayBaseImpl implements BioAssayBase, Serializable {
   private String referenceField;
   private int size = -1;
 
-  private static Random random = new Random(System.currentTimeMillis());
   private static int count;
 
   //
@@ -715,8 +713,7 @@ public class BioAssayBaseImpl implements BioAssayBase, Serializable {
    * Create a BioAssay object. The object's name if ramdomly generated,
    */
   public BioAssayBaseImpl() {
-    this("BioAssay-" + System.currentTimeMillis() + "-" + random.nextInt()
-        + "-" + count);
+    count++;
   }
 
 }

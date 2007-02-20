@@ -32,12 +32,15 @@ import org.apache.commons.collections.IterableMap;
 import org.apache.commons.collections.map.LinkedMap;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
+import fr.ens.transcriptome.nividic.om.History;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
@@ -64,6 +67,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
   private static final int HASHCODE_ODD_NUMBER_1 = 16052005;
   private static final int HASHCODE_ODD_NUMBER_2 = 17;
+  private HistoryImpl history = new HistoryImpl();
 
   private IterableMap dimensionMap;
   private String defaultDimensionName = ExpressionMatrix.DIMENSION_M;
@@ -939,6 +943,53 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   }
 
   /**
+   * Count the entries of the expression matrix that pass the filter.
+   * @param filter Filter to apply
+   * @return the number of entries that pass the filter
+   */
+  public int count(final BiologicalFilter filter) {
+
+    if (filter == null)
+      return 0;
+
+    if (!(filter instanceof ExpressionMatrixFilter))
+      throw new NividicRuntimeException(
+          "Only BioAssayfilter can filter BioAssay");
+
+    return count((ExpressionMatrixFilter) filter);
+  }
+
+  /**
+   * Count the entries of the expression matrix that pass the filter.
+   * @param filter Filter to apply
+   * @return the number of entries that pass the filter
+   */
+  public int count(final ExpressionMatrixFilter filter) {
+
+    if (filter == null)
+      return 0;
+
+    return filter.count(this);
+  }
+
+  /**
+   * Create a submatrix of the matrix as the result of a filter.
+   * @param filter Filter to apply
+   * @return an expression matrix
+   */
+  public ExpressionMatrix filter(final BiologicalFilter filter) {
+
+    if (filter == null)
+      return null;
+
+    if (!(filter instanceof ExpressionMatrixFilter))
+      throw new NividicRuntimeException(
+          "Only BiologicalListFilter can filter BiologicalList");
+
+    return filter((ExpressionMatrixFilter) filter);
+  }
+
+  /**
    * Create a submatrix of the matrix as the result of a filter.
    * @param filter Filter to apply
    * @return an expression matrix
@@ -1047,6 +1098,24 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       addDimension(dimensions[i]);
 
     setDefaultDimensionName(matrix.getDefaultDimensionName());
+  }
+
+  /**
+   * Get the history of the biological object.
+   * @return The history object of the object
+   */
+  public History getHistory() {
+
+    return this.history;
+  }
+
+  /**
+   * Copy the BioAssay Object.
+   * @return a copy of the biological object
+   */
+  public BioAssay copy() {
+
+    throw new NividicRuntimeException("copy() is not yet implemented.");
   }
 
 }

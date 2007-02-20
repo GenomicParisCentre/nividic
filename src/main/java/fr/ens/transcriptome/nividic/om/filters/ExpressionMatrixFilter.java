@@ -29,7 +29,8 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
  * This interface defines how to filter ExpressionMatrixDimension Objects
  * @author Lory Montout
  */
-public interface ExpressionMatrixFilter {
+public interface ExpressionMatrixFilter extends
+    BiologicalFilter<ExpressionMatrix> {
 
   /**
    * Filter a ExpressionMatrix object.
@@ -40,5 +41,12 @@ public interface ExpressionMatrixFilter {
    */
   ExpressionMatrix filter(ExpressionMatrix em)
       throws ExpressionMatrixRuntimeException;
+
+  /**
+   * Count the number of the row that pass the filter
+   * @param em The matrix to filter
+   * @return the number of rows that pass the filter
+   */
+  int count(ExpressionMatrix em);
 
 }
