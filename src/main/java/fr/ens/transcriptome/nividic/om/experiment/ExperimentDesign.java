@@ -39,7 +39,7 @@ import fr.ens.transcriptome.nividic.om.AnnotationFactory;
  * This class defines an experiement design.
  * @author Laurent Jourdren
  */
-public class ExperimentDesign implements Annotatable, ExperimentDesignListener {
+public class ExperimentDesign implements Annotable, ExperimentDesignListener {
 
   private String name;
   private BidiMap parameters = new DualHashBidiMap();

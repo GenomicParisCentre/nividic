@@ -26,7 +26,7 @@ package fr.ens.transcriptome.nividic.om;
  * This interface define an object which can be annotated.
  * @author Laurent Jourdren
  */
-public interface Annotatable {
+public interface Annotable {
 
   /**
    * Should return the associated annotation object.
