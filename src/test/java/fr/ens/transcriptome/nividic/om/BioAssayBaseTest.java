@@ -68,18 +68,6 @@ public class BioAssayBaseTest extends TestCase {
     super(arg0);
   }
 
-  public void testGetName() {
-
-    BioAssayBase b = getNewBioAssayBase();
-
-    assertNotNull(b);
-
-    b.setName(null);
-    b.setName("ma puce");
-    assertEquals("ma puce", b.getName());
-
-  }
-
   public void testGetDataInt() throws BioAssayRuntimeException {
 
     BioAssayBase b = getNewBioAssayBase();
@@ -406,16 +394,14 @@ public class BioAssayBaseTest extends TestCase {
     assertNotNull(b.getDataFieldString("tutu"));
 
     assertEquals(ids1, b.getDataFieldString("tutu"));
-    
+
     try {
-      
-      b.renameField("titi",BioAssayBase.FIELD_NAME_LOCATION);
+
+      b.renameField("titi", BioAssayBase.FIELD_NAME_LOCATION);
       assertTrue(false);
-    }
-    catch (BioAssayRuntimeException e) {
+    } catch (BioAssayRuntimeException e) {
       assertTrue(true);
     }
-    
 
   }
 

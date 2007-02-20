@@ -44,6 +44,18 @@ public class BioAssayTest extends TestCase {
     super(arg0);
   }
 
+  public void testGetName() {
+
+    BioAssay b = getNewBioAssay();
+
+    assertNotNull(b);
+
+    b.setName(null);
+    b.setName("ma puce");
+    assertEquals("ma puce", b.getName());
+
+  }
+
   /*
    * Test for VectorInt getLocs()
    */
@@ -94,91 +106,92 @@ public class BioAssayTest extends TestCase {
    */
   public void testGetLocsVectorIntVectorIntVectorIntVectorInt() {
 
+    // try {
+    BioAssay b = getNewBioAssay();
+
+    // String[] vids = ids1;
+
+    /*
+     * VectorInt vlLB = new VectorInt(locLB); VectorInt vlCB = new
+     * VectorInt(locCB); VectorInt vlL = new VectorInt(locL); VectorInt vlC =
+     * new VectorInt(locC);
+     */
+    int size = 10000;
+    int[] vlLB = getRandomInt(size, 0, 64);
+    int[] vlCB = getRandomInt(size, 0, 64);
+    int[] vlL = getRandomInt(size, 0, 1024);
+    int[] vlC = getRandomInt(size, 0, 1024);
+
+    b.setLocations(null);
+
     try {
-      BioAssay b = getNewBioAssay();
+      b.setLocations(null, null, null, null);
+      assertTrue(false);
+    } catch (BioAssayRuntimeException e) {
+      assertTrue(true);
+    }
 
-      //String[] vids = ids1;
+    try {
+      b.setLocations(vlLB, null, null, null);
+      assertTrue(false);
+    } catch (BioAssayRuntimeException e) {
+      assertTrue(true);
+    }
+    try {
+      b.setLocations(null, vlCB, null, null);
+      assertTrue(false);
+    } catch (BioAssayRuntimeException e) {
+      assertTrue(true);
+    }
+    try {
+      b.setLocations(null, null, vlL, null);
+      assertTrue(false);
+    } catch (BioAssayRuntimeException e) {
+      assertTrue(true);
+    }
+    try {
+      b.setLocations(null, null, null, vlC);
+      assertTrue(false);
+    } catch (BioAssayRuntimeException e) {
+      assertTrue(true);
+    }
 
-      /*
-       * VectorInt vlLB = new VectorInt(locLB); VectorInt vlCB = new
-       * VectorInt(locCB); VectorInt vlL = new VectorInt(locL); VectorInt vlC =
-       * new VectorInt(locC);
-       */
-      int size = 100000;
-      int[] vlLB = getRandomInt(size, 0, 64);
-      int[] vlCB = getRandomInt(size, 0, 64);
-      int[] vlL = getRandomInt(size, 0, 1024);
-      int[] vlC = getRandomInt(size, 0, 1024);
-
-      b.setLocations(null);
-      try {
-        b.setLocations(null, null, null, null);
-        assertTrue(false);
-      } catch (Exception e) {
-        assertTrue(true);
-      }
-      try {
-        b.setLocations(vlLB, null, null, null);
-        assertTrue(false);
-      } catch (Exception e) {
-        assertTrue(true);
-      }
-      try {
-        b.setLocations(null, vlCB, null, null);
-        assertTrue(false);
-      } catch (Exception e) {
-        assertTrue(true);
-      }
-      try {
-        b.setLocations(null, null, vlL, null);
-        assertTrue(false);
-      } catch (Exception e) {
-        assertTrue(true);
-      }
-      try {
-        b.setLocations(null, null, null, vlC);
-        assertTrue(false);
-      } catch (Exception e) {
-        assertTrue(true);
-      }
-
-      try {
-        b.setLocations(vlLB, vlCB, vlL, vlC);
-        assertTrue(true);
-      } catch (Exception e) {
-        assertTrue(false);
-      }
-
-      int[] rlLB = new int[b.size()];
-      int[] rlCB = new int[b.size()];
-      int[] rlL = new int[b.size()];
-      int[] rlC = new int[b.size()];
-
-      try {
-        b.getLocations(null, null, null, null);
-        assertTrue(false);
-      } catch (Exception e) {
-        assertTrue(true);
-      }
-
-      try {
-
-        b.getLocations(rlLB, rlCB, rlL, rlC);
-        assertTrue(true);
-      } catch (Exception e) {
-        assertTrue(false);
-      }
-
-      assertTrue(Arrays.equals(vlLB, rlLB));
-      assertTrue(Arrays.equals(vlLB, rlLB));
-      assertTrue(Arrays.equals(vlL, rlL));
-      assertTrue(Arrays.equals(vlC, rlC));
-
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println(e.getMessage());
+    try {
+      b.setLocations(vlLB, vlCB, vlL, vlC);
+      assertTrue(true);
+    } catch (BioAssayRuntimeException e) {
       assertTrue(false);
     }
+
+    int[] rlLB = new int[b.size()];
+    int[] rlCB = new int[b.size()];
+    int[] rlL = new int[b.size()];
+    int[] rlC = new int[b.size()];
+
+    try {
+      b.getLocations(null, null, null, null);
+      assertTrue(false);
+    } catch (BioAssayRuntimeException e) {
+      assertTrue(true);
+    }
+
+    try {
+
+      b.getLocations(rlLB, rlCB, rlL, rlC);
+      assertTrue(true);
+    } catch (BioAssayRuntimeException e) {
+      assertTrue(false);
+    }
+
+    assertTrue(Arrays.equals(vlLB, rlLB));
+    assertTrue(Arrays.equals(vlLB, rlLB));
+    assertTrue(Arrays.equals(vlL, rlL));
+    assertTrue(Arrays.equals(vlC, rlC));
+
+    /*
+     * } catch (Exception e) { e.printStackTrace();
+     * System.out.println(e.getMessage()); assertTrue(false); }
+     */
   }
 
   public void testGetReds() {
@@ -350,9 +363,9 @@ public class BioAssayTest extends TestCase {
     }
 
   }
-  
+
   public void testIsEmpty() {
-    
+
   }
 
 }
