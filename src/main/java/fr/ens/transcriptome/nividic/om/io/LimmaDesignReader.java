@@ -1,0 +1,225 @@
+/*
+ *                      Nividic development code
+ *
+ * This code may be freely distributed and modified under the
+ * terms of the GNU Lesser General Public Licence.  This should
+ * be distributed with the code.  If you do not have a copy,
+ * see:
+ *
+ *      http://www.gnu.org/copyleft/lesser.html
+ *
+ * Copyright for this code is held jointly by the microarray platform
+ * of the École Normale Supérieure and the individual authors.
+ * These should be listed in @author doc comments.
+ *
+ * For more information on the Nividic project and its aims,
+ * or to join the Nividic mailing list, visit the home page
+ * at:
+ *
+ *      http://www.transcriptome.ens.fr/nividic
+ *
+ */
+
+package fr.ens.transcriptome.nividic.om.io;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
+import fr.ens.transcriptome.nividic.om.Design;
+import fr.ens.transcriptome.nividic.om.DesignFactory;
+import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
+
+public class LimmaDesignReader extends DesignReader {
+
+  private static final String[] TARGET_FIELDS = {"Cy3", "Cy5"};
+  private static final String SLIDENUMBER_FIELD = "SlideNumber";
+  private static final String NAME_FIELD = "Name";
+  private static final String FILENAME_FIELD = "FileName";
+
+  @Override
+  public Design read() throws NividicIOException {
+
+    setBufferedReader(new BufferedReader(
+        new InputStreamReader(getInputStream())));
+
+    BufferedReader br = getBufferedReader();
+    final String separator = getSeparatorField();
+    String line = null;
+
+    Map<String, List<String>> data = new HashMap<String, List<String>>();
+    List<String> fieldnames = new ArrayList<String>();
+
+    boolean firstLine = true;
+    String ref = null;
+
+    try {
+
+      while ((line = br.readLine()) != null) {
+
+        final String empty = line.trim();
+        if ("".equals(empty) || empty.startsWith("#"))
+          continue;
+
+        final String[] fields = line.split(separator);
+
+        if (firstLine) {
+
+          for (int i = 0; i < fields.length; i++) {
+
+            final String field = fields[i].trim();
+            data.put(field, new ArrayList<String>());
+            fieldnames.add(field);
+          }
+
+          firstLine = false;
+        } else {
+
+          for (int i = 0; i < fields.length; i++) {
+
+            final String field = fields[i].trim();
+
+            final String fieldName = fieldnames.get(i);
+
+            List l = data.get(fieldName);
+
+            if ((SLIDENUMBER_FIELD.equals(fieldName) || NAME_FIELD
+                .equals(fieldName))
+                && l.contains(field))
+              throw new NividicIOException(
+                  "Invalid file format: SlideNumber or Name fields can't contains duplicate values");
+
+            l.add(field);
+
+          }
+
+        }
+
+      }
+    } catch (IOException e) {
+
+      throw new NividicIOException("Error while reading the file");
+    }
+
+    try {
+      getBufferedReader().close();
+    } catch (IOException e) {
+      throw new NividicIOException("Error while closing the file"
+          + e.getMessage());
+    }
+
+    if (!data.containsKey(SLIDENUMBER_FIELD))
+      throw new NividicIOException("Invalid file format: No SlideNumber field");
+
+    if (!data.containsKey(FILENAME_FIELD))
+      throw new NividicIOException("Invalid file format: No FileName field");
+
+    Design design = DesignFactory.createEmptyDesign();
+
+    // Set Id field
+    boolean refName = data.containsKey(NAME_FIELD);
+
+    List<String> ids = data.get(refName ? NAME_FIELD : SLIDENUMBER_FIELD);
+    final int count = ids.size();
+
+    for (final String id : ids)
+      design.addSlide(id);
+
+    // Set SlideNumber field
+    if (refName) {
+
+      design.addDescriptionField(SlideDescription.SERIAL_NUMBER_FIELD);
+
+      List<String> slides = data.get(SLIDENUMBER_FIELD);
+
+      for (int i = 0; i < count; i++)
+        design.getSlideDescription(ids.get(i)).setSerialNumber(slides.get(i));
+    }
+
+    // Set FileName field
+    List<String> filenames = data.get(FILENAME_FIELD);
+    for (int i = 0; i < count; i++)
+      design.setSource(ids.get(i), filenames.get(i));
+
+    for (String fd : fieldnames) {
+
+      if (SLIDENUMBER_FIELD.equals(fd) || NAME_FIELD.equals(fd)
+          || FILENAME_FIELD.equals(fd))
+        continue;
+
+      boolean isTarget = false;
+
+      for (int j = 0; j < TARGET_FIELDS.length; j++) {
+
+        final String target = TARGET_FIELDS[j];
+        if (target.equals(fd)) {
+
+          design.addLabel(fd);
+
+          List<String> samples = data.get(fd);
+
+          int k = 0;
+          for (String sample : samples) {
+
+            if (!design.getSamples().isSample(sample))
+              design.getSamples().addSample(sample);
+
+            design.setTarget(ids.get(k++), target, sample);
+          }
+
+          isTarget = true;
+          break;
+        }
+
+      }
+
+      if (!isTarget) {
+
+        design.addDescriptionField(fd);
+        List<String> descriptions = data.get(fd);
+
+        int k = 0;
+        for (String desc : descriptions)
+          design.setDescription(ids.get(k++), fd, desc);
+
+      }
+
+    }
+
+    return design;
+  }
+
+  //
+  // Constructor
+  //
+
+  /**
+   * Public constructor.
+   * @param file file to read
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public LimmaDesignReader(final File file) throws NividicIOException {
+
+    super(file);
+
+  }
+
+  /**
+   * Public constructor
+   * @param is Input stream to read
+   * @throws NividicIOException if the stream is null
+   */
+  public LimmaDesignReader(final InputStream is) throws NividicIOException {
+
+    super(is);
+  }
+
+}

@@ -400,6 +400,29 @@ public final class BioAssayUtils {
   }
 
   /**
+   * Swap M values.
+   * @param bioAssay BioAssay object to process
+   */
+  public static void swap(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      throw new NividicRuntimeException(NividicRuntimeException.NULL_POINTER,
+          "bioassay");
+
+    if (!bioAssay.isMs())
+      throw new NividicRuntimeException(
+          "The M field of the bioAssay is not set");
+
+    double[] ms = bioAssay.getMs();
+
+    for (int i = 0; i < ms.length; i++) {
+      ms[i] = -ms[i];
+    }
+
+    bioAssay.setMs(ms);
+  }
+
+  /**
    * Calculate ratio value for bioassay object
    * @param bioAssay object which we want calculate the ratio
    */

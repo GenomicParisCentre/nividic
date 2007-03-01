@@ -1,0 +1,17 @@
+SlideNumber	Name	FileName	Cy3	Cy5
+1	c1	c1.spot	Ref	wild type
+2	c2	c2.spot	Ref	wild type
+3	c3	c3.spot	Ref	wild type
+4	c4	c4.spot	Ref	wild type
+5	c5	c5.spot	Ref	wild type
+6	c6	c6.spot	Ref	wild type
+7	c7	c7.spot	Ref	wild type
+8	c8	c8.spot	Ref	wild type
+9	k1	k1.spot	Ref	ApoAI KO
+10	k2	k2.spot	Ref	ApoAI KO
+11	k3	k3.spot	Ref	ApoAI KO
+12	k4	k4.spot	Ref	ApoAI KO
+13	k5	k5.spot	Ref	ApoAI KO
+14	k6	k6.spot	Ref	ApoAI KO
+15	k7	k7.spot	Ref	ApoAI KO
+16	k8	k8.spot	Ref	ApoAI KO
