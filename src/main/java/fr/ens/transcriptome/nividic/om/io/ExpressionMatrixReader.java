@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
-import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**

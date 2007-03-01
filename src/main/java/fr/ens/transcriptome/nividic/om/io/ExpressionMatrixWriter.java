@@ -92,7 +92,7 @@ public abstract class ExpressionMatrixWriter {
       throws NividicIOException;
 
   //
-  // Constructor
+  // Constructors
   //
 
   /**
