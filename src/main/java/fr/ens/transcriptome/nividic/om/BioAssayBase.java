@@ -88,12 +88,6 @@ public interface BioAssayBase {
   String[] getFields();
 
   /**
-   * Get the annotations.
-   * @return An annotations object
-   */
-  Annotation getAnnotation();
-
-  /**
    * Returns an array with the location of all spots.
    * @return All the locations
    */

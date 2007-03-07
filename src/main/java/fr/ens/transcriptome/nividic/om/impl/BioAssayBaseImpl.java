@@ -23,15 +23,14 @@
 package fr.ens.transcriptome.nividic.om.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
-import org.apache.commons.collections.primitives.ArrayDoubleList;
 import org.apache.commons.collections.primitives.ArrayIntList;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
-import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssayBase;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 
@@ -54,38 +53,18 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
    * mecanisme de Listener.
    */
 
-  private String name;
-  private Hashtable hashString = new Hashtable();
-  private Hashtable hashInteger = new Hashtable();
-  private Hashtable hashDouble = new Hashtable();
-  private Hashtable hashDir = new Hashtable();
-  private Hashtable indexLoc = new Hashtable();
-  private Annotation annotation = new SimpleAnnotationsImpl();
-  private Hashtable references = new Hashtable();
+  private Map<String, String[]> hashString = new HashMap<String, String[]>();
+  private Map<String, int[]> hashInteger = new HashMap<String, int[]>();
+  private Map<String, double[]> hashDouble = new HashMap<String, double[]>();
+  private Map<String, Integer> hashDir = new HashMap<String, Integer>();
+  private Map<Integer, Integer> indexLoc = new HashMap<Integer, Integer>();
+  private Map<String, int[]> references = new HashMap<String, int[]>();
   private String referenceField;
   private int size = -1;
-
-  private static int count;
 
   //
   // Getters
   //
-
-  /**
-   * Get the name of the BioAssay. This field can't be null.
-   * @return The name of the DNA chip
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * Get the annotation of the object.
-   * @return An annotation object
-   */
-  public Annotation getAnnotation() {
-    return this.annotation;
-  }
 
   /**
    * Return an integer array with all data from a field.
@@ -97,7 +76,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     if (field == null)
       return null;
 
-    return (int[]) this.hashInteger.get(field);
+    return this.hashInteger.get(field);
   }
 
   /**
@@ -109,7 +88,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     if (field == null)
       return null;
-    return (double[]) this.hashDouble.get(field);
+    return this.hashDouble.get(field);
   }
 
   /**
@@ -121,7 +100,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     if (field == null)
       return null;
-    return (String[]) this.hashString.get(field);
+    return this.hashString.get(field);
   }
 
   /**
@@ -180,17 +159,6 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
   //
   // Setters
   //
-
-  /**
-   * Set the name of the BioDefinit le nom de la biopuce.
-   * @param name The DNA chip name
-   */
-  public void setName(final String name) {
-
-    if (name == null)
-      return;
-    this.name = name;
-  }
 
   /**
    * Set the data for a field.
@@ -298,7 +266,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     // reconstruction de l'index
     this.indexLoc.clear();
     for (int i = 0; i < locations.length; i++)
-      this.indexLoc.put(new Integer(locations[i]), new Integer(i));
+      this.indexLoc.put(locations[i], i);
 
   }
 
@@ -386,7 +354,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     if (!this.hashDir.containsKey(field))
       return -1;
-    return ((Integer) this.hashDir.get(field)).intValue();
+    return this.hashDir.get(field);
   }
 
   /**
@@ -427,7 +395,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     Iterator is = this.hashString.keySet().iterator();
     while (is.hasNext()) {
-      int newlen = ((ArrayList) this.hashString.get(is.next())).size();
+      int newlen = this.hashString.get(is.next()).length;
       if (len == -1)
         len = newlen;
       else if (len != newlen)
@@ -436,24 +404,16 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     Iterator ii = this.hashInteger.keySet().iterator();
     while (is.hasNext()) {
-      if (len != ((ArrayIntList) this.hashString.get(ii.next())).size())
+      if (len != this.hashString.get(ii.next()).length)
         return false;
     }
     Iterator id = this.hashDouble.keySet().iterator();
     while (is.hasNext()) {
-      if (len != ((ArrayDoubleList) this.hashString.get(id.next())).size())
+      if (len != (this.hashString.get(id.next()).length))
         return false;
     }
 
     return true;
-  }
-
-  /**
-   * Get the name of the BioAssayBase.
-   * @return The name of the BioAssayBase
-   */
-  public String toString() {
-    return getName();
   }
 
   /**
@@ -486,15 +446,22 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
       String id = refs[i];
 
-      ArrayIntList locs = (ArrayIntList) this.references.get(id);
+      // ArrayIntList locs = (ArrayIntList) this.references.get(id);
+      int[] locs = this.references.get(id);
 
       if (locs == null) {
-        locs = new ArrayIntList();
-        locs.add(i);
-        this.references.put(id, locs);
-      } else
-        locs.add(i);
 
+        locs = new int[1];
+        locs[0] = i;
+
+        this.references.put(id, locs);
+      } else {
+
+        int[] newLocs = new int[locs.length + 1];
+        System.arraycopy(locs, 0, newLocs, 0, locs.length);
+        newLocs[newLocs.length - 1] = i;
+        this.references.put(id, newLocs);
+      }
     }
 
   }
@@ -519,15 +486,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     if (id == null)
       return null;
 
-    ArrayIntList ail = (ArrayIntList) this.references.get(id);
-    if (ail == null)
-      return null;
-
-    int[] result = new int[ail.size()];
-    for (int i = 0; i < result.length; i++)
-      result[i] = ail.get(i);
-
-    return result;
+    return this.references.get(id);
   }
 
   /**
@@ -535,14 +494,11 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
    */
   public void clear() {
 
-    this.name = null;
     this.hashString.clear();
     this.hashInteger.clear();
     this.hashDouble.clear();
     this.hashDir.clear();
     this.indexLoc.clear();
-    if (this.annotation != null)
-      this.annotation.clear();
     this.references.clear();
     this.referenceField = null;
     this.size = -1;
@@ -620,21 +576,21 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     case BioAssayBase.DATATYPE_INTEGER:
 
-      int[] intValues = (int[]) this.hashInteger.get(oldName);
+      int[] intValues = this.hashInteger.get(oldName);
       this.hashInteger.remove(oldName);
       this.hashInteger.put(newName, intValues);
       break;
 
     case BioAssayBase.DATATYPE_DOUBLE:
 
-      double[] doubleValues = (double[]) this.hashDouble.get(oldName);
+      double[] doubleValues = this.hashDouble.get(oldName);
       this.hashDouble.remove(oldName);
       this.hashDouble.put(newName, doubleValues);
       break;
 
     case BioAssayBase.DATATYPE_STRING:
 
-      String[] stringValues = (String[]) this.hashString.get(oldName);
+      String[] stringValues = this.hashString.get(oldName);
       this.hashString.remove(oldName);
       this.hashString.put(newName, stringValues);
       break;
@@ -701,19 +657,10 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
   //
 
   /**
-   * Create a BioAssayImpl object with <b>name </b> name.
-   * @param name The name of the object.
-   */
-  public BioAssayBaseImpl(final String name) {
-    count++;
-    setName(name);
-  }
-
-  /**
    * Create a BioAssay object. The object's name if ramdomly generated,
    */
-  public BioAssayBaseImpl() {
-    count++;
+  BioAssayBaseImpl() {
+
   }
 
 }

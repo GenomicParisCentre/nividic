@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.Hashtable;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
+import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
@@ -53,11 +54,30 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   static final long serialVersionUID = 8059012751969392959L;
 
   /** Vector index for location (loc,index). */
-  private Hashtable indexLoc = new Hashtable();
-
+  // private Hashtable indexLoc = new Hashtable();
   private SpotEmptyTester spotEmptyTester;
 
+  private BiologicalName name = new BiologicalName(this);
+  private Annotation annotation = new SimpleAnnotationsImpl();
   private HistoryImpl history = new HistoryImpl();
+
+  private static int count;
+
+  /**
+   * Get the name of the BioAssay. This field can't be null.
+   * @return The name of the DNA chip
+   */
+  public String getName() {
+    return name.getName();
+  }
+
+  /**
+   * Get the annotation of the object.
+   * @return An annotation object
+   */
+  public Annotation getAnnotation() {
+    return this.annotation;
+  }
 
   /**
    * Return some int vectors containing coordinates of the array spot.
@@ -145,7 +165,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
       // Construction du vecteur des localisations codees
       resultat[i] = loc;
       // Construction de la map d'index des localisations
-      this.indexLoc.put(new Integer(loc), new Integer(i));
+      // this.indexLoc.put(new Integer(loc), new Integer(i));
     } // Ajout du vecteur des localisations a la classe
     setLocations(resultat);
     return true;
@@ -708,12 +728,42 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   }
 
   /**
+   * Set the name of the BioDefinit le nom de la biopuce.
+   * @param name The DNA chip name
+   */
+  public void setName(final String name) {
+
+    this.name.setName(name);
+  }
+
+  /**
+   * Clear data in the object.
+   */
+  public void clear() {
+
+    super.clear();
+
+    this.name.clear();
+
+    if (this.annotation != null)
+      this.annotation.clear();
+  }
+
+  /**
    * Copy the BioAssay Object.
    * @return a copy of the biological object
    */
   public BioAssay copy() {
 
     throw new NividicRuntimeException("copy() is not yet implemented.");
+  }
+
+  /**
+   * Get the name of the BioAssayBase.
+   * @return The name of the BioAssayBase
+   */
+  public String toString() {
+    return getName();
   }
 
   /**
@@ -730,9 +780,19 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   //
 
   /**
-   * Public constructor.
+   * Create a BioAssayImpl object with <b>name </b> name.
+   * @param name The name of the object.
+   */
+  public BioAssayImpl(final String name) {
+    count++;
+    setName(name);
+  }
+
+  /**
+   * Create a BioAssay object. The object's name if ramdomly generated,
    */
   public BioAssayImpl() {
+    count++;
   }
 
 }

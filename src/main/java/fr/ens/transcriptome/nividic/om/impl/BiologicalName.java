@@ -51,9 +51,26 @@ class BiologicalName {
     this.name = name;
   }
 
+  /**
+   * Clear the name.
+   */
+  public void clear() {
+
+    this.name = null;
+  }
+
   //
   // Constructor
   //
+
+  /**
+   * Public constructor
+   * @param o instance of the class
+   */
+  BiologicalName(final Object o) {
+
+    this(o.getClass());
+  }
 
   /**
    * Public constructor
