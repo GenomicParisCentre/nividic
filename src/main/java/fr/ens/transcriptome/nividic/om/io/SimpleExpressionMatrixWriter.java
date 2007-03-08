@@ -27,6 +27,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
@@ -45,6 +49,11 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
   /** Dimension separator. */
   public static final String DIMENSION_SEPARATOR = "$";
 
+  private boolean writeAllColumns = true;
+  private boolean writeAllDimensions = true;
+  private Set<String> columnsToWrite = new HashSet<String>();
+  private Set<String> dimensionsToWrite = new HashSet<String>();
+  private boolean showDimensionName = true;
 
   /**
    * Write data.
@@ -61,11 +70,13 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
     final int countRow = em.getRowCount();
 
     final String[] ids = em.getRowIds();
-    final String[] columnNames = em.getColumnNames();
-    final ExpressionMatrixDimension[] dimensions = em.getDimensions();
+    final String[] columnNames = getColumns(em);
+    final ExpressionMatrixDimension[] dimensions = getDimensions(em);
     final Translator annot = getTranslator();
 
     try {
+
+      // Write header
 
       bw.write(type);
 
@@ -83,12 +94,18 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
         for (int j = 0; j < dimensions.length; j++) {
           bw.write(SEPARATOR);
           bw.write(columnNames[i]);
-          bw.write(DIMENSION_SEPARATOR);
-          bw.write(dimensions[j].getDimensionName());
+          if (dimensions.length > 1 || this.showDimensionName) {
+            bw.write(DIMENSION_SEPARATOR);
+            bw.write(dimensions[j].getDimensionName());
+          }
         }
       }
 
       bw.newLine();
+
+      // Write data
+
+      final double[][] values = getValues(columnNames, dimensions);
 
       for (int i = 0; i < countRow; i++) {
 
@@ -103,12 +120,10 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
           }
         }
 
-        for (int j = 0; j < columnNames.length; j++) {
-          for (int k = 0; k < dimensions.length; k++) {
-            bw.write(SEPARATOR);
-            bw.write(Double
-                .toString(dimensions[k].getValue(id, columnNames[j])));
-          }
+        for (int j = 0; j < values.length; j++) {
+
+          bw.write(SEPARATOR);
+          bw.write(Double.toString(values[j][i]));
         }
 
         bw.newLine();
@@ -123,12 +138,115 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
   }
 
   /**
+   * Create a bi dimensional array of double with matrix values
+   * @param columnNames names of the columns to write
+   * @param dimensions dimensions to write
+   * @return a bi dimensional array of double with matrix values
+   */
+  private static double[][] getValues(final String[] columnNames,
+      final ExpressionMatrixDimension[] dimensions) {
+
+    final double[][] result = new double[columnNames.length * dimensions.length][];
+
+    int count = 0;
+
+    for (int j = 0; j < columnNames.length; j++)
+      for (int k = 0; k < dimensions.length; k++)
+        result[count++] = dimensions[k].getColumnToArray(columnNames[j]);
+
+    return result;
+  }
+
+  /**
+   * Get the name of the column to write
+   * @param em ExpressionMatrix
+   * @return The name of the column to write
+   */
+  private String[] getColumns(final ExpressionMatrix em) {
+
+    if (this.writeAllColumns)
+      return em.getColumnNames();
+
+    List<String> s = new ArrayList<String>();
+
+    String[] cols = em.getColumnNames();
+
+    for (int i = 0; i < cols.length; i++)
+      if (this.columnsToWrite.contains(cols[i]))
+        s.add(cols[i]);
+
+    return s.toArray(new String[s.size()]);
+  }
+
+  /**
+   * Get the dimension to write
+   * @param em ExpressionMatrix
+   * @return The dimensions to write
+   */
+  private ExpressionMatrixDimension[] getDimensions(final ExpressionMatrix em) {
+
+    if (this.writeAllDimensions)
+      return em.getDimensions();
+
+    List<String> dimensionNames = new ArrayList<String>();
+
+    String[] cols = em.getDimensionNames();
+
+    for (int i = 0; i < cols.length; i++)
+      if (this.dimensionsToWrite.contains(cols[i]))
+        dimensionNames.add(cols[i]);
+
+    ExpressionMatrixDimension[] result = new ExpressionMatrixDimension[dimensionNames
+        .size()];
+
+    int count = 0;
+    for (String name : dimensionNames)
+      result[count++] = em.getDimension(name);
+
+    return result;
+  }
+
+  /**
+   * Add a dimension to write.
+   * @param dimensionName Dimension to write to add
+   */
+  public void addDimensionToWrite(final String dimensionName) {
+
+    this.writeAllDimensions = false;
+    this.dimensionsToWrite.add(dimensionName);
+  }
+
+  /**
+   * Add a column to write.
+   * @param columnName Column to write to add
+   */
+  public void addColumnToWrite(final String columnName) {
+
+    this.writeAllColumns = false;
+    this.columnsToWrite.add(columnName);
+  }
+
+  /**
+   * Set if the dimension name must be wrote if there is only one dimension.
+   * @param enable The value to set
+   */
+  public void setShowDimensionName(final boolean enable) {
+    
+    this.showDimensionName=enable;
+  }
+  
+  //
+  // Constructors
+  //
+
+  /**
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
    *           the file is null.
    */
-  public SimpleExpressionMatrixWriter(final File file) throws NividicIOException {
+  public SimpleExpressionMatrixWriter(final File file)
+      throws NividicIOException {
     super(file);
   }
 
