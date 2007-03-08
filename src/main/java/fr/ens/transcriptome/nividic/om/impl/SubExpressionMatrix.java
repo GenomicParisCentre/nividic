@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.om.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.collections.IterableMap;
@@ -33,6 +34,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
+import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
@@ -1222,6 +1224,27 @@ public class SubExpressionMatrix implements ExpressionMatrix,
       setDefaultDimensionName(getDimensionNames()[0]);
 
   }
+
+  /**
+   * Clear the biological object.
+   */
+  public void clear() {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
+   * Get the size of the biological object.
+   * @return The size of the biological object
+   */
+  public int size() {
+
+    return getRowCount();
+  }
+
+  //
+  // Constructors
+  //
 
   SubExpressionMatrix(final ExpressionMatrix em, final String[] ids,
       final String[] columns) {

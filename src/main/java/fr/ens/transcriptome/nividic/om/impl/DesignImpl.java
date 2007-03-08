@@ -50,7 +50,7 @@ import fr.ens.transcriptome.nividic.om.samples.SamplesFactory;
  */
 public class DesignImpl implements Design {
 
-  private String name;
+  private BiologicalName name = new BiologicalName(this);
   private HistoryImpl history = new HistoryImpl();
   private Annotation annotation = AnnotationFactory.createAnnotation();
 
@@ -83,7 +83,7 @@ public class DesignImpl implements Design {
    */
   public String getName() {
 
-    return this.name;
+    return this.name.getName();
   }
 
   /**
@@ -92,7 +92,7 @@ public class DesignImpl implements Design {
    */
   public void setName(final String name) {
 
-    this.name = name;
+    this.name.setName(name);
   }
 
   /**
@@ -893,6 +893,41 @@ public class DesignImpl implements Design {
   public BioAssay copy() {
 
     throw new NividicRuntimeException("copy() is not yet implemented.");
+  }
+
+  /**
+   * Clear the biological object.
+   */
+  public void clear() {
+
+    this.name.clear();
+    this.annotation.clear();
+    this.history.clear();
+    this.samples.clear();
+
+    this.slidesOrder.clear();
+    this.slides.clear();
+    this.slidesReverse.clear();
+    this.labels.clear();
+    this.labelsOrder.clear();
+    this.targets.clear();
+    this.sources.clear();
+    this.formats.clear();
+    this.bioassays.clear();
+    this.descriptionsFields.clear();
+    this.descriptionsOrder.clear();
+    this.descriptionData.clear();
+    this.countSlides = 0;
+    this.countLabels = 0;
+  }
+
+  /**
+   * Get the size of the biological object.
+   * @return The size of the biological object
+   */
+  public int size() {
+
+    return getSlideCount();
   }
 
 }

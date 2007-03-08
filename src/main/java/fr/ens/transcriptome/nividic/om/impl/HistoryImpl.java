@@ -75,6 +75,14 @@ class HistoryImpl implements History {
     return this.entries.size();
   }
 
+  /**
+   * Clear the history.
+   */
+  public void clear() {
+
+    this.entries.clear();
+  }
+
   //
   // Constructor
   //

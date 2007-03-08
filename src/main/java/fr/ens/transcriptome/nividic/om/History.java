@@ -55,4 +55,9 @@ public interface History {
    */
   List<HistoryEntry> getEntries();
 
+  /**
+   * Clear the history.
+   */
+  void clear();
+
 }

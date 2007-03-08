@@ -68,4 +68,15 @@ public interface BiologicalObject extends Annotable {
    */
   int count(BiologicalFilter filter);
 
+  /**
+   * Clear the biological object.
+   */
+  void clear(); 
+  
+  /**
+   * Get the size of the biological object.
+   * @return The size of the biological object
+   */
+  int size();
+  
 }

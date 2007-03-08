@@ -244,6 +244,16 @@ public class Samples {
     return this.parameters.size();
   }
 
+  /**
+   * Clear the samples.
+   */
+  public void clear() {
+    
+    this.parameters.clear();
+    this. samplesIds .clear();
+    this.data .clear(); 
+  }
+  
   //
   // Constructor
   //

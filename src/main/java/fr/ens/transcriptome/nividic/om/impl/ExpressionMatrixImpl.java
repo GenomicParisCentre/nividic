@@ -1141,4 +1141,21 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     throw new NividicRuntimeException("copy() is not yet implemented.");
   }
 
+  /**
+   * Clear the biological object.
+   */
+  public void clear() {
+
+    throw new NividicRuntimeException("Not yet implemented");
+  }
+
+  /**
+   * Get the size of the biological object.
+   * @return The size of the biological object
+   */
+  public int size() {
+
+    return getRowCount();
+  }
+
 }
