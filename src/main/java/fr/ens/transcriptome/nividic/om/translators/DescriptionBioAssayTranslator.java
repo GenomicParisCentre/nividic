@@ -23,8 +23,12 @@
 package fr.ens.transcriptome.nividic.om.translators;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.Design;
+import fr.ens.transcriptome.nividic.om.Slide;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
 
 /**
@@ -34,13 +38,14 @@ import fr.ens.transcriptome.nividic.om.SpotIterator;
 public class DescriptionBioAssayTranslator extends BasicTranslator {
 
   private static final String DESCRIPTION_FIELD = BioAssay.FIELD_NAME_DESCRIPTION;
-  private HashMap annotations = new HashMap();
+  private Map<String, String> annotations = new HashMap<String, String>();
 
   /**
    * Set the bioAssay.
    * @param bioAssay BioAssay to add
    */
   public void addBioAssay(final BioAssay bioAssay) {
+
     if (bioAssay == null)
       return;
 
@@ -57,12 +62,29 @@ public class DescriptionBioAssayTranslator extends BasicTranslator {
    * @param bioAssays BioAssays to add
    */
   public void addBioAssay(final BioAssay[] bioAssays) {
+
     if (bioAssays == null)
       return;
 
     for (int i = 0; i < bioAssays.length; i++) {
       addBioAssay(bioAssays[i]);
     }
+  }
+
+  /**
+   * Set the bioAssay from the design..
+   * @param design Design to add
+   */
+  public void addDesign(final Design design) {
+
+    if (design == null)
+      return;
+
+    List<Slide> slides = design.getSlides();
+
+    for (Slide s : slides)
+      addBioAssay(s.getBioAssay());
+
   }
 
   //
@@ -128,17 +150,17 @@ public class DescriptionBioAssayTranslator extends BasicTranslator {
     if (id == null)
       return null;
 
-    return (String) this.annotations.get(id);
+    return this.annotations.get(id);
   }
 
   /**
    * Clear the descriptions of the features.
    */
   public void clear() {
-    
+
     this.annotations.clear();
   }
-  
+
   //
   // Constructor
   //
@@ -147,16 +169,16 @@ public class DescriptionBioAssayTranslator extends BasicTranslator {
    * Public constructor.
    */
   public DescriptionBioAssayTranslator() {
-    
+
     setDefaultField(DESCRIPTION_FIELD);
   }
-  
+
   /**
    * Public constructor.
    * @param bioAssay BioAssay used for the annotation
    */
   public DescriptionBioAssayTranslator(final BioAssay bioAssay) {
-    
+
     this();
     addBioAssay(bioAssay);
   }
@@ -166,9 +188,19 @@ public class DescriptionBioAssayTranslator extends BasicTranslator {
    * @param bioAssays BioAssays used for the annotation
    */
   public DescriptionBioAssayTranslator(final BioAssay[] bioAssays) {
-    
+
     this();
     addBioAssay(bioAssays);
+  }
+
+  /**
+   * Public constructor.
+   * @param design Design used for the annotation
+   */
+  public DescriptionBioAssayTranslator(final Design design) {
+
+    this();
+    addDesign(design);
   }
 
 }
