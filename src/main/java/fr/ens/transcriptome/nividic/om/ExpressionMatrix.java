@@ -85,6 +85,12 @@ public interface ExpressionMatrix extends ExpressionMatrixBase,
       String translatorField);
 
   /**
+   * Add all the bioAssays of a design to the matrix.
+   * @param design Design to add
+   */
+  void addDesign(Design design);
+  
+  /**
    * Get a dimension.
    * @param dimensionName Name of the dimension to get
    * @return a dimension

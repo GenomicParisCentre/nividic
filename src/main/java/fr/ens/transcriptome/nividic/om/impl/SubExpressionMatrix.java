@@ -34,6 +34,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
@@ -318,6 +319,15 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public void addBioAssay(final BioAssay bioAssay, final String columnName,
       final Translator translator, final String translatorField) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
+   * Add all the bioAssays of a design to the matrix.
+   * @param design Design to add
+   */
+  public void addDesign(final Design design) {
 
     throwsExpressionMatrixRuntimeExceptionForIllegalActions();
   }

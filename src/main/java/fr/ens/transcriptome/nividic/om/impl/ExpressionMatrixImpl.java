@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.om.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -36,10 +37,12 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.History;
+import fr.ens.transcriptome.nividic.om.Slide;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
@@ -513,6 +516,26 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   public void addBioAssay(final BioAssay bioAssay) {
 
     addBioAssay(bioAssay, null, null, null);
+  }
+
+  /**
+   * Add all the bioAssays of a design to the matrix.
+   * @param design Design to add
+   */
+  public void addDesign(final Design design) {
+
+    if (design == null)
+      throw new NullPointerException("design is null");
+
+    final List<Slide> slides = design.getSlides();
+
+    for (Slide slide : slides) {
+
+      final BioAssay ba = slide.getBioAssay();
+      if (ba != null)
+        addBioAssay(ba);
+    }
+
   }
 
   /**
