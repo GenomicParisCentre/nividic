@@ -91,22 +91,15 @@ function readBioAssay(file, type, allFields, comma) {
 /**
  * Shortcut to read GPR file(s)
  * @param file File(s) to read
+ * @param allField read all fields
  * @return A BioAssay Object
  */
-function readGPR(file, comma) {
+function readGPR(file, allFields) {
 
-  return readBioAssay(file, "gpr", false, comma);
+  return readBioAssay(file, "gpr", allFields, false);
 }
 
-/**
- * Shortcut to read GPR file(s)
- * @param file File(s) to read
- * @return A BioAssay Object
- */
-function readGPR(file) {
 
-  return readGPR(file, false);
-}
 
 /**
  * Shortcut to read IDMA file(s)
@@ -118,17 +111,6 @@ function readIDMA(file, comma) {
 
   return readBioAssay(file, "idma", false, comma);
 }
-
-/**
- * Shortcut to read IDMA file(s)
- * @param file File(s) to read
- * @return A BioAssay Object
- */
-function readIDMA(file) {
-
-  return readIDMA(file,false);
-}
-
 
 /**
  * Shortcut to read total.summary file(s)

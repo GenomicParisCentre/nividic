@@ -69,3 +69,4 @@ function countNA(ba) {
   println("NaN without empty spots: " + nane + "/" + ne + " (" + (na/ba.size()*100).toFixed(2) + "%)");
 
 }
+

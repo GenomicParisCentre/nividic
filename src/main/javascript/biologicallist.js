@@ -36,7 +36,8 @@ function readBiologicalList(file, trim) {
   if (file instanceof Array) {
 
     var result = new Array;
-    for (i=0; i<file.length;i++) {
+
+    for (var i=0; i<file.length;i++) {
       
       with (nividicNames)  {
 
@@ -61,7 +62,7 @@ function readBiologicalList(file, trim) {
     }
   
     var result = reader.read();
-    result.setName(file[i].getName());
+    result.setName(file.getName());
     return result;
   }
 }
