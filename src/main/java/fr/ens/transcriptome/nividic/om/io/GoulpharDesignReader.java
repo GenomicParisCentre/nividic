@@ -110,15 +110,17 @@ public class GoulpharDesignReader extends DesignReader {
 
           String sourceFile = filename;
 
+          final Slide slide = design.getSlide(slideId);
+
           if (this.dataSourceNormalized) {
 
             if (goulpharAroma)
-              sourceFile = "normalised_chip" + count + ".txt";
+              sourceFile = "normalised_chip" + (count + 1) + ".txt";
             else
               sourceFile = rootFilename + GOULPHAR_RESULT_EXTENSION;
-          }
 
-          final Slide slide = design.getSlide(slideId);
+            slide.setSourceFormat(BioAssayFormat.IDMA);
+          }
 
           slide.setSource(sourceFile);
           slide.getDescription().setSerialNumber(sn);
