@@ -24,7 +24,7 @@ package fr.ens.transcriptome.nividic.om;
 
 import java.util.List;
 
-import fr.ens.transcriptome.nividic.datasources.DataSource;
+import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;

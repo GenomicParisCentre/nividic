@@ -29,14 +29,14 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
-import fr.ens.transcriptome.nividic.datasources.DataSource;
-import fr.ens.transcriptome.nividic.datasources.FileDataSource;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.datasources.DataSource;
+import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.DesignFilter;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;

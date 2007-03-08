@@ -25,13 +25,14 @@ package fr.ens.transcriptome.nividic.om.impl;
 import java.io.InputStream;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
-import fr.ens.transcriptome.nividic.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
+import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 
 /**
@@ -47,7 +48,8 @@ class SlideImpl implements Slide {
   // Getters
   // 
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#getName()
    */
   public String getName() {
@@ -60,7 +62,8 @@ class SlideImpl implements Slide {
     return slideName;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#getDescription()
    */
   public SlideDescription getDescription() {
@@ -73,7 +76,8 @@ class SlideImpl implements Slide {
     return this.design.getSlideDescription(slideName);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#getTarget(java.lang.String)
    */
   public String getTarget(final String label) {
@@ -86,7 +90,8 @@ class SlideImpl implements Slide {
     return this.design.getTarget(slideName, label);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#getSource()
    */
   public DataSource getSource() {
@@ -99,7 +104,8 @@ class SlideImpl implements Slide {
     return this.design.getSource(slideName);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#getSourceInfo()
    */
   public String getSourceInfo() {
@@ -116,7 +122,8 @@ class SlideImpl implements Slide {
   // Setters
   //
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#setName(java.lang.String)
    */
   public void setName(final String newName) {
@@ -129,8 +136,10 @@ class SlideImpl implements Slide {
     this.design.renameSlide(slideName, newName);
   }
 
-  /* (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.exp.Slide#setTarget(java.lang.String, java.lang.String)
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.exp.Slide#setTarget(java.lang.String,
+   *      java.lang.String)
    */
   public void setTarget(final String label, final String sample) {
 
@@ -142,7 +151,8 @@ class SlideImpl implements Slide {
     this.design.setTarget(slideName, label, sample);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#setSource(fr.ens.transcriptome.nividic.om.exp.DataSource)
    */
   public void setSource(final DataSource source) {
@@ -155,7 +165,8 @@ class SlideImpl implements Slide {
     this.design.setSource(slideName, source);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#setSource(java.lang.String)
    */
   public void setSource(final String filename) {
@@ -168,7 +179,8 @@ class SlideImpl implements Slide {
     this.design.setSource(slideName, filename);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#setBioAssay(fr.ens.transcriptome.nividic.om.BioAssay)
    */
   public void setBioAssay(final BioAssay bioassay) {
@@ -181,7 +193,8 @@ class SlideImpl implements Slide {
     this.design.setBioAssay(slideName, bioassay);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#getBioAssay()
    */
   public BioAssay getBioAssay() {
@@ -194,7 +207,8 @@ class SlideImpl implements Slide {
     return this.design.getBioAssay(slideName);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#getFormat()
    */
   public BioAssayFormat getFormat() {
@@ -207,7 +221,8 @@ class SlideImpl implements Slide {
     return this.design.getFormat(slideName);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#setSourceFormat(java.lang.String)
    */
   public void setSourceFormat(final String format) {
@@ -220,7 +235,8 @@ class SlideImpl implements Slide {
     this.design.setSourceFormat(slideName, format);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#setSourceFormat(fr.ens.transcriptome.nividic.om.io.BioAssayFormat)
    */
   public void setSourceFormat(final BioAssayFormat format) {
@@ -237,7 +253,8 @@ class SlideImpl implements Slide {
   // Other methods
   //
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#loadSource()
    */
   public void loadSource() throws NividicIOException {
@@ -253,14 +270,20 @@ class SlideImpl implements Slide {
 
     BioAssayReader reader;
 
-    switch (format) {
-
-    case GPR:
-    default:
+    if (format == null)
       reader = new GPRReader(is);
+    else
+      switch (format) {
 
-      break;
-    }
+      case IDMA:
+        reader = new IDMAReader(is);
+        break;
+
+      case GPR:
+      default:
+        reader = new GPRReader(is);
+        break;
+      }
 
     BioAssay result = reader.read();
     result.setName(getName());
@@ -268,7 +291,8 @@ class SlideImpl implements Slide {
     setBioAssay(result);
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#swapSlide()
    */
   public void swapSlide() {
