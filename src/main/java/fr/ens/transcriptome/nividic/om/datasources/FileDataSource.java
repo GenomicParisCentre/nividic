@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.datasources;
+package fr.ens.transcriptome.nividic.om.datasources;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -98,7 +98,7 @@ public class FileDataSource implements DataSource {
     try {
       return new FileInputStream(this.file);
     } catch (FileNotFoundException e) {
-      throw new NividicRuntimeException("File not Found.");
+      throw new NividicRuntimeException("File not Found: "+ this.file);
     }
   }
 

@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.datasources;
+package fr.ens.transcriptome.nividic.om.datasources;
 
 import java.io.InputStream;
 import java.util.Properties;
