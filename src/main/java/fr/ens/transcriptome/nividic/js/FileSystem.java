@@ -90,7 +90,7 @@ public class FileSystem {
       }
 
     }
-    System.out.println("Pattern: " + sb);
+    //System.out.println("Pattern: " + sb);
     return Pattern.compile(sb.toString());
   }
 
