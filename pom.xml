@@ -1,0 +1,311 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ens-transcriptome</groupId>
+  <artifactId>nividic</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Nividic</name>
+  <url>http://transcriptome.ens.fr/nividic</url>
+  <description>A library to handle microarray data</description>
+
+  <organization>
+    <name>École Normale Supérieure Microarray platform</name>
+    <url>http://transcriptome.ens.fr/sgdb</url>
+  </organization>
+  
+  <developers>
+    <developer>
+      <id>jourdren</id>
+      <name>Laurent Jourdren</name>
+      <email>jourdren 0 biologie ens fr</email>
+      <url/>
+      <organization>École Normale Supérieure Microarray platform</organization>
+      <organizationUrl>http://transcriptome.ens.fr/sgdb</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>1</timezone>
+      <properties/>
+    </developer>
+    <developer>
+      <name>Lory Montout</name>
+      <id>montout</id>
+      <email>montout 0 biologie ens fr</email>
+      <organization>École Normale Supérieure Microarray platform</organization>
+      <organizationUrl>http://transcriptome.ens.fr/sgdb</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>1</timezone>
+    </developer>
+  </developers>
+  
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+      <comments/>
+    </license>
+  </licenses>
+  
+  
+  
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>leburon</id>
+      <name>Leburon Maven 2.x Repository</name>
+      <url>http://hestia.ens.fr/maven2</url>
+      <layout>default</layout>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>java.net</id>
+      <name>java.net repository</name>
+      <url>https://maven-repository.dev.java.net/nonav/repository/</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+
+  <scm>
+    <connection>scm:svn:https://anosgdb:anosgdb@subversion.biologie.ens.fr/svn/leburon</connection>
+    <developerConnection>scm:svn:https://anosgdb@subversion.biologie.ens.fr/svn/leburon</developerConnection>
+    <url>http://skadi.ens.fr/websvn/listing.php?repname=leburon</url>
+  </scm>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>netscape</groupId>
+      <artifactId>netscape</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.4</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-primitives</groupId>
+      <artifactId>commons-primitives</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>rosuda</groupId>
+      <artifactId>JRclient</artifactId>
+      <version>RE817</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-math</groupId>
+      <artifactId>commons-math</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+      </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.3</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>axis</groupId>
+      <artifactId>axis</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>axis</groupId>
+      <artifactId>axis-jaxrpc</artifactId>
+      <version>1.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>sun</groupId>
+      <artifactId>script-api</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>sun</groupId>
+      <artifactId>script-js</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>mozilla</groupId>
+      <artifactId>js</artifactId>
+      <version>1.6R5</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <directory>target</directory>
+    <outputDirectory>target/classes</outputDirectory>
+    <finalName>${artifactId}-${version}</finalName>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/java/files</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/java</directory>
+      </testResource>
+    </testResources>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      
+      <configuration>
+        <source>1.5</source>
+        <target>1.5</target>
+      </configuration>
+    </plugin>
+    
+    </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ftp</artifactId>
+         <!--<version>1.0-alpha-6</version>-->
+      </extension>
+    </extensions>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <configLocation>checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <!--<plugin>
+        <artifactId>maven-plugin-plugin</artifactId>
+      </plugin>-->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changes-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clover-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-docck-plugin</artifactId>
+      </plugin>
+      <!--<plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-pmd-plugin</artifactId>
+         <configuration>
+            <targetjdk>1.5</targetjdk>
+            <rulesets>
+               <ruleset>/rulesets/basic.xml</ruleset>
+               <ruleset>/rulesets/controversial.xml</ruleset>
+            </rulesets>
+            <format>xml</format>
+            <linkXref>true</linkXref>
+            <sourceEncoding>utf-8</sourceEncoding>
+            <minimumTokens>100</minimumTokens>
+         </configuration>
+      </plugin>-->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>changelog-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+      </plugin>
+      <!--<plugin>
+        <groupId>maven</groupId>
+        <artifactId>maven-simian-plugin</artifactId>
+      </plugin>-->
+      <!--<plugin>
+        <groupId>maven</groupId>
+        <artifactId>maven-junit-report-plugin</artifactId>
+      </plugin>-->
+      <!--<plugin>
+        <groupId>maven</groupId>
+        <artifactId>maven-tasklist-plugin</artifactId>
+      </plugin>-->
+      <!--<plugin>
+        <groupId>maven</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>maven</groupId>
+        <artifactId>maven-faq-plugin</artifactId>
+      </plugin>-->
+    </plugins>
+  </reporting>
+
+
+  <!-- Enabling the use of FTP -->
+  <distributionManagement>
+    <repository>
+    <id>leburon-repository</id>
+    <url>ftp://hestia.ens.fr/export/home1/httpd/html/leburon/maven2</url>
+    </repository>
+  </distributionManagement>
+
+</project>
