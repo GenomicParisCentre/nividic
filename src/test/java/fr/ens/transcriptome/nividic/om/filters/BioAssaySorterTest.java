@@ -55,7 +55,7 @@ public class BioAssaySorterTest extends TestCase {
     assertEquals(-0.252, ms[4], 0);
     assertEquals(5.994, as[4], 0);
 
-    BioAssay norm2 = norm1.sorter(new BioAssayMASorterComparator(false));
+    BioAssay norm2 = norm1.sort(new BioAssayMASorterComparator(false));
 
     ids = norm2.getIds();
     descriptions = norm2.getDescriptions();
@@ -73,7 +73,7 @@ public class BioAssaySorterTest extends TestCase {
     assertTrue(Double.isNaN(ms[n]));
     assertEquals(10.465, as[n], 0);
 
-    norm2 = norm1.sorter(new BioAssayMASorterComparator(true));
+    norm2 = norm1.sort(new BioAssayMASorterComparator(true));
 
     ids = norm2.getIds();
     descriptions = norm2.getDescriptions();

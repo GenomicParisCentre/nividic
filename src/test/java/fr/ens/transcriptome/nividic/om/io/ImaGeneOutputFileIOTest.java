@@ -50,6 +50,12 @@ public class ImaGeneOutputFileIOTest extends TestCase {
 
     int last = locs.length - 1;
 
+    assertNotNull(locs);
+    assertNotNull(ids);
+    assertNotNull(reds);
+    assertNotNull(greens);
+    
+    
     assertEquals(1, BioAssayUtils.getMetaRow(locs[10]));
     assertEquals(1, BioAssayUtils.getMetaColumn(locs[10]));
     assertEquals(1, BioAssayUtils.getRow(locs[10]));
@@ -93,3 +99,4 @@ public class ImaGeneOutputFileIOTest extends TestCase {
   }
 
 }
+

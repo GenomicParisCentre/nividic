@@ -167,10 +167,10 @@ public class ExpressionMatrixMerger {
     String[] columnsToremove = new String[set.size()];
     set.toArray(columnsToremove);
 
-    System.out.println("Col not filtered: ");
+    /*System.out.println("Col not filtered: ");
     for (int i = 0; i < columnsToremove.length; i++) {
       System.out.println(columnsToremove[i] + "\t");
-    }
+    }*/
 
     setMatrix(matrix.subMatrixColumns(columnsToremove));
 

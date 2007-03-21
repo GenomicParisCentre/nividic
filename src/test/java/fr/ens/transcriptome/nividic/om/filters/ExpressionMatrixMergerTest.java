@@ -86,14 +86,14 @@ public class ExpressionMatrixMergerTest extends TestCase {
 
     ExpressionMatrix em = makeExpressionMatrix();
     
-    ExpressionMatrixUtils.printExpressionMatrix(em);
+    //ExpressionMatrixUtils.printExpressionMatrix(em);
     
     ExpressionMatrixMerger merger = new ExpressionMatrixMerger();
     merger.setMatrix(em);
     
     ExpressionMatrix result = merger.mergeColumns(new String[] {"b2","b3"} ).getMatrix();
     
-    ExpressionMatrixUtils.printExpressionMatrix(result);
+    //ExpressionMatrixUtils.printExpressionMatrix(result);
     
     
   }
