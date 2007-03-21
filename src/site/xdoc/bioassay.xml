@@ -187,6 +187,20 @@
               <td>m</td>
               <td>M coordinate of a MA plot</td>
             </tr>
+            <tr>
+              <td>stddeva</td> 
+              <td>FIELD_NAME_STD_DEV_A</td>
+              <td>a</td>
+              <td>Standard deviation of A values</td>
+            </tr>
+            <tr>
+              <td>stddevm</td>
+              <td>FIELD_NAME_STD_DEV_M</td>
+              <td>m</td>
+              <td>Standard deviation of M values</td>
+            </tr>
+          
+          
           
       </table>
      
@@ -223,6 +237,43 @@
       </source>
       <p>Returns a SpotIterator Object over the BioAssay Object. For more information see The SpotIterator Section.</p>
         
+      <source>
+      b.swapIdentifiersAndDescriptions()
+      </source>
+      <p>Inverse ID and description columns. </p>
+        
+    </subsection>
+    
+    <subsection name="Empty spots">
+    
+    <p>The Spot object has a method called isEmpty. To use this method to 
+    filter empty spot, you must define an object that implements the EmptySpotTester infterface:</p>
+    
+    <source>
+    
+    SpotEmptyTester emptySpotTester = new SpotEmptyTester() {
+    
+      public boolean isEmpty(final Spot spot) {
+      
+        if (spot==null) return false;
+        return spot.getId().startsWith("empty);
+      }
+    
+    };
+    
+    bioAssay.setEmptySpotTester(emptySpotTester);
+    
+    SpotIterator spotIterator = bioAssay.iterator();
+      
+      while (spotIterator.hasNext()) {
+        spotIterator.next();
+        if (spot.isEmpty()) System.out.println("Empty spot: "+spot.getId());
+      }
+    
+    </source>
+      
+    If no 
+    
     </subsection>
     
     <subsection name="Locations in BioAssay Objects">

@@ -46,7 +46,11 @@
 	<tr><td><a href="bioassayio.html">BioAssayIO</a></td><td>How to read and write BioAssay Objects.</td></tr>
 	<tr><td><a href="bioassayfilters.html">BioAssay Filters</a></td><td>How to filter spots from a BioAssay object.</td></tr>
 	<tr><td><a href="biologicallists.html">Biological lists</a></td><td>How to manage biological lists.</td></tr>
+	<tr><td><a href="experiments.html">Experiments</a></td><td>How to manage experiments lists.</td></tr>
+	<tr><td><a href="biologicalobject.html">BiologicalObject</a></td><td>What is a Biological Object in Nividic ?</td></tr>
+	<tr><td><a href="matrix.html">Matrix</a></td><td>How to manage a matrix.</td></tr>
       </table>
+      
 														      
       
     </section>
