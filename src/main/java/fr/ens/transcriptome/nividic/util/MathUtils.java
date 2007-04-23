@@ -22,6 +22,8 @@
 
 package fr.ens.transcriptome.nividic.util;
 
+import org.apache.commons.math.stat.descriptive.rank.Median;
+
 /**
  * Math utility class
  * @author Laurent Jourdren
@@ -35,9 +37,9 @@ public final class MathUtils {
    * Calculates the standard deviation of an array of numbers. see
    * http://davidmlane.com/hyperstat/A16252.html
    * @param data Numbers to compute the standard deviation of. Array must
-   *                 contain two or more numbers.
+   *          contain two or more numbers.
    * @return standard deviation estimate of population ( to get estimate of
-   *               sample, use n instead of n-1 in last line )
+   *         sample, use n instead of n-1 in last line )
    */
   public static double sdFast(final double[] data) {
     // sd is sqrt of sum of (values-mean) squared divided by n - 1
@@ -75,6 +77,90 @@ public final class MathUtils {
    */
   public static double log2(final double d) {
     return Math.log(d) / Math.log(BASE_2);
+  }
+
+  /**
+   * Remove NaN from an array
+   * @param data Array to use
+   * @return an new array without NaN values
+   */
+  public static double[] removeNaN(final double[] data) {
+
+    if (data == null)
+      return null;
+
+    int count = 0;
+
+    for (int i = 0; i < data.length; i++)
+      if (Double.isNaN(data[i]))
+        count++;
+
+    final double[] result = new double[count];
+    count = 0;
+
+    for (int i = 0; i < result.length; i++)
+      if (!Double.isNaN(data[i]))
+        result[count++] = data[i];
+
+    return result;
+  }
+
+  /**
+   * Calc the median of an array of double
+   * @param data Data
+   * @return the median or NaN if the data is null
+   */
+  public static double median(final double[] data) {
+
+    return median(data, true);
+  }
+
+  /**
+   * Calc the median of an array of double
+   * @param data Data
+   * @param noNaN true if NaN value must be removed from the computation
+   * @return the median or NaN if the data is null
+   */
+  public static double median(final double[] data, final boolean noNaN) {
+
+    if (data == null)
+      return Double.NaN;
+
+    Median median = new Median();
+    return median.evaluate(noNaN ? removeNaN(data) : data);
+  }
+
+  /**
+   * Calc the mean of an array of double
+   * @param data Data
+   * @param noNaN true if NaN value must be removed from the computation
+   * @return the mean or NaN if the data is null
+   */
+  public static double mean(final double[] data, final boolean noNaN) {
+
+    return mean(noNaN ? removeNaN(data) : data);
+  }
+
+  /**
+   * Calc the mean of an array of double
+   * @param data Data
+   * @return the mean or NaN if the data is null
+   */
+  public static double mean(final double[] data) {
+
+    if (data == null)
+      return Double.NaN;
+
+    int count = 0;
+    float sum = 0;
+
+    for (int i = 0; i < data.length; i++) {
+
+      count++;
+      sum += data[i];
+    }
+
+    return sum / count;
   }
 
   //
