@@ -930,4 +930,13 @@ public class DesignImpl implements Design {
     return getSlideCount();
   }
 
+  /**
+   * Overides ToString
+   * @return a String with the name of the design
+   */
+  public String toString() {
+
+    return "Design: " + getName();
+  }
+
 }
