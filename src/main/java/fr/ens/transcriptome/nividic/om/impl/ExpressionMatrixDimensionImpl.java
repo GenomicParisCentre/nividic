@@ -78,7 +78,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @throws ExpressionMatrixRuntimeException if the matrix is empty or if the
    *           row that you want to extract doesn't exist
    */
-  public double[] getRow(final String rowName)
+  public double[] getRowToArray(final String rowName)
       throws ExpressionMatrixRuntimeException {
 
     if (this.isNoRow())
@@ -145,7 +145,7 @@ public class ExpressionMatrixDimensionImpl implements
     try {
 
       bioAssay = BioAssayFactory.createBioAssay();
-      bioAssay.setIds(getRowIds());
+      bioAssay.setIds(getRowNames());
 
       bioAssay.setDataFieldDouble(getDimensionName(),
           getColumnToArray(columnName));
@@ -334,7 +334,7 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "ArrayDoubleList column is null");
 
-    if (!matrix.containsRowId(rowId))
+    if (!matrix.containsRow(rowId))
       this.addRow(rowId);
 
     int indexFromIdsHashMap = matrix.getInternalRowIdIndex(rowId);
@@ -537,7 +537,7 @@ public class ExpressionMatrixDimensionImpl implements
     final ArrayDoubleList columnToFill = (ArrayDoubleList) referencesToColumnNamesMap
         .get(columnName);
 
-    final String[] ids = getRowIds();
+    final String[] ids = getRowNames();
 
     for (int i = 0; i < ids.length; i++) {
       setValue(ids[i], columnToFill, data[i]);
@@ -707,9 +707,9 @@ public class ExpressionMatrixDimensionImpl implements
    * Get the identifiers of the rows
    * @return return the names of the rows in an array of strings
    */
-  public String[] getRowIds() {
+  public String[] getRowNames() {
 
-    return this.matrix.getRowIds();
+    return this.matrix.getRowNames();
   }
 
   /**
@@ -746,9 +746,9 @@ public class ExpressionMatrixDimensionImpl implements
    * @param rowId the row name that we want to check
    * @return true if the rowId exists, false if not
    */
-  public boolean containsRowId(final String rowId) {
+  public boolean containsRow(final String rowId) {
 
-    return this.matrix.containsRowId(rowId);
+    return this.matrix.containsRow(rowId);
   }
 
   /**

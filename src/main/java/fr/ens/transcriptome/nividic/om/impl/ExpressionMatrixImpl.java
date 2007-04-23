@@ -46,6 +46,7 @@ import fr.ens.transcriptome.nividic.om.Slide;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
  * Implementation class for ExpressionMatrixDimension objects.
@@ -58,7 +59,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   private int rowCreatedCount;
   // private IterableMap referencesToColumnNamesMap;
 
-  private ArrayList columnNamesArrayList;
+  private List<String> columnNamesArrayList;
 
   private String expressionMatrixName;
   private Annotation annotations = AnnotationFactory.createAnnotation();
@@ -66,7 +67,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   private static int count;
   private static int copyNumber;
   private static Random random = new Random(System.currentTimeMillis());
-  private Set listeners = new HashSet();
+  private Set<ExpressionMatrixListener> listeners = new HashSet<ExpressionMatrixListener>();
 
   private static final int HASHCODE_ODD_NUMBER_1 = 16052005;
   private static final int HASHCODE_ODD_NUMBER_2 = 17;
@@ -221,7 +222,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     addDimension(dimensionName);
     ExpressionMatrixDimension d = getDimension(dimensionName);
 
-    String[] ids = dimension.getRowIds();
+    String[] ids = dimension.getRowNames();
     String[] columnNames = dimension.getColumnNames();
 
     for (int i = 0; i < columnNames.length; i++) {
@@ -264,7 +265,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @return return the names of the rows in an array of strings
    * @throws ExpressionMatrixRuntimeException if the matrix is empty
    */
-  public String[] getRowIds() throws ExpressionMatrixRuntimeException {
+  public String[] getRowNames() throws ExpressionMatrixRuntimeException {
 
     if (this.isNoRow())
       return new String[] {};
@@ -498,7 +499,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     throwExceptionIfColumnDoesntExists(index);
 
-    String columnName = (String) this.columnNamesArrayList.get(index);
+    String columnName = this.columnNamesArrayList.get(index);
 
     this.columnNamesArrayList.remove(index);
 
@@ -511,7 +512,6 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
-   * @param columnName The name of column to add
    */
   public void addBioAssay(final BioAssay bioAssay) {
 
@@ -539,8 +539,38 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   }
 
   /**
+   * Add another expression matrix to the expression matrix.
+   * @param matrix Matrix to add
+   */
+  public void addMatrix(final ExpressionMatrix matrix) {
+
+    if (matrix == null)
+      return;
+
+    final String[] dimensionNames = matrix.getDimensionNames();
+    final String[] columnNames = matrix.getColumnNames();
+
+    for (int i = 0; i < dimensionNames.length; i++) {
+
+      String dimName = dimensionNames[i];
+
+      if (!containsDimension(dimName))
+        this.addDimension(dimName);
+
+      final ExpressionMatrixDimension dim = matrix.getDimension(dimName);
+      final ExpressionMatrixDimension myDim = getDimension(dimName);
+
+      for (int j = 0; j < columnNames.length; j++)
+        myDim.addBioAssay(dim.getColumn(columnNames[i]));
+
+    }
+
+  }
+
+  /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param columnName The name of column to add
    */
   public void addBioAssay(final BioAssay bioAssay, final String columnName) {
 
@@ -552,7 +582,6 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param bioAssay The new column to add
    * @param columnName The name of column to add
    * @param translator Translator to use to define rowIds
-   * @param translatorField Field of the translator to use
    */
   public void addBioAssay(final BioAssay bioAssay, final String columnName,
       final Translator translator) {
@@ -564,7 +593,6 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * Add a column to the matrix
    * @param bioAssay The new column to add
    * @param translator Translator to use to define rowIds
-   * @param translatorField Field of the translator to use
    */
   public void addBioAssay(final BioAssay bioAssay, final Translator translator) {
 
@@ -586,6 +614,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param columnName The name of column to add
    * @param translator Translator to use to define rowIds
    * @param translatorField Field of the translator to use
    */
@@ -654,7 +683,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param rowId the row name that we want to check
    * @return true if the rowId exists, false if not
    */
-  public boolean containsRowId(final String rowId) {
+  public boolean containsRow(final String rowId) {
 
     if (rowId == null)
       throw new ExpressionMatrixRuntimeException("String rowId is null");
@@ -670,8 +699,12 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixRows(final String[] rowsId) {
 
-    SubExpressionMatrix sem = new SubExpressionMatrix(this, rowsId, this
-        .getColumnNames());
+    SubExpressionMatrix sem;
+
+    if (rowsId == null)
+      sem = new SubExpressionMatrix(this, getRowNames(), this.getColumnNames());
+    else
+      sem = new SubExpressionMatrix(this, rowsId, this.getColumnNames());
 
     addListener(sem);
 
@@ -685,8 +718,13 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixColumns(final int[] columns) {
 
-    SubExpressionMatrix sem = new SubExpressionMatrix(this, this.getRowIds(),
-        columns);
+    SubExpressionMatrix sem;
+
+    if (columns == null)
+      sem = new SubExpressionMatrix(this, this.getRowNames(), this
+          .getColumnNames());
+    else
+      sem = new SubExpressionMatrix(this, this.getRowNames(), columns);
 
     addListener(sem);
 
@@ -700,8 +738,13 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixColumns(final String[] columns) {
 
-    SubExpressionMatrix sem = new SubExpressionMatrix(this, this.getRowIds(),
-        columns);
+    SubExpressionMatrix sem;
+
+    if (columns == null)
+      sem = new SubExpressionMatrix(this, this.getRowNames(), this
+          .getColumnNames());
+    else
+      sem = new SubExpressionMatrix(this, this.getRowNames(), columns);
 
     addListener(sem);
 
@@ -710,7 +753,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
   /**
    * Create a sub matrix, choosing the dimension that you want to keep in it
-   * @param dimensionName Dimension that you want to keep
+   * @param dimensionNames Dimensions that you want to keep
    * @return An ExpressionMatrixDimension object
    */
   public ExpressionMatrix subMatrixDimensions(final String[] dimensionNames) {
@@ -720,6 +763,57 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     addListener(sem);
 
     return sem;
+  }
+
+  /**
+   * Creates a sub matrix, choosing the rows that you want to throw out.
+   * @param rowsNames Rows that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixRowsExclude(final String[] rowsNames) {
+
+    return subMatrixRows(StringUtils.excludeStrings(rowsNames, getRowNames()));
+  }
+
+  /**
+   * Creates a sub matrix, choosing the columns that you want to trow out.
+   * @param columns Columns that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixColumnsExclude(final int[] columns) {
+
+    if (columns == null)
+      return subMatrixColumns((int[]) null);
+
+    String[] columnNames = new String[columns.length];
+    for (int i = 0; i < columnNames.length; i++)
+      columnNames[i] = getColumnName(columns[i]);
+
+    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+        getColumnNames()));
+  }
+
+  /**
+   * Creates a sub matrix, choosing the rows that you want to throw out.
+   * @param columnNames Columns that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixColumnsExclude(final String[] columnNames) {
+
+    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+        getColumnNames()));
+  }
+
+  /**
+   * Create a sub matrix, choosing the dimension that you want to throw out
+   * @param dimensionNames Dimensions that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixDimensionsExclude(
+      final String[] dimensionNames) {
+
+    return subMatrixDimensions(StringUtils.excludeStrings(dimensionNames,
+        getDimensionNames()));
   }
 
   /**
@@ -770,7 +864,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param o Object to test
    * @return true if the 2 objects are equals
    */
-  public boolean dataEquals(Object o) {
+  public boolean dataEquals(final Object o) {
 
     if (o == null || !(o instanceof ExpressionMatrix))
       return false;
@@ -857,7 +951,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public void addRow(final String rowName) {
 
-    if (containsRowId(rowName))
+    if (containsRow(rowName))
       throw new ExpressionMatrixRuntimeException(
           "the id that you try to create already exist, id name : " + rowName);
 
@@ -960,7 +1054,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   void throwExceptionIfRowIdDoesntExists(final String rowId)
       throws ExpressionMatrixRuntimeException {
 
-    if (!this.containsRowId(rowId))
+    if (!this.containsRow(rowId))
       throw new ExpressionMatrixRuntimeException(
           "the row ID that you try to reach doesn't exist: " + rowId);
   }
@@ -1002,13 +1096,18 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public ExpressionMatrix filter(final BiologicalFilter filter) {
 
+    System.out.println("test0");
+
     if (filter == null)
       return null;
+
+    System.out.println("test1");
 
     if (!(filter instanceof ExpressionMatrixFilter))
       throw new NividicRuntimeException(
           "Only BiologicalListFilter can filter BiologicalList");
 
+    System.out.println("test2");
     return filter((ExpressionMatrixFilter) filter);
   }
 
@@ -1078,7 +1177,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       this.setName(name);
 
     this.idsMap = new LinkedMap();
-    this.columnNamesArrayList = new ArrayList();
+    this.columnNamesArrayList = new ArrayList<String>();
     this.dimensionMap = new LinkedMap();
     addDimension(getDefaultDimensionName());
 
@@ -1105,7 +1204,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     copyNumber++;
 
     this.idsMap = new LinkedMap();
-    this.columnNamesArrayList = new ArrayList();
+    this.columnNamesArrayList = new ArrayList<String>();
     this.dimensionMap = new LinkedMap();
 
     if (name == null)

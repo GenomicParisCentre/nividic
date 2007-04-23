@@ -71,12 +71,12 @@ public interface BiologicalObject extends Annotable {
   /**
    * Clear the biological object.
    */
-  void clear(); 
-  
+  void clear();
+
   /**
    * Get the size of the biological object.
    * @return The size of the biological object
    */
   int size();
-  
+
 }

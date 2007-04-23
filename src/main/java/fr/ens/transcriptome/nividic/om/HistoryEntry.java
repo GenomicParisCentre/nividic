@@ -30,10 +30,19 @@ import java.util.Date;
  */
 public class HistoryEntry {
 
+  /**
+   * This enum describe all the actions of an event log in a history entry. 
+   * @author Laurent Jourdren
+   */
   public enum HistoryActionType {
     CREATE, FILTER, SORT, REMOVE, ADD, LOAD, SAVE, UNKNOWN
   };
+  
 
+  /**
+   * This enum describe all the results of an event log in a history entry. 
+   * @author Laurent Jourdren
+   */
   public enum HistoryActionResult {
     PASS, FAIL, NA, UNKNOWN
   };

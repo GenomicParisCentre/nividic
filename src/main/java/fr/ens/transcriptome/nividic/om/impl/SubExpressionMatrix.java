@@ -44,6 +44,7 @@ import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
  * implementation of the SubExpressionMatrix class
@@ -87,9 +88,9 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Get the names of the rows
    * @return return the names of the rows in an array of strings
    */
-  public String[] getRowIds() {
+  public String[] getRowNames() {
 
-    String[] idsFromExpressionMatrix = this.matrix.getRowIds();
+    String[] idsFromExpressionMatrix = this.matrix.getRowNames();
     String[] ids = new String[this.idsSet.size()];
 
     int j = 0;
@@ -335,6 +336,15 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   }
 
   /**
+   * Add another expression matrix to the expression matrix.
+   * @param matrix Matrix to add
+   */
+  public void addMatrix(final ExpressionMatrix matrix) {
+
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
    * Add a column in the matrix, all the values are at NA
    * @param columnName The name of the column that you want to add
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
@@ -457,7 +467,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param rowId the row name that we want to check
    * @return true if the rowId exists, false if not
    */
-  public boolean containsRowId(final String rowId) {
+  public boolean containsRow(final String rowId) {
 
     if (rowId == null)
       throw new ExpressionMatrixRuntimeException("String rowId is null");
@@ -490,7 +500,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   public ExpressionMatrix subMatrixColumns(final int[] columns) {
 
     SubExpressionMatrix sem = new SubExpressionMatrix(this.matrix, this
-        .getRowIds(), columns);
+        .getRowNames(), columns);
 
     if (getMatrix() instanceof ExpressionMatrixListenerHandler)
       ((ExpressionMatrixListenerHandler) getMatrix()).addListener(sem);
@@ -506,7 +516,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   public ExpressionMatrix subMatrixColumns(final String[] columns) {
 
     SubExpressionMatrix sem = new SubExpressionMatrix(this.matrix, this
-        .getRowIds(), columns);
+        .getRowNames(), columns);
 
     if (getMatrix() instanceof ExpressionMatrixListenerHandler)
       ((ExpressionMatrixListenerHandler) getMatrix()).addListener(sem);
@@ -516,7 +526,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
   /**
    * Create a sub matrix, choosing the dimension that you want to keep in it
-   * @param dimensionName Dimension that you want to keep
+   * @param dimensionNames Dimension that you want to keep
    * @return An ExpressionMatrixDimension object
    */
   public ExpressionMatrix subMatrixDimensions(final String[] dimensionNames) {
@@ -528,6 +538,57 @@ public class SubExpressionMatrix implements ExpressionMatrix,
       ((ExpressionMatrixListenerHandler) getMatrix()).addListener(sem);
 
     return sem;
+  }
+
+  /**
+   * Creates a sub matrix, choosing the rows that you want to throw out.
+   * @param rowsNames Rows that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixRowsExclude(final String[] rowsNames) {
+
+    return subMatrixRows(StringUtils.excludeStrings(rowsNames, getRowNames()));
+  }
+
+  /**
+   * Creates a sub matrix, choosing the columns that you want to trow out.
+   * @param columns Columns that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixColumnsExclude(final int[] columns) {
+
+    if (columns == null)
+      return subMatrixColumns((int[]) null);
+
+    String[] columnNames = new String[columns.length];
+    for (int i = 0; i < columnNames.length; i++)
+      columnNames[i] = getColumnName(columns[i]);
+
+    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+        getColumnNames()));
+  }
+
+  /**
+   * Creates a sub matrix, choosing the rows that you want to throw out.
+   * @param columnNames Columns that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixColumnsExclude(final String[] columnNames) {
+
+    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+        getColumnNames()));
+  }
+
+  /**
+   * Create a sub matrix, choosing the dimension that you want to throw out
+   * @param dimensionNames Dimensions that you want to keep
+   * @return An ExpressionMatrixDimension object
+   */
+  public ExpressionMatrix subMatrixDimensionsExclude(
+      final String[] dimensionNames) {
+
+    return subMatrixDimensions(StringUtils.excludeStrings(dimensionNames,
+        getDimensionNames()));
   }
 
   /**
@@ -659,7 +720,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
     for (int i = 0; i < ids.length; i++) {
 
-      if (!em.containsRowId(ids[i]))
+      if (!em.containsRow(ids[i]))
         this.throwExceptionIfColumnDoesntExists(ids[i]);
 
       this.idsSet.add(ids[i]);
@@ -858,7 +919,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   protected void throwExceptionIfRowIdDoesntExists(final String rowId)
       throws ExpressionMatrixRuntimeException {
 
-    if (!this.containsRowId(rowId))
+    if (!this.containsRow(rowId))
       throw new ExpressionMatrixRuntimeException(
           "the row ID that you try to reach doesn't exist: " + rowId);
   }
@@ -1088,7 +1149,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     String[] newIds;
 
     if (ids == null) {
-      newIds = em.getRowIds();
+      newIds = em.getRowNames();
       len = newIds.length;
     } else {
       len = ids.length;
@@ -1262,7 +1323,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
   SubExpressionMatrix(final ExpressionMatrix em, final String[] dimensionNames) {
 
-    this(em, dimensionNames, em.getRowIds(), em.getColumnCount());
+    this(em, dimensionNames, em.getRowNames(), em.getColumnCount());
     addColumns(em, em.getColumnNames());
   }
 

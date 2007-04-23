@@ -65,7 +65,7 @@ public interface ExpressionMatrixSizes {
    * Get the identifiers of the rows
    * @return return the names of the rows in an array of strings
    */
-  String[] getRowIds();
+  String[] getRowNames();
 
   /**
    * Checks is the ExpressionMatrixDimension is empty or not
@@ -89,10 +89,10 @@ public interface ExpressionMatrixSizes {
 
   /**
    * Allows us to know if the ExpressionMatrixDimension contains a given rowId
-   * @param rowId the row name that we want to check
+   * @param rowName the row name that we want to check
    * @return true if the rowId exists, false if not
    */
-  boolean containsRowId(String rowId);
+  boolean containsRow(String rowName);
 
   /**
    * Test if the data inside the object is the same data as another object.

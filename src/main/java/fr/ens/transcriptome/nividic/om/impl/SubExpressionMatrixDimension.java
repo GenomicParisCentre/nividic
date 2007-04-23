@@ -56,12 +56,12 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @throws ExpressionMatrixRuntimeException if the matrix is empty or if the
    *           row that you want to extract doesn't exist
    */
-  public double[] getRow(final String rowName)
+  public double[] getRowToArray(final String rowName)
       throws ExpressionMatrixRuntimeException {
 
     this.matrix.throwExceptionIfRowIdDoesntExists(rowName);
 
-    return this.matrixDimension.getRow(rowName);
+    return this.matrixDimension.getRowToArray(rowName);
   }
 
   /**
@@ -89,7 +89,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
 
     this.matrix.throwExceptionIfColumnDoesntExists(columnName);
 
-    final String[] ids = this.matrix.getRowIds();
+    final String[] ids = this.matrix.getRowNames();
     final double[] values = new double[ids.length];
     final int indexColumn = this.matrixDimension.getColumnIndex(columnName);
 
@@ -140,7 +140,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
 
     this.matrix.throwExceptionIfColumnDoesntExists(columnName);
 
-    final String[] ids = this.matrix.getRowIds();
+    final String[] ids = this.matrix.getRowNames();
     final double[] values = new double[ids.length];
     final int indexColumn = this.matrixDimension.getColumnIndex(columnName);
 
@@ -590,9 +590,9 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param rowId the row name that we want to check
    * @return true if the rowId exists, false if not
    */
-  public boolean containsRowId(final String rowId) {
+  public boolean containsRow(final String rowId) {
 
-    return this.matrix.containsRowId(rowId);
+    return this.matrix.containsRow(rowId);
   }
 
   /**
@@ -648,9 +648,9 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * Get the names of the rows
    * @return return the names of the rows in an array of strings
    */
-  public String[] getRowIds() {
+  public String[] getRowNames() {
 
-    return this.matrix.getRowIds();
+    return this.matrix.getRowNames();
   }
 
   /**

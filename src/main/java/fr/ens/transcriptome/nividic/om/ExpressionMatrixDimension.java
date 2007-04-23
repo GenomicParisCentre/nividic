@@ -107,7 +107,7 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
    * @param rowName The name of the row to extract
    * @return a tab of double values
    */
-  double[] getRow(String rowName);
+  double[] getRowToArray(String rowName);
 
   /**
    * Extract a column from the matrix

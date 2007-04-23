@@ -24,6 +24,8 @@ package fr.ens.transcriptome.nividic.om;
 
 import java.io.PrintStream;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
+
 /**
  * An util class for ExpressionMatrixDimension objects
  * @author Lory Montout TODO this class is not yet implemented
@@ -48,7 +50,7 @@ public final class ExpressionMatrixUtils {
   public static void printExpressionMatrixDimension(
       final ExpressionMatrixDimension dimension, final PrintStream out) {
 
-    String[] ids = dimension.getRowIds();
+    String[] ids = dimension.getRowNames();
     String[] columnNames = dimension.getColumnNames();
 
     out.print("Dimension name: " + dimension.getDimensionName());
@@ -175,6 +177,35 @@ public final class ExpressionMatrixUtils {
       final ExpressionMatrix matrix) {
 
     printExpressionMatrixDimensionsNames(matrix, System.out);
+  }
+
+  /**
+   * Swap M values of a column.
+   * @param matrix Matrix to process
+   * @param columnName column to process
+   */
+  public static void swap(final ExpressionMatrix matrix, final String columnName) {
+
+    if (matrix == null)
+      throw new NividicRuntimeException(NividicRuntimeException.NULL_POINTER,
+          "bioassay");
+
+    if (!matrix.containsDimension(BioAssay.FIELD_NAME_M))
+      throw new NividicRuntimeException(
+          "The M dimension of the bioAssay is not set");
+
+    if (!matrix.containsColumn(columnName))
+      throw new NividicRuntimeException("The column doesn't exists");
+
+    ExpressionMatrixDimension dim = matrix.getDimension(BioAssay.FIELD_NAME_M);
+
+    double[] ms = dim.getColumnToArray(columnName);
+
+    for (int i = 0; i < ms.length; i++) {
+      ms[i] = -ms[i];
+    }
+
+    dim.setValues(matrix.getRowNames(), columnName, ms);
   }
 
   //
