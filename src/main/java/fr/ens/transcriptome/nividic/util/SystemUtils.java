@@ -31,6 +31,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
+
 /**
  * System utilities.
  * @author Laurent Jourdren
@@ -48,7 +50,7 @@ public final class SystemUtils {
    */
   public static File getClassSource(final Class c) {
 
-    String classResource = c.getName().replace('.', //File.separatorChar
+    String classResource = c.getName().replace('.', // File.separatorChar
         '/') + ".class";
     return getResourceSource(c.getClassLoader(), classResource);
   }
@@ -194,6 +196,54 @@ public final class SystemUtils {
       return className;
 
     return className.substring(packageName.length() + 1);
+  }
+
+  /**
+   * Launch an editor
+   * @param filename Name of file to edit. It can be null to edit an empty file
+   */
+  public static void launchEditor(final String filename) {
+
+    if (filename == null)
+      launchEditor((File) null);
+    else
+      launchEditor(new File(filename));
+
+  }
+
+  /**
+   * Launch an editor
+   * @param file file to edit. It can be null to edit an empty file
+   */
+  public static void launchEditor(final File file) {
+
+    String cmd = null;
+    String filename;
+
+    if (file == null)
+      filename = "";
+    else
+      filename = " " + file.getAbsolutePath();
+
+    if (isWindowsSystem())
+      cmd = "notepad" + filename;
+
+    else if (isMacOsX())
+      cmd = "/usr/bin/open -e" + filename;
+
+    else if (isUnixSystem())
+      cmd = "/usr/bin/kwrite" + filename;
+
+    if (cmd == null)
+      return;
+
+    try {
+      Runtime.getRuntime().exec(cmd);
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new NividicRuntimeException("Unable to lanch the editor");
+    }
+
   }
 
   //
