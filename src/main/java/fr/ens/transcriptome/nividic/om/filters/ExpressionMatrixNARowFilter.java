@@ -79,7 +79,7 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
    * Test if filtered identifiers must be removed. *
    * @return true if filtered row must be removed
    */
-  public boolean removeFilteredRows() {
+  public boolean removePositiveRows() {
 
     return false;
   }

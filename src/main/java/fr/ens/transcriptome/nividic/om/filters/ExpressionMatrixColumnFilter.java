@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om.filters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
@@ -53,25 +54,57 @@ public abstract class ExpressionMatrixColumnFilter implements
     String[] columnNames = em.getColumnNames();
 
     int size = em.getColumnCount();
-    ArrayList al = new ArrayList();
+    List<String> al = new ArrayList<String>();
 
     ExpressionMatrixDimension d = em.getDimension(getDimensionToFilter());
 
     for (int i = 0; i < size; i++)
-      if (!testColumnValuesOfMatrix(d.getColumn(columnNames[i])))
+      if (testColumn(d.getColumn(columnNames[i])))
         al.add(new String(columnNames[i]));
 
-    String[] toKeep = new String[al.size()];
-    toKeep = (String[]) al.toArray(toKeep);
+    String[] positiveColumns = new String[al.size()];
+    positiveColumns = al.toArray(positiveColumns);
 
-    return em.subMatrixColumns(toKeep);
+    System.out.println(positiveColumns.length);
+
+    if (removePositiveColumns())
+      return em.subMatrixColumnsExclude(positiveColumns);
+
+    return em.subMatrixColumns(positiveColumns);
   }
 
   /**
-   * Get the field to filter
-   * @return The field to filer
+   * Count the number of the row that pass the filter
+   * @param em The matrix to filter
+   * @return the number of rows that pass the filter
    */
-  public abstract String getFieldToFilter();
+  public int count(final ExpressionMatrix em) {
+
+    if (em == null)
+      return -1;
+
+    ExpressionMatrixDimension d = em.getDimension(getDimensionToFilter());
+
+    final String[] ColumnNames = d.getColumnNames();
+
+    final int size = ColumnNames.length;
+    int count = 0;
+
+    for (int i = 0; i < size; i++)
+      if (testColumn(d.getColumn(ColumnNames[i])))
+        count++;
+
+    return count;
+  }
+
+  /**
+   * Test if filtered identifiers must be removed.
+   * @return true if filtered column must be removed
+   */
+  public boolean removePositiveColumns() {
+
+    return false;
+  }
 
   /**
    * Get the dimension to filter.
@@ -79,13 +112,11 @@ public abstract class ExpressionMatrixColumnFilter implements
    */
   public abstract String getDimensionToFilter();
 
-
-
   /**
-   * Test the values M and A of a BioAssay object.
+   * Test the values of BioAssay object.
    * @param bioAssay BioAssay object where are the values to test
    * @return true if the values must be selected
    */
-  public abstract boolean testColumnValuesOfMatrix(final BioAssay bioAssay);
+  public abstract boolean testColumn(final BioAssay bioAssay);
 
 }

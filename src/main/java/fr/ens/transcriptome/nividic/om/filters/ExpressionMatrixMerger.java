@@ -132,7 +132,7 @@ public class ExpressionMatrixMerger {
       algo = new Mean();
 
     final String[] dimensionNames = matrix.getDimensionNames();
-    final String[] rowIds = matrix.getRowIds();
+    final String[] rowIds = matrix.getRowNames();
     final int nCols = columnNames.length;
 
     for (int i = 0; i < dimensionNames.length; i++) {

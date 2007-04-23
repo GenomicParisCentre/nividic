@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om.filters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
@@ -53,22 +54,22 @@ public abstract class ExpressionMatrixRowFilter implements
 
     ExpressionMatrixDimension d = em.getDimension(getDimensionToFilter());
 
-    String[] rowIds = d.getRowIds();
+    String[] rowNames = d.getRowNames();
 
     final int size = d.getRowCount();
-    ArrayList al = new ArrayList();
-    String[] toKeep = new String[al.size()];
+    List<String> al = new ArrayList<String>();
+    String[] positiveRows = new String[al.size()];
 
     for (int i = 0; i < size; i++)
-      if (testRow(d.getRow(rowIds[i])))
-        al.add(new String(rowIds[i]));
+      if (testRow(d.getRowToArray(rowNames[i])))
+        al.add(new String(rowNames[i]));
 
-    toKeep = (String[]) al.toArray(toKeep);
+    positiveRows = al.toArray(positiveRows);
 
-    if (removeFilteredRows())
-      return em.subMatrixRows(StringUtils.excludeStrings(toKeep, rowIds));
+    if (removePositiveRows())
+      return em.subMatrixRowsExclude(positiveRows);
 
-    return em.subMatrixRows(toKeep);
+    return em.subMatrixRows(positiveRows);
   }
 
   /**
@@ -83,13 +84,13 @@ public abstract class ExpressionMatrixRowFilter implements
 
     ExpressionMatrixDimension d = em.getDimension(getDimensionToFilter());
 
-    String[] rowIds = d.getRowIds();
+    String[] rowIds = d.getRowNames();
 
     final int size = d.getRowCount();
     int count = 0;
 
     for (int i = 0; i < size; i++)
-      if (testRow(d.getRow(rowIds[i])))
+      if (testRow(d.getRowToArray(rowIds[i])))
         count++;
 
     return count;
@@ -105,7 +106,10 @@ public abstract class ExpressionMatrixRowFilter implements
    * Test if filtered identifiers must be removed.
    * @return true if filtered row must be removed
    */
-  public abstract boolean removeFilteredRows();
+  public boolean removePositiveRows() {
+    
+    return true;
+  }
 
   /**
    * Test the values of a Row.

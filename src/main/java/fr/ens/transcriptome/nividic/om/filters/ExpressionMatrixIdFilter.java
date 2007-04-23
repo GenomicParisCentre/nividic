@@ -102,11 +102,11 @@ public abstract class ExpressionMatrixIdFilter implements
     if (em == null)
       return null;
 
-    final String[] rowIds = em.getRowIds();
+    final String[] rowIds = em.getRowNames();
 
     final int size = rowIds.length;
 
-    ArrayList al = new ArrayList();
+    ArrayList<String> al = new ArrayList<String>();
 
     final Translator translator = getTranslator();
     final boolean translate = translator != null;
@@ -143,7 +143,7 @@ public abstract class ExpressionMatrixIdFilter implements
     if (em == null)
       return -1;
 
-    final String[] rowIds = em.getRowIds();
+    final String[] rowIds = em.getRowNames();
 
     final int size = rowIds.length;
 
