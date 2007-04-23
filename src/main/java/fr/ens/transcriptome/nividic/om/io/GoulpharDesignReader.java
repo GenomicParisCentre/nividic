@@ -33,6 +33,7 @@ import java.util.Map;
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.DesignFactory;
 import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
 
 /**
  * This class allow to read goulphar param file as a design.
@@ -48,6 +49,8 @@ public class GoulpharDesignReader extends DesignReader {
   private final static String GOULPHAR_AROMA_SWAP_FIELD = "swap";
 
   private final static String GOULPHAR_RESULT_EXTENSION = "_norm.txt";
+
+  private String baseDir = "";
 
   /**
    * Read data
@@ -122,7 +125,7 @@ public class GoulpharDesignReader extends DesignReader {
             slide.setSourceFormat(BioAssayFormat.IDMA);
           }
 
-          slide.setSource(sourceFile);
+          slide.setSource(new FileDataSource(this.baseDir, sourceFile));
           slide.getDescription().setSerialNumber(sn);
 
           if (goulpharAroma && swapField >= 0)
@@ -198,6 +201,8 @@ public class GoulpharDesignReader extends DesignReader {
   public GoulpharDesignReader(final File file) throws NividicIOException {
 
     super(file);
+    if (file != null)
+      this.baseDir = file.getParent();
   }
 
   /**

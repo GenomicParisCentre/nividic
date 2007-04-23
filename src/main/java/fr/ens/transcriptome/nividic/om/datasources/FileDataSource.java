@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
@@ -39,6 +38,7 @@ import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 public class FileDataSource implements DataSource {
 
   private String file = "";
+  private String baseDir = "";
 
   /**
    * Configure the source with properties
@@ -62,6 +62,8 @@ public class FileDataSource implements DataSource {
    * @param config String to configure the source
    */
   public void configSource(final String config) {
+
+    this.baseDir = "";
 
     if (config == null)
       this.file = "";
@@ -96,9 +98,10 @@ public class FileDataSource implements DataSource {
   public InputStream getInputStream() {
 
     try {
-      return new FileInputStream(this.file);
+
+      return new FileInputStream(new File(this.baseDir, this.file));
     } catch (FileNotFoundException e) {
-      throw new NividicRuntimeException("File not Found: "+ this.file);
+      throw new NividicRuntimeException("File not Found: " + this.file);
     }
   }
 
@@ -123,16 +126,27 @@ public class FileDataSource implements DataSource {
 
   /**
    * Public constructor
-   * @param url URL to set
+   * @param file File to set
    */
   public FileDataSource(final String file) {
-    
+
     configSource(file);
   }
 
   /**
    * Public constructor
-   * @param url URL to set
+   * @param baseDir of the file
+   * @param file File to set
+   */
+  public FileDataSource(final String baseDir, final String file) {
+
+    configSource(file);
+    this.baseDir = baseDir;
+  }
+
+  /**
+   * Public constructor
+   * @param file File to set
    */
   public FileDataSource(final File file) {
 

@@ -34,6 +34,7 @@ import java.util.Map;
 
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.DesignFactory;
+import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
 import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
 
 public class LimmaDesignReader extends DesignReader {
@@ -42,6 +43,8 @@ public class LimmaDesignReader extends DesignReader {
   private static final String SLIDENUMBER_FIELD = "SlideNumber";
   private static final String NAME_FIELD = "Name";
   private static final String FILENAME_FIELD = "FileName";
+
+  private String baseDir = "";
 
   @Override
   public Design read() throws NividicIOException {
@@ -145,7 +148,8 @@ public class LimmaDesignReader extends DesignReader {
     // Set FileName field
     List<String> filenames = data.get(FILENAME_FIELD);
     for (int i = 0; i < count; i++)
-      design.setSource(ids.get(i), filenames.get(i));
+      design.setSource(ids.get(i), new FileDataSource(this.baseDir, filenames
+          .get(i)));
 
     for (String fd : fieldnames) {
 
@@ -208,7 +212,8 @@ public class LimmaDesignReader extends DesignReader {
   public LimmaDesignReader(final File file) throws NividicIOException {
 
     super(file);
-
+    if (file != null)
+      this.baseDir = file.getParent();
   }
 
   /**
