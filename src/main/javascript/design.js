@@ -5,12 +5,56 @@
  */
  
  
+/*
+ * Creating methods
+ */
+
+/*
+ * Create a standard design for 2 colors experiments
+ * @return a new Design
+ */
+function create2ColorsDesign() {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with (nividicNames)  {
+
+    return DesignFactory.create2ColorsDesign();
+  }
+
+}
+
+/*
+ * Create a design without targets.
+ * @return a new Design
+ */
+function createEmptyDesign() {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with (nividicNames)  {
+
+    return DesignFactory.create2ColorsDesign();
+  }
+
+}
+ 
+ /*
+ * Reader methods
+ */
+ 
 /**
  * Shortcut to read Limma design
  * @param file File(s) to read
  * @return A design Object
  */
 function readLimmaDesign(file) {
+
+
+
+  if (file.constructor==String) { file = sf(file); }
 
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
@@ -19,7 +63,10 @@ function readLimmaDesign(file) {
   
     var reader = new LimmaDesignReader(file);
     
-    return reader.read();
+    var design =  reader.read();
+    design.setName(file.getName());
+      
+    return design;
   }
 
 }
@@ -32,6 +79,8 @@ function readLimmaDesign(file) {
  */
 function readGoulpharDesign(file, normalizedFiles) {
 
+  if (file.constructor==String) { file = sf(file); }
+
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
 
@@ -42,11 +91,18 @@ function readGoulpharDesign(file, normalizedFiles) {
     if (normalizedFiles==false) {
         reader.setDataSourceNormalized(true);
       }
+     
+    var design =  reader.read();
+    design.setName(file.getName());
       
-    return reader.read();
+    return design;
   }
 
 }
+
+/*
+ * Writer methods
+ */
 
 /*
  * Write a design
@@ -55,6 +111,8 @@ function readGoulpharDesign(file, normalizedFiles) {
  * @return nothing
  */
 function writeLimmaDesign(design, file) {
+
+  if (file.constructor==String) { file = sf(file); }
 
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);

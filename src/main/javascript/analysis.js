@@ -18,11 +18,11 @@ function createLists(ba, threshold, fileUp, fileDown) {
   var baf1 = ba.filter(createMSupFilter(threshold));
   var baf2 = ba.filter(createMInfFilter(-threshold));
 
-  var l1 = newBiologicalList();
+  var l1 = createBiologicalList();
   l1.add(baf1.getIds());
   println("Up list count: "+l1.size());
 
-  var l2 = newBiologicalList();
+  var l2 = createBiologicalList();
   l2.add(baf2.getIds());
   println("Down list count: "+l2.size());
 

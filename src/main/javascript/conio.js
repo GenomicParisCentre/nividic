@@ -20,13 +20,21 @@ function print(obj) {
     if (obj==null) { 
       return;
     }
+    
+    if (obj instanceof Function) {
+       Echo.out.print("Function");
+       return;
+    }
 
     if (obj instanceof Array) {
+    
+      
       if (obj.length>0 && (obj[0].construtor == Boolean || obj[0].constructor == Number)) {
 
         Echo.out.print(obj);
         return;
       }
+     
       Echo.out.printArray(obj); 
       return; 
     } 
@@ -45,3 +53,5 @@ function println(obj) {
   print(obj);
   print("\n");
 }
+
+

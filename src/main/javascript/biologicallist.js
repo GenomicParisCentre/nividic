@@ -6,10 +6,14 @@
 
 
 /*
+ * Creating methods
+ */
+
+/*
  * Create a new Biological List.
  * @return new Biological list object
  */
-function newBiologicalList() {
+function createBiologicalList() {
 
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
@@ -20,6 +24,10 @@ function newBiologicalList() {
   }
 
 }
+
+/*
+ * Reader methods
+ */
 
 /*
  * read a biological list.
@@ -40,8 +48,12 @@ function readBiologicalList(file, trim) {
     for (var i=0; i<file.length;i++) {
       
       with (nividicNames)  {
+      
+        var f = file[i];
+        
+        if (f.constructor==String) { f = sf(file); }  
 
-        var reader = new SimpleBiologicalListReader(file[i]);
+        var reader = new SimpleBiologicalListReader(f);
   
         if (trim == true) {
           reader.setTrim(true);
@@ -68,12 +80,18 @@ function readBiologicalList(file, trim) {
 }
 
 /*
+ * Writer methods
+ */
+
+/*
  * Write a biological list.
  * @param list List to write
  * @param file Write to write
  * @return nothing
  */ 
 function writeBiologicalList(list, file) {
+
+  if (file.constructor==String) { file = sf(file); }  
 
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
