@@ -22,8 +22,9 @@
 
 package fr.ens.transcriptome.nividic.util;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Some static methods to manipulate strings.
@@ -230,23 +231,37 @@ public final class StringUtils {
    * @param ids Initial Strings
    * @return an array of String without removed String
    */
-  public static final String[] excludeStrings(String[] idsToRemove, String[] ids) {
+  public static String[] excludeStrings(final String[] idsToRemove,
+      final String[] ids) {
 
     if (idsToRemove == null || ids == null || idsToRemove.length == 0)
       return null;
 
-    Set set = new HashSet();
-    for (int i = 0; i < ids.length; i++)
-      set.add(ids[i]);
+    List<String> set = new ArrayList<String>(Arrays.asList(ids));
 
     for (int i = 0; i < idsToRemove.length; i++)
       set.remove(idsToRemove[i]);
 
-    String result[] = new String[set.size()];
+    String [] result = new String[set.size()];
 
     set.toArray(result);
 
     return result;
+  }
+
+  /**
+   * Split a String object. There is a bug with some regex in javascript. This
+   * method fix it.
+   * @param s String to split
+   * @param regex Regex
+   * @return an array of String
+   */
+  public static String[] split(final String s, final String regex) {
+
+    if (s == null)
+      return null;
+
+    return s.split(regex);
   }
 
   //
