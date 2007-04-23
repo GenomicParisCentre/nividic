@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jnlp
+  spec="1.0+"
+  codebase="@@@WEBSITE@@@/webstart"
+  href="$outputFile">
+  <information>
+    <title>Nividic Javascript Console</title>
+    <vendor>ENS Microarray platform</vendor>
+    <homepage href="http://transcriptome.ens.fr"/>
+    <description>A Javascript console to manipulate microarray objects</description>
+    <description kind="one-line">A Javascript console for Nividic (one-line)</description>
+    <description kind="short">Nividic Javascript Console</description>
+    <description kind="tooltip">Nividic</description>
+    <icon href="nividic-shortcut-logo.jpg"/>
+    <icon kind="shortcut" href="nividic-logo-shortcut.jpg"/>
+    <icon kind="splash" href="nividic-splash.jpg"/>
+    <offline-allowed/>
+    <shortcut online="false">
+    	<desktop/>
+    	<menu submenu="ENS Microarray Platform"/>
+    </shortcut>
+  </information>
+
+  <security>
+      <all-permissions/>
+  </security>
+
+  
+  <resources os="Windows">
+    <j2se version="1.5+"
+          href="http://java.sun.com/products/autodl/j2se"
+          initial-heap="64m"
+          max-heap-size="1024m"/>
+  </resources>
+  
+  <resources os="Mac OS">
+    <j2se version="1.5+"
+          initial-heap="64m"
+          max-heap-size="1024m"
+          java-vm-args="-server -Xdock:name='Nividic'"/>
+  </resources>
+  
+  <resources os="Linux">
+    <j2se version="1.5+"
+          href="http://java.sun.com/products/autodl/j2se"
+          initial-heap="64m"
+          max-heap-size="1024m"
+          java-vm-args="-server"/>
+  </resources>
+ 
+  <resources>
+    <j2se version="1.5+"
+          href="http://java.sun.com/products/autodl/j2se"
+          initial-heap="64m"
+          max-heap-size="1024m"/>
+    $dependencies
+  </resources>
+  
+ 
+
+  <!--extension name="qtjambi" href="http://hestia.ens.fr/leburon/jnlp/qtjambi.jnlp"/-->
+  <!--extension name="jogl"href="http://download.java.net/media/jogl/builds/archive/jsr-231-webstart-current/jogl.jnlp"/-->
+
+  <application-desc main-class="$mainClass">
+        <!--argument>org.microemu.midp.examples.simpledemo.SimpleDemo</argument-->
+  </application-desc>
+
+</jnlp>
