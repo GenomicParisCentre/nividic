@@ -69,7 +69,7 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
     final int countRow = em.getRowCount();
 
-    final String[] ids = em.getRowIds();
+    final String[] ids = em.getRowNames();
     final String[] columnNames = getColumns(em);
     final ExpressionMatrixDimension[] dimensions = getDimensions(em);
     final Translator annot = getTranslator();

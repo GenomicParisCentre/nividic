@@ -30,11 +30,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.primitives.ArrayDoubleList;
-import org.apache.commons.collections.primitives.ArrayIntList;
+// import org.apache.commons.collections.primitives.ArrayDoubleList;
+// import org.apache.commons.collections.primitives.ArrayIntList;
 
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
@@ -50,11 +51,11 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
 public abstract class BioAssayReader {
 
   private BioAssay bioAssay = BioAssayFactory.createBioAssay();
-  private Set fieldsToRead = new HashSet();
+  private Set<String> fieldsToRead = new HashSet<String>();
   private boolean readAllFields;
   // private String[] fields;
   private InputStream is;
-  private Map data = new HashMap();
+  private Map<String, List> data = new HashMap<String, List>();
 
   private static final int INITIAL_CAPACITY = 1000;
 
@@ -189,7 +190,8 @@ public abstract class BioAssayReader {
     // this.fieldsToRead = new HashSet();
     // this.readAllFields = false;
     // this.fields = null;
-    this.data = new HashMap();
+    // this.data = new HashMap<String, List>();
+    this.data.clear();
   }
 
   /**
@@ -300,9 +302,9 @@ public abstract class BioAssayReader {
     if (field == null)
       return;
 
-    ArrayIntList l = (ArrayIntList) this.data.get(field);
+    List<Integer> l = (List<Integer>) this.data.get(field);
     if (l == null) {
-      l = new ArrayIntList(INITIAL_CAPACITY);
+      l = new ArrayList<Integer>(INITIAL_CAPACITY);
       this.data.put(field, l);
     }
     l.add(value);
@@ -318,9 +320,9 @@ public abstract class BioAssayReader {
     if (field == null)
       return;
 
-    ArrayDoubleList l = (ArrayDoubleList) this.data.get(field);
+    List<Double> l = (List<Double>) this.data.get(field);
     if (l == null) {
-      l = new ArrayDoubleList(INITIAL_CAPACITY);
+      l = new ArrayList<Double>(INITIAL_CAPACITY);
       this.data.put(field, l);
     }
     l.add(value);
@@ -336,9 +338,9 @@ public abstract class BioAssayReader {
     if (field == null)
       return;
 
-    ArrayList l = (ArrayList) this.data.get(field);
+    List<String> l = (List<String>) this.data.get(field);
     if (l == null) {
-      l = new ArrayList(INITIAL_CAPACITY);
+      l = new ArrayList<String>(INITIAL_CAPACITY);
       this.data.put(field, l);
     }
     l.add(value);
@@ -357,12 +359,13 @@ public abstract class BioAssayReader {
     while (it.hasNext()) {
 
       String field = (String) it.next();
+
       if (StringUtils.findStringInArrayString(field, getIntFieldNames()) != -1) {
 
         // Setting integer fields
         int[] a = null;
         try {
-          ArrayIntList l = (ArrayIntList) this.data.get(field);
+          List<Integer> l = (List<Integer>) this.data.get(field);
           a = convert(l);
         } catch (ClassCastException e) {
           throw new NividicIOException("Invalid field type (integer) : "
@@ -399,9 +402,9 @@ public abstract class BioAssayReader {
           getDoubleFieldNames()) != -1) {
 
         // Setting double fields
-        ArrayDoubleList l = null;
+        List<Double> l = null;
         try {
-          l = (ArrayDoubleList) this.data.get(field);
+          l = (List<Double>) this.data.get(field);
         } catch (ClassCastException e) {
           throw new NividicIOException("Invalid field type (integer) : "
               + field);
@@ -461,7 +464,7 @@ public abstract class BioAssayReader {
    * @param list List to convert
    * @return An int array
    */
-  private static int[] convert(final ArrayIntList list) {
+  private static int[] convert(final List<Integer> list) {
 
     if (list == null)
       return null;

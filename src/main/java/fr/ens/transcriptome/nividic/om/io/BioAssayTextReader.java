@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.util.StringUtils;
@@ -175,9 +176,10 @@ public abstract class BioAssayTextReader extends BioAssayReader {
 
               // String values
 
-              if (isStringQuotesBeRemoved())
-                addDatafield(existingFields[i], new String(StringUtils
-                    .removeDoubleQuotes(s)));
+              final String s2 = isStringQuotesBeRemoved() ? StringUtils
+                  .removeDoubleQuotes(s) : s;
+
+              addDatafield(existingFields[i], new String(s2));
             }
 
         }

@@ -376,7 +376,7 @@ public class ImaGeneOutputFileReader extends
   }
 
   /**
-   * This abstract method allow to transform a bioassay before merging (e.g.
+   * This method allow to transform a bioassay before merging (e.g.
    * change columns names).
    * @param ba BioAssay to transform
    * @param count The number of the bioinfo in the multiples streams
