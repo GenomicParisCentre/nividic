@@ -28,20 +28,7 @@ package fr.ens.transcriptome.nividic.js;
  */
 public final class Util {
 
-  /**
-   * Split a String object. There is a bug with some regex in javascript. This
-   * method fix it.
-   * @param s String to split
-   * @param regex Regex
-   * @return an array of String
-   */
-  public static String[] split(final String s, final String regex) {
-
-    if (s == null)
-      return null;
-
-    return s.split(regex);
-  }
+  
 
   //
   // Constructor

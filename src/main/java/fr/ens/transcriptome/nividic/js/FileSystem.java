@@ -28,36 +28,58 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+/**
+ * This class implements filesystem API for javascript
+ * @author Laurent Jourdren
+ */
 public class FileSystem {
 
   private File currentDir = new File(".");
 
+  /**
+   * Change the current dir.
+   * @param directory The new directory
+   * @throws IOException if an error occurs while changing the directory
+   */
   public void chdir(final String directory) throws IOException {
 
     chdir(sf(directory));
   }
 
+  /**
+   * Change the current dir.
+   * @param dir The new directory
+   * @throws IOException if an error occurs while changing the directory
+   */
   public void chdir(final File dir) throws IOException {
 
     if (dir == null)
       throw new NullPointerException("dir is null");
     if (!dir.exists() || !dir.isDirectory())
-      throw new IOException("dir is not a valid directory");
+      throw new IOException("dir ("+ dir.getAbsolutePath() +") is not a valid directory");
 
     this.currentDir = dir;
   }
 
+  /**
+   * Get the current directory.
+   * @return The current directory
+   */
   public File cwd() {
 
     return currentDir;
   }
 
+  /**
+   * Get all the files of the current directory.
+   * @return an array of file
+   */
   public File[] ls() {
 
     return ls((String) null);
   }
 
-  private Pattern createLsPattern(String s) {
+  private Pattern createLsPattern(final String s) {
 
     StringBuffer sb = new StringBuffer();
 
@@ -90,16 +112,25 @@ public class FileSystem {
       }
 
     }
-    //System.out.println("Pattern: " + sb);
+    // System.out.println("Pattern: " + sb);
     return Pattern.compile(sb.toString());
   }
 
-  public File[] ls(String path) {
+  /**
+   * Get all the files of the current directory.
+   * @param path path to show
+   * @return an array of file
+   */
+  public File[] ls(final String path) {
 
     if (path == null)
       return ls("*");
 
     File f = new File(path);
+
+    if (f.isDirectory())
+      return lsInternal(f, createLsPattern("*"));
+
     File parent = f.getParentFile();
     String s = f.getName();
 
