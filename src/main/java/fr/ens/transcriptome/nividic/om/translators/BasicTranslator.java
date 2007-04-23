@@ -55,7 +55,6 @@ public abstract class BasicTranslator implements Translator {
   /**
    * Get a translation for a feature
    * @param id Identifier of the feature
-   * @param field the field to get
    * @return An array with the annotation of the Feature
    */
   public String[] translate(final String id) {
@@ -95,7 +94,6 @@ public abstract class BasicTranslator implements Translator {
   /**
    * Get translations for features
    * @param ids Identifiers of the features
-   * @param field the field to get
    * @return An array with the annotation of the Feature
    */
   public String[] translateField(final String[] ids) {
