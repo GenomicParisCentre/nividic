@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="latin1"?>
+<?xml version="1.0" encoding="iso-8859-15"?>
 <project name="Nividic">
   <bannerLeft>
     <name>ENS</name>
@@ -40,19 +40,55 @@
     </menu>-->
 
     <menu name="Documentation">
-      <item name="Tutorial" href="/tutorial.html" collapse="true">
+      <item name="Nividic Reference" href="/tutorial.html" collapse="true">
+      
+      	
+        <item name="BiologialObject" href="/biologicalobject.html" collapse="true"/>
         <item name="Annotation" href="/annotation.html" collapse="true"/>
+        <item name="History" href="/history.html" collapse="true"/>
+        
         <item name="BioAssay" href="/bioassay.html" collapse="true"/>
         <item name="Spot et SpotIterator" href="/spotiterator.html" collapse="true"/>
         <item name="BioAssayIO" href="/bioassayio.html" collapse="true"/>
         <item name="BioAssay Filters" href="/bioassayfilters.html" collapse="true"/>
+        
         <item name="Biological Lists" href="/biologicallists.html" collapse="true"/>
-        <item name="Experiements" collapse="true"/>
-        <item name="Test if a spot is empty" collapse="true"/>
-        <item name="BioAssay Wrapper for GPR annotation" collapse="true"/>
-        <item name="BioAssay Wrapper for GAL annotation" collapse="true"/>
+        <item name="ExpressionMatrix" href="/expressionmatrix.html" collapse="true"/>
+        
+        <item name="Translator" href="/translator.html" collapse="true"/>
+        <item name="Filters" href="/filters.html" collapse="true"/>
+        <item name="Sorters" href="/sorters.html" collapse="true"/>
+        
+        <item name="Design" href="/design.html" collapse="true"/>
+         
       </item>
-     <item name="Genepix integration" href="/genepix.html"/>
+      <item name="Nividic How to" href="/tutorial.html" collapse="true"> 
+        <item name="Test if a spot is empty" collapse="true"/>
+        <item name="Using BioAssay Wrapper for GPR annotation" collapse="true"/>
+        <item name="Using BioAssay Wrapper for GAL annotation" collapse="true"/>  
+
+      </item>
+      
+      <item name="Genepix integration" href="/genepix.html"/>
+   </menu>
+      
+    <menu name="Javascript Documentation">
+      <item name="Nividic Javascript Reference" href="/javascript.html" collapse="true">
+          <item name="General" href="/js-nividic.html" collapse="true" />
+          <item name="Analysis" href="/js-analysis.html" collapse="true" />
+          <item name="BioAssay" href="/js-bioassay.html" collapse="true" />
+          <item name="BiologicalList" href="/js-biologicallist.html" collapse="true" />
+          <item name="Conio" href="/js-conio.html" collapse="true" />
+          <item name="Design" href="/js-design.html" collapse="true" />
+          <item name="Matrix" href="/js-expressionmatrix.html" collapse="true" />
+          <item name="Filesystem" href="/js-fs.html" collapse="true" />
+          <item name="Math" href="/js-math.html" collapse="true" />
+          <item name="Translator" href="/js-translator.html" collapse="true" />
+          <item name="Util" href="/js-util.html" collapse="true" />
+        </item>
+        <item name="Examples" href="/js-examples.html" collapse="true" />
+        
+
    </menu>
 
     ${reports}

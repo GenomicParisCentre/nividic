@@ -44,6 +44,13 @@
     <p><b>WARNING: This site is under development.</b></p>
    
     </section>
+    
+    <section name="Nividic Javascript console">
+    
+    <p>A <a href="webstart/jsconsole.jnlp">Javascript console of Nividic</a> is available as a Java Web Start.</p>
+    
+    </section>
+    
 
     <section name="Availabality">
 

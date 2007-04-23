@@ -34,7 +34,7 @@
   
   <section name="Creating and handling a BioAssay Object">
 
-    <p>The BioAssay object is one of the main object of the Nividic API. BioAssay objects can handle data like Genepix GPR files or Genepix GAL files</p>
+    <p>The BioAssay object is one of the main object of the Nividic API. BioAssay objects can handle data like Genepix GPR files or Genepix GAL files.</p>
    
     <subsection name="Creating a BioAssay object">
 

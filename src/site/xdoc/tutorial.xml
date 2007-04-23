@@ -55,6 +55,29 @@
       
     </section>
     
+    <section name="Javascript">
+    
+      <p>Nividic is also usable with the Java implementation of Javascript. </p>
+    
+      <table>
+        <tr><th>Section</th><th>Description</th></tr>
+	    <tr><td><a href="js-nividic.html">General information about Javascript implementation in Nividic.</a></td><td>How to manage annotation on Nividic biological objects.</td></tr>
+	        
+
+	    <tr><td><a href="js-analyse.js.html">Analysis</a></td><td>Additional functions in Javascript for the analysis.</td></tr>
+	    <tr><td><a href="js-bioassay.js.html">BioAssay</a></td><td>Additional functions in Javascript to handle BioAssay objects.</td></tr>
+	    <tr><td><a href="js-biologicallist.js.html">Biological lists</a></td><td>Additional functions in Javascript for BiologicalList objects.</td></tr>
+	    <tr><td><a href="js-conio.js.html">Console IO</a></td><td>Additional functions in Javascript to handle the console.</td></tr>
+	    <tr><td><a href="js-design.js.html">Experimental Design</a></td><td>Additional functions in Javascript for the experimental design of experiments.</td></tr>
+	    <tr><td><a href="js-expressionmatrix.js.html">Expression Matrix</a></td><td>Additional functions in Javascript for ExpressionMatrix objects.</td></tr>
+	    <tr><td><a href="js-fs.js.html">File system</a></td><td>Additional functions in Javascript to handle the file system.</td></tr>
+	    <tr><td><a href="js-math.js.html">Math</a></td><td>Additional mathematical functions in Javascript.</td></tr>
+	    <tr><td><a href="js-translators.js.html">Translation</a></td><td>Additional functions in Javascript to handle translators.</td></tr>
+	    <tr><td><a href="js-util.js.html">Util</a></td><td>Additional utils functions in Javascript.</td></tr>
+    
+    
+    </table>
+    </section>
     
   </body>
   
