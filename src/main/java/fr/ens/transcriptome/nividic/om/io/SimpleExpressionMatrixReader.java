@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
@@ -176,7 +179,31 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
           + e.getMessage());
     }
 
-    return this.matrix;
+    return addReaderHistoryEntry(this.matrix);
+  }
+
+  /**
+   * Add history entry for reading data
+   * @param bioAssay Bioassay readed
+   * @return bioAssay
+   */
+  private ExpressionMatrix addReaderHistoryEntry(final ExpressionMatrix matrix) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
+            + "RowNumbers=" + matrix.getRowCount() + ";ColumnNumber="
+            + matrix.getColumnCount(), HistoryActionResult.PASS);
+
+    matrix.getHistory().add(entry);
+
+    return matrix;
   }
 
   /**

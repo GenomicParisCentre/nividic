@@ -37,6 +37,7 @@ import fr.ens.transcriptome.nividic.om.Design;
 public abstract class DesignReader {
 
   private InputStream is;
+  private String dataSource;
 
   private BufferedReader bufferedReader;
   private static final String SEPARATOR = "\t";
@@ -69,6 +70,14 @@ public abstract class DesignReader {
     return SEPARATOR;
   }
 
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
+  }
+  
   //
   // Setters
   //
@@ -126,6 +135,7 @@ public abstract class DesignReader {
           + file.getName());
     }
 
+    this.dataSource = file.getAbsolutePath();
   }
 
   /**

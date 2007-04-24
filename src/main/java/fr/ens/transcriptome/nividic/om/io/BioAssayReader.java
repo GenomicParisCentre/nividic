@@ -53,7 +53,7 @@ public abstract class BioAssayReader {
   private BioAssay bioAssay = BioAssayFactory.createBioAssay();
   private Set<String> fieldsToRead = new HashSet<String>();
   private boolean readAllFields;
-  // private String[] fields;
+  private String dataSource;
   private InputStream is;
   private Map<String, List> data = new HashMap<String, List>();
 
@@ -104,6 +104,14 @@ public abstract class BioAssayReader {
     if (is == null)
       throw new NividicIOException("No stream to read");
     this.is = is;
+  }
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
   }
 
   //
@@ -498,6 +506,7 @@ public abstract class BioAssayReader {
           + file.getName());
     }
 
+    this.dataSource = file.getAbsolutePath();
   }
 
   /**

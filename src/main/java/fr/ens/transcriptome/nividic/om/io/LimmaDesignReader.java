@@ -34,6 +34,10 @@ import java.util.Map;
 
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.DesignFactory;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
 import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
 
@@ -195,6 +199,30 @@ public class LimmaDesignReader extends DesignReader {
       }
 
     }
+
+    return addReaderHistoryEntry(design);
+  }
+
+  /**
+   * Add history entry for reading data
+   * @param design Design readed
+   * @return design
+   */
+  private Design addReaderHistoryEntry(final Design design) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
+            + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
+            + design.getLabelCount(), HistoryActionResult.PASS);
+
+    design.getHistory().add(entry);
 
     return design;
   }

@@ -36,6 +36,7 @@ import fr.ens.transcriptome.nividic.om.Design;
 public abstract class DesignWriter {
 
   private OutputStream outputStream;
+  private String dataSource;
 
   //
   // Getters
@@ -47,6 +48,14 @@ public abstract class DesignWriter {
    */
   public OutputStream getOutputStream() {
     return outputStream;
+  }
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
   }
 
   //
@@ -92,6 +101,8 @@ public abstract class DesignWriter {
       throw new NividicIOException("Error while reading file : "
           + file.getName());
     }
+
+    this.dataSource = file.getAbsolutePath();
   }
 
   /**

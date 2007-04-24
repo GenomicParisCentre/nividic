@@ -36,6 +36,7 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
  */
 public abstract class ExpressionMatrixWriter {
 
+  private String dataSource;
   private OutputStream outputStream;
   private Translator translator;
 
@@ -57,6 +58,14 @@ public abstract class ExpressionMatrixWriter {
    */
   public Translator getTranslator() {
     return translator;
+  }
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
   }
 
   //
@@ -111,6 +120,8 @@ public abstract class ExpressionMatrixWriter {
       throw new NividicIOException("Error while reading file : "
           + file.getName());
     }
+
+    this.dataSource = file.getAbsolutePath();
   }
 
   /**

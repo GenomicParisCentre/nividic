@@ -34,6 +34,9 @@ import java.util.Set;
 
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 /**
@@ -135,6 +138,32 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
       throw new NividicIOException("Error while writing stream : "
           + e.getMessage());
     }
+
+    addReaderHistoryEntry(em);
+  }
+
+  /**
+   * Add history entry for reading data
+   * @param bioAssay Bioassay readed
+   * @return bioAssay
+   */
+  private ExpressionMatrix addReaderHistoryEntry(final ExpressionMatrix matrix) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.SAVE, s
+            + "RowNumbers=" + matrix.getRowCount() + ";ColumnNumber="
+            + matrix.getColumnCount(), HistoryActionResult.PASS);
+
+    matrix.getHistory().add(entry);
+
+    return matrix;
   }
 
   /**
@@ -231,10 +260,10 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
    * @param enable The value to set
    */
   public void setShowDimensionName(final boolean enable) {
-    
-    this.showDimensionName=enable;
+
+    this.showDimensionName = enable;
   }
-  
+
   //
   // Constructors
   //

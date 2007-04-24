@@ -27,9 +27,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
@@ -196,7 +198,31 @@ public abstract class BioAssayTextReader extends BioAssayReader {
       throw new NividicIOException("Error while closing the file");
     }
 
-    return settingReadedDataInBioAssay();
+    return addReaderHistoryEntry(settingReadedDataInBioAssay());
+  }
+
+  /**
+   * Add history entry for reading data
+   * @param bioAssay Bioassay readed
+   * @return bioAssay
+   */
+  private BioAssay addReaderHistoryEntry(final BioAssay bioAssay) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
+            + "RowNumbers=" + bioAssay.size() + ";ColumnNumber="
+            + bioAssay.getFields().length, HistoryActionResult.PASS);
+
+    bioAssay.getHistory().add(entry);
+
+    return bioAssay;
   }
 
   //

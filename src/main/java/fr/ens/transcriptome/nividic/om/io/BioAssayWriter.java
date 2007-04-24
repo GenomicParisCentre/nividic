@@ -32,6 +32,9 @@ import java.util.Set;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 
 /**
  * This abstract class defines how to write BioAssay Stream.
@@ -39,6 +42,7 @@ import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
  */
 public abstract class BioAssayWriter {
 
+  private String dataSource;
   private OutputStream outputStream;
   private BioAssay bioAssay;
   private Set fieldsToWrite = new HashSet();
@@ -79,6 +83,14 @@ public abstract class BioAssayWriter {
    */
   public boolean isWriteAllFields() {
     return writeAllFields;
+  }
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
   }
 
   //
@@ -387,7 +399,28 @@ public abstract class BioAssayWriter {
 
     writeHeaders();
     writeData();
+    addWriterHistoryEntry(bioAssay);
+  }
 
+  /**
+   * Add history entry for reading data
+   * @param bioAssay Bioassay readed
+   */
+  private void addWriterHistoryEntry(final BioAssay bioAssay) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.CREATE, s
+            + "RowNumbers=" + bioAssay.size() + ";ColumnNumber="
+            + bioAssay.getFields().length, HistoryActionResult.PASS);
+
+    bioAssay.getHistory().add(entry);
   }
 
   //
@@ -411,7 +444,7 @@ public abstract class BioAssayWriter {
       throw new NividicIOException("Error while reading file : "
           + file.getName());
     }
-
+    this.dataSource = file.getAbsolutePath();
   }
 
   /**

@@ -33,6 +33,9 @@ import java.io.InputStreamReader;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BiologicalList;
 import fr.ens.transcriptome.nividic.om.BiologicalListFactory;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 
 /**
  * A simple reader for Biological lists. By default, all the line raed are
@@ -43,6 +46,15 @@ public class SimpleBiologicalListReader implements BiologicalListReader {
 
   private boolean trim = true;
   private InputStream is;
+  private String dataSource;
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
+  }
 
   /**
    * Test if all the element of the list must be trimed.
@@ -91,6 +103,29 @@ public class SimpleBiologicalListReader implements BiologicalListReader {
       throw new NividicRuntimeException("Error while reading biological list.");
     }
 
+    return addReaderHistoryEntry(list);
+  }
+
+  /**
+   * Add history entry for reading data
+   * @param list Bioassay readed
+   * @return list
+   */
+  private BiologicalList addReaderHistoryEntry(final BiologicalList list) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
+            + "RowSize=" + list.size(), HistoryActionResult.PASS);
+
+    list.getHistory().add(entry);
+
     return list;
   }
 
@@ -111,9 +146,12 @@ public class SimpleBiologicalListReader implements BiologicalListReader {
    * @param file File to read
    * @throws FileNotFoundException if an error occurs while creating the stream
    */
-  public SimpleBiologicalListReader(final File file) throws FileNotFoundException {
+  public SimpleBiologicalListReader(final File file)
+      throws FileNotFoundException {
 
     this(new FileInputStream(file));
+    if (file != null)
+      this.dataSource = file.getAbsolutePath();
   }
 
   /**

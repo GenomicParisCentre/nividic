@@ -41,6 +41,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
 public abstract class ExpressionMatrixReader {
 
   private InputStream is;
+  private String dataSource;
 
   private BufferedReader bufferedReader;
   private static final String SEPARATOR = "\t";
@@ -93,6 +94,14 @@ public abstract class ExpressionMatrixReader {
    */
   protected Map getData() {
     return this.data;
+  }
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
   }
 
   //
@@ -241,6 +250,17 @@ public abstract class ExpressionMatrixReader {
   }
 
   //
+  // Abstract method
+  //
+
+  /**
+   * Read data
+   * @return A ExpressionMatrixDimension object
+   * @throws NividicIOException if an error occurs while reading the stream
+   */
+  public abstract ExpressionMatrix read() throws NividicIOException;
+
+  //
   // Constructor
   //
 
@@ -262,6 +282,7 @@ public abstract class ExpressionMatrixReader {
           + file.getName());
     }
 
+    this.dataSource = file.getAbsolutePath();
   }
 
   /**

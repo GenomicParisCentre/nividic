@@ -33,10 +33,22 @@ import java.util.Iterator;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BiologicalList;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 
 public class SimpleBiologicalListWriter implements BiologicalListWriter {
 
   private OutputStream os;
+  private String dataSource;
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+    return this.dataSource;
+  }
 
   /**
    * Write the Biological List.
@@ -63,6 +75,27 @@ public class SimpleBiologicalListWriter implements BiologicalListWriter {
       throw new NividicRuntimeException("Error while writing the stream");
     }
 
+    addReaderHistoryEntry(list);
+  }
+
+  /**
+   * Add history entry for reading data
+   * @param list Bioassay readed
+   */
+  private void addReaderHistoryEntry(final BiologicalList list) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.SAVE, s
+            + "RowSize=" + list.size(), HistoryActionResult.PASS);
+
+    list.getHistory().add(entry);
   }
 
   //
@@ -86,6 +119,9 @@ public class SimpleBiologicalListWriter implements BiologicalListWriter {
       throws FileNotFoundException {
 
     this(new FileOutputStream(file));
+
+    if (file != null)
+      this.dataSource = file.getAbsolutePath();
   }
 
   /**

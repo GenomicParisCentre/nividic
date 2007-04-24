@@ -31,7 +31,10 @@ import java.util.List;
 import java.util.Set;
 
 import fr.ens.transcriptome.nividic.om.Design;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
 
 public class LimmaDesignWriter extends DesignWriter {
@@ -133,8 +136,30 @@ public class LimmaDesignWriter extends DesignWriter {
           + e.getMessage());
     }
 
+    addReaderHistoryEntry(design);
   }
 
+  /**
+   * Add history entry for reading data
+   * @param design Design readed
+   */
+  private void addReaderHistoryEntry(final Design design) {
+
+    String s;
+
+    if (getDataSource() != null)
+      s = "Source=" + getDataSource() + ";";
+    else
+      s = "";
+
+    final HistoryEntry entry = new HistoryEntry(
+        this.getClass().getSimpleName(), HistoryActionType.SAVE, s
+            + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
+            + design.getLabelCount(), HistoryActionResult.PASS);
+
+    design.getHistory().add(entry);
+  }
+  
   //
   // Construtors
   //
