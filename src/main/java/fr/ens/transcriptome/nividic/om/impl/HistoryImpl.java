@@ -35,7 +35,7 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
  */
 class HistoryImpl implements History {
 
-  private ArrayList<HistoryEntry> entries = new ArrayList<HistoryEntry>();
+  private List<HistoryEntry> entries = new ArrayList<HistoryEntry>();
 
   /**
    * Add an entry to the history.
@@ -88,6 +88,12 @@ class HistoryImpl implements History {
   //
 
   HistoryImpl() {
+  }
+
+  HistoryImpl(final History history) {
+
+    for (HistoryEntry entry : history.getEntries())
+      this.entries.add(new HistoryEntry(entry));
   }
 
 }

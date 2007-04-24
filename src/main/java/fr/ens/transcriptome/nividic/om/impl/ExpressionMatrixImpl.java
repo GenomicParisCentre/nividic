@@ -44,6 +44,8 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
@@ -62,7 +64,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
   private List<String> columnNamesArrayList;
 
-  private String expressionMatrixName;
+  private BiologicalName name = new BiologicalName(this);
   private Annotation annotations = AnnotationFactory.createAnnotation();
 
   private static int count;
@@ -80,6 +82,22 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   //
   // Getters
   //
+
+  /**
+   * Get the id of the biological Object
+   * @return an Integer as biological id.
+   */
+  public int getBiologicalId() {
+    return name.getBiologicalId();
+  }
+
+  /**
+   * Get the name of the Matrix.
+   * @return The name of the matrix
+   */
+  public String getName() {
+    return name.getName();
+  }
 
   /**
    * Get the number of rows created in the matrix.
@@ -307,15 +325,6 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   }
 
   /**
-   * Get the name of the ExpressionMatrixDimension.
-   * @return The name of the ExpressionMatrixDimension.
-   */
-  public String getName() {
-
-    return this.expressionMatrixName;
-  }
-
-  /**
    * Get the annotation for the expression matrix.
    * @return The annotation object
    */
@@ -365,13 +374,14 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   //
   // Setters
   //
+
   /**
    * Gives a name to the matrix
    * @param name name of the matrix
    */
   public void setName(final String name) {
 
-    this.expressionMatrixName = name;
+    this.name.setName(name);
   }
 
   /**
@@ -852,12 +862,12 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     } else if (!getAnnotation().equals(em.getAnnotation()))
       return false;
 
-    if (this.expressionMatrixName == null) {
+    if (this.name.getName() == null) {
       if (em.getName() != null)
         return false;
     }
 
-    return this.expressionMatrixName.equals(em.getName());
+    return this.name.getName().equals(em.getName());
   }
 
   /**
@@ -1163,6 +1173,16 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
   }
 
+  private void addConstructorHistoryEntry() {
+
+    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
+        + getBiologicalId() + ")", HistoryActionType.CREATE, "RowNumbers="
+        + getRowCount() + ";ColumnNumber=" + getColumnCount()
+        + ";DimensionNumber=" + getDimensionCount(), HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+  }
+
   //
   // Constructor
   //
@@ -1192,7 +1212,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     this.columnNamesArrayList = new ArrayList<String>();
     this.dimensionMap = new LinkedMap();
     addDimension(getDefaultDimensionName());
-
+    addConstructorHistoryEntry();
   }
 
   /**
@@ -1232,6 +1252,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       addDimension(dimensions[i]);
 
     setDefaultDimensionName(matrix.getDefaultDimensionName());
+    addConstructorHistoryEntry();
   }
 
   /**

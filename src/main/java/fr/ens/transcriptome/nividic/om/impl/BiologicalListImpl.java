@@ -33,10 +33,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
-import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BiologicalList;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListEndsWithFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
@@ -57,10 +58,18 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
   private static final int HASHCODE_ODD_NUMBER_1 = 812203;
   private static final int HASHCODE_ODD_NUMBER_2 = 1235;
 
-  private String name;
+  private BiologicalName name = new BiologicalName(this);
   private Set list = new HashSet();
   private Annotation annotation = AnnotationFactory.createAnnotation();
   private HistoryImpl history = new HistoryImpl();
+
+  /**
+   * Get the id of the biological Object
+   * @return an Integer as biological id.
+   */
+  public int getBiologicalId() {
+    return name.getBiologicalId();
+  }
 
   /**
    * Get the name of the list.
@@ -68,7 +77,7 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    */
   public String getName() {
 
-    return this.name;
+    return this.name.getName();
   }
 
   /**
@@ -77,7 +86,7 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    */
   public void setName(final String name) {
 
-    this.name = name;
+    this.name.setName(name);
   }
 
   /**
@@ -491,12 +500,57 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
   }
 
   /**
-   * Copy the BioAssay Object.
+   * Copy the BiologicalList Object.
    * @return a copy of the biological object
    */
-  public BioAssay copy() {
+  public BiologicalList copy() {
 
-    throw new NividicRuntimeException("copy() is not yet implemented.");
+    final BiologicalList result = new BiologicalListImpl(this);
+
+    final HistoryEntry entry = new HistoryEntry("Create Biological List (#"
+        + result.getBiologicalId() + "), copy of #" + getBiologicalId(),
+        HistoryActionType.CREATE, "Size=" + size(), HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+
+    return result;
+  }
+
+  private void addConstructorHistoryEntry() {
+
+    final HistoryEntry entry = new HistoryEntry("Create Biological List(#"
+        + getBiologicalId() + ")", HistoryActionType.CREATE, "Size=" + size(),
+        HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+  }
+
+  //
+  // Constructor
+  //
+
+  private BiologicalListImpl(final BiologicalList list, boolean addHistory) {
+
+    add(list);
+    if (addHistory)
+      addConstructorHistoryEntry();
+  }
+
+  /**
+   * Public constructor.
+   */
+  public BiologicalListImpl() {
+
+    addConstructorHistoryEntry();
+  }
+
+  /**
+   * Public constructor
+   * @param list Biological list to add to the new object
+   */
+  public BiologicalListImpl(final BiologicalList list) {
+
+    this(list, true);
   }
 
 }

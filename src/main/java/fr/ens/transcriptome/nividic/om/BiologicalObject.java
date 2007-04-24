@@ -31,6 +31,12 @@ import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 public interface BiologicalObject extends Annotable {
 
   /**
+   * Get the id of the biological Object
+   * @return an Integer as biological id.
+   */
+  int getBiologicalId();
+
+  /**
    * Get the name of the Biological object.
    * @return The name of the biological object
    */

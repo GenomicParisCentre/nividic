@@ -31,16 +31,15 @@ import java.util.Date;
 public class HistoryEntry {
 
   /**
-   * This enum describe all the actions of an event log in a history entry. 
+   * This enum describe all the actions of an event log in a history entry.
    * @author Laurent Jourdren
    */
   public enum HistoryActionType {
     CREATE, FILTER, SORT, REMOVE, ADD, LOAD, SAVE, UNKNOWN
   };
-  
 
   /**
-   * This enum describe all the results of an event log in a history entry. 
+   * This enum describe all the results of an event log in a history entry.
    * @author Laurent Jourdren
    */
   public enum HistoryActionResult {
@@ -167,6 +166,23 @@ public class HistoryEntry {
     setActionResult(actionResult);
 
     this.date = new Date(System.currentTimeMillis());
+  }
+
+  /**
+   * Constructor for creating a copy of an entry.
+   * @param entry Entry to copy
+   */
+  public HistoryEntry(final HistoryEntry entry) {
+
+    if (entry == null)
+      throw new NullPointerException("History entry is null");
+
+    this.date = entry.date;
+    this.actionType = entry.actionType;
+    this.actionName = entry.actionName;
+    this.arguments = entry.arguments;
+    this.actionResult = entry.actionResult;
+    this.comments = entry.comments;
   }
 
 }

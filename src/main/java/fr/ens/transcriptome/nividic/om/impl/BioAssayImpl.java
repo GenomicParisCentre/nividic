@@ -39,6 +39,8 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.Spot;
 import fr.ens.transcriptome.nividic.om.SpotEmptyTester;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.SpotComparator;
@@ -62,7 +64,13 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   private Annotation annotation = new SimpleAnnotationsImpl();
   private HistoryImpl history = new HistoryImpl();
 
-  private static int count;
+  /**
+   * Get the id of the biological Object
+   * @return an Integer as biological id.
+   */
+  public int getBiologicalId() {
+    return name.getBiologicalId();
+  }
 
   /**
    * Get the name of the BioAssay. This field can't be null.
@@ -767,7 +775,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
    */
   public BioAssay copy() {
 
-    throw new NividicRuntimeException("copy() is not yet implemented.");
+    return new BioAssayImpl(this);
   }
 
   /**
@@ -787,6 +795,16 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     return this.history;
   }
 
+  private void addConstructorHistoryEntry() {
+
+    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
+        + getBiologicalId() + ")", HistoryActionType.CREATE, "RowNumbers="
+        + size() + ";ColumnNumber=" + this.getFields().length,
+        HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+  }
+
   //
   // Constructor
   //
@@ -796,7 +814,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
    * @param name The name of the object.
    */
   public BioAssayImpl(final String name) {
-    count++;
+    this();
     setName(name);
   }
 
@@ -804,7 +822,55 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
    * Create a BioAssay object. The object's name if ramdomly generated,
    */
   public BioAssayImpl() {
-    count++;
+    addConstructorHistoryEntry();
+  }
+
+  private BioAssayImpl(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      throw new NullPointerException("The bioAssay is null");
+
+    setName(bioAssay.getName());
+    getAnnotation().addProperties(bioAssay.getAnnotation());
+    setSpotEmptyTester(bioAssay.getSpotEmptyTester());
+
+    this.history = new HistoryImpl(bioAssay.getHistory());
+
+    String[] fields = bioAssay.getFields();
+
+    for (int i = 0; i < fields.length; i++) {
+
+      final String field = fields[i];
+
+      switch (bioAssay.getFieldType(field)) {
+      case BioAssay.DATATYPE_DOUBLE:
+
+        setDataFieldDouble(field, bioAssay.getDataFieldDouble(field));
+        break;
+      case BioAssay.DATATYPE_INTEGER:
+
+        setDataFieldInt(field, bioAssay.getDataFieldInt(field));
+        break;
+
+      case BioAssay.DATATYPE_STRING:
+
+        setDataFieldString(field, bioAssay.getDataFieldString(field));
+        break;
+
+      default:
+        break;
+      }
+    }
+
+    setReferenceField(bioAssay.getReferenceField());
+
+    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
+        + getBiologicalId() + "), copy of #" + bioAssay.getBiologicalId(),
+        HistoryActionType.CREATE, "RowNumbers=" + size() + ";ColumnNumber="
+            + this.getFields().length, HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+
   }
 
 }

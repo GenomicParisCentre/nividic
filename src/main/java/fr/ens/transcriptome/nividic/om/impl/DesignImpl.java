@@ -34,7 +34,10 @@ import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.History;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
@@ -76,6 +79,14 @@ public class DesignImpl implements Design {
 
   private int countSlides;
   private int countLabels;
+
+  /**
+   * Get the id of the biological Object
+   * @return an Integer as biological id.
+   */
+  public int getBiologicalId() {
+    return name.getBiologicalId();
+  }
 
   /**
    * Get the name of the list.
@@ -930,6 +941,16 @@ public class DesignImpl implements Design {
     return getSlideCount();
   }
 
+  private void addConstructorHistoryEntry() {
+
+    final HistoryEntry entry = new HistoryEntry("Create Design (#"
+        + getBiologicalId() + ")", HistoryActionType.CREATE, "SlideNumbers="
+        + getSlideCount() + ";LabelNumber=" + getLabelCount(),
+        HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+  }
+
   /**
    * Overides ToString
    * @return a String with the name of the design
@@ -937,6 +958,18 @@ public class DesignImpl implements Design {
   public String toString() {
 
     return "Design: " + getName();
+  }
+
+  //
+  // Constructor
+  //
+
+  /**
+   * Public constructor.
+   */
+  public DesignImpl() {
+
+    addConstructorHistoryEntry();
   }
 
 }

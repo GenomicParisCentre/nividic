@@ -22,7 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
-import java.util.Random;
 
 /**
  * This class define a class to handle a biological name.
@@ -30,8 +29,19 @@ import java.util.Random;
  */
 class BiologicalName {
 
-  private static Random random = new Random(System.currentTimeMillis());
+  private static int currentId = 0;
+
+  private int id = currentId++;
   private String name;
+
+  /**
+   * Get the id of the biological Object
+   * @return an Integer as biological id.
+   */
+  public int getBiologicalId() {
+
+    return id;
+  }
 
   /**
    * Get the name of the biologicalObject
@@ -80,7 +90,7 @@ class BiologicalName {
 
     final String s = clazz == null ? "Unknow" : clazz.getSimpleName();
 
-    setName(s + "-" + System.currentTimeMillis() + "-" + random.nextInt());
+    setName(s + "-" + this.id);
   }
 
 }

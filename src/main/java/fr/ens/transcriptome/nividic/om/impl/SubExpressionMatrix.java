@@ -42,6 +42,8 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
@@ -60,9 +62,9 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   private ArrayList columnNames;
   private IterableMap dimensions;
   private ExpressionMatrixImpl matrix;
-  private String name;
+  private BiologicalName name = new BiologicalName(this);
   private String defaultDimensionName;
-  private HistoryImpl history = new HistoryImpl();
+  private HistoryImpl history;
 
   private static int count;
 
@@ -72,6 +74,22 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   //
   // Getters
   //
+
+  /**
+   * Get the id of the biological Object
+   * @return an Integer as biological id.
+   */
+  public int getBiologicalId() {
+    return name.getBiologicalId();
+  }
+
+  /**
+   * Get the name of the SubExpressionMatrix.
+   * @return The name of the SubExpressionMatrix.
+   */
+  public String getName() {
+    return name.getName();
+  }
 
   protected Set getIdsSet() {
     return this.idsSet;
@@ -113,15 +131,6 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     this.columnNames.toArray(columnNames);
 
     return columnNames;
-  }
-
-  /**
-   * Get the name of the SubExpressionMatrix.
-   * @return The name of the SubExpressionMatrix.
-   */
-  public String getName() {
-
-    return this.name;
   }
 
   /**
@@ -167,16 +176,10 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   /**
    * Give a name to the matrix
    * @param name name of the matrix
-   * @throws ExpressionMatrixRuntimeException if name is null
    */
-  public void setName(final String name)
-      throws ExpressionMatrixRuntimeException {
+  public void setName(final String name) {
 
-    if (name == null)
-      throw new ExpressionMatrixRuntimeException("String name is null");
-
-    this.name = name;
-
+    this.name.setName(name);
   }
 
   //
@@ -1258,9 +1261,10 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     else if (em instanceof SubExpressionMatrix)
       this.matrix = ((SubExpressionMatrix) em).matrix;
 
-    this.name = em.getName() + "-submatrix-" + count++;
     this.columnNames = new ArrayList(columnSize);
     this.referencesToColumnNamesSet = new HashSet(columnSize);
+    this.history = new HistoryImpl(em.getHistory());
+
     addInitIds(em, ids);
 
     // Set dimensions
@@ -1315,6 +1319,16 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     return getRowCount();
   }
 
+  private void addConstructorHistoryEntry() {
+
+    final HistoryEntry entry = new HistoryEntry("Create SubMatrix (#"
+        + getBiologicalId() + ")", HistoryActionType.CREATE, "RowNumbers="
+        + getRowCount() + ";ColumnNumber=" + getColumnCount()
+        + ";DimensionNumber=" + getDimensionCount(), HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+  }
+
   //
   // Constructors
   //
@@ -1324,6 +1338,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
     this(em, null, ids, columns.length);
     addColumns(em, columns);
+    addConstructorHistoryEntry();
   }
 
   SubExpressionMatrix(final ExpressionMatrix em, final String[] ids,
@@ -1331,12 +1346,14 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
     this(em, null, ids, columns.length);
     addColumns(em, columns);
+    addConstructorHistoryEntry();
   }
 
   SubExpressionMatrix(final ExpressionMatrix em, final String[] dimensionNames) {
 
     this(em, dimensionNames, em.getRowNames(), em.getColumnCount());
     addColumns(em, em.getColumnNames());
+    addConstructorHistoryEntry();
   }
 
 }
