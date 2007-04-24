@@ -42,6 +42,7 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.History;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.Slide;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
@@ -1121,7 +1122,18 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     if (filter == null)
       return null;
 
-    return filter.filter(this);
+    ExpressionMatrix result = filter.filter(this);
+
+    if (result != null) {
+
+      HistoryEntry entry = new HistoryEntry(filter.getClass().getSimpleName(),
+          HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
+          HistoryEntry.HistoryActionResult.PASS);
+
+      result.getHistory().add(entry);
+    }
+
+    return result;
   }
 
   //

@@ -35,6 +35,7 @@ import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 import fr.ens.transcriptome.nividic.om.DefaultSpotEmptyTester;
 import fr.ens.transcriptome.nividic.om.History;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.Spot;
 import fr.ens.transcriptome.nividic.om.SpotEmptyTester;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
@@ -635,7 +636,18 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     if (filter == null)
       return null;
 
-    return filter.filter(this);
+    final BioAssay result = filter.filter(this);
+
+    if (result != null) {
+
+      HistoryEntry entry = new HistoryEntry(filter.getClass().getSimpleName(),
+          HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
+          HistoryEntry.HistoryActionResult.PASS);
+
+      result.getHistory().add(entry);
+    }
+
+    return result;
   }
 
   /**

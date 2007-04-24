@@ -36,6 +36,7 @@ import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BiologicalList;
 import fr.ens.transcriptome.nividic.om.History;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListEndsWithFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
@@ -354,7 +355,18 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
     if (filter == null)
       return null;
 
-    return filter.filter(this);
+    BiologicalList result = filter.filter(this);
+
+    if (result != null) {
+
+      HistoryEntry entry = new HistoryEntry(filter.getClass().getSimpleName(),
+          HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
+          HistoryEntry.HistoryActionResult.PASS);
+
+      result.getHistory().add(entry);
+    }
+
+    return result;
   }
 
   /**
