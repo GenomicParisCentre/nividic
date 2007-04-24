@@ -46,6 +46,15 @@ public class BiologicalListStartsWithFilter extends BiologicalListTestFilter {
     return s.startsWith(this.prefix);
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "Prefix=" + this.prefix + ";CaseInsensible=" + this.caseInsensible;
+  }
+
   //
   // Constructor
   //

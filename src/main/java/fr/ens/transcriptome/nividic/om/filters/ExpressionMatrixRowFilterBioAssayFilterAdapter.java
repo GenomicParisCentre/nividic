@@ -53,7 +53,7 @@ public class ExpressionMatrixRowFilterBioAssayFilterAdapter extends
    * @return true if filtered row must be removed
    */
   @Override
-  public boolean removePositiveRows() {
+  public boolean isRemovePositiveRows() {
     // TODO Auto-generated method stub
     return true;
   }
@@ -84,6 +84,23 @@ public class ExpressionMatrixRowFilterBioAssayFilterAdapter extends
     return ((double) count / (double) values.length) > this.threshold;
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    String s = "Threshold=" + this.threshold;
+
+    if (doubleFilter != null)
+
+      return s + ";Adapter=" + this.doubleFilter.getClass().getSimpleName()
+          + ";" + this.doubleFilter.getParameterInfo();
+
+    return s + ";Adapter=" + this.integerFilter.getClass().getSimpleName()
+        + ";" + this.integerFilter.getParameterInfo();
+  }
+  
   //
   // Constructors
   //

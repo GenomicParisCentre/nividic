@@ -35,7 +35,7 @@ public class ExpressionMatrixRemoveIdentifiersFilter extends
    * Test if filtered identifiers must be removed. *
    * @return true if filtered row must be removed
    */
-  public boolean removeFoundId() {
+  public boolean isRemoveFoundId() {
 
     return true;
   }

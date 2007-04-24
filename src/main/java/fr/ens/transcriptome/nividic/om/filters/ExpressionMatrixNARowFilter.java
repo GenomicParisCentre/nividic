@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 
@@ -79,7 +80,7 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
    * Test if filtered identifiers must be removed. *
    * @return true if filtered row must be removed
    */
-  public boolean removePositiveRows() {
+  public boolean isRemovePositiveRows() {
 
     return false;
   }
@@ -102,6 +103,15 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
     this.rate = rate;
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "Rate=" + getRate() + "RemovePositiveRows=" + isRemovePositiveRows();
+  }
+  
   //
   // Constructor
   //

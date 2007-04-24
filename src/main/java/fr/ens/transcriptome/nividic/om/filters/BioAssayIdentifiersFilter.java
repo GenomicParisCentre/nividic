@@ -34,7 +34,7 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 public abstract class BioAssayIdentifiersFilter extends
     BioAssayGenericStringFieldFilter {
 
-  private Set identifiers = new HashSet();
+  private Set<String> identifiers = new HashSet<String>();
   private boolean selectNull = true;
 
   /**
@@ -131,6 +131,17 @@ public abstract class BioAssayIdentifiersFilter extends
       return this.selectNull;
 
     return containtsIdentifier(value);
+  }
+
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "Field=" + this.getFieldToFilter() + ";RemoveFoundIds="
+        + this.removeFoundId() + ";IdentifiersToRemoveCount="
+        + this.identifiers.size();
   }
 
 }

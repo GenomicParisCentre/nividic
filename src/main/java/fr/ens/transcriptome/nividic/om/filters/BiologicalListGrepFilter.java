@@ -45,6 +45,15 @@ public class BiologicalListGrepFilter extends BiologicalListTestFilter {
     return pattern.matcher(memberId).matches();
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "Pattern=" + pattern.pattern();
+  }
+
   //
   // Constructor
   //

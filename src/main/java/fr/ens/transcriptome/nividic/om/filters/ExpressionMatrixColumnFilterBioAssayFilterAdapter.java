@@ -84,6 +84,23 @@ public class ExpressionMatrixColumnFilterBioAssayFilterAdapter extends
     return ((double) count / (double) size) > this.threshold;
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    String s = "Threshold=" + this.threshold;
+
+    if (doubleFilter != null)
+
+      return s + ";Adapter=" + this.doubleFilter.getClass().getSimpleName()
+          + ";" + this.doubleFilter.getParameterInfo();
+
+    return s + ";Adapter=" + this.integerFilter.getClass().getSimpleName()
+        + ";" + this.integerFilter.getParameterInfo();
+  }
+
   //
   // Constructors
   //

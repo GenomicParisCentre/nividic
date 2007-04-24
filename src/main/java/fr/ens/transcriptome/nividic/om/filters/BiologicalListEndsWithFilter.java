@@ -46,6 +46,15 @@ public class BiologicalListEndsWithFilter extends BiologicalListTestFilter {
     return s.endsWith(this.suffix);
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "Suffix=" + this.suffix + ";CaseInsensible=" + this.caseInsensible;
+  }
+
   //
   // Constructor
   //

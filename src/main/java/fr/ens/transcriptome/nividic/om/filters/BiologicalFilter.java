@@ -43,4 +43,10 @@ public interface BiologicalFilter<E extends BiologicalObject> {
    * @return the number of spot that pass the filter
    */
   int count(E list);
+
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  String getParameterInfo();
 }

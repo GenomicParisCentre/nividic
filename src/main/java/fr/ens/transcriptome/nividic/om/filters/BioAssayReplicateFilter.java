@@ -22,8 +22,10 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.primitives.ArrayIntList;
@@ -35,7 +37,6 @@ import org.apache.commons.math.stat.descriptive.rank.Median;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
-import fr.ens.transcriptome.nividic.om.SpotIterator;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 /**
@@ -303,7 +304,7 @@ public class BioAssayReplicateFilter implements BioAssayFilter {
 
     String[] ids = bioAssay.getIds();
 
-    Map result = new HashMap();
+    Map<String, List<Integer>> result = new HashMap<String, List<Integer>>();
 
     final Translator translator = getTranslator();
     final boolean translate = translator != null;
@@ -314,19 +315,35 @@ public class BioAssayReplicateFilter implements BioAssayFilter {
       final String id = translate ? translator.translateField(ids[i],
           translatorField) : ids[i];
 
-      ArrayIntList ail;
+      List<Integer> ail;
       if (!result.containsKey(id)) {
 
-        ail = new ArrayIntList();
+        ail = new ArrayList<Integer>();
         result.put(id, ail);
       } else
-        ail = (ArrayIntList) result.get(id);
+        ail = result.get(id);
 
       ail.add(i);
 
     }
 
     return result;
+  }
+
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    String s = "MedianMode=" + this.isMedianMode() + ";AddStdDevA="
+        + isStandardDeviationA() + ";AddStdDevM=" + isStandardDeviationM();
+
+    if (getTranslator() != null)
+      s = s + ";Translator=" + translator.getClass().getSimpleName()
+          + ";TranslatorField=" + getTranslatorField();
+
+    return s;
   }
 
   //

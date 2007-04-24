@@ -24,12 +24,12 @@ package fr.ens.transcriptome.nividic.om.filters;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
-
 /**
  * This class implements a filter for flags
  * @author Laurent Jourdren
  */
-public abstract class BioAssayFlagsFilter extends BioAssayGenericIntegerFieldFilter {
+public abstract class BioAssayFlagsFilter extends
+    BioAssayGenericIntegerFieldFilter {
 
   /**
    * Get the field to filer
@@ -38,6 +38,15 @@ public abstract class BioAssayFlagsFilter extends BioAssayGenericIntegerFieldFil
   public String getFieldToFilter() {
 
     return BioAssay.FIELD_NAME_FLAG;
+  }
+
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "";
   }
 
 }

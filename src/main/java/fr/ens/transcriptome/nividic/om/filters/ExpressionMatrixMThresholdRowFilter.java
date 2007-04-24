@@ -89,7 +89,7 @@ public class ExpressionMatrixMThresholdRowFilter extends
    * Test if filtered identifiers must be removed. *
    * @return true if filtered row must be removed
    */
-  public boolean removePositiveRows() {
+  public boolean isRemovePositiveRows() {
 
     return false;
   }
@@ -145,6 +145,17 @@ public class ExpressionMatrixMThresholdRowFilter extends
     this.absoluteThreshold = absoluteThreshold;
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "Rate=" + getRate() + "Threshold=" + getThreshold()
+        + ";AbsoluteThreshold=" + isAbsoluteThreshold() + "RemovePositiveRows="
+        + isRemovePositiveRows();
+  }
+  
   //
   // Constructor
   //

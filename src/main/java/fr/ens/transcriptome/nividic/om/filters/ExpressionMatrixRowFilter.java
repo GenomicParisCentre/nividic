@@ -66,7 +66,7 @@ public abstract class ExpressionMatrixRowFilter implements
 
     positiveRows = al.toArray(positiveRows);
 
-    if (removePositiveRows())
+    if (isRemovePositiveRows())
       return em.subMatrixRowsExclude(positiveRows);
 
     return em.subMatrixRows(positiveRows);
@@ -106,7 +106,7 @@ public abstract class ExpressionMatrixRowFilter implements
    * Test if filtered identifiers must be removed.
    * @return true if filtered row must be removed
    */
-  public boolean removePositiveRows() {
+  public boolean isRemovePositiveRows() {
     
     return true;
   }

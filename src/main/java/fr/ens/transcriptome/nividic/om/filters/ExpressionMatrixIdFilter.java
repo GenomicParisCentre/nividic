@@ -127,7 +127,7 @@ public abstract class ExpressionMatrixIdFilter implements
     String[] foundIds = new String[al.size()];
     al.toArray(foundIds);
 
-    if (removeFoundId())
+    if (isRemoveFoundId())
       return em.subMatrixRows(StringUtils.excludeStrings(foundIds, rowIds));
 
     return em.subMatrixRows(foundIds);
@@ -165,7 +165,7 @@ public abstract class ExpressionMatrixIdFilter implements
         count++;
     }
 
-    if (removeFoundId())
+    if (isRemoveFoundId())
       return size - count;
 
     return count;
@@ -182,6 +182,6 @@ public abstract class ExpressionMatrixIdFilter implements
    * Test if found identifiers must be removed.
    * @return true if found identifiers must be removed
    */
-  public abstract boolean removeFoundId();
+  public abstract boolean isRemoveFoundId();
 
 }

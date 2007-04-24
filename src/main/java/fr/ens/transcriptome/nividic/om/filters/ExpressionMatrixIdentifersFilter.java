@@ -131,4 +131,14 @@ public abstract class ExpressionMatrixIdentifersFilter extends
     return this.idsToFilter.contains(id);
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "RemoveFoundIds" + isRemoveFoundId() + ";IdsToRemoveCount="
+        + idsToFilter.size();
+  }
+
 }

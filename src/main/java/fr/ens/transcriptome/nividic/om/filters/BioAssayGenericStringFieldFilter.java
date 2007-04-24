@@ -24,6 +24,7 @@ package fr.ens.transcriptome.nividic.om.filters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
@@ -101,7 +102,7 @@ public abstract class BioAssayGenericStringFieldFilter implements
     String[] data = bioAssay.getDataFieldString(getFieldToFilter());
 
     int size = bioAssay.size();
-    ArrayList al = new ArrayList();
+    List<Integer> al = new ArrayList<Integer>();
 
     final Translator translator = getTranslator();
     final boolean translate = translator != null;
@@ -119,7 +120,7 @@ public abstract class BioAssayGenericStringFieldFilter implements
 
     int[] toRemove = new int[al.size()];
     for (int i = 0; i < toRemove.length; i++)
-      toRemove[i] = ((Integer) al.get(i)).intValue();
+      toRemove[i] = al.get(i).intValue();
 
     if (removeFoundId())
       return BioAssayUtils.removeRowsFromBioAssay(bioAssay, inverseIntArray(

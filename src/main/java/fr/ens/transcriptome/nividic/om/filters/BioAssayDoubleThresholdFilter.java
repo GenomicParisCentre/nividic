@@ -185,6 +185,16 @@ public class BioAssayDoubleThresholdFilter extends
     }
   }
 
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "Field=" + getFieldToFilter() + ";Comparator="
+        + getComparator().toString() + ";Threshold=" + getThreshold();
+  }
+
   //
   // Constructor
   //

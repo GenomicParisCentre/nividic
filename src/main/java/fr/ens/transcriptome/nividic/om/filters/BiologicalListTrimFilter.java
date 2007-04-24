@@ -33,12 +33,21 @@ public class BiologicalListTrimFilter extends BiologicalListTransformFilter {
    * @param memberId member to transform
    * @return a new name for the identifier
    */
-  public String transform(String memberId) {
+  public String transform(final String memberId) {
 
     if (memberId == null)
       return null;
 
     return memberId.trim();
+  }
+
+  /**
+   * Get parameter filter information for the history
+   * @return a String with information about the parameter of the filter
+   */
+  public String getParameterInfo() {
+
+    return "";
   }
 
 }
