@@ -25,8 +25,9 @@ package fr.ens.transcriptome.nividic.js;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.regex.Pattern;
+
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 
 /**
  * This class implements filesystem API for javascript
@@ -56,7 +57,8 @@ public class FileSystem {
     if (dir == null)
       throw new NullPointerException("dir is null");
     if (!dir.exists() || !dir.isDirectory())
-      throw new IOException("dir ("+ dir.getAbsolutePath() +") is not a valid directory");
+      throw new IOException("dir (" + dir.getAbsolutePath()
+          + ") is not a valid directory");
 
     this.currentDir = dir;
   }
@@ -144,14 +146,22 @@ public class FileSystem {
 
     return parent.listFiles(new FileFilter() {
 
-      public boolean accept(File arg0) {
+      public boolean accept(final File arg0) {
 
         return p.matcher(arg0.getName()).find();
       }
     });
   }
 
-  public File sf(String filename) {
+  /**
+   * Select a file.
+   * @param filename File to select
+   * @return a file Object
+   */
+  public File sf(final String filename) {
+
+    if (filename == null || "..".equals(filename.trim()))
+      return new File(currentDir, "..");
 
     File f = new File(filename);
 
@@ -161,19 +171,31 @@ public class FileSystem {
     return new File(currentDir, filename);
   }
 
-  public void mkdir(String path) {
+  /**
+   * Create a directory.
+   * @param path Path of the directory to create
+   */
+  public void mkdir(final String path) {
 
     mkdir(sf(path));
   }
 
-  public void mkdir(File dir) {
+  /**
+   * Create a directory.
+   * @param dir File of the directory to create
+   */
+  public void mkdir(final File dir) {
 
     if (dir == null)
       throw new NullPointerException("dir is null");
     dir.mkdir();
   }
 
-  public void mkdir(final String[] filenames) throws IOException {
+  /**
+   * Create directories.
+   * @param filenames Filenames of the directories to create
+   */
+  public void mkdir(final String[] filenames) {
 
     if (filenames == null)
       throw new NullPointerException("filenames is null");
@@ -182,7 +204,11 @@ public class FileSystem {
       mkdir(filenames[i]);
   }
 
-  public void mkdir(final File[] files) throws IOException {
+  /**
+   * Create directories.
+   * @param files Files of the directories to create
+   */
+  public void mkdir(final File[] files) {
 
     if (files == null)
       throw new NullPointerException("files is null");
@@ -191,32 +217,48 @@ public class FileSystem {
       mkdir(files[i]);
   }
 
-  public void rmdir(String path) throws IOException {
+  /**
+   * Remove directory.
+   * @param path Path of the directory to remove
+   */
+  public void rmdir(final String path) {
 
     rmdir(sf(path));
   }
 
-  public void rmdir(File dir) throws IOException {
+  /**
+   * Remove directory.
+   * @param dir File of the directory to remove
+   */
+  public void rmdir(final File dir) {
 
     if (dir == null)
       throw new NullPointerException("dir is null");
 
     if (!dir.exists() || !dir.isDirectory())
-      throw new IOException("dir is not a valid directory");
+      throw new NividicRuntimeException("dir is not a valid directory");
 
     dir.delete();
   }
 
-  public void rmdir(final String[] filenames) throws IOException {
+  /**
+   * Remove directory.
+   * @param directories Path of the directory to remove
+   */
+  public void rmdir(final String[] directories) {
 
-    if (filenames == null)
+    if (directories == null)
       throw new NullPointerException("filenames is null");
 
-    for (int i = 0; i < filenames.length; i++)
-      rmdir(filenames[i]);
+    for (int i = 0; i < directories.length; i++)
+      rmdir(directories[i]);
   }
 
-  public void rmdir(final File[] files) throws IOException {
+  /**
+   * Remove directories.
+   * @param files Files of the directories to remove
+   */
+  public void rmdir(final File[] files) {
 
     if (files == null)
       throw new NullPointerException("files is null");
@@ -225,23 +267,35 @@ public class FileSystem {
       rmdir(files[i]);
   }
 
-  public void unlink(final String filename) throws IOException {
+  /**
+   * Remove a file.
+   * @param filename Filename of the file to remove
+   */
+  public void unlink(final String filename) {
 
     unlink(sf(filename));
   }
 
-  public void unlink(final File file) throws IOException {
+  /**
+   * Remove a file.
+   * @param file File to remove
+   */
+  public void unlink(final File file) {
 
     if (file == null)
       throw new NullPointerException("file is null");
 
     if (!file.exists())
-      throw new IOException("file is not a valid file");
+      throw new NividicRuntimeException("file is not a valid file");
 
     file.delete();
   }
 
-  public void unlink(final String[] filenames) throws IOException {
+  /**
+   * Remove files.
+   * @param filenames Filenames of the files to remove
+   */
+  public void unlink(final String[] filenames) {
 
     if (filenames == null)
       throw new NullPointerException("filenames is null");
@@ -250,7 +304,11 @@ public class FileSystem {
       unlink(filenames[i]);
   }
 
-  public void unlink(final File[] files) throws IOException {
+  /**
+   * Remove files.
+   * @param files files to remove
+   */
+  public void unlink(final File[] files) {
 
     if (files == null)
       throw new NullPointerException("files is null");
@@ -259,34 +317,30 @@ public class FileSystem {
       unlink(files[i]);
   }
 
-  public void move(final String a, final String b) throws IOException {
+  /**
+   * Move or rename a file.
+   * @param oldName Filename of the old name
+   * @param newName Filename of the new name
+   */
+  public void move(final String oldName, final String newName) {
 
-    move(sf(a), sf(b));
+    move(sf(oldName), sf(newName));
   }
 
-  public void move(final File a, final File b) throws IOException {
+  /**
+   * Move or rename a file.
+   * @param oldFile Old file object
+   * @param newFile New file object
+   */
+  public void move(final File oldFile, final File newFile) {
 
-    if (a == null || b == null)
+    if (oldFile == null || newFile == null)
       throw new NullPointerException("one ore more argument is null");
 
-    if (!a.exists())
-      throw new IOException(a.getName() + " not exists");
+    if (!oldFile.exists())
+      throw new NividicRuntimeException(oldFile.getName() + " not exists");
 
-    a.renameTo(b);
-  }
-
-  public static void main(String[] args) throws IOException {
-
-    FileSystem fs = new FileSystem();
-
-    System.out.println("cwd:" + fs.cwd());
-    System.out.println(Arrays.deepToString(fs.ls("/home/*en")));
-    fs.chdir("/home");
-    System.out.println("cwd:" + fs.cwd());
-    System.out.println(Arrays.deepToString(fs.ls()));
-
-    boolean bs[] = {true, false, true};
-
+    oldFile.renameTo(newFile);
   }
 
 }
