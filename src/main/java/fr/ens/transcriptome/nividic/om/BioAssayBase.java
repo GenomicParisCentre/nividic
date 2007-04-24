@@ -88,6 +88,12 @@ public interface BioAssayBase {
   String[] getFields();
 
   /**
+   * Get the number of fields in the bioAssay.
+   * @return the count of fields in the bioAssay
+   */
+  int getFieldCount();
+
+  /**
    * Returns an array with the location of all spots.
    * @return All the locations
    */

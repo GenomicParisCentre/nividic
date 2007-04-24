@@ -25,7 +25,6 @@ package fr.ens.transcriptome.nividic.om.impl;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Hashtable;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
@@ -799,8 +798,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
 
     final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
         + getBiologicalId() + ")", HistoryActionType.CREATE, "RowNumbers="
-        + size() + ";ColumnNumber=" + this.getFields().length,
-        HistoryActionResult.PASS);
+        + size() + ";ColumnNumber=" + getFieldCount(), HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }
@@ -867,7 +865,7 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
         + getBiologicalId() + "), copy of #" + bioAssay.getBiologicalId(),
         HistoryActionType.CREATE, "RowNumbers=" + size() + ";ColumnNumber="
-            + this.getFields().length, HistoryActionResult.PASS);
+            + getFieldCount(), HistoryActionResult.PASS);
 
     getHistory().add(entry);
 

@@ -120,6 +120,15 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
   }
 
   /**
+   * Get the number of fields in the bioAssay.
+   * @return the count of fields in the bioAssay
+   */
+  public int getFieldCount() {
+
+    return hashDir.size();
+  }
+
+  /**
    * Returns an array with the location of all spots.
    * @return All the locations
    */
