@@ -51,7 +51,7 @@ public class HistoryEntry {
   private String actionName;
   private String arguments;
   private HistoryActionResult actionResult;
-  private String comments;
+  private String comments = "";
 
   //
   // Getters
@@ -143,6 +143,34 @@ public class HistoryEntry {
   private void setArguments(final String arguments) {
 
     this.arguments = arguments != null ? arguments : "";
+  }
+
+  //
+  // Other method
+  //
+
+  /**
+   * Override toString() method.
+   * @return a description of the entry
+   */
+  public String toString() {
+
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("Date=");
+    sb.append(getDate());
+    sb.append(" Type=");
+    sb.append(getActionType());
+    sb.append(" Action=");
+    sb.append(getActionName());
+    sb.append(" Result=");
+    sb.append(getActionResult());
+    sb.append(" Arguments=");
+    sb.append(getArguments());
+    sb.append(" Comments=");
+    sb.append(getComments());
+
+    return sb.toString();
   }
 
   //
