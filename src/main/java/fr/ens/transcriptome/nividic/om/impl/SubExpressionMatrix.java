@@ -1185,12 +1185,12 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   }
 
   /**
-   * Copy the BioAssay Object.
+   * Copy the ExpressionMatrix Object.
    * @return a copy of the biological object
    */
-  public BioAssay copy() {
+  public ExpressionMatrix copy() {
 
-    throw new NividicRuntimeException("copy() is not yet implemented.");
+    return new SubExpressionMatrix(this,getDimensionNames());
   }
 
   //
