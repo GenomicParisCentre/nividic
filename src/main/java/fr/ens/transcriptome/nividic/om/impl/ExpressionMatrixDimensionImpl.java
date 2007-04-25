@@ -34,6 +34,9 @@ import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 public class ExpressionMatrixDimensionImpl implements
@@ -469,7 +472,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @param o Object to test
    * @return true if the 2 objects are equals
    */
-  public boolean dataEquals(Object o) {
+  public boolean dataEquals(final Object o) {
 
     if (o == null || !(o instanceof ExpressionMatrixDimension))
       return false;
@@ -651,7 +654,7 @@ public class ExpressionMatrixDimensionImpl implements
    * Set the name of the dimension.
    * @param name The name of the dimension
    */
-  public void setDimensionName(String name) {
+  public void setDimensionName(final String name) {
 
     matrix.renameDimension(this.name, name);
   }
@@ -763,6 +766,7 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param translator Translator to use
    */
   public void addBioAssay(final BioAssay bioAssay, final Translator translator) {
 
@@ -772,6 +776,8 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param translator Translator to use
+   * @param translatorFieldName Field of the translator to use
    */
   public void addBioAssay(final BioAssay bioAssay, final Translator translator,
       final String translatorFieldName) {
@@ -783,6 +789,9 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param newColumnName Name of the new Column
+   * @param translator Translator to use
+   * @param translatorFieldName Field of the translator to use
    */
   public void addBioAssay(final BioAssay bioAssay, final String newColumnName,
       final Translator translator, final String translatorFieldName) {
@@ -803,6 +812,7 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param bioAssayColumnToAdd Field of the bioAssay to add
    * @param newColumnName The name of the new column to add
    */
   public void addBioAssay(final BioAssay bioAssay,
@@ -814,6 +824,7 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Add a column to the matrix
    * @param bioAssay The new column to add
+   * @param bioAssayColumnToAdd Field of the bioAssay to add
    * @param newColumnName The name of the new column to add
    * @param translator Translator to use to define rowId
    */
@@ -863,7 +874,9 @@ public class ExpressionMatrixDimensionImpl implements
 
     final double[] values = bioAssay.getDataFieldDouble(lbioAssayColumnToAdd);
 
+    // Add data to the matrix
     addColumn(lNewColumnName, ids, values);
+
   }
 
   //

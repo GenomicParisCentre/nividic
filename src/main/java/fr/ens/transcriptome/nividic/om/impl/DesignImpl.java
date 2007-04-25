@@ -828,6 +828,7 @@ public class DesignImpl implements Design {
 
     for (Slide slide : slides)
       slide.loadSource();
+
   }
 
   /**
