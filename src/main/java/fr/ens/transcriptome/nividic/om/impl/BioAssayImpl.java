@@ -744,6 +744,12 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   public void swapIdentifiersAndDescriptions() {
 
     swapFields(BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_DESCRIPTION);
+
+    final HistoryEntry entry = new HistoryEntry(
+        "Swap identifer and description", HistoryActionType.MODIFY, "",
+        HistoryActionResult.PASS);
+
+    getHistory().add(entry);
   }
 
   /**
