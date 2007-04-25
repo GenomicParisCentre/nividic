@@ -40,6 +40,28 @@ function createEmptyDesign() {
   }
 
 }
+
+/*
+ * Print methods
+ */
+ 
+/*
+ * Show a design.
+ * @param design Design to show
+ * @return nothing
+ */
+ function showDesign(design) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with (nividicNames)  {
+  
+    return DesignUtils.showDesign(design);
+  }
+
+}
+ 
  
  /*
  * Reader methods
