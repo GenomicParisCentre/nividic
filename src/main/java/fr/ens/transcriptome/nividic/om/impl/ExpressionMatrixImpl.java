@@ -210,6 +210,13 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     this.dimensionMap.put(dimensionName, emd);
 
+    final HistoryEntry entry = new HistoryEntry("Add Dimension "
+        + dimensionName, HistoryActionType.ADD,
+        "DimensionAdded=1;DimensionCount=" + getDimensionCount(),
+        HistoryActionResult.PASS);
+
+    getHistory().add(entry);
+
     sendEvent(new ExpressionMatrixEvent(this,
         ExpressionMatrixEvent.ADD_DIMENSION_EVENT, dimensionName));
 
@@ -635,6 +642,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     if (bioAssay == null)
       return;
 
+    final int rowsBefore = getRowCount();
+    final int colsBefore = getColumnCount();
+
     String[] dimensionNames = getDimensionNames();
     for (int i = 0; i < dimensionNames.length; i++)
       if (bioAssay.isField(dimensionNames[i])) {
@@ -644,6 +654,17 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
         dimension
             .addBioAssay(bioAssay, columnName, translator, translatorField);
       }
+
+    final int rowsAfter = getRowCount();
+    final int colsAfter = getColumnCount();
+
+    final HistoryEntry entry = new HistoryEntry("Add BioAssay (#"
+        + bioAssay.getBiologicalId() + ")", HistoryActionType.ADD, "RowAdded="
+        + (rowsAfter - rowsBefore) + ";RowCount=" + rowsAfter + ";ColumnAdd="
+        + (colsAfter - colsBefore) + ";ColumnCount=" + colsAfter,
+        HistoryActionResult.PASS);
+
+    getHistory().add(entry);
   }
 
   /**
@@ -1202,11 +1223,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   public ExpressionMatrixImpl(final String name) {
     count++;
 
-    if (name == null)
-      this.setName("ExpressionMatrixDimension-" + System.currentTimeMillis()
-          + "-" + random.nextInt() + "-" + count);
-    else
-      this.setName(name);
+    if (name != null)
+      setName(name);
 
     this.idsMap = new LinkedMap();
     this.columnNamesArrayList = new ArrayList<String>();
@@ -1252,7 +1270,14 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       addDimension(dimensions[i]);
 
     setDefaultDimensionName(matrix.getDefaultDimensionName());
-    addConstructorHistoryEntry();
+
+    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
+        + getBiologicalId() + "), copy of #" + matrix.getBiologicalId(),
+        HistoryActionType.CREATE, "RowNumbers=" + getRowCount()
+            + ";ColumnNumber=" + getColumnCount() + ";DimensionNumber="
+            + getDimensionCount(), HistoryActionResult.PASS);
+
+    getHistory().add(entry);
   }
 
   /**
@@ -1268,9 +1293,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * Copy the BioAssay Object.
    * @return a copy of the biological object
    */
-  public BioAssay copy() {
+  public ExpressionMatrix copy() {
 
-    throw new NividicRuntimeException("copy() is not yet implemented.");
+    return new ExpressionMatrixImpl(this);
   }
 
   /**

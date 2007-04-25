@@ -27,7 +27,10 @@ import java.io.InputStream;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
+import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
@@ -289,6 +292,11 @@ class SlideImpl implements Slide {
     result.setName(getName());
 
     setBioAssay(result);
+
+    final HistoryEntry entry = new HistoryEntry("Load slide data (" + getName()
+        + ")", HistoryActionType.LOAD, "", HistoryActionResult.PASS);
+
+    this.design.getHistory().add(entry);
   }
 
   /*
@@ -302,8 +310,15 @@ class SlideImpl implements Slide {
     if (ba == null)
       throw new NullPointerException("bioAssay is null");
 
-    if (getDescription().getSwap())
+    if (getDescription().getSwap()) {
+
       BioAssayUtils.swap(ba);
+
+      final HistoryEntry entry = new HistoryEntry("Swap slide (" + getName()
+          + ")", HistoryActionType.FILTER, "", HistoryActionResult.PASS);
+
+      this.design.getHistory().add(entry);
+    }
   }
 
   //
