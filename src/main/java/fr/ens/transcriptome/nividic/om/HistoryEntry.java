@@ -35,7 +35,7 @@ public class HistoryEntry {
    * @author Laurent Jourdren
    */
   public enum HistoryActionType {
-    CREATE, FILTER, SORT, REMOVE, ADD, LOAD, SAVE, UNKNOWN
+    CREATE, FILTER, SORT, MODIFY, REMOVE, ADD, LOAD, SAVE, UNKNOWN
   };
 
   /**
