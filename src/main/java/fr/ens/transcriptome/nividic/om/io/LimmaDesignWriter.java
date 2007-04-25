@@ -45,6 +45,9 @@ public class LimmaDesignWriter extends DesignWriter {
   @Override
   public void write(final Design design) throws NividicIOException {
 
+    if (design == null)
+      throw new NullPointerException("Design is null");
+
     bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
 
     if (this.bw == null)
@@ -95,13 +98,12 @@ public class LimmaDesignWriter extends DesignWriter {
 
           final String sn = s.getDescription().getSerialNumber();
 
-         
           bw.append(sn == null ? "" : sn);
           bw.append(SEPARATOR);
-          
+
           bw.append(s.getName());
           bw.append(SEPARATOR);
-          
+
         } else {
 
           bw.append(s.getName());
@@ -159,7 +161,7 @@ public class LimmaDesignWriter extends DesignWriter {
 
     design.getHistory().add(entry);
   }
-  
+
   //
   // Construtors
   //
