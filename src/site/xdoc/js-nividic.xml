@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic and Javascript</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="General information about Nividic and Javascript">
+     
+      <p>This page contains contains information about how files are handled and other specifities of the Nividic Javascript version.</p>
+    
+    </section>
+    
+    <section name="Files functions">
+    
+      <p>As Javascript no define a standardized API to access to filesystem, Nividic is built-in with its own mecanism.      
+      In the nividic javascript version, file are usualy handled as a Java File Object.</p>
+      
+      <p>To select a file, use the <code>sf</code> command (as Select File)</p>
+      
+<source>
+js>sf("toto.txt")
+toto.txt
+</source>
+      
+      <p>To select many file, use the <code>ls</code> command:</p>
+<source>
+js>ls()
+[./toto.txt, ./tata.js, ./toto.js]    
+
+js>ls("*.js")
+[./tata.js, ./toto.js]
+</source>
+</section>
+    <p>As in Java there is no mean to change the current directory. The path of file in coded in a Java File Object as the relative path from the startup dir or as the absolute path.</p>
+<source>
+js>ls("src/main/javascript")
+[src/main/javascript/util.js, src/main/javascript/conio.js, src/main/javascript/math.js]
+
+js>ls("/tmp")
+[/tmp/lost+found, /tmp/.X11-unix, /tmp/.ICE-unix]
+</source>
+
+   <p>If you only want to show <b>the names</b> of the files of a dir, ou can use the <code>dir</code> command:</p>
+<source>
+js>dir("src/main/javascript")
+[javascript/util.js, javascript/conio.js, javascript/math.js]
+
+js>dir("/tmp")
+[lost+found, .X11-unix, .ICE-unix]
+</source>
+
+	<p>If you want to change the current dir, use the <code>cd</code> command and 
+	you get the current directory with <code>pwd</code> or <code>cwd</code>.</p>
+<source>
+js>cd("/tmp")
+js>pwd()
+/tmp
+</source>
+
+	<section name="Working with scripts">
+	
+	<p>You can load a script with the <code>source</code> function:</p>
+<source>
+js>source(sf("myscript.js"))
+Load script: myscript.js
+
+js>source("myscript.js")
+Load script: myscript.js
+</source>
+
+   <p>You can use either a File Object or a String as parameter of this function. In addition, you can launch an editor for a file with the <code>edit</code> function:</p>
+   
+<source>
+js>edit(sf("myscript.js"))
+js>edit("myscript.js")
+</source>
+	
+	</section>
+
+	<section name="Misc.">
+	
+	<subsection name="comments">
+	
+        <p>You can get a brief of the built-in command of the Nividic version of Javascript with <code>help()</code></p>
+        
+        <source>
+        js>help()
+
+Command                Description
+=======                ===========
+help()                 Display usage and help messages. 
+source(file)           Load JavaScript source file.
+edit(file)             Edit a file.
+print([expr ...])      Evaluate and print expressions. 
+about()                Show information about this application.
+system(cmd)            Execute a shell command.
+time([expr])           Get the running time of a expression.
+quit()                 Quit the shell.         
+        </source>
+        
+     </subsection>
+	
+	  <subsection name="comments">
+	
+        <p>It seem that only C (<code>/* My comment */</code>) comments are working with the JavaScript engine.</p>
+     </subsection>
+     
+     <subsection name="Measure command running time">
+     
+     	<p>You can measure the running time of a command with the <code>time</code> command. This function returns the time in ms.</p>
+     	
+     	<source>
+js>time("source('myscript.js'))
+178
+js>time("source(\"myscript.js\"))
+178
+</source>
+     </subsection>
+
+	<subsection name="Get the current time">
+	
+	<p>The <code>currentTime()</code> function return the numbers of seconds from the Unix/Java epoch.</p>
+
+	<source>
+js>currentTimeMillis()
+1.176990682602E12
+	</source>	
+	
+	</subsection>
+     
+     <subsection name="Execute shell commands">
+     
+     <p>You can run shell command using the <code>system</code> command:</p>
+     
+     <source>
+js>system("uname -sv")
+Linux #1 PREEMPT Wed Jun 28 10:51:12 CEST 2006
+     </source>
+     
+     </subsection>
+     
+	
+	</section>
+	
+
+  </body>
+</document>

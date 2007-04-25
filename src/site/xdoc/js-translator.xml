@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript Translator module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module translator.js">
+    
+    <p>This module contains functions to create translators.</p>
+    
+    </section>
+    
+    
+    <section name="Creation functions">
+
+<source>
+
+/*
+ * Create a translator based on the Description field of the bioAssay
+ * @param bioAssay BioAssay to use by the translator
+ * @return a new translator
+ */
+function createTranslatorFromBioAssay(bioAssay);
+
+/*
+ * Create a translator based on the Description field of the bioAssay
+ * @param design BioAssay of the design to use by the translator
+ * @return a new translator
+ */
+function createTranslatorFromDesign(design);
+
+</source>
+    </section>
+    
+ 
+    
+    
+  </body>
+</document>

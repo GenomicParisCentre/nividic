@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="latin1"?>
+<document>
+
+	<properties>
+	    <title>BiologicalObject and BiologicalFilter</title>
+		<author email="jourdren@biologie.ens.fr">
+			Laurent Jourdren
+		</author>
+	</properties>
+
+
+
+	<body>
+
+		<section name="BiologicalObject">
+
+			<p>
+				BiologicalObject is the parent class of all main Nividic
+				classes. There are 3 subtypes of BiologicalObject:
+			</p>
+
+			<ul>
+				<li><b>BioAssay</b></li>
+				<li><b>ExpressionMatrix</b></li>
+				<li><b>BiologicalList</b></li>
+				<li><b>Design</b></li>
+			</ul>
+
+			<p>A BiologicalObject is an object that contains rows with one ore columns. 
+			(e. g. BiologicalList has one column, ExpressionMatrix and BioAssay many).</p>
+			
+
+		</section>
+
+		<section name="Methods of BiologicalObject">
+		<p>You can get and set the name of the biological object:</p>
+			
+			<source>
+  bo.getName();
+  bo.setName("My object");
+			</source>
+		
+		<p>Each BiologicalObject has an unique identifer:</p>
+		
+		<source>
+  int id =  bo.getBiologicalId();
+		</source>
+		
+		<p>You can access to the history of the object (see History chapiter):</p>
+		<source>
+  History history = bo.getHistory();
+		</source>
+		
+		<p>You can also filter and count the number of rows that pass a filter:</p>
+		<source>
+  BiologicalObject b = a.filter(filter);
+  int count = a.count(filter);
+		</source>
+		
+		<p>You can clear all data of the object:</p>
+		<source>
+   bo.clear();
+		</source>
+		
+		<p>Finaly, you can copy a biological object:</p>
+		<source>
+  BiologicalObject b = a.copy();
+		</source>
+		
+		</section>
+		
+		<section name="BiologicalFilter">
+		
+		<p>Nividic define high abstracted filter for BiologicalObject, this filters must implements two methods. 
+		The first apply the filter (don't change the orignal BiologicalObject) and return the biological object filtered.</p>
+		<source>
+  BiologicalObject filter(BiologicalObject bo);
+  </source>
+  	<p>The second, The first apply the filter (don't change the orignal BiologicalObject too) 
+  	and return the number of row in the Biological object after the filter.</p>
+  <source>
+  int count(BiologicalObject bo);
+		</source>
+		
+		<p>In fact, this high level filter are useless, only filter specific of one type of BiologicalObject can work.</p>
+		
+		
+		</section>
+		
+		<section name="History management and BiologicalFilter">
+		
+		<p>If you don't want to add manualy an entry to the history log of the
+		 BiologicalObject after each call to a filter, you must use the filter
+		 method of the BiologicalObject and not the filter method of the filter.</p>
+		 
+	<source>
+
+  BiologicalFilter myFilter = new MyFilter();
+  BiologicalObject a;
+  
+  // Bad: Without automatic history log
+  BiologicalObject b = myFilter.filter(a);
+    
+  // Good: With automatic history log
+  BiologicalObject c = a.filter(myFilter);
+  
+	</source>	 
+		 
+		
+		</section>
+
+	</body>
+
+</document>

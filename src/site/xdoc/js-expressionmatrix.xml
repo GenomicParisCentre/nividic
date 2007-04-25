@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript ExpressionMatrix module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module expressionmatrix.js">
+    
+    <p>This module contains functions to handle ExpressionMatrix objects.</p>
+    
+    </section>
+    
+    
+    <section name="Creation functions">
+
+<source>
+
+/**
+ * Short to create a matrix.
+ * @param the name of the matrix
+ * @return a new matrix Object
+ */
+function createMatrix(name);
+
+/**
+ * Short to create a matrix with M and A dimensions.
+ * @param the name of the matrix
+ * @return a new matrix Object
+ */
+function createMAMatrix(name);
+
+</source>
+    </section>
+    
+    <section name="Read functions">
+
+<source>
+
+/**
+ * Shortcut to read an expression matrix
+ * @param file File(s) to read
+ * @return An expression matrix Object
+ */
+function readExpressionMatrix(file);
+
+/**
+ * Short to create a matrix with M and A dimensions.
+ * @param the name of the matrix
+ * @return a new matrix Object
+ */
+function createMAMatrix(name);
+
+</source>
+    </section>
+    
+    
+    <section name="Write functions">
+
+<source>
+
+/*
+ * Write a expression matrix
+ * @param em Expression matrix to write
+ * @param file File to write
+ * @translator Translator to use
+ * @return nothing
+ */
+function writeExpressionMatrix(em, file, translator);
+
+/*
+ * Write a expression matrix at the standford format
+ * @param em Expression matrix to write
+ * @param file File to write
+ * @translator Translator to use
+ * @return nothing
+ */
+function writeStandfordExpressionMatrix(em, file, translator);
+
+
+
+</source>
+    </section>
+    
+    
+  </body>
+</document>

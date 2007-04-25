@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Translators</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Translator">
+    
+    <p>A translator an Object which allow to translate the identifiers of 
+    biological objets into other data. Translator is used to annotate row ids 
+    of BiologicalObjects.</p>
+    
+    <p>Each translator contains many field of annotations and a default field.</p>
+    
+    
+    <source>
+// Get all the fields
+String [] fields = t.getFields();
+
+// Get the default field
+String defaultField = t.getDefaultField();
+
+// Set the default field
+t.setDefaultField("RefSeq");
+    </source>
+    
+    <p>To translate an identifer, use:</p>
+    
+ <source>
+ 
+ // Translate the default field
+ String refSeq = t.translate(id);
+ 
+ // Translate all the fields.
+ String annot = t.translateAll(id);
+ 
+ </source>
+        
+       <p>To translate all the identifier, use:</p>
+        
+<source>
+ 
+ String [] ids = { "1566", "1356", "7863" };
+ 
+ // Translate the default field
+  String [] refSeqs = t.translate(ids);
+ 
+ // Translate all the fields.
+ String [] []annots = t.translateAll(ids);        
+</source>
+      
+    </section>
+    
+<section name="Available translators">
+
+	<p>Currently, only one translator is available : <code>DescriptionBioAssayTranslator</code>. 
+	This translator use the identifiers and description fields to translate.</p>
+	
+<source>
+
+BioAssay ba;
+
+// Use the field of the BioAssay ba to create the translator
+Translator t = new DescriptionBioAssayTranslator(ba);
+
+BioAssay ba1;
+BioAssay ba2;
+
+// Use the identifiers/descriptions in the 2 bioAssays to create the translator
+Translator t = new DescriptionBioAssayTranslator(new BioAssay [] {ba1, ba2});
+	
+Design d;
+
+// Use the identifiers/descriptions in all the bioAssays of the design for the translator
+Translator t = new DescriptionBioAssayTranslator(new BioAssay [] {ba1, ba2});	
+	
+</source>
+
+</section>
+    
+    
+ 
+    
+    
+  </body>
+</document>

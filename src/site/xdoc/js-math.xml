@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript Math module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module math.js">
+    
+    <p>This module contains mathematical functions.</p>
+    
+    </section>
+    
+    
+    <section name="Functions">
+
+<source>
+
+/*
+ * Calc the median of an array of double
+ * @param data the array of double
+ * @paran noNaN true if NaN value must be removed from the computation
+ * @return nothing
+ */
+function median(data, noNaN);
+
+/*
+ * Calc the mean of an array of double
+ * @param data the array of double
+ * @paran noNaN true if NaN value must be removed from the computation
+ * @return nothing
+ */
+function mean(data, noNaN);
+
+</source>
+    </section>
+ 
+    
+    
+  </body>
+</document>

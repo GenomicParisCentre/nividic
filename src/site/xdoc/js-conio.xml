@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript Conio module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module conio.js">
+    
+    <p>This module contains functions to handle io function from the console with javascript. 
+    Actualy only the <code>print</code> and <code>println</code> function are implemented.</p>
+    
+    </section>
+    
+    
+    <section name="Output functions">
+
+<source>
+
+/*
+ * Print a variable on stdout.
+ * @param obj variable to print.
+ * @return nothing
+ */
+function print(obj);
+
+/*
+ * Print a variable on stdout with a return carriage at the end of the output.
+ * @param obj variable to print.
+ * @return nothing
+ */
+function println(obj);
+
+</source>
+    </section>
+    
+
+    
+    
+  </body>
+</document>

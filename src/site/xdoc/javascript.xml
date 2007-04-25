@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic and Javascript</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Summary">
+     
+      <p>You can use Javascript with nividic</p>
+    
+    </section>
+    
+    <section name="javascript reference">
+	
+	<p>You can get help about javascript with the following links:</p>
+	
+	<ul>
+        <li><a href="http://javascript-reference.info/">Javascript reference card</a></li>
+        <li><a href="http://developer.mozilla.org/en/docs/About_JavaScript/">JavaScript home page</a> at mozilla.org</li>
+        <li><a href="http://www.mozilla.org/rhino/">Rhino JavaScript engine for Java</a> at mozilla.org</li>
+    </ul>
+	
+	</section>
+    
+  </body>
+  
+</document>

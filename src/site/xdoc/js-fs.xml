@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript FileSystem module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module fs.js">
+    
+    <p>This module contains functions to handle the filesystem by Javascript</p>
+    
+    </section>
+    
+    
+    <section name="Functions">
+
+<source>
+
+/*
+ * Return an array of File objects in a directory
+ * @param dir path of the directory to list
+ * @return an array of File object
+ */
+function ls(dir);
+
+/*
+ * Return the path of the current directory
+ * @return the path of the current directory
+ */
+function cwd();
+
+/*
+ * Return the path of the current directory
+ * @return the path of the current directory
+ */
+function pwd();
+
+/*
+ * Change the current directory
+ * @param dir path of the new directory
+ * @return nothing
+ */
+function chdir(dir);
+
+/*
+ * Change the current directory
+ * @param dir path of the new directory
+ * @return nothing
+ */
+function cd(dir);
+
+/*
+ * Move a file
+ * @param a File to move
+ * @param b New path (file) of the file
+ * @return nothing
+ */
+function move(a, b);
+
+/*
+ * Move a file
+ * @param a File to move
+ * @param b New path (file) of the file
+ * @return nothing
+ */
+function mv(a, b);
+
+/*
+ * Remove a file
+ * @param file File to remove
+ * @return nothing
+ */
+function unlink(file);
+
+/*
+ * Remove a file
+ * @param file File to remove
+ * @return nothing
+ */
+function rm(file);
+
+/*
+ * Create a directory
+ * @param dir path of the new directory
+ * @return nothing
+ */
+function mkdir(dir);
+
+
+/*
+ * Remove a directory
+ * @param dir Directory to remove
+ * @return nothing
+ */
+function rmdir(dir);
+
+/*
+ * Select a file (even if doesn't exists)
+ * @parm file file to select
+ * @return a File object
+ */
+function sf(file);
+
+/*
+ * Return an array of the filenames of a directory.
+ * @param dir
+ * @return an array of the filenames of the directory
+ */
+function dir(dir);
+
+</source>
+    </section>
+    
+    
+    
+    
+  </body>
+</document>

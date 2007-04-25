@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript Util module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module util.js">
+    
+    <p>This module contains utility functions.</p>
+    
+    </section>
+    
+    
+    <section name="Functions">
+
+<source>
+
+/*
+ * Split a String object. There is a bug with some regex in javascript. This
+ * method fix it.
+ * @param s String to split
+ * @param regex Regex
+ * @return an array of String
+ */
+function split(s, regex);
+
+</source>
+    </section>
+    
+
+    
+    
+  </body>
+</document>

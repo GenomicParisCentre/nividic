@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript Analysis module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module analysis.js">
+    
+    <p>This module contains functions to automate analysis at ENS microarray plateform</p>
+    
+    <p><code>createLists</code> is used to create 2 files from a bioassay with all the 
+    genes that are upregulated and downregulated.</p>
+    
+    </section>
+    
+    <section name="Functions">
+    
+ <source>
+ /*
+ * Create up and down list from bioAssay
+ * @param ba BioAssay
+ * @param threshold absolute value of the threshold
+ * @param fileUp File used to save the up list
+ * @param fileDown File used to save the down list
+ * @return nothing
+ */
+function createLists(ba, threshold, fileUp, fileDown);
+</source>
+
+  <p><code>sortTotalSummary</code> is used to create file at the total.summary format 
+  that is sorted by descending M, and then by descending A.</p>
+
+<source>
+/*
+ * Sort a total summary bioAssay by descending M, and 
+ * then by descending A. The result bioAssay is writen in a file.
+ * @param ba The bioAssay
+ * @param file File to write
+ * @return nothing
+ */
+function sortTotalSummary(ba, file);
+</source>
+
+
+	</section>
+  </body>
+</document>

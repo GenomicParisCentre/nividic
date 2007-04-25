@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Design</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+        
+    <section name="Design">
+    
+    <p>Design object contains all information about the experiement.</p>
+    
+    </section>
+
+
+	<section name="Creating design">
+    
+    <p>Creating an empty design.</p>
+    
+    <source>
+Design d = DesignFactory.createEmptyDesign();
+    </source>
+    
+    <p>Usualy, we use design with Cy3/Cy5 label, so the following method in DesignFactory 
+    create an empty design and add the 2 labels:</p>
+    
+    <source>
+Design d = DesignFactory.create2ColorsDesign();
+    </source>
+    
+    
+    </section>
+
+	<section name="Useful methods">
+	
+	<p>With a design, you can read all data of the slides:</p>
+	<source>
+design.readAllSource();
+	</source>
+	
+	<p>You can also swap data of dye-swap:</p>
+<source>
+design.swapAllSlides();
+</source>
+	
+	</section>
+
+    
+    <section name="Load designs">
+    
+    <p>You can load in Nividic design at Limma format:</p>
+    
+    <source>
+    
+DesignReader reader = new LimmaDesignReader(file);
+Design d = reader.read();
+    
+    return reader.read();
+    </source>
+    
+    <p>You also create a design object from a Goulphar parameter file:</p>
+    
+    <source>
+    
+    
+GoulpharDesignReader reader  = new GoulpharDesignReader(file);
+
+// Define if the files bound to design are the normalized file or not
+reader.setDataSourceNormalized(true);
+
+Design d = reader.read();
+    </source>
+    
+    </section>
+    
+    <section name="Write designs">
+    
+    <p>Currently, you can write a design only to limma format.</p>
+    
+    <source>
+DesignWriter writer = new LimmaDesignWriter(file);
+writer.write(design);
+    </source>
+    
+    
+    </section>
+ 
+    
+    
+  </body>
+</document>

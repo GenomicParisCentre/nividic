@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript BiologicalList module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module biologicallist.js">
+    
+    <p>This module contains functions to handle biological list with javascript.</p>
+    
+    </section>
+    
+    
+    <section name="Creation functions">
+
+<source>
+
+/*
+ * Create a new Biological List.
+ * @return new Biological list object
+ */
+function createBiologicalList();
+
+</source>
+    </section>
+    
+    <section name="Read functions">
+
+<source>
+
+/*
+ * read a biological list.
+ * @param file File to read
+ * @param trim trim readed entries
+ * @return the biological list object readed
+ */
+function readBiologicalList(file, trim);
+
+</source>
+    </section>
+    
+    
+    <section name="Write functions">
+
+<source>
+
+/*
+ * Write a biological list.
+ * @param list List to write
+ * @param file Write to write
+ * @return nothing
+ */ 
+function writeBiologicalList(list, file);
+
+</source>
+    </section>
+    
+    
+  </body>
+</document>

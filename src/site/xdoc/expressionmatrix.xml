@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>ExpressionMatrix</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    <section name="Expression matrix">
+    
+    <p>Expression matrix is a BiologicalObject which is compose of 3 dimensions:</p>
+    <ul>
+      <li>Rows (common dimmension of all Biological Object), Usualy row identifers are the genes indenfiers.</li>
+      <li>Columns, that represents an BioAssay.</li>
+      <li>Dimensions that represents the fields of a BioAssay (e.g. M, A, Flags...)</li>
+    </ul>
+    
+    <p>In an ExpressionMatrix contains String for the identifers (row, columns and dimensions) and double for data.</p>
+    
+    </section>
+    
+    
+    <section name="Create an ExpressionMatrix">
+    
+    
+    
+    <p>Like BioAssay and BiologicalList, ExpressionMatrix objects are created using a factory:</p>
+    
+    <source>
+// Create an empty Expression matrix    
+ExpressionMatrix matrix = ExpressionMatrixFactory.createExpressionMatrix();
+
+// Create an empty Expression Matrix and set its name
+ExpressionMatrix matrix = ExpressionMatrixFactory.createExpressionMatrix("My ExpressionMatrix");
+
+// Create an Expression from data of another expressionMatrix
+ExpressionMatrix matrix2 = ExpressionMatrixFactory.createExpressionMatrix(matrix1);
+
+// Create an empty Expression Matrix and set its name
+ExpressionMatrix matrix2 = ExpressionMatrixFactory.createExpressionMatrix(mayrix1, "My ExpressionMatrix 2");
+
+    </source>
+    
+    </section>
+    
+    <section name="Add elements to an ExpressionMatrix">
+
+	<p>When a ExpressionMatrix list is created, a default dimension (M) is already added to the expressionMatrix. To get and set this dimension you can use:</p>
+	
+	<source>
+// Get the default dimensionName	
+String defaultDimensionName = matrix.getDefaultDimensionName();
+
+// Set the default dimension
+matrix.setDefaultDimensionName(BioAssay.FIELD_NAME_M);
+	</source>
+	
+	<p>The most common way to build the matrix is to add BioAssay Object with <code>addBioAssay</code>. With its method, a column with the name of the bioAssay is added to the matrix.</p>
+	<source>
+matrix.addBioAssay(bioAssay1);
+matrix.addBioAssay(bioAssay2);
+	</source>
+	
+	<p>You also, define the name of the new column in the matrix:</p>
+	<source>
+matrix.addBioAssay(BioAssay1,"30min");
+	</source>
+	
+	
+	<p>When you add data with this method, the matrix object will search in 
+	the bioAssay all the fields which have the same names that its dimension. 
+	Then its add data of this fields in the differents dimension for the column name. 
+	So, if you want to create a matrix with M and A dimension (the M dimension is 
+	the default dimension in a new ExpressionMatrix), you must add the A dimension 
+	before adding bioAssays.</p>
+
+	<source>
+// Create a matrix with a M dimension
+ExpressionMatrix matrix = ExpressionMatrixFactory.createExpressionMatrix("My ExpressionMatrix");
+
+// Add another dimension to the matrix
+matrix.addDimension(BioAssay.FIELD_NAME_A);
+
+// Add data to the matrix
+matrix.addBioAssay(BioAssay1);
+matrix.addBioAssay(BioAssay2);
+	</source>	
+
+	<p>If you have a design object, you can use this object to add in one time, 
+	all the bioAssays of the design.</p>
+	
+<source>
+matrix.addDesign(design);
+</source>
+
+	<p>Empties rows, columns, and Dimensions can be created:</p>
+	
+	<source>
+matrix.addRow("id746");
+matrix.addColumn("15min");
+matrix.addDimension(BioAssay.FIELD_NAME_FLAG);
+	</source>
+
+	 <p>Dimensions, rows and columns can be listed, removed and renamed:</p>
+    <source>
+// Get the names of the dimensions
+String dimensionNames = matrix.getDimensionNames();    
+
+// Get the names of the columns
+String columnNames = matrix.getColumnNames();  
+
+// Get the names of the rows
+String rowNames = matrix.getRowNames();    
+
+// Rename and remove Dimension
+matrix.renameDimension(BioAssay.FIELD_NAME_A,BioAssay.FIELD_NAME_FLAG);
+matrix.removeDimension(BioAssay.FIELD_NAME_FLAG);
+
+// Rename and remove Column
+matrix.renameDimension("15min","30min");
+matrix.removeDimension("60min");
+
+
+// Rename and remove Row
+matrix.renameRow("id3","15354");
+matrix.removeRow("id74");
+
+    </source>
+	
+	
+
+	</section>    
+    
+    <section name="Dimensions">
+    
+   
+    
+    <p>The dimension is the place where atomic operation on the matrix are make. 
+    First you must get a ExpressionMatrixDimension object:</p>
+    
+    <source>
+// Get a dimension
+ExpressionMatrixDimension dimension1 = matrix.getDimension(BioAssay.FIELD_NAME_A);
+
+// Get the default dimension
+ExpressionMatrixDimension dimension1 = matrix.getDefaultDimension();
+    </source>
+    
+    
+    <p>Then you can set data of the dimension:</p>
+    
+    <source>
+// Set one value
+dimension.setValue("id1","15min", 2.65);
+
+String [] ids = new String [] {"id1","id3","id4"};
+double [] data = new double { 2.65, 7.78, 0.43};
+
+// Set multiple values
+dimension.setValues(ids,"15min" ,data);
+
+// Add a new Column
+dimension.addColumn("30min", ids, data);
+// Add a new Column, identifiers is in the order of dimension.getRowNames()
+dimension.addColumn("30min", data);
+
+// Add a new Row
+String [] cols = new String [] { "15min", "30min", "60min" };
+dimension.addRow("id75", cols, data);
+
+    </source>
+    
+    <p>You can extract a BioAssay Object from a DimensionObject:</p>
+       
+<source>
+BioAssay ba = dimension.getColumn("15min");
+</source>
+    
+	<p> or get an array of double for a column or a row:</p>
+	
+<source>
+double [] rowData = dimension.getRowToArray("id75");
+double [] columnData = dimension.getColumnToArray("15min");
+</source>
+    
+    </section>
+ 
+ 	<section name="Filter an ExpressionMatrix">
+ 	
+ 	<p>Even if ExpressionMatrix provides methods to remove rows, columns and dimensions, 
+ 	the more easily way to get a matrix without some rows, columns and dimension is to 
+ 	create a <code>SubExpressionMatrix</code>.  <code>SubExpressionMatrix</code> 
+ 	is an ExpressionMatrix witch you can't add new data. This new object is link to the original 
+ 	matrix, so update one of the two object will update the other. With this system, there is no 
+ 	copy of the data. <code>SubExpressionMatrix</code> can also create new 
+ 	<code>SubExpressionMatrix</code> that will be too link to the original 
+ 	<code>ExpressionMatrix</code>.</p>
+ 	
+ 	<p>To create a subMatrix, there 6 methods, 3 with paramaters which indicate the name to keep:</p>
+ 	<source>
+ 	subMatrixColumns(columnNames);
+ 	subMatrixRows(RowNames);
+ 	subMatrixDimensions(dimensionNames);
+ 	</source>
+ 	<p>and 3 with paramaters which indicate the name to throw:</p>
+ 	<source>
+ 	subMatrixColumnsExclude(columnNames);
+ 	subMatrixRowsExclude(RowNames);
+ 	subMatrixDimensionsExclude(dimensionNames);
+ 	</source>
+ 	
+ 	<p>Example of use:</p>
+ 	
+ 	<source>
+ 	
+// Create submatrix with only 2 columns
+ExpressionMatrix subMatrix1 = matrix.subMatrixColumns( new String [] { "15min","30min" });
+
+// Create submatrix with only 4 rows
+ExpressionMatrix subMatrix2 = matrix.subMatrixRows(new String [] { "id5","id17", "id56", "id14" });
+
+// Create submatrix with only 1 dimension
+ExpressionMatrix subMatrix3 = matrix.subMatrixDimensions( new String [] { BioAssay.FIELD_NAME_A });
+
+// Chain subMatrix, use the exclude version of subMatrixRows
+ExpressionMatrix subMatrix4 = subMatrix2.subMatrixRowsExclude("id17", "id56").matrix.subMatrixColumns(new String [] {"15min"});
+ 	
+ 	</source>
+ 	
+ 	</section>
+    
+    
+  </body>
+</document>

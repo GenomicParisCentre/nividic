@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>History</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    <section name="History">
+    
+    <p>History objects, store all the Nividic event in the life of a Biological Object. 
+    Each BiologicalObject containts a method <code>getHistory()</code> to access to 
+    the history of the object.</p>
+    
+    <p>History objects store HistoryEntry object. Each HistoryEntry object contains 
+    the information about the event.</p>
+    
+    <p>Usualy, it's not necessary to add event to the history, it's automaticly done by the 
+    factories, filters and BiologicalIOs.</p>
+    
+    </section>
+    
+    <section name="HistoryEvent">
+    
+    A HistoryEvent is made of several fields. There are getters and setters for all this fields:
+    
+    
+      <table>
+        <tr><th>Field</th><th>Description</th></tr>
+	    <tr><td>date</td><td>Date of the event</td></tr>
+	    <tr><td>actionType</td><td>Type of action (see the list of the values of this enum below)</td></tr>
+	    <tr><td>actionName</td><td>Name of the action</td></tr>
+	    <tr><td>arguments</td><td>Arguments of the action</td></tr>
+	    <tr><td>actionResult</td><td>Result of the action (see the list of the values of this enum below)</td></tr>
+	    <tr><td>comments</td><td>Comment about this event</td></tr>
+    </table>
+    
+	<p>The available values for the actionType are:</p>
+	<ul>
+	  <li>CREATE</li>
+	  <li>FILTER</li>
+	  <li>SORT</li>
+	  <li>REMOVE</li>
+	  <li>ADD</li>
+	  <li>LOAD</li>
+	  <li>SAVE</li>
+	  <li>UNKNOWN</li>
+	</ul>
+
+	<p>The available values for the actionResult are:</p>
+    
+    <ul>
+	  <li>PASS</li>
+	  <li>FAIL</li>
+	  <li>NA</li>
+	  <li>UNKNOWN</li>
+	</ul>
+    
+    </section>
+    
+    <section name="Functions">
+    
+    <p>This method is used to add an entry to the history.</p>
+    <source>
+  History h = bo.getHistory();
+  h.add(new HistoryEntry("test history event", HistoryEntry.HistoryActionType.UNKNOWN,
+      , "my arguments",
+      HistoryEntry.HistoryActionResult.PASS));
+</source>
+
+
+ <p>With this method, you can get the number of the entries in the log history.</p>
+<source>
+  h.size();
+</source>
+
+	<p>Get an entry.</p>p
+<source>
+  HistoryEntry he = get(0);
+</source>
+
+	<p>Get all the entries</p>
+<source>
+   List&lt;HistoryEntry%gt; list = getEntries();
+</source>
+
+  <p>Clear the entries.</p>
+
+<source>
+  h.clear();    
+</source>
+    
+    </section>
+    
+  </body>
+</document>

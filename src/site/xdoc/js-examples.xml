@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript Examples</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>    
+    
+    <section name="Create a matrix">
+    <p>This sample show how creating a matrix.</p>
+    
+<source>
+
+/*
+ * Test design and expression matrix
+ */
+
+/* Read the design. */
+var design = readGoulpharDesign("param.dat");
+
+/* Load the bioAssays. */
+design.loadAllSources();
+
+/* Create the matrix. */
+var matrix = createMAMatrix("MyMatrix");
+
+/* Add all the bioAssays from the design. */
+matrix.addDesign(design);
+
+/* Create the translator the descriptions. */
+var translator = createTranslatorFromDesign(design);
+
+/* Write the matrix (All the dimensions). */
+/* writeExpressionMatrix(matrix, "matrix.txt"); */
+
+/* Write the matrix (Standford format). */
+writeStandfordExpressionMatrix(matrix,"matrix-standford.txt",translator);
+
+</source>    
+
+	</section>
+
+    <section name="Automate generation of gene list and sorted results from Goulphar output">
+    
+    <p>This sample show how creating a matrix.</p>
+    
+<source>
+
+var ts = readTotalSummary(fs.sf("total.summary.txt"),true);
+
+countNA(ts);
+createLists(ts, 1, fs.sf("list-up.txt"), fs.sf("list-down.txt"));
+sortTotalSummary(ts,fs.sf("total.summary.final.xls"));
+
+
+</source>    
+
+	</section>
+
+<section name="List creation">
+    
+    <p>This sample show how create inclusion and exclusion lists.</p>
+    
+<source>
+
+function include(fa, fb, fo) {
+
+  var listA = readBiologicalList(fa);
+  var listB = readBiologicalList(fb);
+  var listO = listA.include(listB);
+
+  println("List A (" + fa.getName() + "): " + listA.size());
+  println("List B (" + fb.getName() + "): " + listB.size());
+  println("Result List A include B: " + listO.size());
+
+  writeBiologicalList(listO,fo);
+}
+
+function exclude(fa, fb, fo) {
+
+  var listA = readBiologicalList(fa);
+  var listB = readBiologicalList(fb);
+  var listO = listA.exclude(listB);
+
+  println("List A (" + fa.getName() + "): " + listA.size());
+  println("List B (" + fb.getName() + "): " + listB.size());
+  println("Result List A exclude B: " + listO.size());
+
+  writeBiologicalList(listO,fo);
+}
+
+
+include(fs.sf("list-up-serie1.txt"), fs.sf("list-up-serie2.txt"), fs.sf("list-up-include.txt"));
+exclude(fs.sf("list-up-serie1.txt"), fs.sf("list-up-serie2.txt"), fs.sf("list-up-exclude12.txt"));
+exclude(fs.sf("list-up-serie2.txt"), fs.sf("list-up-serie1.txt"), fs.sf("list-up-exclude21.txt"));
+
+
+include(fs.sf("list-down-serie1.txt"), fs.sf("list-down-serie2.txt"), fs.sf("list-include-down.txt"));
+exclude(fs.sf("list-down-serie1.txt"), fs.sf("list-down-serie2.txt"), fs.sf("list-down-exclude12.txt"));
+exclude(fs.sf("list-down-serie2.txt"), fs.sf("list-down-serie1.txt"), fs.sf("list-down-exclude21.txt"));
+
+</source>
+   
+   </section>
+
+	<section name="Schedule of conditions ">
+	
+	  <subsection name="Load IDMA output files">
+<source>
+
+// Read the file
+var ba = readIDMA("normalised_chip2.txt");
+
+// return [m, a, description, id]
+var fields = ba.getFields(); 
+
+// Get the number of row in the bioAssay
+var size = ba.size();
+</source>	  
+	  </subsection>
+	  
+	  <subsection name="Load Goulphar output files">
+<source>
+// Read the file
+var ba = readTotalSummary("total.summary.txt");
+
+// return [m, a, total n, stddevm, n, id]
+var fields = ba.getFields(); 
+
+// Get the number of row in the bioAssay
+var size = ba.size();
+</source>	  
+	  </subsection>
+	  
+	  <subsection name="Load Limma Design">
+<source>
+var design = readLimmaDesign("target.txt");
+
+// Get slides names
+design.getSlidesNames();
+
+// Get targets
+design.getLabelsNames();
+
+// show the design
+showDesign(design);
+</source>	  
+	  </subsection>
+	  
+	  <subsection name="Load Goulphar Design">
+<source>
+var design = var design = readGoulpharDesign("param.dat");
+
+// Get slides names
+design.getSlidesNames();
+</source>	  
+	  </subsection>
+	  
+	  <subsection name="Load annotation file">
+<source>
+var translator = createTranslatorFromAnnotationFile(file);
+</source>
+	  </subsection>
+	  
+	  <subsection name="Load annotation file spot_id/probe_id">
+	  
+	  <p>To do that, we assume that BioAssay id is spot_id and Description is prode_id</p>
+<source>
+// From a bioAssay
+var translator = createTranslatorFromBioAssay(BioAssay);
+
+// From all the bioAssays of a design
+var translator = createTranslatorFromDesign(design);
+</source>
+	  
+	  </subsection>
+	  
+	  <subsection name="Merge Matrix">
+	  
+	    <p>Warning, currently there is no merge of data, existing data if replace by the new data.</p>
+<source>
+matrix1.addMatrix(matrix2);
+</source>
+	  
+	  </subsection>
+	  
+	  <subsection name="Do the dye swap">
+<source>
+
+// Swap a single bioAssay
+swapBioAssay(bioAssay);
+
+// Swap a column of a matrix
+swapExpressionMatrix(matrix,columnName);
+</source>
+	  </subsection>
+	  
+	  <subsection name="Center/Reducing">
+	  <p>Not yet implemented.</p>
+	  </subsection>
+	  
+	  <subsection name="Filter M values with A values (e.g. A &gt; 10) ">
+<source>
+// Filter on a bioAssay
+var bioAssayFiltered = bioAssay.filter(createASupFilter(10));
+
+// Fiter on a matrix, remove row with bad values less than 2/3
+var matrixFiltered = matrix.filter(createMatrixRowFilterAdapter(createASupFilter(10)), 2/3);
+</source>
+	  </subsection>
+	  
+	   <subsection name="Filter M values with A values (e.g. A &gt; 10) on only few columns">
+<source>
+
+// Create a submatrix with the needed column
+var subMatrix = matrix.subMatrixByColumn("15min","60min");
+
+// Fiter on the sub matrix, remove row with bad values less than 2/3
+var matrixFiltered = subMatrix.filter(createMatrixRowFilterAdapter(createASupFilter(10)), 2/3);
+</source>	   
+	   
+	  </subsection>
+	  
+	  <subsection name="Filter M values">
+<source>
+// Filter on a bioAssay
+var bioAssayFiltered = bioAssay.filter(createMSupFilter(2));
+
+// Fiter on a matrix, remove row with bad values less than 2/3
+var matrixFiltered = matrix.filter(createMatrixRowFilterAdapter(createMSupFilter(2)), 2/3);
+</source>
+	  </subsection>
+	  
+	  <subsection name="Save history of handling">
+	  
+	  <p>To show history about a Biological object use:</p>
+	  <source>
+showHistory(bo);	  
+	  </source>
+	  
+	  <p>To save this history to a file:</p>
+	  <source>
+saveHistory(bo, "history.txt");
+	  </source>
+	  
+	  </subsection>
+	  
+	  <subsection name="merge techninal replicates">
+	  <p>Not yet implemented in Nividic.</p>
+	  </subsection>
+	  
+	  <subsection name="Save Matrix with only selected columns">
+<source>
+// Create a submatrix with the needed column
+var subMatrix = matrix.subMatrixByColumn("15min","60min");
+
+writeExpressionMatrix(submatrix, "matrix.txt");
+</source>
+	  </subsection>
+	  
+	  <subsection name="Save filtered Matrix">
+<source>
+/ Fiter on a matrix, remove row with bad values less than 2/3
+var matrixFiltered = matrix.filter(createMatrixRowFilterAdapter(createMSupFilter(2)), 2/3);
+
+writeExpressionMatrix(matrixFiltered, "matrixfiltered.txt");
+</source>
+	  </subsection>
+	  
+	  <subsection name="Save Matrix at the standford format">
+<source>
+writeStandfordExpressionMatrix(matrix,"matrix-standford.txt",translator);
+</source>
+	  </subsection>
+	  
+	  <subsection name="Save Matrix at the limma format">
+	  <p>There is no spécific matrix format for Limma.</p>
+	  </subsection>
+	  
+	
+	</section>
+	
+	<section name="Other examples">
+	
+      <subsection name="Switch beetween BioAssay Id and description fields">
+<source>
+swapBioAssay(bioAssay);
+</source>
+
+	  </subsection>
+	
+	</section>
+    
+  </body>
+</document>

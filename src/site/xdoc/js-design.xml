@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="latin1"?>
+
+<document>
+
+  <properties>
+    <title>Nividic Javascript Design module</title>
+    <author email="jourdren@biologie.ens.fr">Laurent Jourdren</author>
+  </properties>
+
+  <body>
+    
+    
+    
+    <section name="Description of the module design.js">
+    
+    <p>This module contains functions to handle designs.</p>
+    
+    </section>
+    
+    <section name="Creation functions">
+
+<source>
+  
+/*
+ * Create a standard design for 2 colors experiments
+ * @return a new Design
+ */
+function create2ColorsDesign();
+
+/*
+ * Create a design without targets.
+ * @return a new Design
+ */
+function createEmptyDesign();
+
+</source>
+
+	</section>
+       
+    <section name="Read functions">
+
+<source>
+
+/**
+ * Shortcut to read Limma design
+ * @param file File(s) to read
+ * @return A design Object
+ */
+function readLimmaDesign(file);
+
+/**
+ * Shortcut to read goulphar design
+ * @param file File(s) to read
+ * @param normalizedFiles Datasource are the normalized files
+ * @return A design Object
+ */
+function readGoulpharDesign(file, normalizedFiles);
+
+</source>
+    </section>
+    
+    
+    <section name="Write functions">
+
+<source>
+
+/*
+ * Write a design
+ * @param design Design to write
+ * @param file File to write
+ * @return nothing
+ */
+function writeLimmaDesign(design, file);
+
+</source>
+    </section>
+    
+    
+  </body>
+</document>
