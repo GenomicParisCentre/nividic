@@ -119,7 +119,8 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
           final String[] annotationValues = annot.translate(id);
           for (int j = 0; j < annotationValues.length; j++) {
             bw.write(SEPARATOR);
-            bw.write(annotationValues[j]);
+            final String val = annotationValues[j];
+            bw.write(val == null ? "" : val);
           }
         }
 
