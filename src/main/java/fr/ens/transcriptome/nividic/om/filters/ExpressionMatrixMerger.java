@@ -99,9 +99,6 @@ public class ExpressionMatrixMerger {
       this.row = row;
       this.column = column;
       this.dimension = dimension;
-
-      System.out.println(row + "\t" + column + "\t" + dimension);
-
     }
 
   }
@@ -217,7 +214,6 @@ public class ExpressionMatrixMerger {
       }
     }
 
-    System.out.println(rowIdsToMerge);
     // Set the new row id of the values to merge
     for (Location loc : locations.values())
       if (rowIdsToMerge.contains(loc.row))
@@ -416,8 +412,6 @@ public class ExpressionMatrixMerger {
 
     if (doubleValues == null)
       return null;
-
-    System.out.println(doubleValues);
 
     double[] result = new double[doubleValues.size()];
 

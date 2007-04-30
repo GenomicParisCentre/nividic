@@ -45,7 +45,6 @@ public class ExpressionMatrixRowFilterBioAssayFilterAdapter extends
       return doubleFilter.getFieldToFilter();
 
     return integerFilter.getFieldToFilter();
-
   }
 
   /**
@@ -100,7 +99,7 @@ public class ExpressionMatrixRowFilterBioAssayFilterAdapter extends
     return s + ";Adapter=" + this.integerFilter.getClass().getSimpleName()
         + ";" + this.integerFilter.getParameterInfo();
   }
-  
+
   //
   // Constructors
   //

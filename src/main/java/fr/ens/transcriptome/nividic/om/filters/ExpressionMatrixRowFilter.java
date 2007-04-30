@@ -28,7 +28,6 @@ import java.util.List;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
-import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
  * This class implements a generic filter for filtering using the value of a
@@ -38,6 +37,71 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  */
 public abstract class ExpressionMatrixRowFilter implements
     ExpressionMatrixFilter {
+
+  private List<String> columnNamesToFilter;
+  private int[] columnToFilter;
+
+  /**
+   * Add a column to filter.
+   * @param columnName Name of the column to filter
+   */
+  public void addColumnToFilter(final String columnName) {
+
+    if (columnName == null)
+      return;
+
+    if (columnNamesToFilter == null)
+      this.columnNamesToFilter = new ArrayList<String>();
+    this.columnNamesToFilter.add(columnName);
+  }
+
+  /**
+   * Add columns to filter.
+   * @param columnNames Names of the column to filter
+   */
+  public void addColumnToFilter(final String[] columnNames) {
+
+    if (columnNames == null)
+      return;
+
+    for (int i = 0; i < columnNames.length; i++)
+      addColumnToFilter(columnNames[i]);
+
+  }
+
+  private void defineColumnToFilter(final ExpressionMatrix em) {
+
+    if (columnNamesToFilter == null)
+      return;
+
+    List<Integer> idToFilter = new ArrayList<Integer>();
+
+    for (int i = 0; i < columnNamesToFilter.size(); i++) {
+      int pos = em.getColumnIndex(this.columnNamesToFilter.get(i));
+      if (pos != -1)
+        idToFilter.add(pos);
+    }
+
+    this.columnToFilter = new int[idToFilter.size()];
+    for (int j = 0; j < this.columnToFilter.length; j++)
+      this.columnToFilter[j] = idToFilter.get(j);
+  }
+
+  private double[] getValuesToTest(final double[] values) {
+
+    if (columnToFilter == null)
+      return values;
+
+    if (columnToFilter.length == values.length)
+      return values;
+
+    double[] result = new double[columnToFilter.length];
+
+    for (int i = 0; i < columnToFilter.length; i++)
+      result[i] = values[columnToFilter[i]];
+
+    return result;
+  }
 
   /**
    * Filter a ExpressionMatrixDimension object.
@@ -52,6 +116,8 @@ public abstract class ExpressionMatrixRowFilter implements
     if (em == null)
       return null;
 
+    defineColumnToFilter(em);
+
     ExpressionMatrixDimension d = em.getDimension(getDimensionToFilter());
 
     String[] rowNames = d.getRowNames();
@@ -61,7 +127,7 @@ public abstract class ExpressionMatrixRowFilter implements
     String[] positiveRows = new String[al.size()];
 
     for (int i = 0; i < size; i++)
-      if (testRow(d.getRowToArray(rowNames[i])))
+      if (testRow(getValuesToTest(d.getRowToArray(rowNames[i]))))
         al.add(new String(rowNames[i]));
 
     positiveRows = al.toArray(positiveRows);
@@ -90,7 +156,7 @@ public abstract class ExpressionMatrixRowFilter implements
     int count = 0;
 
     for (int i = 0; i < size; i++)
-      if (testRow(d.getRowToArray(rowIds[i])))
+      if (testRow(getValuesToTest(d.getRowToArray(rowIds[i]))))
         count++;
 
     return count;
@@ -107,7 +173,7 @@ public abstract class ExpressionMatrixRowFilter implements
    * @return true if filtered row must be removed
    */
   public boolean isRemovePositiveRows() {
-    
+
     return true;
   }
 
