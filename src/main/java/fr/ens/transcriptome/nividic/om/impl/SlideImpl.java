@@ -37,6 +37,8 @@ import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatFinderInputStream;
+import fr.ens.transcriptome.nividic.om.io.TotalSummaryReader;
 
 /**
  * This class implements a slide object.
@@ -49,7 +51,7 @@ class SlideImpl implements Slide {
 
   //
   // Getters
-  // 
+  //
 
   /*
    * (non-Javadoc)
@@ -156,7 +158,8 @@ class SlideImpl implements Slide {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.exp.Slide#setSource(fr.ens.transcriptome.nividic.om.exp.DataSource)
+   * @see fr.ens.transcriptome.nividic.om.exp.Slide#
+   *      setSource(fr.ens.transcriptome.nividic.om.exp.DataSource)
    */
   public void setSource(final DataSource source) {
 
@@ -184,7 +187,8 @@ class SlideImpl implements Slide {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.exp.Slide#setBioAssay(fr.ens.transcriptome.nividic.om.BioAssay)
+   * @see fr.ens.transcriptome.nividic.om.exp.Slide#
+   *      setBioAssay(fr.ens.transcriptome.nividic.om.BioAssay)
    */
   public void setBioAssay(final BioAssay bioassay) {
 
@@ -240,7 +244,8 @@ class SlideImpl implements Slide {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.exp.Slide#setSourceFormat(fr.ens.transcriptome.nividic.om.io.BioAssayFormat)
+   * @see fr.ens.transcriptome.nividic.om.exp.Slide#
+   *      setSourceFormat(fr.ens.transcriptome.nividic.om.io.BioAssayFormat)
    */
   public void setSourceFormat(final BioAssayFormat format) {
 
@@ -269,24 +274,36 @@ class SlideImpl implements Slide {
 
     InputStream is = ds.getInputStream();
 
-    final BioAssayFormat format = getFormat();
+    BioAssayFormat format = getFormat();
 
     BioAssayReader reader;
 
-    if (format == null)
+    if (format == null) {
+
+      BioAssayFormatFinderInputStream finder = new BioAssayFormatFinderInputStream(
+          is);
+
+      format = finder.getBioAssayFormat();
+      is = finder;
+    }
+
+    switch (format) {
+
+    case IDMA:
+      reader = new IDMAReader(is);
+      break;
+
+    case TOTALSUMMARY:
+
+      reader = new TotalSummaryReader(is);
+      break;
+
+    case GPR:
+    default:
       reader = new GPRReader(is);
-    else
-      switch (format) {
+      break;
 
-      case IDMA:
-        reader = new IDMAReader(is);
-        break;
-
-      case GPR:
-      default:
-        reader = new GPRReader(is);
-        break;
-      }
+    }
 
     BioAssay result = reader.read();
     result.setName(getName());

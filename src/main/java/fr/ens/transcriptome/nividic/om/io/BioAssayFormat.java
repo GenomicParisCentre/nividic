@@ -22,6 +22,9 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * Define an enum for the BioAssay files format.
  * @author Laurent Jourdren
@@ -76,6 +79,68 @@ public enum BioAssayFormat {
     return extension;
   }
 
+  /**
+   * Get the BioAssayReader for the format.
+   * @param is InputStream to read
+   * @return a BioAssayReader object to read the data
+   * @throws NividicIOException if an error occurs while creating the reader
+   */
+  public BioAssayReader getBioAssayReader(final InputStream is)
+      throws NividicIOException {
+
+    switch (this) {
+
+    case GAL:
+      return new GALReader(is);
+
+    case GPR:
+      return new GPRReader(is);
+
+    case IDMA:
+      return new GPRReader(is);
+
+    case TOTALSUMMARY:
+      return new TotalSummaryReader(is);
+
+    case IMAGENE_ARRAYLIST:
+      return new ImaGeneArrayListReader(is);
+
+    default:
+      return null;
+    }
+  }
+
+  /**
+   * Get the BioAssayWriter for the format.
+   * @param os OutputStream to write
+   * @return a BioAssayWriter object to write the data
+   * @throws NividicIOException if an error occurs while creating the writer
+   */
+  public BioAssayWriter getBioAssayWriter(final OutputStream os)
+      throws NividicIOException {
+
+    switch (this) {
+
+    case GAL:
+      return new GALWriter(os);
+
+    case GPR:
+      return new GPRWriter(os);
+
+    case IDMA:
+      return new GPRWriter(os);
+
+    case TOTALSUMMARY:
+      return new TotalSummaryWriter(os);
+
+    case IMAGENE_ARRAYLIST:
+      return new ImaGeneArrayListWriter(os);
+
+    default:
+      return null;
+    }
+  }
+
   //
   // Other methods
   //
@@ -83,6 +148,7 @@ public enum BioAssayFormat {
   /**
    * Get a BioAssayFormat from its type.
    * @param type Type of the BioAssayFormat
+   * @return a BioAssayFormat enum
    */
   public static BioAssayFormat getBioAssayFormat(final String type) {
 
