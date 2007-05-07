@@ -157,6 +157,36 @@ public final class Echo {
     output.println(Arrays.toString(obj));
   }
 
+  public void printArray(final double[] bs) {
+
+    output.print(Arrays.toString(bs));
+  }
+
+  public void printArray(final float[] bs) {
+
+    output.print(Arrays.toString(bs));
+  }
+
+  public void printArray(final long[] bs) {
+
+    output.print(Arrays.toString(bs));
+  }
+
+  public void printArray(final int[] bs) {
+
+    output.print(Arrays.toString(bs));
+  }
+
+  public void printArray(final byte[] bs) {
+
+    output.print(Arrays.toString(bs));
+  }
+
+  public void printArray(final char[] bs) {
+
+    output.print(Arrays.toString(bs));
+  }
+
   //
   // Constructor
   //
