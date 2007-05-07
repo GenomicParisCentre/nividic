@@ -28,11 +28,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -48,6 +51,152 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
   private Scriptable scope;
   private Context cx;
   private static final String JS_PROMPT = "js>";
+
+  private static final class JavaScriptFunctions extends ScriptableObject {
+
+    /**
+     * Returns the name of this JavaScript class, "Foo".
+     */
+    public String getClassName() {
+      return "Foo";
+    }
+
+    private static final Double parseJavaScriptNumber(final NativeArray na,
+        Object key) {
+
+      final int intKey = ((Integer) key).intValue();
+
+      final Object val = na.get(intKey, na);
+
+      if (val instanceof Double)
+        return ((Double) val).doubleValue();
+
+      try {
+        if (val instanceof String)
+          return Double.parseDouble((String) val);
+
+        return (Double.parseDouble("" + val));
+
+      } catch (NumberFormatException e) {
+
+        return null;
+      }
+
+    }
+
+    public static double[] asDoubles(final Context cx,
+        final Scriptable thisObj, final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0 || !(args[0] instanceof NativeArray))
+        return new double[0];
+
+      final NativeArray na = (NativeArray) args[0];
+      final Object[] keys = na.getIds();
+
+      final List<Double> list = new ArrayList<Double>();
+      for (int j = 0; j < keys.length; j++)
+        list.add(parseJavaScriptNumber(na, keys[j]));
+
+      // Convert the list
+      final double[] result = new double[list.size()];
+      int i = 0;
+      for (double d : list)
+        result[i++] = d;
+
+      return result;
+    }
+
+    public static float[] asFloats(final Context cx, final Scriptable thisObj,
+        final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0 || !(args[0] instanceof NativeArray))
+        return new float[0];
+
+      final NativeArray na = (NativeArray) args[0];
+      final Object[] keys = na.getIds();
+
+      final List<Float> list = new ArrayList<Float>();
+      for (int j = 0; j < keys.length; j++)
+        list.add(parseJavaScriptNumber(na, keys[j]).floatValue());
+
+      // Convert the list
+      final float[] result = new float[list.size()];
+      int i = 0;
+      for (float d : list)
+        result[i++] = d;
+
+      return result;
+    }
+
+    public static long[] asLongs(final Context cx, final Scriptable thisObj,
+        final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0 || !(args[0] instanceof NativeArray))
+        return new long[0];
+
+      final NativeArray na = (NativeArray) args[0];
+      final Object[] keys = na.getIds();
+
+      final List<Long> list = new ArrayList<Long>();
+      for (int j = 0; j < keys.length; j++)
+        list.add(parseJavaScriptNumber(na, keys[j]).longValue());
+
+      // Convert the list
+      final long[] result = new long[list.size()];
+      int i = 0;
+      for (long d : list)
+        result[i++] = d;
+
+      return result;
+    }
+
+    public static int[] asInts(final Context cx, final Scriptable thisObj,
+        final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0 || !(args[0] instanceof NativeArray))
+        return new int[0];
+
+      final NativeArray na = (NativeArray) args[0];
+      final Object[] keys = na.getIds();
+
+      final List<Integer> list = new ArrayList<Integer>();
+      for (int j = 0; j < keys.length; j++)
+        list.add(parseJavaScriptNumber(na, keys[j]).intValue());
+
+      // Convert the list
+      final int[] result = new int[list.size()];
+      int i = 0;
+      for (int d : list)
+        result[i++] = d;
+
+      return result;
+    }
+
+    public static String[] asStrings(final Context cx,
+        final Scriptable thisObj, final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0 || !(args[0] instanceof NativeArray))
+        return new String[0];
+
+      final NativeArray na = (NativeArray) args[0];
+
+      final List<String> list = new ArrayList<String>();
+      final Object[] keys = na.getIds();
+
+      for (int j = 0; j < keys.length; j++)
+        try {
+          list.add("" + na.get(((Integer) keys[j]).intValue(), na));
+        } catch (NumberFormatException e) {
+        }
+
+      // Convert the list
+      final String[] result = new String[list.size()];
+      list.toArray(result);
+
+      return result;
+    }
+
+  }
 
   /**
    * Add a varible to the environnement of the javascript engine
@@ -84,10 +233,17 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
    */
   public void init() {
 
+    JavaScriptFunctions jsf = new JavaScriptFunctions();
+
     this.cx = Context.enter();
 
     cx.setOptimizationLevel(-1);
-    this.scope = cx.initStandardObjects();
+    this.scope = cx.initStandardObjects(jsf);
+
+    // Define some global functions particular to the shell. Note
+    String[] names = {"asDoubles", "asFloats", "asLongs", "asInts", "asStrings"};
+    jsf.defineFunctionProperties(names, JavaScriptFunctions.class,
+        ScriptableObject.DONTENUM);
 
     // add from JShell3
 
