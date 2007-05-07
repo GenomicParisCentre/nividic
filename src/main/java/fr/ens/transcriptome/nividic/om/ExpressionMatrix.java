@@ -103,7 +103,7 @@ public interface ExpressionMatrix extends ExpressionMatrixBase,
    */
   public void addMatrix(final ExpressionMatrix matrix,
       final boolean overwriteColumns);
-  
+
   /**
    * Get a dimension.
    * @param dimensionName Name of the dimension to get
@@ -223,21 +223,20 @@ public interface ExpressionMatrix extends ExpressionMatrixBase,
    */
   ExpressionMatrix subMatrixRows(String[] rowsId);
 
-  
   /**
    * Creates a sub matrix, choosing the rows that you want to throw out.
    * @param rowsId Rows that you want to keep
    * @return An ExpressionMatrixDimension object
    */
   ExpressionMatrix subMatrixRowsExclude(String[] rowsId);
-  
+
   /**
    * Creates a sub matrix, choosing the columns that you want to keep in it.
    * @param columns Columns that you want to keep
    * @return An ExpressionMatrixDimension object
    */
   ExpressionMatrix subMatrixColumns(int[] columns);
-  
+
   /**
    * Creates a sub matrix, choosing the columns that you want to trow out.
    * @param columns Columns that you want to keep
@@ -251,7 +250,7 @@ public interface ExpressionMatrix extends ExpressionMatrixBase,
    * @return An ExpressionMatrixDimension object
    */
   ExpressionMatrix subMatrixColumns(String[] columns);
-  
+
   /**
    * Creates a sub matrix, choosing the rows that you want to throw out.
    * @param columns Columns that you want to keep
@@ -265,7 +264,7 @@ public interface ExpressionMatrix extends ExpressionMatrixBase,
    * @return An ExpressionMatrixDimension object
    */
   ExpressionMatrix subMatrixDimensions(String[] dimensionNames);
-  
+
   /**
    * Create a sub matrix, choosing the dimension that you want to throw out
    * @param dimensionNames Dimensions that you want to keep
@@ -304,5 +303,12 @@ public interface ExpressionMatrix extends ExpressionMatrixBase,
    * @return an expression matrix
    */
   ExpressionMatrix filter(ExpressionMatrixFilter filter);
+
+  /**
+   * Extract a column from the matrix
+   * @param columnName The name of the column to extract
+   * @return a BioAssay object
+   */
+  BioAssay getColumn(String columnName);
 
 }

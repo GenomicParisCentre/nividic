@@ -37,6 +37,8 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.BioAssayFactory;
+import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
@@ -1244,6 +1246,84 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     getHistory().add(entry);
   }
 
+  /**
+   * Get the history of the biological object.
+   * @return The history object of the object
+   */
+  public History getHistory() {
+
+    return this.history;
+  }
+
+  /**
+   * Copy the BioAssay Object.
+   * @return a copy of the biological object
+   */
+  public ExpressionMatrix copy() {
+
+    return new ExpressionMatrixImpl(this);
+  }
+
+  /**
+   * Clear the biological object.
+   */
+  public void clear() {
+
+    throw new NividicRuntimeException("Not yet implemented");
+  }
+
+  /**
+   * Get the size of the biological object.
+   * @return The size of the biological object
+   */
+  public int size() {
+
+    return getRowCount();
+  }
+
+  /**
+   * Extract a column from the matrix
+   * @param columnName The name of the column to extract
+   * @return a BioAssay object
+   */
+  public BioAssay getColumn(final String columnName) {
+
+    // TODO create a adapted BioAssay Object without copying all value in a new
+    // BioAssayImpl
+    // TODO Change the type of field when it is not a double
+
+    if (this.isNoRow())
+      throw new ExpressionMatrixRuntimeException("Expression Matrix is empty");
+
+    throwExceptionIfColumnDoesntExists(columnName);
+
+    BioAssay bioAssay;
+
+    try {
+
+      bioAssay = BioAssayFactory.createBioAssay();
+      bioAssay.setIds(getRowNames());
+
+      String[] dimensionNames = getDimensionNames();
+
+      for (int i = 0; i < dimensionNames.length; i++) {
+
+        final String dimName = dimensionNames[i];
+        final ExpressionMatrixDimension dim = getDimension(dimName);
+
+        bioAssay.setDataFieldDouble(dimName, dim.getColumnToArray(columnName));
+      }
+
+      bioAssay.setName(columnName);
+
+    } catch (BioAssayRuntimeException e) {
+      throw new ExpressionMatrixRuntimeException(
+          "Unable to create a new BioAssay object (" + e.getMessage() + ")");
+    }
+
+    return bioAssay;
+  }
+
   //
   // Constructor
   //
@@ -1318,41 +1398,6 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
             + getDimensionCount(), HistoryActionResult.PASS);
 
     getHistory().add(entry);
-  }
-
-  /**
-   * Get the history of the biological object.
-   * @return The history object of the object
-   */
-  public History getHistory() {
-
-    return this.history;
-  }
-
-  /**
-   * Copy the BioAssay Object.
-   * @return a copy of the biological object
-   */
-  public ExpressionMatrix copy() {
-
-    return new ExpressionMatrixImpl(this);
-  }
-
-  /**
-   * Clear the biological object.
-   */
-  public void clear() {
-
-    throw new NividicRuntimeException("Not yet implemented");
-  }
-
-  /**
-   * Get the size of the biological object.
-   * @return The size of the biological object
-   */
-  public int size() {
-
-    return getRowCount();
   }
 
 }
