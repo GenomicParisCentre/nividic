@@ -32,7 +32,7 @@ import java.net.URL;
  */
 public final class WebBrowser {
 
-  private static final String IE_PATH = "c:\\Program Files\\Internet Explorer\\iexplore.exe";
+  private static final String IE_PATH = "c:\\Program FileSystem\\Internet Explorer\\iexplore.exe";
   private static final String KONQUEROR_EXE = "konqueror";
   private static final String MOZILLA_EXE = "mozilla";
   private static final String FIREFOX_EXE = "mozilla-firefox";
