@@ -562,11 +562,33 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public void addMatrix(final ExpressionMatrix matrix) {
 
+    addMatrix(matrix, false);
+  }
+
+  /**
+   * Add another expression matrix to the expression matrix.
+   * @param matrix Matrix to add
+   * @param overwriteColumns Columns Set true to overwriteColumns
+   */
+  public void addMatrix(final ExpressionMatrix matrix,
+      final boolean overwriteColumns) {
+
     if (matrix == null)
       return;
 
     final String[] dimensionNames = matrix.getDimensionNames();
     final String[] columnNames = matrix.getColumnNames();
+    final String[] newColumnNames;
+
+    // Define the names of the new columns
+    if (overwriteColumns)
+      newColumnNames = columnNames;
+    else {
+
+      newColumnNames = new String[columnNames.length];
+      for (int i = 0; i < columnNames.length; i++)
+        newColumnNames[i] = getNewColumnName(columnNames[i]);
+    }
 
     for (int i = 0; i < dimensionNames.length; i++) {
 
@@ -579,10 +601,28 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       final ExpressionMatrixDimension myDim = getDimension(dimName);
 
       for (int j = 0; j < columnNames.length; j++)
-        myDim.addBioAssay(dim.getColumn(columnNames[i]));
+        myDim.addBioAssay(dim.getColumn(columnNames[j]), newColumnNames[j]);
 
     }
 
+  }
+
+  private String getNewColumnName(final String newColumnName) {
+
+    if (newColumnName == null)
+      return null;
+
+    if (!containsColumn(newColumnName))
+      return newColumnName;
+
+    int count = 2;
+
+    String result = null;
+
+    while (containsColumn(result = newColumnName + "-" + count))
+      count++;
+
+    return result;
   }
 
   /**

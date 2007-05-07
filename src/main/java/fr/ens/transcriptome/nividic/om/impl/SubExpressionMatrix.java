@@ -349,6 +349,16 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   }
 
   /**
+   * Add another expression matrix to the expression matrix.
+   * @param matrix Matrix to add
+   * @param overwrite Columns Set true to overwriteColumns
+   */
+  public void addMatrix(final ExpressionMatrix matrix,
+      final boolean overwriteColumns) {
+    throwsExpressionMatrixRuntimeExceptionForIllegalActions();
+  }
+
+  /**
    * Add a column in the matrix, all the values are at NA
    * @param columnName The name of the column that you want to add
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
@@ -1190,7 +1200,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public ExpressionMatrix copy() {
 
-    return new SubExpressionMatrix(this,getDimensionNames());
+    return new SubExpressionMatrix(this, getDimensionNames());
   }
 
   //

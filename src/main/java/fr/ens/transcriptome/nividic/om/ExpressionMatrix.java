@@ -97,6 +97,14 @@ public interface ExpressionMatrix extends ExpressionMatrixBase,
   void addMatrix(ExpressionMatrix matrix);
 
   /**
+   * Add another expression matrix to the expression matrix.
+   * @param matrix Matrix to add
+   * @param overwrite Columns Set true to overwriteColumns
+   */
+  public void addMatrix(final ExpressionMatrix matrix,
+      final boolean overwriteColumns);
+  
+  /**
    * Get a dimension.
    * @param dimensionName Name of the dimension to get
    * @return a dimension
