@@ -24,8 +24,9 @@ package fr.ens.transcriptome.nividic.js;
 
 public class Defaults {
 
-  public static String[] BUILTIN_SCRIPTS = {"nividic.js","analysis.js", "bioassay.js",
-      "biologicallist.js", "conio.js", "design.js", "expressionmatrix.js",
-      "fs.js", "math.js", "translators.js", "util.js"};
+  public static String[] BUILTIN_SCRIPTS = {"nividic.js", "analysis.js",
+      "bioassay.js", "biologicallist.js", "conio.js", "design.js",
+      "expressionmatrix.js", "fs.js", "math.js", "translators.js", "util.js",
+      "biologicalobject.js"};
 
 }
