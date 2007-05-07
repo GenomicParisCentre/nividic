@@ -23,21 +23,24 @@
 package fr.ens.transcriptome.nividic.om.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.math.stat.descriptive.AbstractUnivariateStatistic;
-import org.apache.commons.math.stat.descriptive.moment.Mean;
-import org.apache.commons.math.stat.descriptive.rank.Median;
+import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This class define a class to merge ExpressionMatrix data
@@ -45,26 +48,37 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
  */
 public class ExpressionMatrixMerger {
 
-  private Map<Integer, String> rowIndex = new HashMap<Integer, String>();
-  private Map<Integer, String> columnIndex = new HashMap<Integer, String>();
-  private Map<Integer, String> dimensionIndex = new HashMap<Integer, String>();
-  private Map<String, Integer> rowReverseIndex = new HashMap<String, Integer>();
-  private Map<String, Integer> columnReverseIndex = new HashMap<String, Integer>();
-  private Map<String, Integer> dimensionReverseIndex = new HashMap<String, Integer>();
+  private final Map<Integer, String> rowIndex = new HashMap<Integer, String>();
+  private final Map<Integer, String> columnIndex = new HashMap<Integer, String>();
+  private final Map<Integer, String> dimensionIndex = new HashMap<Integer, String>();
+  private final Map<String, Integer> rowReverseIndex = new HashMap<String, Integer>();
+  private final Map<String, Integer> columnReverseIndex = new HashMap<String, Integer>();
+  private final Map<String, Integer> dimensionReverseIndex = new HashMap<String, Integer>();
 
-  private Map<Integer, Location> locations = new HashMap<Integer, Location>();
-  private Map<Integer, Double> values = new HashMap<Integer, Double>();
+  private final Map<Integer, Location> locations = new HashMap<Integer, Location>();
+  private final Map<Integer, Double> values = new HashMap<Integer, Double>();
 
-  private AbstractUnivariateStatistic algo;
+  // Get a DescriptiveStatistics instance using factory method
+  DescriptiveStatistics stats = DescriptiveStatistics.newInstance();
+
+  // private AbstractUnivariateStatistic algo;
   private boolean medianMode = true;
 
+  private int currentDimensionsIndex;
+  private int currentValueCount;
+
+  private boolean addStatData = false;
+
   private final class Location implements Comparable {
+
+    private static final int INITIAL_NO_ZERO_ODD_NUMBER = 17;
+    private static final int MULTIPLIER_NO_ZERO_ODD_NUMBER = 37;
 
     int row;
     int column;
     int dimension;
 
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
 
       final Location loc = (Location) o;
 
@@ -72,7 +86,7 @@ public class ExpressionMatrixMerger {
           && loc.dimension == this.dimension;
     }
 
-    public int compareTo(Object o) {
+    public int compareTo(final Object o) {
 
       final Location loc = (Location) o;
 
@@ -90,15 +104,67 @@ public class ExpressionMatrixMerger {
 
     public int hashCode() {
 
-      return new HashCodeBuilder(17, 37).append(row).append(column).append(
+      return new HashCodeBuilder(INITIAL_NO_ZERO_ODD_NUMBER,
+          MULTIPLIER_NO_ZERO_ODD_NUMBER).append(row).append(column).append(
           dimension).toHashCode();
     }
 
-    public Location(int row, int column, int dimension) {
+    public Location(final int row, final int column, final int dimension) {
 
       this.row = row;
       this.column = column;
       this.dimension = dimension;
+    }
+
+  }
+
+  private final class StatLocation {
+
+    int n;
+    int totalN;
+    double stdDev;
+    double median;
+    double mean;
+
+    private int countNotNan(final List<Double> doubleValues) {
+
+      if (doubleValues == null)
+        return 0;
+
+      int count = 0;
+      for (double d : doubleValues)
+        if (!Double.isNaN(d))
+          count++;
+
+      return count;
+    }
+
+    StatLocation(final List<Double> doubleValues) {
+
+      if (doubleValues.size() == 1) {
+
+        final double val = doubleValues.get(0);
+
+        this.totalN = 1;
+
+        this.n = Double.isNaN(val) ? 0 : 1;
+        this.mean = val;
+        this.median = val;
+
+        return;
+      }
+
+      stats.clear();
+
+      for (double d : doubleValues)
+        if (!Double.isNaN(d))
+          stats.addValue(d);
+
+      this.totalN = doubleValues.size();
+      this.n = (int) stats.getN();
+      // this.n = countNotNan(doubleValues);
+      this.mean = stats.getMean();
+      this.median = stats.getPercentile(50.0);
     }
 
   }
@@ -136,7 +202,7 @@ public class ExpressionMatrixMerger {
    * Add an expression matrix to merge.
    * @param matrix Matrix to merge
    */
-  public void addExpressionMatrix(final ExpressionMatrix matrix) {
+  public void addMatrix(final ExpressionMatrix matrix) {
 
     if (matrix == null)
       return;
@@ -149,28 +215,45 @@ public class ExpressionMatrixMerger {
     addNames(columnNames, columnIndex, columnReverseIndex);
     addNames(rowNames, rowIndex, rowReverseIndex);
 
-    int currentValueCount = this.values.size();
+    // Create index of dimension
+    final int[] dimensionIds = new int[dimensionNames.length];
+    for (int i = 0; i < dimensionIds.length; i++)
+      dimensionIds[i] = dimensionReverseIndex.get(dimensionNames[i]);
+
+    // Create index of column
+    final int[] columnIds = new int[columnNames.length];
+    for (int i = 0; i < columnIds.length; i++)
+      columnIds[i] = columnReverseIndex.get(columnNames[i]);
+
+    // Create index of row
+    final int[] rowIds = new int[rowNames.length];
+    for (int i = 0; i < rowIds.length; i++)
+      rowIds[i] = rowReverseIndex.get(rowNames[i]);
 
     for (int i = 0; i < dimensionNames.length; i++) {
 
       final String dimensionName = dimensionNames[i];
-      final int currentDimension = dimensionReverseIndex.get(dimensionName);
+
+      // final int currentDimension = dimensionReverseIndex.get(dimensionName);
 
       ExpressionMatrixDimension dim = matrix.getDimension(dimensionName);
 
       for (int j = 0; j < columnNames.length; j++) {
 
         final String columnName = columnNames[j];
-        int currentColumn = columnReverseIndex.get(columnName);
+        // int currentColumn = columnReverseIndex.get(columnName);
 
         final double[] data = dim.getColumnToArray(columnName);
 
         for (int k = 0; k < data.length; k++) {
 
-          final Location loc = new Location(k + 1, currentColumn,
-              currentDimension);
-          this.locations.put(++currentValueCount, loc);
-          this.values.put(currentValueCount, data[k]);
+          // final Location loc = new Location(k + 1, currentColumn,
+          // currentDimension);
+          final Location loc = new Location(rowIds[k], columnIds[j],
+              dimensionIds[i]);
+
+          this.locations.put(++this.currentValueCount, loc);
+          this.values.put(this.currentValueCount, data[k]);
         }
 
       }
@@ -180,18 +263,34 @@ public class ExpressionMatrixMerger {
   }
 
   private void addNames(final String[] name,
-      final Map<Integer, String> indexMap, Map<String, Integer> indexReverseMap) {
-
-    int currentIndex = indexMap.size();
+      final Map<Integer, String> indexMap,
+      final Map<String, Integer> indexReverseMap) {
 
     for (int i = 0; i < name.length; i++) {
-      indexMap.put(++currentIndex, name[i]);
-      indexReverseMap.put(name[i], currentIndex);
+      indexMap.put(++this.currentDimensionsIndex, name[i]);
+      indexReverseMap.put(name[i], this.currentDimensionsIndex);
     }
 
   }
 
-  public void mergeRow(final String finalRowName, final String[] rowsToMerge) {
+  /**
+   * Merge some rows.
+   * @param rowsToMerge Names of the rows to merge
+   */
+  public void mergeRows(final String[] rowsToMerge) {
+
+    if (rowsToMerge == null || rowsToMerge.length < 2)
+      return;
+
+    mergeRows(rowsToMerge[0], rowsToMerge);
+  }
+
+  /**
+   * Merge some rows.
+   * @param finalRowName name of the output row
+   * @param rowsToMerge Names of the rows to merge
+   */
+  public void mergeRows(final String finalRowName, final String[] rowsToMerge) {
 
     if (finalRowName == null || rowsToMerge == null
         || !this.rowReverseIndex.containsKey(finalRowName))
@@ -221,7 +320,24 @@ public class ExpressionMatrixMerger {
 
   }
 
-  public void mergeColumn(final String finalColumnName,
+  /**
+   * Merge some columns.
+   * @param columnsToMerge name of the output columns
+   */
+  public void mergeColumns(final String[] columnsToMerge) {
+
+    if (columnsToMerge == null || columnsToMerge.length < 2)
+      return;
+
+    mergeColumns(columnsToMerge[0], columnsToMerge);
+  }
+
+  /**
+   * Merge some columns.
+   * @param finalColumnName name of the output column
+   * @param columnsToMerge Names of the columns to merge
+   */
+  public void mergeColumns(final String finalColumnName,
       final String[] columnsToMerge) {
 
     if (finalColumnName == null || columnsToMerge == null
@@ -252,11 +368,23 @@ public class ExpressionMatrixMerger {
   }
 
   /**
-   * Merge dimensions
-   * @param finalDimensionName
-   * @param dimensionsToMerge
+   * Merge dimensions.
+   * @param dimensionsToMerge names of the dimensions to merge
    */
-  public void mergeDimension(final String finalDimensionName,
+  public void mergeDimensions(final String[] dimensionsToMerge) {
+
+    if (dimensionsToMerge == null || dimensionsToMerge.length < 2)
+      return;
+
+    mergeDimensions(dimensionsToMerge[0], dimensionsToMerge);
+  }
+
+  /**
+   * Merge dimensions.
+   * @param finalDimensionName name of the output dimension
+   * @param dimensionsToMerge names of the dimensions to merge
+   */
+  public void mergeDimensions(final String finalDimensionName,
       final String[] dimensionsToMerge) {
 
     if (finalDimensionName == null || dimensionsToMerge == null
@@ -264,7 +392,7 @@ public class ExpressionMatrixMerger {
       return;
 
     // Define the list of real dimension to merge
-    final int finalColumnId = this.dimensionReverseIndex
+    final int finalDimensionId = this.dimensionReverseIndex
         .get(finalDimensionName);
     final List<Integer> dimensionIdsToMerge = new ArrayList<Integer>();
 
@@ -283,15 +411,93 @@ public class ExpressionMatrixMerger {
     // Set the new dimension id of the values to merge
     for (Location loc : locations.values())
       if (dimensionIdsToMerge.contains(loc.dimension))
-        loc.dimension = finalColumnId;
+        loc.dimension = finalDimensionId;
 
+  }
+
+  /**
+   * Replace all the row name with a translation. Merge row if needed.
+   * @param translator Translator to use
+   */
+  public void mergeRows(final Translator translator) {
+
+    if (translator == null)
+      throw new NullPointerException("The translator is null");
+
+    mergeRows(translator, translator.getDefaultField());
+  }
+
+  /**
+   * Replace all the row name with a translation. Merge row if needed.
+   * @param translator Translator to use
+   * @param fieldName Field name of the translator to use
+   */
+  public void mergeRows(final Translator translator, final String fieldName) {
+
+    if (translator == null)
+      throw new NullPointerException("The translator is null");
+
+    if (fieldName == null || !translator.isField(fieldName))
+      throw new NividicRuntimeException(
+          "The field for the translator is null or not exists");
+
+    Set<String> rowNames = this.rowReverseIndex.keySet();
+
+    final String[] ids = rowNames.toArray(new String[rowNames.size()]);
+    final String[] newIds = translator.translateField(ids, fieldName);
+
+    if (newIds == null)
+      return;
+
+    // Create a map with old and new row names
+    Map<String, String> mapOldNewRowNames = new HashMap<String, String>();
+    for (int i = 0; i < ids.length; i++)
+      mapOldNewRowNames.put(ids[i], newIds[i]);
+
+    // Create a map with the rows to merge for each new Id
+    Map<String, List<String>> mapIdsToMerge = new HashMap<String, List<String>>();
+
+    for (int i = 0; i < newIds.length; i++) {
+
+      final String newId = newIds[i];
+      List<String> idsToMerge = mapIdsToMerge.get(newId);
+
+      if (idsToMerge == null) {
+        idsToMerge = new ArrayList<String>();
+        mapIdsToMerge.put(newId, idsToMerge);
+      }
+
+      idsToMerge.add(ids[i]);
+    }
+
+    // Merge rows
+    for (List<String> idsToMerge : mapIdsToMerge.values())
+      mergeRows(NividicUtils.toArray(idsToMerge));
+
+    // Create temporary new rows index
+    final Map<Integer, String> newRowIndex = new HashMap<Integer, String>();
+    final Map<String, Integer> newRowReverseIndex = new HashMap<String, Integer>();
+
+    for (String id : this.rowReverseIndex.keySet()) {
+      int index = this.rowReverseIndex.get(id);
+      String newId = mapOldNewRowNames.get(id);
+
+      newRowIndex.put(index, newId);
+      newRowReverseIndex.put(newId, index);
+    }
+
+    // Update the index
+    this.rowIndex.clear();
+    this.rowReverseIndex.clear();
+    this.rowIndex.putAll(newRowIndex);
+    this.rowReverseIndex.putAll(newRowReverseIndex);
   }
 
   /**
    * Build a new Expression matrix from merged data.
    * @return a new ExpressionMatrix
    */
-  public ExpressionMatrix getExpressionMatrix() {
+  public ExpressionMatrix getMatrix() {
 
     // Create a Map<Location, List<Double>
     final Map<Location, List<Double>> locationValues = new HashMap<Location, List<Double>>();
@@ -313,19 +519,29 @@ public class ExpressionMatrixMerger {
     // Create a Map<Location, Double>
     final Map<Location, Double> mergedValues = new HashMap<Location, Double>();
 
-    defineAlgo();
+    // Create a Map for stats Map<Location, Stat>
+    final Map<Location, StatLocation> statsData = new HashMap<Location, StatLocation>();
+
+    final boolean medianMode = isMedianMode();
 
     for (Location loc : locationValues.keySet()) {
 
       List<Double> doubleValues = locationValues.get(loc);
-      mergedValues.put(loc, algo(doubleValues));
+      final StatLocation statLoc = new StatLocation(doubleValues);
+      final double me = medianMode ? statLoc.median : statLoc.mean;
+
+      mergedValues.put(loc, me);
+      statsData.put(loc, statLoc);
     }
 
     // Rebuild an ExpressionMatrix Object
-    return rebuildMatrix(mergedValues);
+    final ExpressionMatrix matrix = rebuildMatrix(mergedValues);
+
+    return isAddStatData() ? addStatToMatrix(matrix, statsData) : matrix;
   }
 
-  private ExpressionMatrix rebuildMatrix(Map<Location, Double> mergedValues) {
+  private ExpressionMatrix rebuildMatrix(
+      final Map<Location, Double> mergedValues) {
 
     final List<Location> locs = new ArrayList<Location>(mergedValues.keySet());
 
@@ -373,13 +589,12 @@ public class ExpressionMatrixMerger {
         ba.setDataFieldDouble(dimensionName, data);
         dim.addBioAssay(ba);
       }
-
     }
 
     return em;
   }
 
-  private String[] rebuildRowNames(List<Integer> rowIndexSorted) {
+  private String[] rebuildRowNames(final List<Integer> rowIndexSorted) {
 
     final String[] result = new String[rowIndexSorted.size()];
 
@@ -390,36 +605,257 @@ public class ExpressionMatrixMerger {
     return result;
   }
 
-  private void defineAlgo() {
+  private ExpressionMatrix addStatToMatrix(final ExpressionMatrix em,
+      Map<Location, StatLocation> statsData) {
 
-    if (isMedianMode())
-      algo = new Median();
-    else
-      algo = new Mean();
-
-  }
-
-  private double algo(final List<Double> doubleValues) {
-
-    if (doubleValues.size() == 1)
-      return doubleValues.get(0);
-
-    // Define the algorithm
-    return this.algo.evaluate(toArrayDouble(doubleValues));
-  }
-
-  private double[] toArrayDouble(final List<Double> doubleValues) {
-
-    if (doubleValues == null)
+    if (em == null)
       return null;
 
-    double[] result = new double[doubleValues.size()];
+    final List<Location> locs = new ArrayList<Location>(statsData.keySet());
 
-    int i = 0;
-    for (double d : doubleValues)
-      result[i++] = d;
+    // Sort the locations
+    Collections.sort(locs);
 
-    return result;
+    final List<Integer> dimensionIndexSorted = new ArrayList<Integer>(
+        this.dimensionIndex.keySet());
+    final List<Integer> columnIndexSorted = new ArrayList<Integer>(
+        this.columnIndex.keySet());
+    final List<Integer> rowIndexSorted = new ArrayList<Integer>(this.rowIndex
+        .keySet());
+
+    Collections.sort(dimensionIndexSorted);
+    Collections.sort(columnIndexSorted);
+    Collections.sort(rowIndexSorted);
+
+    final String[] rowNames = rebuildRowNames(rowIndexSorted);
+
+    int count = 0;
+    int rowNamesSize = 0;
+    for (int dimIndex : dimensionIndexSorted) {
+
+      final String dimensionName = this.dimensionIndex.get(dimIndex);
+
+      final String[] statDimensions = {" n", " total n", " stdDev", " mean",
+          " median"};
+
+      for (int i = 0; i < statDimensions.length; i++) {
+
+        final String dimensionNameStat = dimensionName + statDimensions[i];
+
+        if (!em.containsDimension(dimensionNameStat))
+          em.addDimension(dimensionNameStat);
+        ExpressionMatrixDimension dim = em.getDimension(dimensionNameStat);
+
+        final BioAssay ba = BioAssayFactory.createBioAssay();
+        ba.setIds(rowNames);
+
+        for (int indexCol : columnIndexSorted) {
+
+          final String colName = this.columnIndex.get(indexCol);
+          double[] data = new double[rowNames.length];
+
+          for (int j = 0; j < data.length; j++) {
+
+            final StatLocation statLoc = statsData.get(locs.get(count + j));
+
+            switch (i) {
+            case 0:
+              data[j] = statLoc.n;
+              break;
+            case 1:
+              data[j] = statLoc.totalN;
+              break;
+            case 2:
+              data[j] = statLoc.stdDev;
+              break;
+            case 3:
+              data[j] = statLoc.mean;
+              break;
+            case 4:
+              data[j] = statLoc.median;
+              break;
+
+            default:
+              break;
+            }
+
+            // data[i] = mergedValues.get(locs.get(count + i));
+          }
+
+          rowNamesSize = rowNames.length;
+          // count += rowNames.length;
+
+          ba.setName(colName);
+
+          ba.setDataFieldDouble(dimensionNameStat, data);
+          dim.addBioAssay(ba);
+        }
+      }
+      count += rowNamesSize;
+    }
+
+    return em;
+
+  }
+
+  /**
+   * Rename a row.
+   * @param oldName Old name of the row
+   * @param newName New name of the row
+   */
+  public void renameRow(final String oldName, final String newName) {
+
+    if (!this.rowReverseIndex.containsKey(oldName))
+      throw new NividicRuntimeException("Unknown row to rename");
+    if (this.rowReverseIndex.containsKey(newName))
+      throw new NividicRuntimeException("The new name of the row already");
+
+    final int index = this.rowReverseIndex.get(oldName);
+
+    // Update rowReverseIndex
+    this.rowReverseIndex.remove(oldName);
+    this.rowReverseIndex.put(newName, index);
+
+    // Update rowIndex
+    this.rowIndex.put(index, newName);
+  }
+
+  /**
+   * Rename a column.
+   * @param oldName Old name of the column
+   * @param newName New name of the column
+   */
+  public void renameColumn(final String oldName, final String newName) {
+
+    if (!this.columnReverseIndex.containsKey(oldName))
+      throw new NividicRuntimeException("Unknown row to rename");
+    if (this.columnReverseIndex.containsKey(newName))
+      throw new NividicRuntimeException("The new name of the row already");
+
+    final int index = this.columnReverseIndex.get(oldName);
+
+    // Update columnReverseIndex
+    this.columnReverseIndex.remove(oldName);
+    this.columnReverseIndex.put(newName, index);
+
+    // Update columnIndex
+    this.columnIndex.put(index, newName);
+  }
+
+  /**
+   * Rename a dimension.
+   * @param oldName Old name of the dimension
+   * @param newName New name of the dimension
+   */
+  public void renameDimension(final String oldName, final String newName) {
+
+    if (!this.dimensionReverseIndex.containsKey(oldName))
+      throw new NividicRuntimeException("Unknown row to rename");
+    if (this.dimensionReverseIndex.containsKey(newName))
+      throw new NividicRuntimeException("The new name of the row already");
+
+    final int index = this.dimensionReverseIndex.get(oldName);
+
+    // Update dimensionReverseIndex
+    this.dimensionReverseIndex.remove(oldName);
+    this.dimensionReverseIndex.put(newName, index);
+
+    // Update dimensionIndex
+    this.dimensionIndex.put(index, newName);
+  }
+
+  /**
+   * Remove a row.
+   * @param rowName name of the row to remove
+   */
+  public void removeRow(final String rowName) {
+
+    if (!this.rowReverseIndex.containsKey(rowName))
+      throw new NividicRuntimeException("Unknown row to remove");
+
+    // Update rowReverseIndex
+    final int index = this.rowReverseIndex.remove(rowName);
+
+    // Update rowIndex
+    this.rowIndex.remove(index);
+  }
+
+  /**
+   * Remove a column.
+   * @param columnName name of the column to remove
+   */
+  public void removeColumn(final String columnName) {
+
+    if (!this.columnReverseIndex.containsKey(columnName))
+      throw new NividicRuntimeException("Unknown row to remove");
+
+    // Update columnReverseIndex
+    final int index = this.columnReverseIndex.remove(columnName);
+
+    // Update columnIndex
+    this.columnIndex.remove(index);
+  }
+
+  /**
+   * Remove a dimension.
+   * @param dimensionName name of the dimension to remove
+   */
+  public void removeDimension(final String dimensionName) {
+
+    if (!this.dimensionReverseIndex.containsKey(dimensionName))
+      throw new NividicRuntimeException("Unknown row to remove");
+
+    // Update columnReverseIndex
+    final int index = this.dimensionReverseIndex.remove(dimensionName);
+
+    // Update dimensionIndex
+    this.dimensionIndex.remove(index);
+  }
+
+  private void addDimension(final String dimensionName) {
+
+    if (dimensionName == null
+        || this.dimensionReverseIndex.containsKey(dimensionName))
+      return;
+
+    this.dimensionIndex.put(++this.currentDimensionsIndex, dimensionName);
+    this.dimensionReverseIndex.put(dimensionName, this.currentDimensionsIndex);
+
+    final int dimensionIndex = this.dimensionReverseIndex.get(dimensionName);
+
+    final Set<String> columnNames = this.columnReverseIndex.keySet();
+    final Set<String> rowNames = this.rowReverseIndex.keySet();
+
+    for (String columnName : columnNames) {
+
+      final int columnIndex = this.columnReverseIndex.get(columnName);
+
+      for (String rowName : rowNames) {
+
+        final int rowIndex = this.rowReverseIndex.get(rowName);
+
+        final Location loc = new Location(rowIndex, columnIndex, dimensionIndex);
+        this.locations.put(++this.currentValueCount, loc);
+        this.values.put(this.currentValueCount, Double.NaN);
+      }
+    }
+
+  }
+
+  /**
+   * Test if stats data must be added to the output matrix.
+   * @return Returns the addStatData
+   */
+  public boolean isAddStatData() {
+    return addStatData;
+  }
+
+  /**
+   * Set if the stats data must be added to the output matrix.
+   * @param addStatData The addStatData to set
+   */
+  public void setAddStatData(final boolean addStatData) {
+    this.addStatData = addStatData;
   }
 
 }
