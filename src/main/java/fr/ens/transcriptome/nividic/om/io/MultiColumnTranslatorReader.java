@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import fr.ens.transcriptome.nividic.om.translators.MultiColumnTranslator;
+import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
  * This class define a reader for load annotation into a translator.
@@ -42,6 +43,7 @@ public class MultiColumnTranslatorReader {
 
   private BufferedReader bufferedReader;
   private static final String SEPARATOR = "\t";
+  private boolean removeQuotes = true;
 
   //
   // Getters
@@ -71,6 +73,14 @@ public class MultiColumnTranslatorReader {
     return SEPARATOR;
   }
 
+  /**
+   * Test if quotes of the fields must be removed
+   * @return Returns the removeQuotes
+   */
+  public boolean isRemoveQuotes() {
+    return removeQuotes;
+  }
+
   //
   // Setters
   //
@@ -95,6 +105,14 @@ public class MultiColumnTranslatorReader {
     this.is = is;
   }
 
+  /**
+   * Set if the quotes of the fields must be removed
+   * @param removeQuotes The removeQuotes to set
+   */
+  public void setRemoveQuotes(boolean removeQuotes) {
+    this.removeQuotes = removeQuotes;
+  }
+
   //
   // Other methods
   //
@@ -109,6 +127,8 @@ public class MultiColumnTranslatorReader {
     setBufferedReader(new BufferedReader(
         new InputStreamReader(getInputStream())));
 
+    final boolean removeQuotes = isRemoveQuotes();
+
     BufferedReader br = getBufferedReader();
     final String separator = getSeparatorField();
     String line = null;
@@ -120,6 +140,10 @@ public class MultiColumnTranslatorReader {
       while ((line = br.readLine()) != null) {
 
         String[] cols = line.split(separator);
+
+        if (removeQuotes)
+          for (int i = 0; i < cols.length; i++)
+            cols[i] = StringUtils.removeDoubleQuotesAndTrim(cols[i]);
 
         if (result == null)
           result = new MultiColumnTranslator(cols);
