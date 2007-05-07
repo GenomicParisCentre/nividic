@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 
 /**
  * Utilitity class.
@@ -179,15 +180,72 @@ public final class NividicUtils {
 
   /**
    * Test if two stream are equals
-   * @param a First filename to compare
-   * @param b Second filename to compare
+   * @param filenameA First filename to compare
+   * @param filenameB Second filename to compare
    * @return true if the two stream are equals
    * @throws IOException if an error occors while reading the streams
    */
-  public static boolean compareFile(final String filenameA, final String filenameB)
-      throws Exception {
+  public static boolean compareFile(final String filenameA,
+      final String filenameB) throws IOException {
     return compareFile(new FileInputStream(filenameA), new FileInputStream(
         filenameB));
+  }
+
+  /**
+   * Convert a collection of strings to an array of Strings.
+   * @param col collection to convert
+   * @return a new array of String
+   */
+  public static String[] toArray(final Collection<String> col) {
+
+    if (col == null)
+      return null;
+
+    final String[] result = new String[col.size()];
+
+    int i = 0;
+    for (String s : col)
+      result[i++] = s;
+
+    return result;
+  }
+
+  /**
+   * Convert a collection of int to an array of ints.
+   * @param col collection to convert
+   * @return a new array of ints
+   */
+  public static int[] toArray(final Collection<Integer> col) {
+
+    if (col == null)
+      return null;
+
+    final int[] result = new int[col.size()];
+
+    int i = 0;
+    for (Integer val : col)
+      result[i++] = val;
+
+    return result;
+  }
+
+  /**
+   * Convert a collection of doubles to an array of doubles.
+   * @param col collection to convert
+   * @return a new array of double
+   */
+  public static double[] toArray(final Collection<Double> col) {
+
+    if (col == null)
+      return null;
+
+    final double[] result = new double[col.size()];
+
+    int i = 0;
+    for (Double val : col)
+      result[i++] = val;
+
+    return result;
   }
 
   //
