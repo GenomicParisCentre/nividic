@@ -36,6 +36,7 @@ import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeJavaArray;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -196,6 +197,76 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
       return result;
     }
 
+    public static boolean isJavaNativeArray(final Context cx,
+        final Scriptable thisObj, final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0)
+        return false;
+
+      return args[0] instanceof NativeJavaArray;
+    }
+
+    public static boolean isNativeArray(final Context cx,
+        final Scriptable thisObj, final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0)
+        return false;
+
+      return args[0] instanceof NativeArray;
+    }
+
+    private final static Class getNativeArrayType(final Object[] args) {
+
+      final NativeJavaArray nja = (NativeJavaArray) args[0];
+
+      final Object[] keys = nja.getIds();
+
+      if (keys.length == 0)
+        return null;
+
+      final int intKey = ((Integer) keys[0]).intValue();
+
+      final Object val = nja.get(intKey, nja);
+
+      return val.getClass();
+    }
+
+    public static boolean isNativeObjectArray(final Context cx,
+        final Scriptable thisObj, final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0)
+        return false;
+
+      if (args[0] instanceof NativeArray)
+        return true;
+
+      Class clazz = getNativeArrayType(args);
+
+      if (clazz == null)
+        return false;
+
+      return "org.mozilla.javascript.NativeJavaObject".equals(clazz.getName()
+          .toString());
+    }
+
+    public static boolean isNativePrimitiveArray(final Context cx,
+        final Scriptable thisObj, final Object[] args, final Function funObj) {
+
+      if (args == null || args.length == 0)
+        return false;
+
+      if (args[0] instanceof NativeArray)
+        return false;
+
+      Class clazz = getNativeArrayType(args);
+
+      if (clazz == null)
+        return false;
+
+      return !"org.mozilla.javascript.NativeJavaObject".equals(clazz.getName()
+          .toString());
+    }
+
   }
 
   /**
@@ -241,13 +312,11 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
     this.scope = cx.initStandardObjects(jsf);
 
     // Define some global functions particular to the shell. Note
-    String[] names = {"asDoubles", "asFloats", "asLongs", "asInts", "asStrings"};
+    String[] names = {"asDoubles", "asFloats", "asLongs", "asInts",
+        "asStrings", "isNativeObjectArray", "isNativePrimitiveArray"};
     jsf.defineFunctionProperties(names, JavaScriptFunctions.class,
         ScriptableObject.DONTENUM);
 
-    // add from JShell3
-
-    // ProxyJavaAdapter.init(cx, scope, false);
   }
 
   private void shellEval(final InputStream in, final PrintStream out,
