@@ -10,7 +10,7 @@
  */
  
  /**
- * Short to create a matrix.
+ * Shortcut to create a matrix.
  * @param the name of the matrix
  * @return a new matrix Object
  */
@@ -28,7 +28,7 @@ function createMatrix(name) {
 }
 
 /**
- * Short to create a matrix with M and A dimensions.
+ * Shortcut to create a matrix with M and A dimensions.
  * @param the name of the matrix
  * @return a new matrix Object
  */
@@ -44,6 +44,42 @@ function createMAMatrix(name) {
     
     return matrix;
   }
+}
+
+/**
+ * Shortcut to create an expression matrix merger
+ * @return a new ExpressionMatrixMerger Object
+ */
+function createMatrixMerger() {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.filters);
+  
+  with (nividicNames)  {
+  
+    return new ExpressionMatrixMerger();
+  }
+}
+
+/*
+ * Show methods
+ */
+
+/*
+ * Show a matrix
+ * @param matrix Matrix to show
+ * @return nothing
+ */
+function showMatrix(matrix) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with (nividicNames)  {
+  
+    ExpressionMatrixUtils.printExpressionMatrix(matrix);
+  }
+
 }
 
 /*
@@ -173,6 +209,7 @@ function createMatrixRowFilterAdapter(bioAssayFilter, threshold) {
  * Create an ExpressionMatrix column filter from a BioAssayFilter
  * @param bioAssayFilter Filter to adapt
  * @param threshold to reject the row
+ * @return a new ExpressionMatrixFilter
  */
 function createMatrixColumnFilterAdapter(bioAssayFilter, threshold) {
 
@@ -184,6 +221,3 @@ function createMatrixColumnFilterAdapter(bioAssayFilter, threshold) {
     return new ExpressionMatrixColumnFilterBioAssayFilterAdapter(bioAssayFilter, threshold);
   }
 }
-
-
-
