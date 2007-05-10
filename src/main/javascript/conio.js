@@ -35,7 +35,15 @@ function print(obj) {
         return;
       }
      
-      Echo.out.printArray(obj); 
+     if (isNativeObjectArray(obj)) { 
+       Echo.out.printObjectArray(obj); 
+       return;
+     }
+     
+     if (isNativePrimitiveArray(obj)) { 
+       Echo.out.printPrimitiveArray(obj); 
+       return;
+     }
       return; 
     } 
 
