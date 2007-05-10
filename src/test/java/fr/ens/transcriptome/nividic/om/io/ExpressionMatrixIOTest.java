@@ -66,7 +66,7 @@ public class ExpressionMatrixIOTest extends TestCase {
 
   private void printValues(ExpressionMatrixDimension em) {
 
-    String[] ids = em.getRowIds();
+    String[] ids = em.getRowNames();
     String[] columnNames = em.getColumnNames();
 
     System.out.print("id/M");
