@@ -23,8 +23,6 @@
 package fr.ens.transcriptome.nividic.om.io;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -103,7 +101,8 @@ public class UniversalBioAssayReader extends BioAssayReader {
   private void setBioAssayReader() throws NividicIOException {
 
     try {
-      this.br = new BioAssayFormatFinderInputStream(getInputStream()).getBioAssayReader();
+      this.br = new BioAssayFormatFinderInputStream(getInputStream())
+          .getBioAssayReader();
     } catch (NividicIOException e) {
 
       throw new NividicIOException("Unable to find the format");
@@ -111,6 +110,50 @@ public class UniversalBioAssayReader extends BioAssayReader {
     } catch (IOException e) {
       throw new NividicIOException("Unable to find the format");
     }
+  }
+
+  /**
+   * Add all the field to read.
+   */
+  public void addAllFieldsToRead() {
+
+    this.br.addAllFieldsToRead();
+  }
+
+  /**
+   * Get the source of the data
+   * @return The source of the data
+   */
+  public String getDataSource() {
+
+    return this.br.getDataSource();
+  }
+
+  /**
+   * Inititialize varibles each time an input stream is set.
+   */
+  public void clear() {
+
+    this.br.clear();
+  }
+
+  /**
+   * Add an annotation.
+   * @param key Key of the annotation
+   * @param value Value of the annotation
+   */
+  public void addAnnotation(final String key, final String value) {
+
+    this.br.addAnnotation(key, value);
+  }
+
+  /**
+   * Add a field to read.
+   * @param fieldName Fieldname to read
+   */
+  public void addFieldToRead(final String fieldName) {
+
+    this.br.addFieldToRead(fieldName);
   }
 
   //
@@ -127,6 +170,7 @@ public class UniversalBioAssayReader extends BioAssayReader {
 
     super(file);
     setBioAssayReader();
+    setDataSource(file.getAbsolutePath());
   }
 
   /**

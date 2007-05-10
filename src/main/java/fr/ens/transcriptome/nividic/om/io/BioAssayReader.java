@@ -484,6 +484,11 @@ public abstract class BioAssayReader {
     return result;
   }
 
+  void setDataSource(final String source) {
+
+    this.dataSource = source;
+  }
+
   //
   // Public contrustors
   //
@@ -506,7 +511,7 @@ public abstract class BioAssayReader {
           + file.getName());
     }
 
-    this.dataSource = file.getAbsolutePath();
+    setDataSource(file.getAbsolutePath());
   }
 
   /**
