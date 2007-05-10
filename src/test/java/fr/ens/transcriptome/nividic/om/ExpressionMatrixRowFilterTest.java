@@ -69,7 +69,7 @@ public class ExpressionMatrixRowFilterTest extends TestCase {
   private void printValues(ExpressionMatrixDimension emd) {
 
     double[][] values = emd.getValues();
-    String[] ids = emd.getRowIds();
+    String[] ids = emd.getRowNames();
     String[] columnNames = emd.getColumnNames();
 
     System.out.print("id/M");
@@ -139,9 +139,9 @@ public class ExpressionMatrixRowFilterTest extends TestCase {
 
     ExpressionMatrixDimension dimensions[] = em2.getDimensions();
 
-    final String[] ids = em2.getRowIds();
+    final String[] ids = em2.getRowNames();
     for (int i = 0; i < em2.getRowCount(); i++) {
-      assertTrue(emrf.testRow(mMatrix2.getRow(ids[i])));
+      assertTrue(emrf.testRow(mMatrix2.getRowToArray(ids[i])));
     }
   }
 
@@ -157,9 +157,9 @@ public class ExpressionMatrixRowFilterTest extends TestCase {
     ExpressionMatrix em2 = emrf.filter(em);
     ExpressionMatrixDimension mMatrix2 = em2.getDefaultDimension();
 
-    final String[] ids = em2.getRowIds();
+    final String[] ids = em2.getRowNames();
     for (int i = 0; i < em2.getRowCount(); i++) {
-      assertTrue(emrf.testRow(mMatrix2.getRow(ids[i])));
+      assertTrue(emrf.testRow(mMatrix2.getRowToArray(ids[i])));
     }
 
   }
@@ -177,9 +177,9 @@ public class ExpressionMatrixRowFilterTest extends TestCase {
     ExpressionMatrixDimension mMatrix2 = em2.getDefaultDimension();
 
     // printValues(em2);
-    final String[] ids = em2.getRowIds();
+    final String[] ids = em2.getRowNames();
     for (int i = 0; i < em2.getRowCount(); i++) {
-      assertTrue(emrf.testRow(mMatrix2.getRow(ids[i])));
+      assertTrue(emrf.testRow(mMatrix2.getRowToArray(ids[i])));
     }
 
   }

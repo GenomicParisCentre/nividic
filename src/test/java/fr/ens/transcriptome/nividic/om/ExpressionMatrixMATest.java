@@ -24,6 +24,7 @@ package fr.ens.transcriptome.nividic.om;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
@@ -331,7 +332,7 @@ public class ExpressionMatrixMATest extends TestCase {
 
     String[] idValues = {"id1", "id2", "id3", "id4", "id5", "id7", "id6", "id8"};
 
-    ids = em.getRowIds();
+    ids = em.getRowNames();
     for (int i = 0; i < ids.length; i++) {
       assertTrue(ids[i].equals(idValues[i]));
     }
@@ -341,7 +342,7 @@ public class ExpressionMatrixMATest extends TestCase {
     em.removeRow("id2");
     double[] valb1 = mMatrix.getColumnToArray("b1");
 
-    ids = em.getRowIds();
+    ids = em.getRowNames();
     for (int i = 0; i < ids.length; i++) {
       assertTrue(ids[i].equals(idValues2[i]));
     }
@@ -362,7 +363,7 @@ public class ExpressionMatrixMATest extends TestCase {
 
     em.renameRow("id1", "id1.02");
 
-    ids = em.getRowIds();
+    ids = em.getRowNames();
     assertEquals("id1.02", ids[6]);
 
     mMatrix.setValue("id3", 0, 33.3);
@@ -458,7 +459,7 @@ public class ExpressionMatrixMATest extends TestCase {
     assertEquals(3, em2.getRowCount());
     assertEquals(3, em2.getColumnCount());
 
-    String[] idsValues = em2.getRowIds();
+    String[] idsValues = em2.getRowNames();
     for (int i = 0; i < ids.length; i++) {
       assertTrue(ids[i].equals(idsValues[i]));
     }
@@ -586,8 +587,8 @@ public class ExpressionMatrixMATest extends TestCase {
     BioAssay b2 = bar2.read();
     is2.close();
 
-    em.addBioAssay(b);
-    em.addBioAssay(b2);
+    em.addBioAssay(b, "b1");
+    em.addBioAssay(b2, "b2");
 
     return em;
   }
@@ -620,4 +621,18 @@ public class ExpressionMatrixMATest extends TestCase {
     assertEquals(-0.338, mMatrix.getValue(at1, 0), 0);
 
   }
+
+  public void testGetColumn() throws NividicIOException, IOException {
+
+    ExpressionMatrix em = constructMatrix();
+
+    BioAssay ba = em.getColumn("b1");
+
+    assertEquals(3, ba.getFieldCount());
+    assertTrue(ba.isField(BioAssay.FIELD_NAME_ID));
+    assertTrue(ba.isField(BioAssay.FIELD_NAME_M));
+    assertTrue(ba.isField(BioAssay.FIELD_NAME_A));
+
+  }
+
 }

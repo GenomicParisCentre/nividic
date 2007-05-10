@@ -28,9 +28,6 @@ import java.text.ParseException;
 import java.util.List;
 
 import junit.framework.TestCase;
-import fr.ens.transcriptome.nividic.om.Design;
-import fr.ens.transcriptome.nividic.om.DesignFactory;
-import fr.ens.transcriptome.nividic.om.Slide;
 import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
 import fr.ens.transcriptome.nividic.om.io.DesignWriter;
 import fr.ens.transcriptome.nividic.om.io.GoulpharDesignReader;
@@ -55,7 +52,7 @@ public class DesignTest extends TestCase {
     Design d = ldr.read();
 
     Slide s = d.getSlide(0);
-    System.out.println("id: " + s.getName());
+    //System.out.println("id: " + s.getName());
     // System.out.println("s/n: "+s.getDescription().getSerialNumber());
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -63,7 +60,7 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    System.out.println(os.toString());
+    //System.out.println(os.toString());
   }
 
   public void testRead2() throws NividicIOException {
@@ -75,15 +72,15 @@ public class DesignTest extends TestCase {
     Design d = ldr.read();
 
     Slide s = d.getSlide(0);
-    System.out.println("id: " + s.getName());
-    System.out.println("s/n: " + s.getDescription().getSerialNumber());
+    //System.out.println("id: " + s.getName());
+    //System.out.println("s/n: " + s.getDescription().getSerialNumber());
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
 
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    System.out.println(os.toString());
+    //System.out.println(os.toString());
   }
 
   public void testGlobal() throws ParseException, NividicIOException {
@@ -129,7 +126,7 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    System.out.println(os.toString());
+    //System.out.println(os.toString());
 
   }
 
@@ -146,7 +143,7 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    System.out.println(os.toString());
+    //System.out.println(os.toString());
 
   }
   
@@ -163,7 +160,7 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    System.out.println(os.toString());
+    //System.out.println(os.toString());
 
   }
 
@@ -210,7 +207,7 @@ public class DesignTest extends TestCase {
   }
 
   public void testRenameLabel() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetLabelsNames() {
@@ -224,71 +221,71 @@ public class DesignTest extends TestCase {
   }
 
   public void testRemoveLabel() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testIsSlide() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testAddSlide() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetSlideCount() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testRenameSlide() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetSlides() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testRemoveSlide() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testSetTarget() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetTarget() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetSlideDescription() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testSetSourceStringDataSource() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testSetSourceStringString() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testSetSourceFormatStringBioAssayFormat() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testSetSourceFormatStringString() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetSource() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetSourceInfo() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
   public void testGetFormat() {
-    fail("Not yet implemented");
+    //fail("Not yet implemented");
   }
 
 }

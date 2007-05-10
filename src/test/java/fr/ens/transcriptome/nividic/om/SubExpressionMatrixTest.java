@@ -67,7 +67,7 @@ public class SubExpressionMatrixTest extends TestCase {
     ExpressionMatrixDimension mMatrix = em.getDefaultDimension();
 
     double[][] values = mMatrix.getValues();
-    String[] ids = em.getRowIds();
+    String[] ids = em.getRowNames();
     String[] columnNames = em.getColumnNames();
 
     System.out.println(em.getName());
@@ -349,7 +349,7 @@ public class SubExpressionMatrixTest extends TestCase {
     assertEquals(3, em2.getRowCount());
     assertEquals(3, em2.getColumnCount());
 
-    String[] idsValues = em2.getRowIds();
+    String[] idsValues = em2.getRowNames();
     for (int i = 0; i < ids.length; i++) {
       assertTrue(ids[i].equals(idsValues[i]));
     }
@@ -367,7 +367,7 @@ public class SubExpressionMatrixTest extends TestCase {
     assertNotNull(b);
 
     ids = b.getIds();
-    idsValues = mMatrix2.getRowIds();
+    idsValues = mMatrix2.getRowNames();
 
     double[] valBioAssay = b.getMs();
     double[] valMatrix = mMatrix2.getColumnToArray(b.getName());
@@ -384,7 +384,7 @@ public class SubExpressionMatrixTest extends TestCase {
     }
 
     try {
-      mMatrix2.getRow("id2");
+      mMatrix2.getRowToArray("id2");
       assertFalse(false);
     } catch (ExpressionMatrixRuntimeException e) {
       assertTrue(true);

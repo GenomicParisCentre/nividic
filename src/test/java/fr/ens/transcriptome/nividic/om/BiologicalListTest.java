@@ -39,7 +39,7 @@ public class BiologicalListTest extends TestCase {
    */
   public void testAddString() {
 
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
     l.add("toto 1");
     assertTrue(l.contains("toto 1"));
     l.add("toto 1");
@@ -54,7 +54,7 @@ public class BiologicalListTest extends TestCase {
   public void testAddStringArray() {
 
     String a[] = {"toto1 ", "toto2", "toto3"};
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
     l.add(a);
 
     assertTrue(l.contains(a[0]));
@@ -69,10 +69,10 @@ public class BiologicalListTest extends TestCase {
   public void testAddBiologicalList() {
 
     String a[] = {"toto1 ", "toto2", "toto3"};
-    BiologicalList l1 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l1 = BiologicalListFactory.createBiologicalList();
     l1.add(a);
 
-    BiologicalList l2 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l2 = BiologicalListFactory.createBiologicalList();
     l2.add("toto0");
     l2.add(l1);
 
@@ -85,7 +85,7 @@ public class BiologicalListTest extends TestCase {
 
   public void testRemove() {
 
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
 
     String s1 = "toto1";
     String s2 = "toto2";
@@ -109,7 +109,7 @@ public class BiologicalListTest extends TestCase {
 
   public void testClear() {
 
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
 
     l.add("toto 1");
     l.add("toto 2");
@@ -123,7 +123,7 @@ public class BiologicalListTest extends TestCase {
   public void testIterator() {
 
     String a[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
     l.add(a);
 
     Iterator it = l.iterator();
@@ -143,7 +143,7 @@ public class BiologicalListTest extends TestCase {
 
   public void testSize() {
 
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
 
     l.add("toto 1");
     l.add("toto 2");
@@ -154,7 +154,7 @@ public class BiologicalListTest extends TestCase {
   public void testToArray() {
 
     String a[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
     l.add(a);
 
     String[] r = l.toArray();
@@ -173,7 +173,7 @@ public class BiologicalListTest extends TestCase {
   public void testContains() {
 
     String a[] = {"toto1 ", "toto2", "toto3"};
-    BiologicalList l = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l = BiologicalListFactory.createBiologicalList();
     l.add(a);
 
     assertTrue(l.contains(a[0]));
@@ -186,11 +186,11 @@ public class BiologicalListTest extends TestCase {
   public void testConcat() {
 
     String a[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l1 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l1 = BiologicalListFactory.createBiologicalList();
     l1.add(a);
 
     String b[] = {"titi1", "titi2", "titi3"};
-    BiologicalList l2 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l2 = BiologicalListFactory.createBiologicalList();
     l2.add(b);
 
     BiologicalList l3 = l1.concat(l2);
@@ -221,11 +221,11 @@ public class BiologicalListTest extends TestCase {
   public void testInclude() {
 
     String a[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l1 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l1 = BiologicalListFactory.createBiologicalList();
     l1.add(a);
 
     String b[] = {"toto2", "toto3", "titi4"};
-    BiologicalList l2 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l2 = BiologicalListFactory.createBiologicalList();
     l2.add(b);
 
     BiologicalList l3 = l1.include(l2);
@@ -257,11 +257,11 @@ public class BiologicalListTest extends TestCase {
   public void testExclude() {
 
     String a[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l1 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l1 = BiologicalListFactory.createBiologicalList();
     l1.add(a);
 
     String b[] = {"toto2", "toto3", "titi4"};
-    BiologicalList l2 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l2 = BiologicalListFactory.createBiologicalList();
     l2.add(b);
 
     BiologicalList l3 = l1.exclude(l2);
@@ -293,11 +293,11 @@ public class BiologicalListTest extends TestCase {
   public void testExcludeAllLists() {
 
     String a[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l1 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l1 = BiologicalListFactory.createBiologicalList();
     l1.add(a);
 
     String b[] = {"toto2", "toto3", "titi4"};
-    BiologicalList l2 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l2 = BiologicalListFactory.createBiologicalList();
     l2.add(b);
 
     BiologicalList l3 = l1.excludeAllLists(l2);
@@ -332,19 +332,19 @@ public class BiologicalListTest extends TestCase {
   public void testEqualsBiologicalList() {
 
     String a[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l1 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l1 = BiologicalListFactory.createBiologicalList();
     l1.add(a);
 
     String b[] = {"toto2", "toto3", "titi4"};
-    BiologicalList l2 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l2 = BiologicalListFactory.createBiologicalList();
     l2.add(b);
 
     String c[] = {"toto1 ", "toto2"};
-    BiologicalList l3 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l3 = BiologicalListFactory.createBiologicalList();
     l3.add(c);
 
     String d[] = {"toto1", "toto2", "toto3"};
-    BiologicalList l4 = new BiologicalListFactory().createBiologicalList();
+    BiologicalList l4 = BiologicalListFactory.createBiologicalList();
     l4.add(d);
 
     assertFalse(l1.equals(l2));

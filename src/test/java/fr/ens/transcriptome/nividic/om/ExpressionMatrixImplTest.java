@@ -61,7 +61,7 @@ public class ExpressionMatrixImplTest extends TestCase {
 
   private void printValues(ExpressionMatrixDimension em) {
 
-    String[] ids = em.getRowIds();
+    String[] ids = em.getRowNames();
     String[] columnNames = em.getColumnNames();
 
     System.out.println("em.size() " + em.getRowCount());
@@ -345,7 +345,7 @@ public class ExpressionMatrixImplTest extends TestCase {
 
     String[] idValues = {"id1", "id2", "id3", "id4", "id5", "id7", "id6", "id8"};
 
-    ids = em.getRowIds();
+    ids = em.getRowNames();
     for (int i = 0; i < ids.length; i++) {
       assertTrue(ids[i].equals(idValues[i]));
     }
@@ -355,7 +355,7 @@ public class ExpressionMatrixImplTest extends TestCase {
     em.removeRow("id2");
     double[] valb1 = d.getColumnToArray("b1");
 
-    ids = em.getRowIds();
+    ids = em.getRowNames();
     for (int i = 0; i < ids.length; i++) {
       assertTrue(ids[i].equals(idValues2[i]));
     }
@@ -371,7 +371,7 @@ public class ExpressionMatrixImplTest extends TestCase {
     assertEquals("b1.03", em.getColumnNames()[1]);
 
     em.renameRow("id1", "id1.02");
-    ids = em.getRowIds();
+    ids = em.getRowNames();
     assertEquals("id1.02", ids[6]);
 
     d.setValue("id3", 0, 33.3);
