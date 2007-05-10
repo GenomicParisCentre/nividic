@@ -95,6 +95,22 @@ function currentTimeMillis() {
 }
 
 /*
+ * Show information about memory.
+ * @return nothing.
+ */
+function showMemory() {
+
+  var total = engine.totalMemory();
+  var free = engine.freeMemory();
+  var max = engine.maxMemory();
+
+  println("Total memory allocated to VM: " + (Math.round(total/(1024*1024))) + "MB ("+total+" bytes)" );
+  println("Memory currently available: " + (Math.round(free/(1024*1024))) + "MB ("+free+" bytes)");
+  println("Maximal memory that could be allocated to VM: " + (Math.round(max/(1024*1024))) + "MB ("+max+" bytes)");
+}
+
+
+/*
  * Show help information.
  *@return nothing
  */
@@ -115,4 +131,3 @@ function help() {
   
 
 }
-
