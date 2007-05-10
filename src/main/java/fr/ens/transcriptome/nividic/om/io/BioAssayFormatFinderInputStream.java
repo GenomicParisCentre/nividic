@@ -141,7 +141,7 @@ public class BioAssayFormatFinderInputStream extends InputStream {
 
     BioAssayFormat format = getBioAssayFormat();
 
-    return format == null ? null : format.getBioAssayReader(this.is);
+    return format == null ? null : format.getBioAssayReader(this);
   }
 
   @Override
