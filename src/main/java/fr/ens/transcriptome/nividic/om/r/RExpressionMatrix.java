@@ -105,7 +105,7 @@ public class RExpressionMatrix implements RObject {
 
     final String identifier = "tmp_" + System.currentTimeMillis() + "_";
 
-    con.assign(identifier + "ids", new REXP(matrix.getRowIds()));
+    con.assign(identifier + "ids", new REXP(matrix.getRowNames()));
 
     final String[] colNames = matrix.getColumnNames();
 
