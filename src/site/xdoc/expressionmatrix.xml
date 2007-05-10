@@ -231,6 +231,20 @@ ExpressionMatrix subMatrix4 = subMatrix2.subMatrixRowsExclude("id17", "id56").ma
  	</source>
  	
  	</section>
+ 	
+ 	<section name="Get BioAssays from an Expression matrix">
+ 	
+ 	<p>You can can a BioAssay objects from columns of an expression matrix:</p>
+
+<source>
+
+BioAssay ba = matrix.getColumn("15min");
+
+</source>
+ 	
+ 	
+ 	
+ 	</section>
     
     
   </body>

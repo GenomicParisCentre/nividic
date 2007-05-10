@@ -146,6 +146,30 @@ Linux #1 PREEMPT Wed Jun 28 10:51:12 CEST 2006
      
      </subsection>
      
+     <subsection name="Execute shell commands">
+     
+     <p>You can show the memory available:</p>
+     
+     <source>
+js>showMemory()
+Total memory allocated to VM: 2MB (2031616 bytes)
+Memory currently available: 1MB (678840 bytes)
+Maximal memory that could be allocated to VM: 64MB (66650112 bytes)
+     </source>
+     </subsection>
+     
+     <subsection name="Cast Javascript array to Java arrays">
+     
+     <p>To cast javascript arrays which can contains many types of values to Java array,
+      you can use the following functions:</p>
+     
+     <source>
+var javaIntsArray = asInts([142,6544,364]);
+var javaDoublesArray = asDoubles([142.45,6544,364.12]);
+var javaStringsArray = asStrings(["toto",6544,"hello"]);
+     </source>
+     
+     </subsection>
 	
 	</section>
 	

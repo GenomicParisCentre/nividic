@@ -180,10 +180,29 @@ var translator = createTranslatorFromDesign(design);
 	  
 	  <subsection name="Merge Matrix">
 	  
-	    <p>Warning, currently there is no merge of data, existing data if replace by the new data.</p>
+	    <p>Two methods exits:if replace by the new data.</p>
+	    <ul>
+	    <li>One replace data</li>
 <source>
+// create new column if column already exists
 matrix1.addMatrix(matrix2);
+
+// Overwrite columns if columns already exists
+matrix1.addMatrux(matrix2,true)
 </source>
+
+
+
+	<li>The other using a merger</li>
+<source>
+var merger = createMatrixMerger();
+merger.addExpressionMatrix(matrix1);
+merger.addExpressionMatrix(matrix2);
+var matrix3 = merger.getExpressionMatrix();
+
+</source>
+	
+		</ul>
 	  
 	  </subsection>
 	  
@@ -214,12 +233,14 @@ var matrixFiltered = matrix.filter(createMatrixRowFilterAdapter(createASupFilter
 	  
 	   <subsection name="Filter M values with A values (e.g. A &gt; 10) on only few columns">
 <source>
+// Create the filter, remove row with bad values less than 2/3
+var filter = createMatrixRowFilterAdapter(createASupFilter(10), 2/3);
 
-// Create a submatrix with the needed column
-var subMatrix = matrix.subMatrixByColumn("15min","60min");
+// Set the filter to filter only 2 columns
+filter.addColumnToFilter(["slide04","slide05"]);
 
-// Fiter on the sub matrix, remove row with bad values less than 2/3
-var matrixFiltered = subMatrix.filter(createMatrixRowFilterAdapter(createASupFilter(10)), 2/3);
+// Filter the matrix
+var matrixFiltered = subMatrix.filter(filter);
 </source>	   
 	   
 	  </subsection>
@@ -230,7 +251,7 @@ var matrixFiltered = subMatrix.filter(createMatrixRowFilterAdapter(createASupFil
 var bioAssayFiltered = bioAssay.filter(createMSupFilter(2));
 
 // Fiter on a matrix, remove row with bad values less than 2/3
-var matrixFiltered = matrix.filter(createMatrixRowFilterAdapter(createMSupFilter(2)), 2/3);
+var matrixFiltered = matrix.filter(createMatrixRowFilterAdapter(createMSupFilter(2), 2/3));
 </source>
 	  </subsection>
 	  

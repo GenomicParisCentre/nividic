@@ -69,6 +69,22 @@ function readIDMA(file, comma);
  */
 function readTotalSummary(file, comma);
 
+/**
+ * Shortcut to read total.summary file(s)
+ * @param file File(s) to read
+ * @param comma true if comma is the decimal separator
+ * @return A BioAssay Object
+ */
+function readTotalSummary(file, comma);
+
+/**
+ * Shortcut to read undefined type bioassay file(s).
+ * @param file File(s) to read
+ * @param comma true if comma is the decimal separator
+ * @return A BioAssay Object
+ */
+function readUndefinedBioAssay(file, comma);
+
 </source>
 
    </section>
