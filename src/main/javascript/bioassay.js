@@ -57,6 +57,9 @@ function _getBioAssayReader(file, type) {
 
       case "total.summary":
         return new TotalSummaryReader(file);
+        
+      case "universal":
+        return new UniversalBioAssayReader(file);
     }
   }
 
@@ -148,6 +151,17 @@ function readIDMA(file, comma) {
 function readTotalSummary(file, comma) {
 
   return readBioAssay(file, "total.summary", false, comma);
+}
+
+/**
+ * Shortcut to read undefined type bioassay file(s).
+ * @param file File(s) to read
+ * @param comma true if comma is the decimal separator
+ * @return A BioAssay Object
+ */
+function readUndefinedBioAssay(file, comma) {
+
+  return readBioAssay(file, "universal", false, comma);
 }
 
 /*
