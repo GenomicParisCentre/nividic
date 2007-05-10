@@ -97,7 +97,7 @@ public enum BioAssayFormat {
       return new GPRReader(is);
 
     case IDMA:
-      return new GPRReader(is);
+      return new IDMAReader(is);
 
     case TOTALSUMMARY:
       return new TotalSummaryReader(is);
