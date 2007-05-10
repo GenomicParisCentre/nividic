@@ -147,44 +147,14 @@ public final class Echo {
    * public void println(final String[] s) { output.println(Arrays.toString(s)); }
    */
 
-  public void printArray(final Object[] obj) {
+  public void printObjectArray(final Object[] obj) {
 
     output.print(Arrays.toString(obj));
   }
 
-  public void printArrayln(final Object[] obj) {
+  public void printPrimitiveArray(final Object[] obj) {
 
-    output.println(Arrays.toString(obj));
-  }
-
-  public void printArray(final double[] bs) {
-
-    output.print(Arrays.toString(bs));
-  }
-
-  public void printArray(final float[] bs) {
-
-    output.print(Arrays.toString(bs));
-  }
-
-  public void printArray(final long[] bs) {
-
-    output.print(Arrays.toString(bs));
-  }
-
-  public void printArray(final int[] bs) {
-
-    output.print(Arrays.toString(bs));
-  }
-
-  public void printArray(final byte[] bs) {
-
-    output.print(Arrays.toString(bs));
-  }
-
-  public void printArray(final char[] bs) {
-
-    output.print(Arrays.toString(bs));
+    output.print(Arrays.toString(obj));
   }
 
   //
