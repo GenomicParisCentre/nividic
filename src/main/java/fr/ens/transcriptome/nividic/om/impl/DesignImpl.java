@@ -886,7 +886,7 @@ public class DesignImpl implements Design {
       throw new NividicRuntimeException(
           "Only BioAssayfilter can filter BioAssay");
 
-    return count((DesignFilter) filter);
+    return count(filter);
   }
 
   /**
