@@ -47,7 +47,7 @@ public final class Globals {
   /** Name of the application. */
   public static final String APP_DESCRITPION = "A framework for DNA chips analysis";
   /** Version of the application. */
-  public static final String VERSION = "0.5";
+  public static final String VERSION = "0.6";
   /** Copyright. */
   // public static final String COPYRIGHT = "Copyright (c) 2003-2004 CEA - ENS";
   public static final String COPYRIGHT = "Copyright (c) 2004-2007 ENS Microarray platform";
