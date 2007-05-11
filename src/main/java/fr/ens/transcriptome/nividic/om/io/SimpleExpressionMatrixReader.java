@@ -47,6 +47,7 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
 
   /** Dimension separator. */
   public static final String DIMENSION_SEPARATOR = "$";
+  private static final String DUPPLICATED_SUFFIX = "_DUPLICATED_";
 
   private ExpressionMatrix matrix;
   private String[] fieldNames;
@@ -143,17 +144,35 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
 
         String[] data = line.split(separator);
 
-        if (data.length != fieldNames.length || data[0].trim().startsWith("#"))
+        if (data.length == 0 || data[0].trim().startsWith("#"))
           continue;
+
+        if (data.length != fieldNames.length) {
+
+          String[] newData = new String[fieldNames.length];
+          Arrays.fill(newData, "");
+          for (int i = 0; i < newData.length; i++) {
+
+            if (i >= data.length)
+              break;
+            newData[i] = data[i];
+          }
+
+          data = newData;
+        }
 
         // id column
         String ids = data[0];
         if (isStringQuotesBeRemoved())
           ids = new String(StringUtils.removeDoubleQuotes(ids));
 
-        final String id = ids;
-        if (!matrix.containsRow(id))
-          this.matrix.addRow(id);
+        final String id;
+        if (matrix.containsRow(ids))
+          id = findNewRowDuplicatedName(ids);
+        else
+          id = ids;
+
+        this.matrix.addRow(id);
 
         // Double values
         for (int i = 1; i < data.length; i++) {
@@ -184,6 +203,15 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
     }
 
     return addReaderHistoryEntry(this.matrix);
+  }
+
+  private String findNewRowDuplicatedName(final String rowName) {
+
+    int i = 1;
+    while (this.matrix.containsRow(rowName + DUPPLICATED_SUFFIX + i))
+      i++;
+
+    return rowName + DUPPLICATED_SUFFIX + i;
   }
 
   /**
