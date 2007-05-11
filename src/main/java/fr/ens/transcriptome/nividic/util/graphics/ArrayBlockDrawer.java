@@ -247,8 +247,8 @@ public class ArrayBlockDrawer {
 
     final int xSize = getBlock().getXFeatures();
     final int ySize = getBlock().getYFeatures();
-    final int xSpacing = getBlock().getXSpacing();
-    final int ySpacing = getBlock().getYSpacing();
+    final int xSpacing = (int) getBlock().getXSpacing();
+    final int ySpacing = (int) getBlock().getYSpacing();
     final double xf = getXFactor();
     final double yf = getYFactor();
     final double xDia = getBlock().getFeatureDiameter() * xf;

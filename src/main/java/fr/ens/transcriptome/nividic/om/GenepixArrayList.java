@@ -489,7 +489,8 @@ public class GenepixArrayList {
     if (annotation == null)
       return null;
 
-    String key = GAL_HEADER_BLOCK_PREFIX + id;
+    final String key = GAL_HEADER_BLOCK_PREFIX + id;
+
     String value = annotation.getProperty(key);
     if (value == null)
       return null;
@@ -500,12 +501,12 @@ public class GenepixArrayList {
 
     try {
       if (st.hasMoreTokens())
-        ab.setXOrigin(Integer.parseInt(st.nextToken().trim()));
+        ab.setXOrigin(Double.parseDouble(st.nextToken().trim()));
       else
         return ab;
 
       if (st.hasMoreTokens())
-        ab.setYOrigin(Integer.parseInt(st.nextToken().trim()));
+        ab.setYOrigin(Double.parseDouble(st.nextToken().trim()));
       else
         return ab;
 
@@ -520,7 +521,7 @@ public class GenepixArrayList {
         return ab;
 
       if (st.hasMoreTokens())
-        ab.setXSpacing(Integer.parseInt(st.nextToken().trim()));
+        ab.setXSpacing(Double.parseDouble(st.nextToken().trim()));
       else
         return ab;
 
@@ -530,12 +531,14 @@ public class GenepixArrayList {
         return ab;
 
       if (st.hasMoreTokens())
-        ab.setYSpacing(Integer.parseInt(st.nextToken().trim()));
+        ab.setYSpacing(Double.parseDouble(st.nextToken().trim()));
       else
         return ab;
 
       return ab;
     } catch (NumberFormatException e) {
+      e.printStackTrace();
+      System.out.println(e.getMessage());
       return null;
     }
   }
@@ -550,7 +553,7 @@ public class GenepixArrayList {
 
     ArrayBlock[] result = new ArrayBlock[size];
 
-    int lastXOri = -1;
+    double lastXOri = -1;
     int metaRow = 1;
     int metaColumn = 0;
 

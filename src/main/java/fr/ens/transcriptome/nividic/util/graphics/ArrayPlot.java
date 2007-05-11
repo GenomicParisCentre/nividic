@@ -371,17 +371,17 @@ public class ArrayPlot {
 
     for (int i = 0; i < this.blocks.length; i++) {
 
-      int maxX = this.blocks[i].getWidth() + this.blocks[i].getXOrigin();
-      int maxY = this.blocks[i].getHeight() + this.blocks[i].getYOrigin();
+      int maxX = (int) (this.blocks[i].getWidth() + this.blocks[i].getXOrigin());
+      int maxY = (int) (this.blocks[i].getHeight() + this.blocks[i].getYOrigin());
 
       if (maxX > maxWidth)
         maxWidth = maxX;
       if (maxY > maxHeight)
         maxHeight = maxY;
       if (this.blocks[i].getXOrigin() < minXOrigin)
-        minXOrigin = this.blocks[i].getXOrigin();
+        minXOrigin = (int) this.blocks[i].getXOrigin();
       if (this.blocks[i].getYOrigin() < minYOrigin)
-        minYOrigin = this.blocks[i].getYOrigin();
+        minYOrigin = (int) this.blocks[i].getYOrigin();
 
     }
 

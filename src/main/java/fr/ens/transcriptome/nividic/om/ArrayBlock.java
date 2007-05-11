@@ -31,16 +31,16 @@ public class ArrayBlock {
   private int id;
   private int metaRow;
   private int metaColumn;
-  private int xOrigin;
-  private int yOrigin;
-  private int featureDiameter;
+  private double xOrigin;
+  private double yOrigin;
+  private double featureDiameter;
   private int xFeatures;
   private int yFeatures;
-  private int xSpacing;
-  private int ySpacing;
+  private double xSpacing;
+  private double ySpacing;
 
-  private int width = -1;
-  private int height = -1;
+  private double width = -1;
+  private double height = -1;
 
   //
   // Getters
@@ -58,7 +58,7 @@ public class ArrayBlock {
    * Get the diameter of the features (in micrometers).
    * @return Returns the featureDiameter
    */
-  public int getFeatureDiameter() {
+  public double getFeatureDiameter() {
     return featureDiameter;
   }
 
@@ -91,7 +91,7 @@ public class ArrayBlock {
    * (in micormeters).
    * @return Returns the xOrigin
    */
-  public int getXOrigin() {
+  public double getXOrigin() {
     return xOrigin;
   }
 
@@ -107,7 +107,7 @@ public class ArrayBlock {
    * Get the y position of center of top leftmost feature of block.
    * @return Returns the yOrigin
    */
-  public int getYOrigin() {
+  public double getYOrigin() {
     return yOrigin;
   }
 
@@ -115,7 +115,7 @@ public class ArrayBlock {
    * Get the column spacing of the block.
    * @return Returns the ySpacing
    */
-  public int getYSpacing() {
+  public double getYSpacing() {
     return ySpacing;
   }
 
@@ -123,7 +123,7 @@ public class ArrayBlock {
    * Get the row spacing of the block.
    * @return Returns the xSpacing
    */
-  public int getXSpacing() {
+  public double getXSpacing() {
     return xSpacing;
   }
 
@@ -176,7 +176,7 @@ public class ArrayBlock {
    * the block.
    * @param origin The xOrigin to set
    */
-  public void setXOrigin(final int origin) {
+  public void setXOrigin(final double origin) {
     xOrigin = origin;
   }
 
@@ -193,7 +193,7 @@ public class ArrayBlock {
    * the block.
    * @param origin The yOrigin to set
    */
-  public void setYOrigin(final int origin) {
+  public void setYOrigin(final double origin) {
     yOrigin = origin;
   }
 
@@ -201,7 +201,7 @@ public class ArrayBlock {
    * Set the column spacing of current block (in micrometer).
    * @param spacing The ySpacing to set
    */
-  public void setYSpacing(final int spacing) {
+  public void setYSpacing(final double spacing) {
     ySpacing = spacing;
   }
 
@@ -209,7 +209,7 @@ public class ArrayBlock {
    * Set the row spacing of current block (in micrometer).
    * @param spacing The xSpacing to set
    */
-  public void setXSpacing(final int spacing) {
+  public void setXSpacing(final double spacing) {
     xSpacing = spacing;
   }
 
@@ -221,7 +221,7 @@ public class ArrayBlock {
    * Get the width of the block
    * @return the width of the block
    */
-  public int getWidth() {
+  public double getWidth() {
 
     //if (this.width == -1) {
       //this.width = getXFeatures() * (getFeatureDiameter() + getXSpacing());
@@ -235,7 +235,7 @@ public class ArrayBlock {
    * Get the height of the block
    * @return The height of the block
    */
-  public int getHeight() {
+  public double getHeight() {
 
     //if (this.height == -1) {
       // this.height = getYFeatures() * (getFeatureDiameter() + getYSpacing());
