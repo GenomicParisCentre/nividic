@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
@@ -66,16 +68,17 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
       return;
     }
 
-    final ArrayList fieldNames = new ArrayList();
-    final ArrayList dimensions = new ArrayList();
+    final List<String> fieldNames = new ArrayList<String>();
+    final List<ExpressionMatrixDimension> dimensions = new ArrayList<ExpressionMatrixDimension>();
 
     for (int i = 0; i < columnNames.length; i++) {
 
       final String s = columnNames[i];
       final int indexSeparator = s.indexOf(DIMENSION_SEPARATOR);
-      if (indexSeparator == -1)
+      if (indexSeparator == -1) {
         fieldNames.add(s);
-      else {
+        dimensions.add(this.matrix.getDefaultDimension());
+      } else {
         String fieldName = s.substring(0, indexSeparator);
         String dimensionName = s.substring(indexSeparator + 1, s.length());
 
@@ -149,6 +152,8 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
           ids = new String(StringUtils.removeDoubleQuotes(ids));
 
         final String id = ids;
+        if (!matrix.containsRow(id))
+          this.matrix.addRow(id);
 
         // Double values
         for (int i = 1; i < data.length; i++) {
@@ -163,7 +168,6 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
           }
 
           dimensions[i - 1].setValue(id, fieldNames[i], value);
-
         }
 
       }
