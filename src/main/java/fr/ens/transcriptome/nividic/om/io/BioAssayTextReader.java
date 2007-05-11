@@ -133,6 +133,8 @@ public abstract class BioAssayTextReader extends BioAssayReader {
 
     final String endTag = getEndTag();
 
+    final boolean removeQuotes = isStringQuotesBeRemoved();
+
     try {
       while ((line = br.readLine()) != null) {
 
@@ -147,13 +149,15 @@ public abstract class BioAssayTextReader extends BioAssayReader {
         for (int i = 0; i < data.length; i++) {
 
           final String s = data[i].trim();
+          final String s2 = removeQuotes ? StringUtils.removeDoubleQuotes(s)
+              : s;
 
           if (arrayFieldsToRead[i])
             if (arrayIntFields[i]) {
               int value;
               // integer values
               try {
-                value = Integer.parseInt(s);
+                value = Integer.parseInt(s2);
               } catch (NumberFormatException e) {
                 value = 0;
               }
@@ -165,9 +169,9 @@ public abstract class BioAssayTextReader extends BioAssayReader {
               try {
 
                 if (comma)
-                  value = Double.parseDouble(s.replace(',', '.'));
+                  value = Double.parseDouble(s2.replace(',', '.'));
                 else
-                  value = Double.parseDouble(s);
+                  value = Double.parseDouble(s2);
 
               } catch (NumberFormatException e) {
                 value = Double.NaN;
@@ -177,9 +181,6 @@ public abstract class BioAssayTextReader extends BioAssayReader {
             } else {
 
               // String values
-
-              final String s2 = isStringQuotesBeRemoved() ? StringUtils
-                  .removeDoubleQuotes(s) : s;
 
               addDatafield(existingFields[i], new String(s2));
             }

@@ -265,6 +265,7 @@ public class ATFReader extends BioAssayTextReader {
       String line = getBufferedReader().readLine();
       if (line == null)
         return false;
+
       if (!line.startsWith(MAGICSTRING))
         throw new NividicIOException("This file is not an ATF file");
 
@@ -360,7 +361,7 @@ public class ATFReader extends BioAssayTextReader {
         if (st.hasMoreTokens())
           value = st.nextToken();
 
-        addAnnotation(key, value);
+        addAnnotation(key.trim(), value);
       }
 
     } catch (IOException e) {
