@@ -22,39 +22,59 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.IterableMap;
-import org.apache.commons.collections.map.LinkedMap;
-import org.apache.commons.collections.primitives.ArrayDoubleList;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+// import org.apache.commons.collections.IterableMap;
+// import org.apache.commons.collections.map.LinkedMap;
+// import org.apache.commons.collections.primitives.ArrayDoubleList;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
-import fr.ens.transcriptome.nividic.om.HistoryEntry;
-import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
-import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
+/**
+ * This class implemenents a expression matrix dimension.
+ * @author Laurent Jourdren
+ */
 public class ExpressionMatrixDimensionImpl implements
     ExpressionMatrixDimension, ExpressionMatrixListener {
+
+  private static final int INIRIAL_NON_ZERO_ODD_NUMMER = 11;
+  private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 29;
 
   private String name;
   private ExpressionMatrixImpl matrix;
 
   private Set listeners = new HashSet();
 
-  private IterableMap referencesToColumnNamesMap;
+  private Map<String, List<Double>> referencesToColumnNamesMap;
 
   //
   // Getters
   //
 
-  IterableMap getReferencesToColumnNamesMap() {
+  /**
+   * Get the main matrix of the dimension.
+   * @return an Expression matrix object
+   */
+  public ExpressionMatrix getMatrix() {
+
+    return this.matrix;
+  }
+
+  Map<String, List<Double>> getReferencesToColumnNamesMap() {
 
     return this.referencesToColumnNamesMap;
   }
@@ -100,8 +120,7 @@ public class ExpressionMatrixDimensionImpl implements
     final String[] columnNames = getColumnNames();
 
     for (int i = 0; i < columnNames.length; i++) {
-      final ArrayDoubleList list = (ArrayDoubleList) referencesToColumnNamesMap
-          .get(columnNames[i]);
+      final List<Double> list = referencesToColumnNamesMap.get(columnNames[i]);
       rowValues[i] = list.get(index);
     }
 
@@ -201,8 +220,8 @@ public class ExpressionMatrixDimensionImpl implements
 
     double[] columnValues = new double[matrix.getRowCount()];
 
-    columnValues = ((ArrayDoubleList) referencesToColumnNamesMap
-        .get(columnName)).toArray();
+    columnValues = NividicUtils.toArray(referencesToColumnNamesMap
+        .get(columnName));
 
     return columnValues;
   }
@@ -232,7 +251,7 @@ public class ExpressionMatrixDimensionImpl implements
 
   /**
    * Extract a value from the matrix
-   * @param rowId the id of the spot, name of the row where the value is to be
+   * @param rowName the id of the spot, name of the row where the value is to be
    *          found
    * @param columnName the xp code, name of the column where the value is to be
    *          found
@@ -240,19 +259,19 @@ public class ExpressionMatrixDimensionImpl implements
    * @throws ExpressionMatrixRuntimeException if the column or the row doesn't
    *           exist
    */
-  public double getValue(final String rowId, final String columnName)
+  public double getValue(final String rowName, final String columnName)
       throws ExpressionMatrixRuntimeException {
 
     if (this.isNoRow())
       throw new ExpressionMatrixRuntimeException(
           "the matrix is empty, the column " + columnName + "and the row "
-              + rowId + " dont exist");
+              + rowName + " dont exist");
 
     matrix.throwExceptionIfColumnDoesntExists(columnName);
 
     double[] columnValues = getColumnToArray(columnName);
 
-    return getValue(rowId, columnValues);
+    return getValue(rowName, columnValues);
 
   }
 
@@ -264,7 +283,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @throws ExpressionMatrixRuntimeException if rowId is null or if rowId is
    *           not an element of the idsMap
    */
-  protected double getValue(final String rowId, final double[] column)
+  private double getValue(final String rowId, final double[] column)
       throws ExpressionMatrixRuntimeException {
 
     if (rowId == null)
@@ -275,7 +294,6 @@ public class ExpressionMatrixDimensionImpl implements
     final int idIndex = matrix.getInternalRowIdIndex(rowId);
 
     return column[idIndex];
-
   }
 
   /**
@@ -304,14 +322,6 @@ public class ExpressionMatrixDimensionImpl implements
   //
 
   /**
-   * Set the name of the dimension
-   * @param name The name to set
-   */
-  private void setName(final String name) {
-    this.name = name;
-  }
-
-  /**
    * add a new ExpressionMatrixListener to the set of Listeners
    * @param listener the new ExpressionMatrixListener to add
    */
@@ -328,7 +338,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @throws ExpressionMatrixRuntimeException if the rowId is invalide or the
    *           column to fill doesn't exist
    */
-  private void setValue(final String rowId, final ArrayDoubleList column,
+  private void setValue(final String rowId, final List<Double> column,
       final double value) throws ExpressionMatrixRuntimeException {
 
     if (rowId == null)
@@ -360,8 +370,7 @@ public class ExpressionMatrixDimensionImpl implements
 
     matrix.throwExceptionIfColumnDoesntExists(columnName);
 
-    ArrayDoubleList columnToFill = (ArrayDoubleList) referencesToColumnNamesMap
-        .get(columnName);
+    List<Double> columnToFill = referencesToColumnNamesMap.get(columnName);
 
     setValue(rowId, columnToFill, value);
   }
@@ -392,7 +401,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @throws ExpressionMatrixRuntimeException if the rowId is invalide or the
    *           column to fill doesn't exist
    */
-  void setValues(final String[] ids, final ArrayDoubleList column,
+  void setValues(final String[] ids, final List<Double> column,
       final double[] values) throws ExpressionMatrixRuntimeException {
 
     if (ids == null)
@@ -424,8 +433,7 @@ public class ExpressionMatrixDimensionImpl implements
 
     matrix.throwExceptionIfColumnDoesntExists(columnName);
 
-    ArrayDoubleList columnToFill = (ArrayDoubleList) referencesToColumnNamesMap
-        .get(columnName);
+    List<Double> columnToFill = referencesToColumnNamesMap.get(columnName);
 
     setValues(ids, columnToFill, values);
   }
@@ -466,6 +474,17 @@ public class ExpressionMatrixDimensionImpl implements
       return emd.getDimensionName() == null;
 
     return this.name.equals(emd.getDimensionName());
+  }
+
+  /**
+   * Get the hashCode of the object.
+   * @return the hascode of the object
+   */
+  public int hashCode() {
+
+    return new HashCodeBuilder(INIRIAL_NON_ZERO_ODD_NUMMER,
+        MULTIPLIER_NON_ZERO_ODD_NUMBER).append(name).append(matrix).append(
+        referencesToColumnNamesMap).toHashCode();
   }
 
   /**
@@ -538,7 +557,7 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The length of data to add is not equals to the row count");
 
-    final ArrayDoubleList columnToFill = (ArrayDoubleList) referencesToColumnNamesMap
+    final List<Double> columnToFill = referencesToColumnNamesMap
         .get(columnName);
 
     final String[] ids = getRowNames();
@@ -575,7 +594,7 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The length of data to add is not equals to the row count");
 
-    final ArrayDoubleList columnToFill = (ArrayDoubleList) referencesToColumnNamesMap
+    final List<Double> columnToFill = referencesToColumnNamesMap
         .get(columnName);
 
     for (int i = 0; i < ids.length; i++) {
@@ -902,7 +921,7 @@ public class ExpressionMatrixDimensionImpl implements
       columnName = "#" + index;
 
     final int nRows = this.matrix.getRowCreatedCount();
-    ArrayDoubleList columnToAdd = new ArrayDoubleList(nRows);
+    List<Double> columnToAdd = new ArrayList<Double>(nRows);
 
     for (int i = 0; i < nRows; i++)
       columnToAdd.add(i, Double.NaN);
@@ -925,7 +944,7 @@ public class ExpressionMatrixDimensionImpl implements
 
       final String columnName = this.matrix.getColumnName(i);
 
-      final ArrayDoubleList refColNum = (ArrayDoubleList) this.referencesToColumnNamesMap
+      final List<Double> refColNum = this.referencesToColumnNamesMap
           .get(columnName);
       // refColNum.add(nRows-1, Double.NaN);
       refColNum.add(Double.NaN);
@@ -963,8 +982,7 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The name of the column to rename " + oldName + " does not exist");
 
-    ArrayDoubleList col = (ArrayDoubleList) this.referencesToColumnNamesMap
-        .get(oldName);
+    List<Double> col = this.referencesToColumnNamesMap.get(oldName);
 
     this.referencesToColumnNamesMap.remove(oldName);
     this.referencesToColumnNamesMap.put(newName, col);
@@ -1001,7 +1019,7 @@ public class ExpressionMatrixDimensionImpl implements
       if (this.referencesToColumnNamesMap.containsKey(columnName))
         continue;
 
-      ArrayDoubleList columnToAdd = new ArrayDoubleList(nRows);
+      List<Double> columnToAdd = new ArrayList<Double>(nRows);
 
       for (int j = 0; j < nRows; j++)
         columnToAdd.add(j, Double.NaN);
@@ -1012,7 +1030,11 @@ public class ExpressionMatrixDimensionImpl implements
 
   }
 
-  public void expressionMatrixStateChanged(ExpressionMatrixEvent event) {
+  /**
+   * Invoked when the target of the listener has changed its state.
+   * @param event a ExpressionMatrixEvent object
+   */
+  public void expressionMatrixStateChanged(final ExpressionMatrixEvent event) {
 
     if (event == null)
       return;
@@ -1065,7 +1087,8 @@ public class ExpressionMatrixDimensionImpl implements
 
     this.matrix = matrix;
     this.name = name;
-    this.referencesToColumnNamesMap = new LinkedMap();
+    this.referencesToColumnNamesMap = new LinkedHashMap<String, List<Double>>();
+
   }
 
 }

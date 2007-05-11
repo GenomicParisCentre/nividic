@@ -32,6 +32,12 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
 public interface ExpressionMatrixDimension extends ExpressionMatrixSizes {
 
   /**
+   * Get the main matrix of the dimension.
+   * @return an Expression matrix object
+   */
+  ExpressionMatrix getMatrix();
+
+  /**
    * Get the name of the dimension.
    * @return the name of the dimension
    */
