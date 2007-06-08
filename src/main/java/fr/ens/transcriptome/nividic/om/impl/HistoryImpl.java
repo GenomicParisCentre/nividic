@@ -48,6 +48,19 @@ class HistoryImpl implements History {
   }
 
   /**
+   * Add a history log to the current history.
+   * @param entry Entry to add
+   */
+  public void add(final History history) {
+
+    if (history == null)
+      return;
+
+    for (HistoryEntry entry : history.getEntries())
+      add(entry);
+  }
+
+  /**
    * Get an entry of the history
    * @param index Index of the entry to get
    * @return The request entry or null if not exists

@@ -37,6 +37,12 @@ public interface History {
   void add(HistoryEntry entry);
 
   /**
+   * Add a history log to the current history.
+   * @param entry Entry to add
+   */
+  void add(History history);
+  
+  /**
    * Get the number of entries in the history.
    * @return The number of the entries in the history
    */
