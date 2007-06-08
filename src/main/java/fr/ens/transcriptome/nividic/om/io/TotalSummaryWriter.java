@@ -22,11 +22,8 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
