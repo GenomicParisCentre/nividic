@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
@@ -57,9 +56,6 @@ public class ExpressionMatrixMerger {
 
   private final Map<Integer, Location> locations = new HashMap<Integer, Location>();
   private final Map<Integer, Double> values = new HashMap<Integer, Double>();
-
-  // Get a DescriptiveStatistics instance using factory method
-  DescriptiveStatistics stats = DescriptiveStatistics.newInstance();
 
   // private AbstractUnivariateStatistic algo;
   private boolean medianMode = true;
@@ -118,61 +114,6 @@ public class ExpressionMatrixMerger {
 
   }
 
-  private final class StatLocation {
-
-    int n;
-    int totalN;
-    double stdDev;
-    double median;
-    double mean;
-
-    private int countNotNan(final List<Double> doubleValues) {
-
-      if (doubleValues == null)
-        return 0;
-
-      int count = 0;
-      for (double d : doubleValues)
-        if (!Double.isNaN(d))
-          count++;
-
-      return count;
-    }
-
-    StatLocation(final List<Double> doubleValues) {
-
-      if (doubleValues.size() == 1) {
-
-        final double val = doubleValues.get(0);
-
-        this.totalN = 1;
-
-        this.n = Double.isNaN(val) ? 0 : 1;
-        this.mean = val;
-        this.median = val;
-
-        return;
-      }
-
-      stats.clear();
-
-      for (double d : doubleValues)
-        if (!Double.isNaN(d))
-          stats.addValue(d);
-
-      this.totalN = doubleValues.size();
-      this.n = (int) stats.getN();
-      // this.n = countNotNan(doubleValues);
-      this.mean = stats.getMean();
-      this.median = stats.getPercentile(50.0);
-    }
-
-  }
-
-  //
-  // Getters
-  //
-
   /**
    * Test if the median mode is enable.
    * @return true if the median mode is enable
@@ -197,6 +138,75 @@ public class ExpressionMatrixMerger {
   //
   // Other methods
   //
+
+  /**
+   * Add a bioAssay to merge.
+   * @param bioAssay BioAssay to add
+   */
+  public void addBioAssay(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return;
+
+    addBioAssay(bioAssay, bioAssay.getName());
+  }
+
+  /**
+   * Add a bioAssay to merge.
+   * @param bioAssay BioAssay to add
+   * @param columnName name of the bioAssay to add
+   */
+  public void addBioAssay(final BioAssay bioAssay, final String columnName) {
+
+    if (bioAssay == null || columnName == null)
+      return;
+
+    List<String> dimName = new ArrayList<String>();
+    for (String dim : this.dimensionReverseIndex.keySet())
+      if (bioAssay.isField(dim)
+          && (bioAssay.getFieldType(dim) == BioAssay.DATATYPE_DOUBLE || bioAssay
+              .getFieldType(dim) == BioAssay.DATATYPE_INTEGER))
+        dimName.add(dim);
+
+    final String[] dimensionNames = NividicUtils.toArray(dimName);
+    final String[] rowNames = bioAssay.getIds();
+
+    addNames(dimensionNames, dimensionIndex, dimensionReverseIndex);
+    addNames(new String[] {columnName}, columnIndex, columnReverseIndex);
+    addNames(rowNames, rowIndex, rowReverseIndex);
+
+    // Create index of dimension
+    final int[] dimensionIds = new int[dimensionNames.length];
+    for (int i = 0; i < dimensionIds.length; i++)
+      dimensionIds[i] = dimensionReverseIndex.get(dimensionNames[i]);
+
+    // Create index of column
+    int columnId = columnReverseIndex.get(columnName);
+
+    // Create index of row
+    final int[] rowIds = new int[rowNames.length];
+    for (int i = 0; i < rowIds.length; i++)
+      rowIds[i] = rowReverseIndex.get(rowNames[i]);
+
+    for (int i = 0; i < dimensionNames.length; i++) {
+
+      final String dimensionName = dimensionNames[i];
+
+      final double[] data = bioAssay.getFieldType(dimensionName) == BioAssay.DATATYPE_DOUBLE ? bioAssay
+          .getDataFieldDouble(dimensionName)
+          : NividicUtils.toArrayDouble(bioAssay.getDataFieldInt(dimensionName));
+
+      for (int k = 0; k < data.length; k++) {
+
+        final Location loc = new Location(rowIds[k], columnId, dimensionIds[i]);
+
+        this.locations.put(++this.currentValueCount, loc);
+        this.values.put(this.currentValueCount, data[k]);
+      }
+
+    }
+
+  }
 
   /**
    * Add an expression matrix to merge.
@@ -267,6 +277,8 @@ public class ExpressionMatrixMerger {
       final Map<String, Integer> indexReverseMap) {
 
     for (int i = 0; i < name.length; i++) {
+      if (indexReverseMap.containsKey(name[i]))
+        continue;
       indexMap.put(++this.currentDimensionsIndex, name[i]);
       indexReverseMap.put(name[i], this.currentDimensionsIndex);
     }
@@ -520,15 +532,15 @@ public class ExpressionMatrixMerger {
     final Map<Location, Double> mergedValues = new HashMap<Location, Double>();
 
     // Create a Map for stats Map<Location, Stat>
-    final Map<Location, StatLocation> statsData = new HashMap<Location, StatLocation>();
+    final Map<Location, StatMerger> statsData = new HashMap<Location, StatMerger>();
 
     final boolean medianMode = isMedianMode();
 
     for (Location loc : locationValues.keySet()) {
 
       List<Double> doubleValues = locationValues.get(loc);
-      final StatLocation statLoc = new StatLocation(doubleValues);
-      final double me = medianMode ? statLoc.median : statLoc.mean;
+      final StatMerger statLoc = new StatMerger(doubleValues);
+      final double me = medianMode ? statLoc.getMedian() : statLoc.getMean();
 
       mergedValues.put(loc, me);
       statsData.put(loc, statLoc);
@@ -606,7 +618,7 @@ public class ExpressionMatrixMerger {
   }
 
   private ExpressionMatrix addStatToMatrix(final ExpressionMatrix em,
-      Map<Location, StatLocation> statsData) {
+      Map<Location, StatMerger> statsData) {
 
     if (em == null)
       return null;
@@ -656,23 +668,23 @@ public class ExpressionMatrixMerger {
 
           for (int j = 0; j < data.length; j++) {
 
-            final StatLocation statLoc = statsData.get(locs.get(count + j));
+            final StatMerger statLoc = statsData.get(locs.get(count + j));
 
             switch (i) {
             case 0:
-              data[j] = statLoc.n;
+              data[j] = statLoc.getN();
               break;
             case 1:
-              data[j] = statLoc.totalN;
+              data[j] = statLoc.getTotalN();
               break;
             case 2:
-              data[j] = statLoc.stdDev;
+              data[j] = statLoc.getStdDev();
               break;
             case 3:
-              data[j] = statLoc.mean;
+              data[j] = statLoc.getMean();
               break;
             case 4:
-              data[j] = statLoc.median;
+              data[j] = statLoc.getMedian();
               break;
 
             default:
@@ -812,7 +824,7 @@ public class ExpressionMatrixMerger {
     this.dimensionIndex.remove(index);
   }
 
-  private void addDimension(final String dimensionName) {
+  public void addDimension(final String dimensionName) {
 
     if (dimensionName == null
         || this.dimensionReverseIndex.containsKey(dimensionName))
