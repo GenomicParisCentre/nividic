@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.Iterator;
+import java.util.Properties;
 
 import fr.ens.transcriptome.nividic.util.SystemUtils;
 
@@ -138,6 +140,8 @@ public class JSShell {
      */
     public long maxMemory() {
 
+      System.out.println("hello world.");
+
       Runtime rt = Runtime.getRuntime();
 
       return rt.maxMemory();
@@ -163,6 +167,39 @@ public class JSShell {
       Runtime rt = Runtime.getRuntime();
 
       return rt.freeMemory();
+    }
+
+    public ClassLoader getClassLoader() {
+
+      return this.getClass().getClassLoader();
+    }
+
+    /**
+     * Show System properties of the jvm.*
+     */
+    public void showProperties() {
+
+      Properties ps = System.getProperties();
+
+      Iterator it = ps.keySet().iterator();
+
+      while (it.hasNext()) {
+        String key = (String) it.next();
+        String value = ps.getProperty(key);
+
+        System.out.println(key + "=" + value);
+      }
+
+    }
+
+    public void showClassLoaderName() {
+
+      System.out.println(this.getClass().getClassLoader().getClass().getName());
+    }
+
+    public void t() {
+
+      RessourceFinder.show(this.getClass().getClassLoader());
     }
 
     /**
@@ -226,7 +263,8 @@ public class JSShell {
    * Public constructor.
    * @param args command line arguments
    */
-  public JSShell(final String[] args, final String javascriptPath) {
+  public JSShell(final String javascriptPath, final String fileToExecute,
+      final String[] args) {
 
     this.engine = new RhinoJavaScriptEngine();
     // this.engine = new JSR223JavaScriptEngine();
@@ -248,39 +286,86 @@ public class JSShell {
 
     for (int i = 0; i < Defaults.BUILTIN_SCRIPTS.length; i++) {
 
-        InputStream is =null;
-        
-      if (javascriptPath!=null) {
-          
-          String path = javascriptPath + "/" + Defaults.BUILTIN_SCRIPTS[i];
-          try {
-          is = new FileInputStream(path);
-          } catch(IOException e){
-              
-          }
-          
-      }
-      else {
-        //JAVASCRIPT_PATH
-      String path = JAVASCRIPT_PATH + "/" + Defaults.BUILTIN_SCRIPTS[i];
+      InputStream is = null;
 
-      if (JSShell.class.getResource(path) != null)
-        is = JSShell.class.getResourceAsStream(path);
+      if (javascriptPath != null) {
+
+        String path = javascriptPath + "/" + Defaults.BUILTIN_SCRIPTS[i];
+        try {
+          is = new FileInputStream(path);
+        } catch (IOException e) {
+          System.err.println(e);
+        }
+
+      } else {
+        // JAVASCRIPT_PATH
+        String path = JAVASCRIPT_PATH + "/" + Defaults.BUILTIN_SCRIPTS[i];
+
+        if (JSShell.class.getResource(path) != null)
+          is = JSShell.class.getResourceAsStream(path);
       }
-      
-        if (is!=null)  this.engine.eval(is,
-            Defaults.BUILTIN_SCRIPTS[i]);
-        
+
+      if (is != null)
+        this.engine.eval(is, Defaults.BUILTIN_SCRIPTS[i]);
+
     }
 
+    if (fileToExecute != null)
+      try {
+        this.engine.eval(new FileInputStream(fileToExecute), fileToExecute);
+        System.exit(0);
+      } catch (FileNotFoundException e) {
+        System.err.println("File not found: " + fileToExecute);
+        System.exit(1);
+      }
+
   }
+
+  //
+  // Main methos
+  //
+
+  public static void main(String[] args) {
+
+    String javascriptPath = null;
+    String filetoExecute = null;
+    String[] finalArgs = null;
+
+    if (args != null && args.length > 0) {
+
+      javascriptPath = args[0];
+
+      if (args.length > 1)
+        filetoExecute = args[1];
+
+      if (args.length > 2) {
+
+        finalArgs = new String[args.length - 2];
+        for (int i = 2; i < args.length; i++)
+          finalArgs[i - 2] = args[i];
+      }
+
+    }
+
+    /*
+    System.out.println("Javascript path: " + javascriptPath);
+    System.out.println("fileToExecute: " + filetoExecute);
+    System.out.println("Args: " + Arrays.toString(finalArgs));*/
+
+    new JSShell(javascriptPath, filetoExecute, finalArgs).shell(System.in,
+        System.out, System.err);
+  }
+
+  //
+  // Constructor
+  //
 
   /**
    * Public constructor.
    */
   public JSShell() {
 
-    this(null, null);
+    this(null, null, null);
   }
 
 }
