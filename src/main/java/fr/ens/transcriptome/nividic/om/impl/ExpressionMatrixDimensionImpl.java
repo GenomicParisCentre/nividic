@@ -61,6 +61,11 @@ public class ExpressionMatrixDimensionImpl implements
 
   private Map<String, List<Double>> referencesToColumnNamesMap;
 
+  private String lastGetSetValueRowName;
+  private int lastGetSetValueRowIndex;
+  private String lastGetSetValueColumnName;
+  private List<Double> lastGetSetValueColumnData;
+
   //
   // Getters
   //
@@ -109,7 +114,7 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "the matrix is empty, the row " + rowName + "doesn't exist");
 
-    matrix.throwExceptionIfRowIdDoesntExists(rowName);
+    matrix.throwExceptionIfRowNameDoesntExists(rowName);
 
     double[] rowValues = new double[getColumnCount()];
 
@@ -262,38 +267,9 @@ public class ExpressionMatrixDimensionImpl implements
   public double getValue(final String rowName, final String columnName)
       throws ExpressionMatrixRuntimeException {
 
-    if (this.isNoRow())
-      throw new ExpressionMatrixRuntimeException(
-          "the matrix is empty, the column " + columnName + "and the row "
-              + rowName + " dont exist");
+    updateLastGetSetRowColumn(rowName, columnName);
 
-    matrix.throwExceptionIfColumnDoesntExists(columnName);
-
-    double[] columnValues = getColumnToArray(columnName);
-
-    return getValue(rowName, columnValues);
-
-  }
-
-  /**
-   * Extract the value at the index idsHashMapIndex of the double column
-   * @param rowId The row where the value that you want to extract is
-   * @param column The array of double from where you want to extract the value
-   * @return the double value at found at the row id and at the column column
-   * @throws ExpressionMatrixRuntimeException if rowId is null or if rowId is
-   *           not an element of the idsMap
-   */
-  private double getValue(final String rowId, final double[] column)
-      throws ExpressionMatrixRuntimeException {
-
-    if (rowId == null)
-      throw new ExpressionMatrixRuntimeException("String rowId is null");
-
-    matrix.throwExceptionIfRowIdDoesntExists(rowId);
-
-    final int idIndex = matrix.getInternalRowIdIndex(rowId);
-
-    return column[idIndex];
+    return this.lastGetSetValueColumnData.get(this.lastGetSetValueRowIndex);
   }
 
   /**
@@ -356,23 +332,42 @@ public class ExpressionMatrixDimensionImpl implements
     column.set(indexFromIdsHashMap, value);
   }
 
+  private void updateLastGetSetRowColumn(final String rowName,
+      final String columnName) {
+
+    if (this.lastGetSetValueColumnName == null
+        || !this.lastGetSetValueColumnName.equals(columnName)) {
+
+      matrix.throwExceptionIfColumnDoesntExists(columnName);
+      this.lastGetSetValueColumnName = columnName;
+      this.lastGetSetValueColumnData = this.referencesToColumnNamesMap
+          .get(columnName);
+    }
+
+    if (this.lastGetSetValueRowName == null
+        || !this.lastGetSetValueRowName.equals(rowName)) {
+
+      matrix.throwExceptionIfRowNameDoesntExists(rowName);
+      this.lastGetSetValueRowName = rowName;
+      this.lastGetSetValueRowIndex = matrix.getInternalRowIdIndex(rowName);
+    }
+  }
+
   /**
    * Set a value in the matrix
    * @param value the value to set in
-   * @param rowId The name of the row where you want to insert your value
+   * @param rowName The name of the row where you want to insert your value
    * @param columnName The name of the column where you want to insert your
    *          value
    * @throws ExpressionMatrixRuntimeException if the column that you want to
    *           reach doesn't exist
    */
-  public void setValue(final String rowId, final String columnName,
+  public void setValue(final String rowName, final String columnName,
       final double value) throws ExpressionMatrixRuntimeException {
 
-    matrix.throwExceptionIfColumnDoesntExists(columnName);
+    updateLastGetSetRowColumn(rowName, columnName);
 
-    List<Double> columnToFill = referencesToColumnNamesMap.get(columnName);
-
-    setValue(rowId, columnToFill, value);
+    this.lastGetSetValueColumnData.set(this.lastGetSetValueRowIndex, value);
   }
 
   /**
@@ -482,9 +477,13 @@ public class ExpressionMatrixDimensionImpl implements
    */
   public int hashCode() {
 
-    return new HashCodeBuilder(INIRIAL_NON_ZERO_ODD_NUMMER,
-        MULTIPLIER_NON_ZERO_ODD_NUMBER).append(name).append(matrix).append(
-        referencesToColumnNamesMap).toHashCode();
+    /*
+     * return new HashCodeBuilder(INIRIAL_NON_ZERO_ODD_NUMMER,
+     * MULTIPLIER_NON_ZERO_ODD_NUMBER).append(name).append(matrix).append(
+     * referencesToColumnNamesMap).toHashCode();
+     */
+
+    return super.hashCode();
   }
 
   /**
@@ -915,6 +914,8 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The name of the column to add " + columnName + " does exist yet");
 
+    this.lastGetSetValueColumnName = null;
+
     int index = this.matrix.getColumnCount();
 
     if (columnName == null)
@@ -935,6 +936,7 @@ public class ExpressionMatrixDimensionImpl implements
    */
   private void execMsgAddRow() {
 
+    this.lastGetSetValueRowName = null;
     // String rowName = event.getStringValue();
 
     // final int nRows = this.matrix.getRowCreatedCount() + 1;
@@ -965,6 +967,7 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The name of the column to remove " + columnName + " does not exist");
 
+    this.lastGetSetValueColumnName = null;
     this.referencesToColumnNamesMap.remove(columnName);
   }
 
@@ -982,6 +985,7 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The name of the column to rename " + oldName + " does not exist");
 
+    this.lastGetSetValueColumnName = null;
     List<Double> col = this.referencesToColumnNamesMap.get(oldName);
 
     this.referencesToColumnNamesMap.remove(oldName);
@@ -1058,7 +1062,7 @@ public class ExpressionMatrixDimensionImpl implements
       break;
 
     case ExpressionMatrixEvent.REMOVE_ROW_EVENT:
-
+      this.lastGetSetValueRowName = null;
       break;
 
     case ExpressionMatrixEvent.RENAME_COLUMN_EVENT:
@@ -1066,7 +1070,7 @@ public class ExpressionMatrixDimensionImpl implements
       break;
 
     case ExpressionMatrixEvent.RENAME_ROW_EVENT:
-
+      this.lastGetSetValueRowName = null;
       break;
 
     case ExpressionMatrixEvent.RENAME_DIMENSION_EVENT:

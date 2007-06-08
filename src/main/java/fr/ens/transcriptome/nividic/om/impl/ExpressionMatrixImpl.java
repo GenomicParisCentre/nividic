@@ -281,7 +281,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       throw new ExpressionMatrixRuntimeException(
           "the matrix is empty, you can't get any values");
 
-    throwExceptionIfRowIdDoesntExists(rowId);
+    throwExceptionIfRowNameDoesntExists(rowId);
 
     int index = ((Integer) this.idsMap.get(rowId)).intValue();
 
@@ -415,7 +415,10 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       throw new ExpressionMatrixRuntimeException(
           "the matrix is empty, you can't set any values");
 
-    throwExceptionIfRowIdDoesntExists(formerName);
+    throwExceptionIfRowNameDoesntExists(formerName);
+
+    if (formerName.equals(newName))
+      return;
 
     if (this.idsMap.containsKey(newName))
       throw new ExpressionMatrixRuntimeException("The name " + newName
@@ -486,7 +489,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       throw new ExpressionMatrixRuntimeException(
           "the matrix is empty, you can't set any values");
 
-    throwExceptionIfRowIdDoesntExists(rowId);
+    throwExceptionIfRowNameDoesntExists(rowId);
 
     this.idsMap.remove(rowId);
 
@@ -972,18 +975,16 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public int hashCode() {
 
-    HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
-        HASHCODE_ODD_NUMBER_2);
+    /*
+     * HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
+     * HASHCODE_ODD_NUMBER_2);
+     * hcb.append(this.getName()).append(this.getColumnNames())
+     * .append(this.idsMap); final String[] dimensions = getDimensionNames();
+     * for (int i = 0; i < dimensions.length; i++)
+     * hcb.append(getDimension(dimensions[i])); return hcb.toHashCode();
+     */
 
-    hcb.append(this.getName()).append(this.getColumnNames())
-        .append(this.idsMap);
-
-    final String[] dimensions = getDimensionNames();
-
-    for (int i = 0; i < dimensions.length; i++)
-      hcb.append(getDimension(dimensions[i]));
-
-    return hcb.toHashCode();
+    return super.hashCode();
   }
 
   /**
@@ -1125,7 +1126,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param rowId the name of the row that you want to test
    * @throws ExpressionMatrixRuntimeException if the row doesn't exist
    */
-  void throwExceptionIfRowIdDoesntExists(final String rowId)
+  void throwExceptionIfRowNameDoesntExists(final String rowId)
       throws ExpressionMatrixRuntimeException {
 
     if (!this.containsRow(rowId))

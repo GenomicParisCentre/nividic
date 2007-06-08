@@ -698,7 +698,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public int hashCode() {
 
-    HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
+    /*HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
         HASHCODE_ODD_NUMBER_2);
 
     hcb.append(this.getName()).append(this.getColumnNames()).append(
@@ -709,7 +709,9 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     for (int i = 0; i < dimensions.length; i++)
       hcb.append(getDimension(dimensions[i]));
 
-    return hcb.toHashCode();
+    return hcb.toHashCode(); */
+    
+    return super.hashCode();
   }
 
   /**
