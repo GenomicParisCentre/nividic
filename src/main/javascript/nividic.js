@@ -109,6 +109,42 @@ function showMemory() {
   println("Maximal memory that could be allocated to VM: " + (Math.round(max/(1024*1024))) + "MB ("+max+" bytes)");
 }
 
+/*
+ * Exit from the script of the shell.
+ */
+function exit(exitValue) {
+
+  if (exitValue==null) value=0;
+  else value=exitValue;
+
+  Packages.java.lang.System.exit(value);
+}
+
+/*
+ * Exit from the script of the shell.
+ */
+function quit(exitValue) {
+
+  exit(exitValue);
+}
+
+/*
+ * Exit from the script of the shell.
+ */
+function q(exitValue) {
+
+  exit(exitValue);
+}
+
+function showProperties() {
+
+	engine.showProperties();
+}
+
+function showClassLoaderName() {
+
+	engine.showClassLoaderName();
+}
 
 /*
  * Show help information.

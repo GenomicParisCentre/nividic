@@ -51,6 +51,9 @@ function _getBioAssayReader(file, type) {
   
       case "gpr": 
         return new GPRReader(file);
+        
+      case "gal": 
+        return new GALReader(file);
 
       case "idma": 
         return new IDMAReader(file);
@@ -129,6 +132,17 @@ function readGPR(file, allFields) {
   return readBioAssay(file, "gpr", allFields, false);
 }
 
+/**
+ * Shortcut to read GAL file(s).
+ * @param file File(s) to read
+ * @param allField read all fields
+ * @return A BioAssay Object
+ */
+function readGAL(file, allFields) {
+
+  return readBioAssay(file, "gal", allFields, false);
+}
+
 
 
 /**
@@ -187,6 +201,9 @@ function _getBioAssayWriter(file, type) {
   
       case "gpr": 
         return new GPRWriter(file);
+        
+     case "gal": 
+        return new GALWriter(file);
 
       case "idma": 
         return new IDMAWriter(file);
@@ -229,6 +246,16 @@ function writeGPR(bioAssay, file) {
 }
 
 /**
+ * Shortcut to write GAL file.
+ * @param file File to write
+ * @return nothing
+ */
+function writeGAL(bioAssay, file) {
+
+  writeBioAssay(bioAssay, file, "gal", true);
+}
+
+/**
  * Shortcut to write IDMA file.
  * @param file File to write
  * @return nothing
@@ -259,6 +286,30 @@ function writeTotalSummary(bioAssay, file) {
 function createMASorter() {
 
   return new Packages.fr.ens.transcriptome.nividic.om.filters.BioAssayMASorterComparator();
+}
+
+/*
+ * Modify functions
+ */
+ 
+ /*
+  * Merge all the rows with the same ids.
+  * @param bioAssay bioAssay to merge
+  * @return a new BioAssay object
+  */ 
+function mergeInnerIdsReplicates(bioAssay) {
+
+	return new Packages.fr.ens.transcriptome.nividic.om.BioAssayUtils.mergeInnerIdsReplicates(bioAssay);
+}
+
+ /*
+  * Merge all the rows with the same descriptions.
+  * @param bioAssay bioAssay to merge
+  * @return a new BioAssay object
+  */ 
+function mergeInnerDescriptionsReplicates(bioAssay) {
+
+	return new Packages.fr.ens.transcriptome.nividic.om.BioAssayUtils.mergeInnerDescriptionsReplicates(bioAssay);
 }
 
 /*

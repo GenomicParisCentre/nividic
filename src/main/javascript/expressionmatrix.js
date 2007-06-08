@@ -184,6 +184,70 @@ function swapExpressionMatrix(matrix, column) {
   }
 }
 
+/*
+ * Centring column of the M values of an expression matrix
+ * @param matrix The matrix to use
+ * @return nothing
+ */
+function centringColumnsExpressionMatrix(matrix) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with(nividicNames) {
+    
+    ExpressionMatrixUtils.centringColumns(matrix);
+  }
+}
+
+/*
+ * Scaling columns of the M values of an expression matrix
+ * @param matrix The matrix to use
+ * @return nothing
+ */
+function scalingColumnsExpressionMatrix(matrix) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with(nividicNames) {
+    
+    ExpressionMatrixUtils.scalingColumns(matrix);
+  }
+}
+
+
+/*
+ * Centring rows of the M values of an expression matrix
+ * @param matrix The matrix to use
+ * @return nothing
+ */
+function centringRowsExpressionMatrix(matrix) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with(nividicNames) {
+    
+    ExpressionMatrixUtils.centringRows(matrix);
+  }
+}
+
+/*
+ * Scaling rows of the M values of an expression matrix
+ * @param matrix The matrix to use
+ * @return nothing
+ */
+function scalingRowsExpressionMatrix(matrix) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+
+  with(nividicNames) {
+    
+    ExpressionMatrixUtils.scalingRows(matrix);
+  }
+}
 
 /*
  * Filters
@@ -221,3 +285,43 @@ function createMatrixColumnFilterAdapter(bioAssayFilter, threshold) {
     return new ExpressionMatrixColumnFilterBioAssayFilterAdapter(bioAssayFilter, threshold);
   }
 }
+
+/*
+ * Other methods
+ */
+ 
+/*
+ * Create a merger object.
+ * @return a new merger object
+ */ 
+function createMerger() {
+ 
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.filters);
+
+  with(nividicNames) {
+    
+    return new ExpressionMatrixMerger();
+  }
+}
+
+/*
+ * Convert a matrix to a total summary bioAssay
+ * @param matrix matrix to transform
+ * @return a new bioAssay
+ */
+function convertToTotalSummaryBioAssay(matrix) {
+
+	return Packages.fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils.convertToTotalSummaryBioAssay(matrix);
+}
+
+/*
+ * Rename matrix identifier with translation done by translator
+ * @param matrix Matrix to use
+ * @param translator Translator Translator to use
+ */
+function renameMatrixIdsWithTranslator(matrix, translator) {
+
+  return Packages.fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils.renameIdsWithTranslator(matrix, translator); 
+}
+ 

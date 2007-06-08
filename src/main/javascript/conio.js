@@ -4,12 +4,8 @@
  * @author Laurent Jourdren
  */
 
-/*
- * Print a variable on stdout.
- * @param obj variable to print.
- * @return nothing
- */
-function print(obj) {
+
+function write(stream, obj) {
 
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.js);
@@ -22,7 +18,7 @@ function print(obj) {
     }
     
     if (obj instanceof Function) {
-       Echo.out.print("Function");
+       Echo.print(stream, "Function");
        return;
     }
 
@@ -31,24 +27,44 @@ function print(obj) {
       
       if (obj.length>0 && (obj[0].construtor == Boolean || obj[0].constructor == Number)) {
 
-        Echo.out.print(obj);
+        Echo.print(stream, obj);
         return;
       }
      
      if (isNativeObjectArray(obj)) { 
-       Echo.out.printObjectArray(obj); 
+       Echo.printObjectArray(stream, obj);
+      
        return;
      }
      
      if (isNativePrimitiveArray(obj)) { 
-       Echo.out.printPrimitiveArray(obj); 
+       Echo.printPrimitiveArray(stream, obj);
+       
        return;
      }
       return; 
     } 
 
-    Echo.out.print(obj);
+    stream.print(obj);
   }
+
+}
+
+/*
+ * Print a variable on stdout.
+ * @param obj variable to print.
+ * @return nothing
+ */
+function print(obj) {
+
+  /*var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.js);
+
+  with(nividicNames) {*/
+  
+    write(out, obj);
+  /*}*/
+  
 }
 
 /*

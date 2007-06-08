@@ -70,3 +70,19 @@ function countNA(ba) {
 
 }
 
+/*
+ * Extract the first block of a GPR.
+ * @param ba GAL to process
+ * @return the processed GAL
+ */
+function extractFirstGALBlock(ba) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.sgdb);
+
+  with (nividicNames)  {
+  
+   return ExtractFirstBlockFromGAL.extractFirstGALBlock(ba)
+  }
+}
+
