@@ -22,9 +22,6 @@
 
 package fr.ens.transcriptome.nividic.sgdb;
 
-import java.util.Arrays;
-
-import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.ArrayBlock;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
@@ -33,11 +30,20 @@ import fr.ens.transcriptome.nividic.om.GenepixArrayList;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayFilter;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayGenericIntegerFieldFilter;
 
-public class ExtractFirstBlockFromGAL {
+/**
+ * This class contains methods useful to manipulate GAL file at SGDB.
+ * @author Laurent Jourdren
+ */
+public final class SGDBArrayListUtils {
 
   private static final String DESIGN_ID_ANNOTATION = "DesignID";
 
-  public static final BioAssay extractFirstGALBlock(final BioAssay bioAssay) {
+  /**
+   * Extract the first bloc of an array list to a new ArrayList.
+   * @param bioAssay BioAssay to use
+   * @return a new bioAssay with the first block of the initial bioAssay
+   */
+  public static BioAssay extractFirstGALBlock(final BioAssay bioAssay) {
 
     BioAssayFilter baf = new BioAssayGenericIntegerFieldFilter() {
 
@@ -107,4 +113,12 @@ public class ExtractFirstBlockFromGAL {
 
     return result;
   }
+  
+  //
+  // Constructors
+  //
+  
+  private SGDBArrayListUtils() {
+  }
+  
 }
