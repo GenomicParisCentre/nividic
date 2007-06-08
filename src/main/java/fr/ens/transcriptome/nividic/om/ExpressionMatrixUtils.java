@@ -23,8 +23,14 @@
 package fr.ens.transcriptome.nividic.om;
 
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * An util class for ExpressionMatrixDimension objects
@@ -206,6 +212,257 @@ public final class ExpressionMatrixUtils {
     }
 
     dim.setValues(matrix.getRowNames(), columnName, ms);
+
+    final HistoryEntry entry = new HistoryEntry("Swap",
+        HistoryActionType.MODIFY, columnName, HistoryActionResult.PASS);
+
+    matrix.getHistory().add(entry);
+  }
+
+  /**
+   * Centring columns of the M dimension of an expression matrix.
+   * @param matrix matrix to center
+   */
+  public static void centringColumns(final ExpressionMatrix matrix) {
+
+    if (matrix == null)
+      throw new NullPointerException("Expression matrix is null");
+
+    centringColumns(matrix.getDimension(BioAssay.FIELD_NAME_M));
+  }
+
+  /**
+   * Centring columns of a dimension of an expression matrix.
+   * @param dimension dimension to center
+   */
+  public static void centringColumns(final ExpressionMatrixDimension dimension) {
+
+    if (dimension == null)
+      throw new NullPointerException("Dimension is null");
+
+    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrix.meanCenterExperiments(doubleMatrix);
+
+    final HistoryEntry entry = new HistoryEntry("Center columns",
+        HistoryActionType.MODIFY, dimension.getDimensionName(),
+        HistoryActionResult.PASS);
+
+    dimension.getMatrix().getHistory().add(entry);
+  }
+
+  /**
+   * Centring rows of the M dimension of an expression matrix.
+   * @param matrix matrix to center
+   */
+  public static void centringRows(final ExpressionMatrix matrix) {
+
+    if (matrix == null)
+      throw new NullPointerException("Expression matrix is null");
+
+    centringRows(matrix.getDimension(BioAssay.FIELD_NAME_M));
+  }
+
+  /**
+   * Centring rows of a dimension of an expression matrix.
+   * @param dimension dimension to center
+   */
+  public static void centringRows(final ExpressionMatrixDimension dimension) {
+
+    if (dimension == null)
+      throw new NullPointerException("Dimension is null");
+
+    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrix.meanCenterSpots(doubleMatrix);
+
+    final HistoryEntry entry = new HistoryEntry("Center rows",
+        HistoryActionType.MODIFY, dimension.getDimensionName(),
+        HistoryActionResult.PASS);
+
+    dimension.getMatrix().getHistory().add(entry);
+  }
+
+  /**
+   * Scaling columns the M dimension of an expression matrix.
+   * @param matrix matrix to center
+   */
+  public static void scalingColumns(final ExpressionMatrix matrix) {
+
+    if (matrix == null)
+      throw new NullPointerException("Expression matrix is null");
+
+    scalingColumns(matrix.getDimension(BioAssay.FIELD_NAME_M));
+  }
+
+  /**
+   * Scaling a dimension of an expression matrix.
+   * @param dimension dimension to reduce
+   */
+  public static void scalingColumns(final ExpressionMatrixDimension dimension) {
+
+    if (dimension == null)
+      throw new NullPointerException("Dimension is null");
+
+    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrix.divideExperimentsSD(doubleMatrix);
+
+    final HistoryEntry entry = new HistoryEntry("Reducing columns",
+        HistoryActionType.MODIFY, dimension.getDimensionName(),
+        HistoryActionResult.PASS);
+
+    dimension.getMatrix().getHistory().add(entry);
+  }
+
+  /**
+   * Scaling rows the M dimension of an expression matrix.
+   * @param matrix matrix to center
+   */
+  public static void scalingRows(final ExpressionMatrix matrix) {
+
+    if (matrix == null)
+      throw new NullPointerException("Expression matrix is null");
+
+    scalingRows(matrix.getDimension(BioAssay.FIELD_NAME_M));
+  }
+
+  /**
+   * Scaling a dimension of an expression matrix.
+   * @param dimension dimension to reduce
+   */
+  public static void scalingRows(final ExpressionMatrixDimension dimension) {
+
+    if (dimension == null)
+      throw new NullPointerException("Dimension is null");
+
+    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrix.divideSpotsSD(doubleMatrix);
+
+    final HistoryEntry entry = new HistoryEntry("Reducing columns",
+        HistoryActionType.MODIFY, dimension.getDimensionName(),
+        HistoryActionResult.PASS);
+
+    dimension.getMatrix().getHistory().add(entry);
+  }
+
+  /**
+   * Convert an expression matrix to a total summary bioAssay
+   * @param matrix matrix to convert
+   * @return a new BioAssay
+   */
+  public static BioAssay convertToTotalSummaryBioAssay(
+      final ExpressionMatrix matrix) {
+
+    if (matrix == null || matrix.getColumnCount() == 0)
+      return null;
+
+    BioAssay bioAssay = BioAssayFactory.createBioAssay();
+
+    final String col = matrix.getColumnNames()[0];
+
+    bioAssay.setDataFieldString(BioAssay.FIELD_NAME_ID, matrix.getRowNames());
+
+    if (matrix.containsDimension(BioAssay.FIELD_NAME_M))
+      bioAssay.setDataFieldDouble(BioAssay.FIELD_NAME_M, matrix.getDimension(
+          BioAssay.FIELD_NAME_M).getColumnToArray(col));
+
+    if (matrix.containsDimension(BioAssay.FIELD_NAME_A))
+      bioAssay.setDataFieldDouble(BioAssay.FIELD_NAME_A, matrix.getDimension(
+          BioAssay.FIELD_NAME_A).getColumnToArray(col));
+
+    if (matrix.containsDimension("m stdDev"))
+      bioAssay.setDataFieldDouble(BioAssay.FIELD_NAME_STD_DEV_M, matrix
+          .getDimension("m stdDev").getColumnToArray(col));
+
+    if (matrix.containsDimension("m n"))
+      bioAssay.setDataFieldInt("n", NividicUtils.toArrayInt(matrix
+          .getDimension("m n").getColumnToArray(col)));
+
+    if (matrix.containsDimension("m total n"))
+      bioAssay.setDataFieldInt("total n", NividicUtils.toArrayInt(matrix
+          .getDimension("m total n").getColumnToArray(col)));
+
+    return bioAssay;
+  }
+
+  /**
+   * Rename matrix identifier with translation done by translator
+   * @param matrix Matrix to use
+   * @param translator Translator Translator to use
+   */
+  public static void renameIdsWithTranslator(final ExpressionMatrix matrix,
+      final Translator translator) {
+
+    if (matrix == null || translator == null)
+      return;
+
+    renameIdsWithTranslator(matrix, translator, translator.getDefaultField());
+  }
+
+  /**
+   * Rename matrix identifier with translation done by translator
+   * @param matrix Matrix to use
+   * @param translator Translator Translator to use
+   * @param translatorField translator field
+   */
+  public static void renameIdsWithTranslator(final ExpressionMatrix matrix,
+      final Translator translator, final String translatorField) {
+
+    if (matrix == null || translator == null)
+      return;
+
+    Map<String, String> translation = new HashMap<String, String>();
+    Map<String, Integer> translationCount = new HashMap<String, Integer>();
+
+    String[] rowNames = matrix.getRowNames();
+
+    for (int i = 0; i < rowNames.length; i++) {
+
+      String row = rowNames[i];
+      String t = translator.translateField(row, translatorField);
+
+      translation.put(row, t);
+      if (translationCount.containsKey(t)) {
+        int count = translationCount.get(t);
+        translationCount.put(t, ++count);
+
+      } else
+        translationCount.put(t, 1);
+
+    }
+
+    Map<String, Integer> translationCurrentCount = new HashMap<String, Integer>();
+
+    for (String row : translation.keySet()) {
+
+      String t = translation.get(row);
+      int count = translationCount.get(t);
+
+      if (count > 1) {
+
+        String postfix;
+
+        if (translationCurrentCount.containsKey(t)) {
+
+          int currentCount = translationCurrentCount.get(t);
+          currentCount++;
+          translationCurrentCount.put(t, currentCount);
+          postfix = "#" + currentCount;
+        } else {
+          translationCurrentCount.put(t, 1);
+          postfix = "#1";
+        }
+
+        translation.put(row, t + postfix);
+      }
+
+    }
+
+    final String prefix = "_TMP_RENAME_";
+
+    for (int i = 0; i < rowNames.length; i++)
+      matrix.renameRow(rowNames[i], prefix + i);
+
+    for (int i = 0; i < rowNames.length; i++)
+      matrix.renameRow(prefix + i, translation.get(rowNames[i]));
   }
 
   //
