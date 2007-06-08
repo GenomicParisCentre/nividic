@@ -36,125 +36,134 @@ public final class Echo {
   // print
   //
 
-  public void print(final boolean b) {
+  public static void print(final boolean b) {
 
-    output.print(b);
+    print(System.out, b);
   }
 
-  public void print(final Object o) {
+  public static void print(final Object o) {
 
-    output.print(o);
+    print(System.out, o);
   }
 
-  public void print(final Number n) {
+  public static void print(final Number n) {
 
-    output.print(n);
+    print(System.out, n);
   }
 
-  public void print(final String s) {
+  public static void print(final String s) {
 
-    output.print(s);
+    print(System.out, s);
   }
 
-  public void print(final boolean[] bs) {
+  public static void print(final boolean[] bs) {
 
-    output.print(Arrays.toString(bs));
+    print(System.out, bs);
   }
 
-  public void print(final double[] ds) {
+  public static void print(final double[] ds) {
 
-    output.print(Arrays.toString(ds));
+    print(System.out, ds);
   }
 
-  public void print(final float[] fs) {
+  public static void print(final float[] fs) {
 
-    output.print(Arrays.toString(fs));
+    print(System.out, fs);
   }
 
-  public void print(final int[] is) {
+  public static void print(final int[] is) {
 
-    output.print(Arrays.toString(is));
+    print(System.out, is);
   }
 
-  public void print(long[] ls) {
+  public static void print(long[] ls) {
 
-    output.print(Arrays.toString(ls));
+    print(System.out, ls);
   }
 
-  public void print(final Object[] obj) {
+  public static void print(final Object[] obj) {
 
-    output.print(Arrays.toString(obj));
+    print(System.out, obj);
   }
 
-  public void print(final String[] s) {
+  public static void print(final String[] s) {
 
-    output.print(Arrays.toString(s));
+    print(System.out, s);
   }
 
-  //
-  // println
-  //
+  public static void printObjectArray(final Object[] obj) {
 
-  public void println(final boolean b) {
-
-    output.println(b);
+    printObjectArray(System.out, obj);
   }
 
-  public void println(final Object o) {
+  public static void printPrimitiveArray(final Object[] obj) {
 
-    output.println(o);
+    printPrimitiveArray(System.out, obj);
   }
 
-  public void println(final Number n) {
+  public static void print(PrintStream pw, final boolean b) {
 
-    output.println(n);
+    pw.print(b);
   }
 
-  /*
-   * public void println(final String s) { output.println(s); }
-   */
+  public static void print(PrintStream pw, final Object o) {
 
-  public void println(final boolean[] bs) {
-
-    output.println(Arrays.toString(bs));
+    pw.print(o);
   }
 
-  public void println(final double[] ds) {
+  public static void print(PrintStream pw, final Number n) {
 
-    output.println(Arrays.toString(ds));
+    pw.print(n);
   }
 
-  public void println(final float[] fs) {
+  public static void print(PrintStream pw, final String s) {
 
-    output.println(Arrays.toString(fs));
+    pw.print(s);
   }
 
-  public void println(final int[] is) {
+  public static void print(PrintStream pw, final boolean[] bs) {
 
-    output.println(Arrays.toString(is));
+    pw.print(Arrays.toString(bs));
   }
 
-  public void println(final long[] ls) {
+  public static void print(PrintStream pw, final double[] ds) {
 
-    output.println(Arrays.toString(ls));
+    pw.print(Arrays.toString(ds));
   }
 
-  public void println(final Object[] obj) {
-    output.println(Arrays.toString(obj));
+  public static void print(PrintStream pw, final float[] fs) {
+
+    pw.print(Arrays.toString(fs));
   }
 
-  /*
-   * public void println(final String[] s) { output.println(Arrays.toString(s)); }
-   */
+  public static void print(PrintStream pw, final int[] is) {
 
-  public void printObjectArray(final Object[] obj) {
-
-    output.print(Arrays.toString(obj));
+    pw.print(Arrays.toString(is));
   }
 
-  public void printPrimitiveArray(final Object[] obj) {
+  public static void print(PrintStream pw, long[] ls) {
 
-    output.print(Arrays.toString(obj));
+    pw.print(Arrays.toString(ls));
+  }
+
+  public static void print(PrintStream pw, final Object[] obj) {
+
+    pw.print(Arrays.toString(obj));
+  }
+
+  public static void print(PrintStream pw, final String[] s) {
+
+    pw.print(Arrays.toString(s));
+  }
+
+  public static void printObjectArray(PrintStream pw, final Object[] obj) {
+
+    pw.print(Arrays.toString(obj));
+  }
+
+  public static void printPrimitiveArray(PrintStream pw, final Object[] obj) {
+
+    pw.print(Arrays.toString(obj));
   }
 
   //
