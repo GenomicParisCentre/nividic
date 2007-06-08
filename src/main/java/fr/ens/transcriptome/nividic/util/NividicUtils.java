@@ -248,6 +248,42 @@ public final class NividicUtils {
     return result;
   }
 
+  /**
+   * Convert an array of int to an array of double
+   * @param array Array to convert
+   * @return a new array of double
+   */
+  public static double[] toArrayDouble(final int[] array) {
+
+    if (array == null)
+      return null;
+
+    final double[] result = new double[array.length];
+
+    for (int i = 0; i < result.length; i++)
+      result[i] = array[i];
+
+    return result;
+  }
+  
+  /**
+   * Convert an array of double to an array of int
+   * @param array Array to convert
+   * @return a new array of double
+   */
+  public static int[] toArrayInt(final double[] array) {
+
+    if (array == null)
+      return null;
+
+    final int[] result = new int[array.length];
+
+    for (int i = 0; i < result.length; i++)
+      result[i] = (int) array[i];
+
+    return result;
+  }
+
   //
   // Constructor
   //
