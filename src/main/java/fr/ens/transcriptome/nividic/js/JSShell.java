@@ -281,8 +281,8 @@ public class JSShell {
 
     // if (true) return;
 
-    if (args != null)
-      this.engine.addVariable("args", args);
+    this.engine.addVariable("args", args == null ? new String[] {} : args);
+    this.engine.addVariable("homedir", System.getProperty("user.home"));
 
     for (int i = 0; i < Defaults.BUILTIN_SCRIPTS.length; i++) {
 
@@ -348,9 +348,10 @@ public class JSShell {
     }
 
     /*
-    System.out.println("Javascript path: " + javascriptPath);
-    System.out.println("fileToExecute: " + filetoExecute);
-    System.out.println("Args: " + Arrays.toString(finalArgs));*/
+     * System.out.println("Javascript path: " + javascriptPath);
+     * System.out.println("fileToExecute: " + filetoExecute);
+     * System.out.println("Args: " + Arrays.toString(finalArgs));
+     */
 
     new JSShell(javascriptPath, filetoExecute, finalArgs).shell(System.in,
         System.out, System.err);
