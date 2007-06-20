@@ -394,7 +394,24 @@ public final class ExpressionMatrixUtils {
     if (matrix == null || translator == null)
       return;
 
-    renameIdsWithTranslator(matrix, translator, translator.getDefaultField());
+    renameIdsWithTranslator(matrix, translator, translator.getDefaultField(),
+        true);
+  }
+
+  /**
+   * Rename matrix identifier with translation done by translator
+   * @param matrix Matrix to use
+   * @param translator Translator Translator to use
+   * @param keepUntranslatedIds Keep the untranslatedIds
+   */
+  public static void renameIdsWithTranslator(final ExpressionMatrix matrix,
+      final Translator translator, final boolean keepUntranslatedIds) {
+
+    if (matrix == null || translator == null)
+      return;
+
+    renameIdsWithTranslator(matrix, translator, translator.getDefaultField(),
+        keepUntranslatedIds);
   }
 
   /**
@@ -402,9 +419,11 @@ public final class ExpressionMatrixUtils {
    * @param matrix Matrix to use
    * @param translator Translator Translator to use
    * @param translatorField translator field
+   * @param keepUntranslatedIds Keep the untranslatedIds
    */
   public static void renameIdsWithTranslator(final ExpressionMatrix matrix,
-      final Translator translator, final String translatorField) {
+      final Translator translator, final String translatorField,
+      final boolean keepUntranslatedIds) {
 
     if (matrix == null || translator == null)
       return;
@@ -418,6 +437,11 @@ public final class ExpressionMatrixUtils {
 
       String row = rowNames[i];
       String t = translator.translateField(row, translatorField);
+      if (t == null || "".equals(t))
+        if (keepUntranslatedIds)
+          t = row;
+        else
+          t = "UNKNOWN";
 
       translation.put(row, t);
       if (translationCount.containsKey(t)) {
