@@ -53,8 +53,7 @@ public class MultiColumnTranslator extends BasicTranslator {
     final int sizeData = dataArray.length;
     final int sizeFields = this.fieldNames.length;
 
-    final int size = rowData.length < this.fieldNames.length ? sizeData
-        : sizeFields;
+    final int size = Math.min(sizeData, sizeFields);
 
     for (int i = 0; i < size; i++)
       dataMap.put(fieldNames[i], dataArray[i]);
