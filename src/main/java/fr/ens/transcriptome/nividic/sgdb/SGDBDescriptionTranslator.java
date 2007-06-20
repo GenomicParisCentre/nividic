@@ -55,7 +55,7 @@ public class SGDBDescriptionTranslator extends BasicTranslator {
 
     final String[] result = new String[FIELDS.length];
 
-    for (int i = 0; i < values.length; i++)
+    for (int i = 0; i < result.length; i++)
       result[i] = values[i] == null ? null : values[i].trim();
 
     return result;
