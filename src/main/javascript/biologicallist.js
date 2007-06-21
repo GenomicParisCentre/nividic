@@ -37,6 +37,8 @@ function createBiologicalList() {
  */
 function readBiologicalList(file, trim) {
 
+  if (file.constructor==String) { file = sf(file); }
+
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
 
