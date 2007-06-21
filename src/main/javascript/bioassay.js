@@ -299,7 +299,7 @@ function createMASorter() {
   */ 
 function mergeInnerIdsReplicates(bioAssay) {
 
-	return new Packages.fr.ens.transcriptome.nividic.om.BioAssayUtils.mergeInnerIdsReplicates(bioAssay);
+  return new Packages.fr.ens.transcriptome.nividic.om.BioAssayUtils.mergeInnerIdsReplicates(bioAssay);
 }
 
  /*
@@ -309,7 +309,17 @@ function mergeInnerIdsReplicates(bioAssay) {
   */ 
 function mergeInnerDescriptionsReplicates(bioAssay) {
 
-	return new Packages.fr.ens.transcriptome.nividic.om.BioAssayUtils.mergeInnerDescriptionsReplicates(bioAssay);
+  return new Packages.fr.ens.transcriptome.nividic.om.BioAssayUtils.mergeInnerDescriptionsReplicates(bioAssay);
+}
+
+ /*
+  * Rename the identifiers of the bioAssay with uniques Indentifers
+  * @param bioAssay bioAssay to merge
+  * @return a new BioAssay object
+  */ 
+function renameBioAssayIdsWithUniqueIdentifiers(bioAssay) {
+
+  new Packages.fr.ens.transcriptome.nividic.om.BioAssayUtils.renameIdsWithUniqueIdentifiers(bioAssay);
 }
 
 /*
