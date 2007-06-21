@@ -319,9 +319,10 @@ function convertToTotalSummaryBioAssay(matrix) {
  * Rename matrix identifier with translation done by translator
  * @param matrix Matrix to use
  * @param translator Translator Translator to use
+ * @param keepUntranslated Keep untranslated ids
  */
-function renameMatrixIdsWithTranslator(matrix, translator) {
+function renameMatrixIdsWithTranslator(matrix, translator, keepUntranslated) {
 
-  return Packages.fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils.renameIdsWithTranslator(matrix, translator); 
+  return Packages.fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils.renameIdsWithTranslator(matrix, translator, keepUntranslated); 
 }
  
