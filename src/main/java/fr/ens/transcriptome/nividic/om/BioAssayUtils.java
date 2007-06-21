@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
+import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
+import fr.ens.transcriptome.nividic.om.filters.BioAssayMerger;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
 import fr.ens.transcriptome.nividic.util.MathUtils;
 import fr.ens.transcriptome.nividic.util.NividicUtils;
@@ -397,6 +400,10 @@ public final class BioAssayUtils {
     bioAssay.setAs(a);
     bioAssay.setMs(m);
 
+    final HistoryEntry entry = new HistoryEntry("calc MA",
+        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+
+    bioAssay.getHistory().add(entry);
   }
 
   /**
@@ -420,6 +427,11 @@ public final class BioAssayUtils {
     }
 
     bioAssay.setMs(ms);
+
+    final HistoryEntry entry = new HistoryEntry("swap",
+        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+
+    bioAssay.getHistory().add(entry);
   }
 
   /**
@@ -447,6 +459,10 @@ public final class BioAssayUtils {
       ratio[i] = red[i] / green[i];
     }
 
+    final HistoryEntry entry = new HistoryEntry("calc rotios",
+        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+
+    bioAssay.getHistory().add(entry);
   }
 
   /**
@@ -615,6 +631,12 @@ public final class BioAssayUtils {
 
     addFieldToBioAssay(result, b);
 
+    final HistoryEntry entry = new HistoryEntry("merge bioAssay",
+        HistoryActionType.MODIFY, a.getName() + " " + b.getName(),
+        HistoryActionResult.PASS);
+
+    result.getHistory().add(entry);
+
     return result;
   }
 
@@ -758,6 +780,94 @@ public final class BioAssayUtils {
 
     }
 
+  }
+
+  /**
+   * Merge all the rows with the same identifiers.
+   * @param bioAssay BioAssay to merge
+   * @return a new bioAssay
+   */
+  public static BioAssay mergeInnerIdsReplicates(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return null;
+
+    BioAssayMerger bam = new BioAssayMerger(bioAssay);
+    bam.mergeAllIds();
+    BioAssay result = bam.getBioAssay();
+
+    final HistoryEntry entry = new HistoryEntry("merge ids",
+        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+
+    result.getHistory().add(entry);
+
+    return result;
+  }
+
+  /**
+   * Merge all the rows with the same identifiers.
+   * @param bioAssay BioAssay to merge
+   * @return a new bioAssay
+   */
+  public static BioAssay mergeInnerDescriptionReplicates(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return null;
+
+    BioAssayMerger bam = new BioAssayMerger(bioAssay);
+    bam.mergeAllDescription();
+    BioAssay result = bam.getBioAssay();
+
+    final HistoryEntry entry = new HistoryEntry("merge descriptions",
+        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+
+    result.getHistory().add(entry);
+
+    return result;
+  }
+
+  /**
+   * Rename the identifiers of the bioAssay with uniques Indentifers
+   * @param bioAssay BioAssay to modify
+   */
+  public static void renameIdsWithUniqueIdentifiers(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return;
+
+    final String[] ids = bioAssay.getIds();
+
+    if (ids == null)
+      return;
+
+    Map<String, Integer> idsCount = new HashMap<String, Integer>();
+
+    for (int i = 0; i < ids.length; i++) {
+
+      final String id = ids[i];
+
+      if (id == null)
+        continue;
+
+      int count;
+
+      if (!idsCount.containsKey(id))
+        count = 0;
+      else
+        count = idsCount.get(id);
+
+      count++;
+
+      if (count > 1)
+        ids[i] = id + "#" + count;
+
+      idsCount.put(id, count);
+    }
+
+    final HistoryEntry entry = new HistoryEntry("create unique identifers",
+        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+
+    bioAssay.getHistory().add(entry);
   }
 
   //
