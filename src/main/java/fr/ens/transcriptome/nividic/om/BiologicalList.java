@@ -183,6 +183,12 @@ public interface BiologicalList extends BiologicalObject {
   BiologicalList trim();
 
   /**
+   * Remove number of the identifers (e.g. toto#6 become toto).
+   * @return a new Biological list
+   */
+  BiologicalList removeIdentifersNumbers();
+
+  /**
    * Test if two list are equals.
    * @param list List to test
    * @return true if the two list are equals

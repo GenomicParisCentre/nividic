@@ -42,6 +42,7 @@ import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListEndsWithFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListGrepFilter;
+import fr.ens.transcriptome.nividic.om.filters.BiologicalListIdentifierNumberRemoverFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListStartsWithFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListToLowerCaseFilter;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListTrimFilter;
@@ -486,6 +487,17 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
   public BiologicalList trim() {
 
     final BiologicalListFilter filter = new BiologicalListTrimFilter();
+
+    return filter.filter(this);
+  }
+
+  /**
+   * Remove number of the identifers (e.g. toto#6 become toto).
+   * @return a new Biological list
+   */
+  public BiologicalList removeIdentifersNumbers() {
+
+    final BiologicalListFilter filter = new BiologicalListIdentifierNumberRemoverFilter();
 
     return filter.filter(this);
   }
