@@ -197,11 +197,6 @@ public class JSShell {
       System.out.println(this.getClass().getClassLoader().getClass().getName());
     }
 
-    public void t() {
-
-      RessourceFinder.show(this.getClass().getClassLoader());
-    }
-
     /**
      * Constructor
      * @param engine The Javascript engine
