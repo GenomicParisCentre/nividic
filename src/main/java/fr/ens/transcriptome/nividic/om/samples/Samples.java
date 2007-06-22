@@ -72,6 +72,11 @@ public class Samples {
     this.parameters.put(parameterName, sp);
   }
 
+  /**
+   * Remove a parameter.
+   * @param oldName Old parameter name
+   * @param newName New parameter name
+   */
   public void renameParameter(final String oldName, final String newName) {
 
     if (oldName == null || newName == null)
@@ -248,12 +253,12 @@ public class Samples {
    * Clear the samples.
    */
   public void clear() {
-    
+
     this.parameters.clear();
-    this. samplesIds .clear();
-    this.data .clear(); 
+    this.samplesIds.clear();
+    this.data.clear();
   }
-  
+
   //
   // Constructor
   //
