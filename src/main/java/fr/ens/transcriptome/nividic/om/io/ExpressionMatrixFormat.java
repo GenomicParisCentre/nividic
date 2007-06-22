@@ -22,8 +22,14 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
+/**
+ * Enumeration of ExpressionMatrix formats.
+ * @author Laurent Jourdren
+ */
 public enum ExpressionMatrixFormat {
 
-  STANDFORD, NIVIDIC;
-  
+  /** Standford matrix format. */
+  STANDFORD,
+  /** Nividic matrix format. */
+  NIVIDIC;
 }
