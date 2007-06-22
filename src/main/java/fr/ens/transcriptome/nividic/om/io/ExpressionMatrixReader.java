@@ -246,7 +246,7 @@ public abstract class ExpressionMatrixReader {
    * @return true if the quotes of the strings must be removed
    */
   public boolean isStringQuotesBeRemoved() {
-    return false;
+    return true;
   }
 
   //

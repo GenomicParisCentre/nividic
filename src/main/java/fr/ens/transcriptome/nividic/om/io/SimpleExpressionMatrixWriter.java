@@ -88,15 +88,18 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
         for (int i = 0; i < annotationFields.length; i++) {
 
           bw.write(SEPARATOR);
+          bw.write('"');
           bw.write(annotationFields[i]);
-
+          bw.write('"');
         }
       }
 
       for (int i = 0; i < columnNames.length; i++) {
         for (int j = 0; j < dimensions.length; j++) {
           bw.write(SEPARATOR);
+          bw.write('"');
           bw.write(columnNames[i]);
+          bw.write('"');
           if (dimensions.length > 1 || this.showDimensionName) {
             bw.write(DIMENSION_SEPARATOR);
             bw.write(dimensions[j].getDimensionName());
