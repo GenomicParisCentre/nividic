@@ -103,6 +103,8 @@ public final class Matrix {
     try {
       while ((line = br.readLine()) != null)
         System.out.println(line);
+      
+      br.close();
     } catch (IOException e) {
       System.err.println("Error while reading the README.txt resource");
     }

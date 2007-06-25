@@ -95,7 +95,7 @@ public final class BioAssayUtils {
       return bioAssay;
 
     int size = bioAssay.size();
-    Map mapFieldsToRemove = new HashMap();
+    Map<String, String> mapFieldsToRemove = new HashMap<String, String>();
 
     for (int i = 0; i < rowsToRemove.length; i++) {
       final int value = rowsToRemove[i];
@@ -456,7 +456,7 @@ public final class BioAssayUtils {
     double[] ratio = new double[size];
 
     for (int i = 0; i < green.length; i++) {
-      ratio[i] = red[i] / green[i];
+      ratio[i] = (double) red[i] / (double) green[i];
     }
 
     final HistoryEntry entry = new HistoryEntry("calc rotios",
@@ -482,7 +482,7 @@ public final class BioAssayUtils {
    * @return the M value
    */
   public static double calcM(final int red, final int green) {
-    return MathUtils.log2(red / green);
+    return MathUtils.log2((double) red / (double) green);
   }
 
   /**

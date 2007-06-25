@@ -56,7 +56,7 @@ public final class WebBrowser {
    * @throws IOException if an error occurs while launching the browser
    */
   public static void launch(final URL url) throws IOException {
-    launch(null, url.toString());
+    launch(null, url == null ? null : url.toString());
   }
 
   /**
@@ -81,9 +81,6 @@ public final class WebBrowser {
    */
   public static void launch(final String alternativeBrowserPath,
       final String url) throws IOException {
-
-    if (url == null)
-      return;
 
     String togo;
     if (url != null)

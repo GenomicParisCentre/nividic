@@ -71,9 +71,9 @@ public class GoulpharWrapper {
   public static final String FLAG_FILTER_ALL = "all";
   public static final String FLAG_FILTER_NONE = "none";
 
-  public static int PDF_OUTPUT = 1;
-  public static int PNG_OUTPUT = 2;
-  public static int JPEG_OUTPUT = 3;
+  public static final int PDF_OUTPUT = 1;
+  public static final int PNG_OUTPUT = 2;
+  public static final int JPEG_OUTPUT = 3;
 
   public static final int DEFAULT_SATURING_THRESHOLD = 50000;
   public static final int DEFAULT_DIAMETER_THRESHOLD = 0;

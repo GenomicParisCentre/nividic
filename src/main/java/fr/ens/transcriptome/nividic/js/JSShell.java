@@ -49,7 +49,7 @@ public class JSShell {
    * Define class to load script from javascript.
    * @author Laurent Jourdren
    */
-  private class ScriptLoader {
+  private static final class ScriptLoader {
 
     private JavaScriptEngine engineloader;
 
@@ -122,6 +122,8 @@ public class JSShell {
         System.err.println(s);
       }
 
+      stdInput.close();
+      errInput.close();
     }
 
     /**
@@ -243,6 +245,7 @@ public class JSShell {
    * Load a script from an inputStream.
    * @param is InputStreamto use
    * @param comment Comment about the stream
+   * @exception FileNotFoundException if the file of the script is not found
    */
   public void source(final InputStream is, final String comment)
       throws FileNotFoundException {
@@ -256,7 +259,9 @@ public class JSShell {
 
   /**
    * Public constructor.
+   * @param javascriptPath path of javascript scripts
    * @param args command line arguments
+   * @param fileToExecute file to execute
    */
   public JSShell(final String javascriptPath, final String fileToExecute,
       final String[] args) {
@@ -308,7 +313,7 @@ public class JSShell {
     if (fileToExecute != null)
       try {
         this.engine.eval(new FileInputStream(fileToExecute), fileToExecute);
-        System.exit(0);
+        //System.exit(0);
       } catch (FileNotFoundException e) {
         System.err.println("File not found: " + fileToExecute);
         System.exit(1);

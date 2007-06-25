@@ -25,16 +25,13 @@ package fr.ens.transcriptome.nividic.om.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Random;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.collections.IterableMap;
-import org.apache.commons.collections.map.LinkedMap;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
-import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
@@ -59,19 +56,19 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
 public class SubExpressionMatrix implements ExpressionMatrix,
     ExpressionMatrixListener {
 
-  private Set idsSet;
-  private Set referencesToColumnNamesSet;
-  private ArrayList columnNames;
-  private IterableMap dimensions;
+  private Set<String> idsSet;
+  private Set<String> referencesToColumnNamesSet;
+  private List<String> columnNames;
+  private Map<String, ExpressionMatrixDimension> dimensions;
   private ExpressionMatrixImpl matrix;
   private BiologicalName name = new BiologicalName(this);
   private String defaultDimensionName;
   private HistoryImpl history;
 
-  private static int count;
+  // private static int count;
 
-  private static final int HASHCODE_ODD_NUMBER_1 = 19052005;
-  private static final int HASHCODE_ODD_NUMBER_2 = 117;
+  // private static final int HASHCODE_ODD_NUMBER_1 = 19052005;
+  // private static final int HASHCODE_ODD_NUMBER_2 = 117;
 
   //
   // Getters
@@ -168,7 +165,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
     throwExceptionIfColumnDoesntExists(columnNumber);
 
-    return (String) this.columnNames.get(columnNumber);
+    return this.columnNames.get(columnNumber);
   }
 
   //
@@ -353,7 +350,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   /**
    * Add another expression matrix to the expression matrix.
    * @param matrix Matrix to add
-   * @param overwrite Columns Set true to overwriteColumns
+   * @param overwriteColumns Columns Set true to overwriteColumns
    */
   public void addMatrix(final ExpressionMatrix matrix,
       final boolean overwriteColumns) {
@@ -664,7 +661,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param o Object to test
    * @return true if the 2 objects are equals
    */
-  public boolean dataEquals(Object o) {
+  public boolean dataEquals(final Object o) {
 
     if (o == null || !(o instanceof ExpressionMatrix))
       return false;
@@ -698,19 +695,15 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public int hashCode() {
 
-    /*HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
-        HASHCODE_ODD_NUMBER_2);
+    /*
+     * HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
+     * HASHCODE_ODD_NUMBER_2);
+     * hcb.append(this.getName()).append(this.getColumnNames()).append(
+     * this.getIdsSet()); final String[] dimensions = getDimensionNames(); for
+     * (int i = 0; i < dimensions.length; i++)
+     * hcb.append(getDimension(dimensions[i])); return hcb.toHashCode();
+     */
 
-    hcb.append(this.getName()).append(this.getColumnNames()).append(
-        this.getIdsSet());
-
-    final String[] dimensions = getDimensionNames();
-
-    for (int i = 0; i < dimensions.length; i++)
-      hcb.append(getDimension(dimensions[i]));
-
-    return hcb.toHashCode(); */
-    
     return super.hashCode();
   }
 
@@ -960,7 +953,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
   /**
    * Add a dimension.
-   * @param name Name of the dimension to add
+   * @param dimensionName Name of the dimension to add
    */
   public void addDimension(final String dimensionName) {
 
@@ -1017,11 +1010,12 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
   /**
    * Get a dimension of the matrix.
-   * @param name Name of the dimension
+   * @param dimensionName Name of the dimension
+   * @return a dimension object
    */
   public ExpressionMatrixDimension getDimension(final String dimensionName) {
 
-    return (ExpressionMatrixDimension) this.dimensions.get(dimensionName);
+    return this.dimensions.get(dimensionName);
   }
 
   /**
@@ -1070,7 +1064,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
   /**
    * Remove a dimension.
-   * @param name The name of the dimension
+   * @param dimensionName The name of the dimension
    */
   public void removeDimension(final String dimensionName) {
 
@@ -1185,7 +1179,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
       newIds = ids;
     }
 
-    this.idsSet = new HashSet(len);
+    this.idsSet = new HashSet<String>(len);
     this.addIds(em, newIds);
   }
 
@@ -1345,15 +1339,15 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     else if (em instanceof SubExpressionMatrix)
       this.matrix = ((SubExpressionMatrix) em).matrix;
 
-    this.columnNames = new ArrayList(columnSize);
-    this.referencesToColumnNamesSet = new HashSet(columnSize);
+    this.columnNames = new ArrayList<String>(columnSize);
+    this.referencesToColumnNamesSet = new HashSet<String>(columnSize);
     this.history = new HistoryImpl(em.getHistory());
 
     addInitIds(em, ids);
 
     // Set dimensions
 
-    this.dimensions = new LinkedMap();
+    this.dimensions = new LinkedHashMap<String, ExpressionMatrixDimension>();
 
     final String[] dNames = em.getDimensionNames();
 

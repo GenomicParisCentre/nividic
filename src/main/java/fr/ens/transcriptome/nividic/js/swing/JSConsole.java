@@ -71,7 +71,7 @@ public class JSConsole extends JFrame implements ActionListener {
 
   public static void main(String args[]) {
 
-    JSConsole console = new JSConsole(args);
+    new JSConsole(args);
   }
 
   public void createFileChooser() {

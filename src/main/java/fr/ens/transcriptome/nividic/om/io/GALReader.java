@@ -32,8 +32,8 @@ import java.io.InputStream;
 public class GALReader extends ATFReader {
 
   /** Fields names usualy readed in a GAL file. */
-  private static String[] fieldNameInGAL = {"Block", "Column", "Row", "ID",
-      "Name"};
+  private static String[] fieldNameInGAL =
+      {"Block", "Column", "Row", "ID", "Name"};
 
   /** Name of integer field names. */
   private static String[] intFieldNames = {"Block", "Column", "Row"};
@@ -60,7 +60,8 @@ public class GALReader extends ATFReader {
    * @return An string array of field names
    */
   public String[] getIntFieldNames() {
-    return GALReader.intFieldNames;
+    return GALReader.intFieldNames == null ? null : GALReader.intFieldNames
+        .clone();
   }
 
   /**
@@ -68,7 +69,8 @@ public class GALReader extends ATFReader {
    * @return An string array of field names
    */
   public String[] getDoubleFieldNames() {
-    return GALReader.doubleFieldNames;
+    return GALReader.doubleFieldNames == null
+        ? null : GALReader.doubleFieldNames.clone();
   }
 
   //
@@ -79,7 +81,7 @@ public class GALReader extends ATFReader {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *                 the file is null.
+   *           the file is null.
    */
   public GALReader(final File file) throws NividicIOException {
 

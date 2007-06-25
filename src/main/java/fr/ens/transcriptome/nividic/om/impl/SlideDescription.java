@@ -22,8 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
-import java.util.Date;
-
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 
 /**
@@ -152,7 +150,7 @@ public class SlideDescription {
    */
   public void setDate(final String date) {
 
-    setDescription(DATE_FIELD, date.toString());
+    setDescription(DATE_FIELD, date);
   }
 
   /**

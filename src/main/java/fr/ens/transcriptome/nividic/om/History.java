@@ -38,10 +38,10 @@ public interface History {
 
   /**
    * Add a history log to the current history.
-   * @param entry Entry to add
+   * @param history History to add
    */
   void add(History history);
-  
+
   /**
    * Get the number of entries in the history.
    * @return The number of the entries in the history

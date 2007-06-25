@@ -114,7 +114,7 @@ public abstract class BioAssayGenericStringFieldFilter implements
           translatorField) : data[i];
 
       if (!test(id))
-        al.add(new Integer(i));
+        al.add(i);
 
     }
 

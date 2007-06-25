@@ -22,11 +22,13 @@
 
 package fr.ens.transcriptome.nividic.om;
 
+import java.io.Serializable;
+
 /**
  * This interface define how testing if a spot is empty
  * @author Laurent Jourdren
  */
-public interface SpotEmptyTester {
+public interface SpotEmptyTester extends Serializable {
 
   /**
    * Test if the spot is empty.

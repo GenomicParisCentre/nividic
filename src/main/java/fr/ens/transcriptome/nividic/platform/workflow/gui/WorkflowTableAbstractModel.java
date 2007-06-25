@@ -23,7 +23,9 @@
 package fr.ens.transcriptome.nividic.platform.workflow.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
@@ -52,7 +54,7 @@ public abstract class WorkflowTableAbstractModel extends AbstractTableModel
   private Workflow workflow;
   private WorkflowElement[] displayElements;
   private ModuleLocation[] availableModules;
-  private Map mapIdRow = new HashMap();
+  private Map<Algorithm, Integer> mapIdRow = new HashMap<Algorithm, Integer>();
 
   //
   // Getters
@@ -72,7 +74,7 @@ public abstract class WorkflowTableAbstractModel extends AbstractTableModel
    */
   public ModuleLocation[] getAvailableModules() {
 
-    return availableModules;
+    return availableModules.clone();
   }
 
   /**
@@ -80,7 +82,7 @@ public abstract class WorkflowTableAbstractModel extends AbstractTableModel
    * @return Returns the displayElements
    */
   public WorkflowElement[] getDisplayElements() {
-    return displayElements;
+    return displayElements.clone();
   }
 
   /**
@@ -189,7 +191,7 @@ public abstract class WorkflowTableAbstractModel extends AbstractTableModel
     if (locations == null)
       return;
 
-    ArrayList modulesToAdd = new ArrayList();
+    List<ModuleLocation> modulesToAdd = new ArrayList<ModuleLocation>();
 
     for (int i = 0; i < locations.length; i++) {
 
@@ -214,7 +216,7 @@ public abstract class WorkflowTableAbstractModel extends AbstractTableModel
     }
     this.availableModules = new ModuleLocation[modulesToAdd.size()];
     for (int i = 0; i < modulesToAdd.size(); i++)
-      this.availableModules[i] = (ModuleLocation) modulesToAdd.get(i);
+      this.availableModules[i] = modulesToAdd.get(i);
   }
 
   /**
@@ -231,7 +233,9 @@ public abstract class WorkflowTableAbstractModel extends AbstractTableModel
     if (elements == null)
       return;
 
-    ArrayList display = new ArrayList();
+    List<WorkflowElement> display = new ArrayList<WorkflowElement>(
+        elements.length);
+
     for (int i = 0; i < elements.length; i++)
       if (filterWorkflowElement(elements[i]))
         display.add(elements[i]);
@@ -240,13 +244,13 @@ public abstract class WorkflowTableAbstractModel extends AbstractTableModel
     this.mapIdRow.clear();
 
     for (int i = 0; i < display.size(); i++) {
-      final WorkflowElement wfe = (WorkflowElement) display.get(i);
+      final WorkflowElement wfe = display.get(i);
       this.displayElements[i] = wfe;
 
       final Algorithm algo = wfe.getAlgorithm();
       if (algo != null) {
         algo.addListener(this);
-        this.mapIdRow.put(algo, new Integer(i));
+        this.mapIdRow.put(algo, i);
       }
 
     }

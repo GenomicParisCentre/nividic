@@ -35,7 +35,6 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayRemoveIdentifiersFilter;
-import fr.ens.transcriptome.nividic.om.filters.BioAssayReplicateFilter;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixWriter;
@@ -243,11 +242,11 @@ public class MatrixCreator {
       bioAssayToAdd = rsibpi.filter(bioAssayToAdd);
     }
 
-    if (isMergeReplicate()) {
+    /*if (isMergeReplicate()) {
 
       BioAssayReplicateFilter barf = new BioAssayReplicateFilter();
       bioAssayToAdd = barf.filter(bioAssayToAdd);
-    }
+    } */
 
     this.bioAssays.add(bioAssayToAdd);
   }

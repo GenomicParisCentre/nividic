@@ -28,6 +28,4 @@ package fr.ens.transcriptome.nividic.om;
  */
 public final class BiologicalListUtils {
 
-  
-
 }

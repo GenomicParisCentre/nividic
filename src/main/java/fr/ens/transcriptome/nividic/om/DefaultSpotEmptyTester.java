@@ -97,7 +97,7 @@ public class DefaultSpotEmptyTester implements SpotEmptyTester {
   public DefaultSpotEmptyTester(final String[] emptySpotsIds,
       final boolean descriptionToTest) {
 
-    this.emptySpotsIds = emptySpotsIds;
+    this.emptySpotsIds = emptySpotsIds.clone();
     this.descriptionToTest = descriptionToTest;
   }
 

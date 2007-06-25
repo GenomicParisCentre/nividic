@@ -23,7 +23,6 @@
 package fr.ens.transcriptome.nividic.om.impl;
 
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
-import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.util.event.SimpleGenericEvent;
 
 /**
@@ -32,8 +31,6 @@ import fr.ens.transcriptome.nividic.util.event.SimpleGenericEvent;
  */
 public class ExpressionMatrixEvent extends SimpleGenericEvent {
 
-  
-  
   /** Workflow remove identifer event. */
   public static final int REMOVE_ROW_EVENT = 1;
 
@@ -57,7 +54,7 @@ public class ExpressionMatrixEvent extends SimpleGenericEvent {
 
   /** Workflow add column event. */
   public static final int ADD_COLUMN_EVENT = 8;
-  
+
   /** Workflow add column event. */
   public static final int ADD_DIMENSION_EVENT = 9;
 

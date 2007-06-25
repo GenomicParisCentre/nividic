@@ -165,8 +165,13 @@ public class BioAssayMerger {
       list.add(i);
     }
 
-    for (String id : map.keySet())
-      mergeRows(NividicUtils.toArray(map.get(id)));
+    /*
+     * for (String id : map.keySet())
+     * mergeRows(NividicUtils.toArray(map.get(id)));
+     */
+
+    for (Map.Entry<String, List<Integer>> e : map.entrySet())
+      mergeRows(NividicUtils.toArray(e.getValue()));
   }
 
   /**
@@ -197,7 +202,8 @@ public class BioAssayMerger {
 
       if (!this.rowsToMerge.contains(i)) {
 
-        nIds[index] = ids != null ? null : ids[i];
+        //nIds[index] = ids != null ? null : ids[i];
+        nIds[index] = ids == null ? null : ids[i];
         nDescriptions[index] = descriptions == null ? null : descriptions[i];
         nMs[index] = ms == null ? 0 : ms[i];
         nStdDev[index] = Double.isNaN(nMs[index]) ? Double.NaN : 0;
@@ -212,7 +218,8 @@ public class BioAssayMerger {
         final List<Integer> list = this.toMerge.get(i);
         final List<Double> data = new ArrayList<Double>(list.size());
 
-        nIds[index] = ids != null ? null : ids[i];
+        //nIds[index] = ids != null ? null : ids[i];
+        nIds[index] = ids == null ? null : ids[i];
         nDescriptions[index] = descriptions == null ? null : descriptions[i];
 
         if (ms != null) {

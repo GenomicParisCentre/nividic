@@ -29,13 +29,12 @@ import java.util.List;
 
 final class DoubleMatrix {
 
-  //private static final double NATURAL_LOG_OF_2 = 0.69314718;
+  // private static final double NATURAL_LOG_OF_2 = 0.69314718;
   private static final double NATURAL_LOG_OF_2 = 0.6931471805595;
-  //private static final double LOG2_TO_LOG10 = 0.301029995;
+  // private static final double LOG2_TO_LOG10 = 0.301029995;
   private static final double LOG2_TO_LOG10 = 0.30102999566398;
   private static final int MAX_STEPS = 1000000;
-  
-  
+
   private ExpressionMatrixDimension dimension;
   private String[] columnNames;
   private String[] rowNames;

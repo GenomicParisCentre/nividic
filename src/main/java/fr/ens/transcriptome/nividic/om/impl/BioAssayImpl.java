@@ -28,6 +28,7 @@ import java.util.Comparator;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
+import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
@@ -60,8 +61,8 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
   private SpotEmptyTester spotEmptyTester;
 
   private BiologicalName name = new BiologicalName(this);
-  private Annotation annotation = new SimpleAnnotationsImpl();
-  private HistoryImpl history = new HistoryImpl();
+  private Annotation annotation = AnnotationFactory.createAnnotation();
+  private History history = new HistoryImpl();
 
   /**
    * Get the id of the biological Object
@@ -103,7 +104,8 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     if (!isLocations())
       throw new BioAssayRuntimeException("No locations found");
 
-    if (metaRow == null || metaColumn == null || row == null || column == null
+    if (metaRow == null
+        || metaColumn == null || row == null || column == null
         || !isLocations()) {
       throw new BioAssayRuntimeException(BioAssayRuntimeException.NULL_POINTER,
           "One or more parameter is null");
@@ -114,8 +116,9 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     // recupere le vecteur qui a les localisations codées
 
     // int size = array.length;
-    if ((array.length != metaRow.length) || (array.length != metaColumn.length)
-        || (array.length != row.length) || (array.length != column.length))
+    if ((array.length != metaRow.length)
+        || (array.length != metaColumn.length) || (array.length != row.length)
+        || (array.length != column.length))
       throw new BioAssayRuntimeException(
           BioAssayRuntimeException.INVALID_ARGUMENT,
           "One or more parameter size is bad");
@@ -647,9 +650,10 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
 
     if (result != null) {
 
-      HistoryEntry entry = new HistoryEntry(filter.getClass().getSimpleName(),
-          HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
-          HistoryEntry.HistoryActionResult.PASS);
+      HistoryEntry entry =
+          new HistoryEntry(filter.getClass().getSimpleName(),
+              HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
+              HistoryEntry.HistoryActionResult.PASS);
 
       result.getHistory().add(entry);
     }
@@ -672,17 +676,14 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
     Integer[] order = new Integer[n];
 
     for (int i = 0; i < order.length; i++)
-      order[i] = new Integer(i);
+      order[i] = i;
 
     // Sort the order of the rows
-    Arrays.sort(order, new Comparator() {
+    Arrays.sort(order, new Comparator<Integer>() {
 
-      public int compare(final Object arg0, final Object arg1) {
+      public int compare(final Integer arg0, final Integer arg1) {
 
-        final int i0 = ((Integer) arg0).intValue();
-        final int i1 = ((Integer) arg1).intValue();
-
-        return comparator.compare(getSpot(i0), getSpot(i1));
+        return comparator.compare(getSpot(arg0), getSpot(arg1));
       }
     });
 
@@ -745,9 +746,9 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
 
     swapFields(BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_DESCRIPTION);
 
-    final HistoryEntry entry = new HistoryEntry(
-        "Swap identifer and description", HistoryActionType.MODIFY, "",
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Swap identifer and description",
+            HistoryActionType.MODIFY, "", HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }
@@ -802,9 +803,11 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
 
   private void addConstructorHistoryEntry() {
 
-    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
-        + getBiologicalId() + ")", HistoryActionType.CREATE, "RowNumbers="
-        + size() + ";ColumnNumber=" + getFieldCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create Matrix (#" + getBiologicalId() + ")",
+            HistoryActionType.CREATE, "RowNumbers="
+                + size() + ";ColumnNumber=" + getFieldCount(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }
@@ -868,10 +871,12 @@ public class BioAssayImpl extends BioAssayBaseImpl implements BioAssay,
 
     setReferenceField(bioAssay.getReferenceField());
 
-    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
-        + getBiologicalId() + "), copy of #" + bioAssay.getBiologicalId(),
-        HistoryActionType.CREATE, "RowNumbers=" + size() + ";ColumnNumber="
-            + getFieldCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create Matrix (#"
+            + getBiologicalId() + "), copy of #" + bioAssay.getBiologicalId(),
+            HistoryActionType.CREATE, "RowNumbers="
+                + size() + ";ColumnNumber=" + getFieldCount(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
 

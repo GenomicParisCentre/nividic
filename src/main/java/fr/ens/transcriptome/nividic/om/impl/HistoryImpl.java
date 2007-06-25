@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,7 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
  * This class implements a History
  * @author Laurent Jourdren
  */
-class HistoryImpl implements History {
+class HistoryImpl implements History, Serializable {
 
   private List<HistoryEntry> entries = new ArrayList<HistoryEntry>();
 

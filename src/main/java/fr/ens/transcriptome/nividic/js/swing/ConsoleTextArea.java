@@ -33,12 +33,11 @@ import javax.swing.text.Segment;
 class ConsoleWrite implements Runnable {
   private ConsoleTextArea textArea;
   private String str;
-  private Color color;
 
-  public ConsoleWrite(ConsoleTextArea textArea, String str, Color color) {
+  public ConsoleWrite(ConsoleTextArea textArea, String str) {
     this.textArea = textArea;
     this.str = str;
-    this.color = color;
+
   }
 
   public void run() {
@@ -89,7 +88,7 @@ class ConsoleWriter extends java.io.OutputStream {
   private void flushBuffer() {
     String str = buffer.toString();
     buffer.setLength(0);
-    SwingUtilities.invokeLater(new ConsoleWrite(textArea, str, color));
+    SwingUtilities.invokeLater(new ConsoleWrite(textArea, str));
   }
 };
 
@@ -97,13 +96,13 @@ public class ConsoleTextArea extends JTextArea implements KeyListener,
     DocumentListener {
   static final long serialVersionUID = 8557083244830872961L;
 
-  private ConsoleWriter console1;
-  private ConsoleWriter console2;
-  private PrintStream out;
-  private PrintStream err;
-  private PrintWriter inPipe;
-  private PipedInputStream in;
-  private java.util.Vector history;
+  private transient ConsoleWriter console1;
+  private transient ConsoleWriter console2;
+  private transient PrintStream out;
+  private transient PrintStream err;
+  private transient PrintWriter inPipe;
+  private transient PipedInputStream in;
+  private transient java.util.Vector history;
   private int historyIndex = -1;
   private int outputMark = 0;
 

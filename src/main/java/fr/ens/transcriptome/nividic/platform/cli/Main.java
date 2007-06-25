@@ -94,9 +94,12 @@ public final class Main {
     try {
       while ((line = br.readLine()) != null)
         System.out.println(line);
+      
+      br.close();
     } catch (IOException e) {
       System.err.println("Error while reading the README.txt resource");
     }
+    
     System.out.println();
     System.exit(0);
   }

@@ -22,18 +22,17 @@
 
 package fr.ens.transcriptome.nividic.util;
 
-import org.apache.commons.collections.OrderedMapIterator;
-import org.apache.commons.collections.map.LinkedMap;
+import java.util.LinkedHashMap;
+import java.util.Set;
 
 /**
  * A Properties ordered implemetation.
- *
  * @author Laurent Jourdren
  */
 
 public class Properties {
 
-  private LinkedMap data = new LinkedMap();
+  private LinkedHashMap<String, String> data = new LinkedHashMap<String, String>();
 
   /**
    * Set a property.
@@ -50,7 +49,7 @@ public class Properties {
    * @return The value of the proterty
    */
   public String getProperty(final String key) {
-    return (String) this.data.get(key);
+    return this.data.get(key);
   }
 
   /**
@@ -59,7 +58,7 @@ public class Properties {
    * @return The value of the property removed
    */
   public String remove(final String key) {
-    return (String) this.data.remove(key);
+    return this.data.remove(key);
   }
 
   /**
@@ -74,19 +73,15 @@ public class Properties {
    * Clear the properties.
    */
   public void clear() {
-    this.data = new LinkedMap();
+    this.data.clear();
   }
 
-  /*public Set keysSet() {
-    return this.data.keySet();
-  }*/
-
   /**
-   * Get an iterator for the object.
+   * Get a set of the keys for the object.
    * @return A iterator
    */
-  public OrderedMapIterator iterator() {
-    return this.data.orderedMapIterator();
+  public Set<String> keySet() {
+    return this.data.keySet();
   }
 
 }

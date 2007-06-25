@@ -27,6 +27,10 @@ import java.util.Properties;
 
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 
+/**
+ * This interface define a source of data for designs.
+ * @author Laurent Jourdren
+ */
 public interface DataSource {
 
   /**

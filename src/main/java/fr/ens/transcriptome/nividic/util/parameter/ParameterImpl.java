@@ -59,7 +59,7 @@ class ParameterImpl implements Parameter {
     boolean test(String value);
   }
 
-  class RangeTest implements ParamValueTest {
+  private static final class RangeTest implements ParamValueTest {
 
     private double min;
     private double max;
@@ -105,7 +105,7 @@ class ParameterImpl implements Parameter {
     }
   }
 
-  class LowerThanTest implements ParamValueTest {
+  private static final class LowerThanTest implements ParamValueTest {
 
     private double threshold;
 
@@ -133,7 +133,7 @@ class ParameterImpl implements Parameter {
 
   }
 
-  class GreaterThanTest implements ParamValueTest {
+  private static final class GreaterThanTest implements ParamValueTest {
 
     private double threshold;
 
@@ -160,7 +160,7 @@ class ParameterImpl implements Parameter {
     }
   }
 
-  class EqualsTest implements ParamValueTest {
+  private static final class EqualsTest implements ParamValueTest {
 
     private String value;
 

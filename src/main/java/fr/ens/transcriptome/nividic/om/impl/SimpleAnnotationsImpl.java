@@ -22,22 +22,24 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
-import java.util.Iterator;
+import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
-import org.apache.commons.collections.OrderedMapIterator;
-import org.apache.commons.collections.map.LinkedMap;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import fr.ens.transcriptome.nividic.om.Annotation;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This class define annotations for biological objects
  * @author Laurent Jourdren
  */
-public class SimpleAnnotationsImpl implements Annotation {
+public class SimpleAnnotationsImpl implements Annotation, Serializable {
 
-  private LinkedMap data = new LinkedMap();
+  private Map<String, String> data = new LinkedHashMap<String, String>();
 
   private static final int HASHCODE_ODD_NUMBER_1 = 4505;
   private static final int HASHCODE_ODD_NUMBER_2 = 1807;
@@ -61,11 +63,8 @@ public class SimpleAnnotationsImpl implements Annotation {
     if (annotations == null)
       return;
 
-    Iterator it = annotations.iterator();
-    while (it.hasNext()) {
-      String key = (String) it.next();
-      setProperty(key, annotations.getProperty(key));
-    }
+    for (Map.Entry<String, String> e : this.data.entrySet())
+      setProperty(e.getKey(), e.getValue());
   }
 
   /**
@@ -85,7 +84,7 @@ public class SimpleAnnotationsImpl implements Annotation {
    * @return The value of the proterty
    */
   public String getProperty(final String key) {
-    return (String) this.data.get(key);
+    return this.data.get(key);
   }
 
   /**
@@ -94,7 +93,7 @@ public class SimpleAnnotationsImpl implements Annotation {
    * @return The value of the property removed
    */
   public String removeProperty(final String key) {
-    return (String) this.data.remove(key);
+    return this.data.remove(key);
   }
 
   /**
@@ -109,15 +108,15 @@ public class SimpleAnnotationsImpl implements Annotation {
    * Clear the properties.
    */
   public void clear() {
-    this.data = new LinkedMap();
+    this.data.clear();
   }
 
   /**
-   * Get an iterator for the object.
+   * Get a set of the keys for the object.
    * @return A iterator
    */
-  public OrderedMapIterator iterator() {
-    return this.data.orderedMapIterator();
+  public Set<String> keySet() {
+    return this.data.keySet();
   }
 
   /**
@@ -126,14 +125,7 @@ public class SimpleAnnotationsImpl implements Annotation {
    */
   public String[] getPropertiesKeys() {
 
-    String[] result = new String[size()];
-    OrderedMapIterator omi = this.data.orderedMapIterator();
-
-    int i = 0;
-    while (omi.hasNext())
-      result[i++] = (String) omi.next();
-
-    return result;
+    return NividicUtils.toArray(this.data.keySet());
   }
 
   /**
@@ -160,11 +152,7 @@ public class SimpleAnnotationsImpl implements Annotation {
     EqualsBuilder eb = new EqualsBuilder().appendSuper(super.equals(o)).append(
         size(), a.size());
 
-    Iterator it = iterator();
-
-    while (it.hasNext()) {
-
-      String key = (String) it.next();
+    for (String key : keySet()) {
       eb.append(getProperty(key), a.getProperty(key));
     }
 

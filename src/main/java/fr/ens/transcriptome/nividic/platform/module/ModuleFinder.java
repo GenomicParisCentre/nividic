@@ -61,7 +61,7 @@ public class ModuleFinder {
    * for discovery of modules.
    * @author Laurent Jourdren
    */
-  class FindModuleClassLoader extends ClassLoader {
+  private final static class FindModuleClassLoader extends ClassLoader {
 
     private static final long MAX_FILE_LENGTH = 100000;
     private final ClassLoader cl = FindModuleClassLoader.class.getClassLoader();
@@ -128,6 +128,7 @@ public class ModuleFinder {
       try {
         fis = new FileInputStream(file);
         fis.read(result);
+        fis.close();
       } catch (FileNotFoundException e) {
         log.error("Error, class file not found : " + file.getAbsolutePath());
       } catch (IOException e) {

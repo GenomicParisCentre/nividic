@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.platform.workflow;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.platform.PlatformException;
@@ -55,8 +56,8 @@ public final class WorkflowElement {
 
   private Parameters parameters = new NonFixedParameters();
 
-  private Map nextLinks = new HashMap();
-  private Map previousLinks = new HashMap();
+  private Map<String, WorkflowLink> nextLinks = new HashMap<String, WorkflowLink>();
+  private Map<String, WorkflowLink> previousLinks = new HashMap<String, WorkflowLink>();
 
   //
   // Getters
@@ -218,7 +219,7 @@ public final class WorkflowElement {
   /**
    * Get the type of the algorithm.
    * @return the type of the alogrithm or -1 if no instance of the algorithm
-   *               exists.
+   *         exists.
    */
   public int getAlgorithmType() {
 
@@ -270,7 +271,7 @@ public final class WorkflowElement {
      * algoParams.setParameter(name,value); }
      */
 
-    //algo.defineParameters();
+    // algo.defineParameters();
     try {
       Parameters params = algo.getParameters();
       String[] names = params.getParametersNames();
@@ -328,7 +329,7 @@ public final class WorkflowElement {
    * @return a workflow link
    */
   WorkflowLink getNextElementLink(final String id) {
-    return (WorkflowLink) this.nextLinks.get(id);
+    return this.nextLinks.get(id);
   }
 
   /**
@@ -337,7 +338,7 @@ public final class WorkflowElement {
    * @return a workflow link
    */
   WorkflowLink getPreviousElementLink(final String id) {
-    return (WorkflowLink) this.previousLinks.get(id);
+    return this.previousLinks.get(id);
   }
 
   /**
@@ -346,18 +347,20 @@ public final class WorkflowElement {
    */
   public String[] getNextElementsIdentifiers() {
 
-    final Map map = this.nextLinks;
+    final Map<String, WorkflowLink> map = this.nextLinks;
 
     final int size = map.size();
     if (size == 0)
       return null;
 
     String[] result = new String[size];
-    Iterator it = map.keySet().iterator();
+
     int i = 0;
-    while (it.hasNext()) {
-      final String key = (String) it.next();
-      WorkflowLink wfl = (WorkflowLink) map.get(key);
+
+    for (Map.Entry<String, WorkflowLink> e : map.entrySet()) {
+
+      // final String key = e.getKey();
+      final WorkflowLink wfl = e.getValue();
       final String ref;
       if (wfl.isReferenceMode())
         ref = wfl.getOutReference();
@@ -375,18 +378,19 @@ public final class WorkflowElement {
    */
   public String[] getPreviousElementsIndentifier() {
 
-    final Map map = this.previousLinks;
+    final Map<String, WorkflowLink> map = this.previousLinks;
 
     final int size = map.size();
     if (size == 0)
       return null;
 
     String[] result = new String[size];
-    Iterator it = map.keySet().iterator();
+
     int i = 0;
-    while (it.hasNext()) {
-      final String key = (String) it.next();
-      WorkflowElement wfe = ((WorkflowLink) map.get(key)).getFrom();
+
+    for (Map.Entry<String, WorkflowLink> e : map.entrySet()) {
+
+      WorkflowElement wfe = (e.getValue()).getFrom();
       result[i++] = wfe.getId();
     }
 
@@ -399,11 +403,11 @@ public final class WorkflowElement {
    */
   public WorkflowElement[] getNextElements() {
 
-    ArrayList al = new ArrayList();
-    final Map map = this.nextLinks;
+    List<WorkflowElement> al = new ArrayList<WorkflowElement>();
+    final Map<String, WorkflowLink> map = this.nextLinks;
     Iterator it = map.keySet().iterator();
     while (it.hasNext())
-      al.add(((WorkflowLink) map.get(it.next())).getTo());
+      al.add((map.get(it.next())).getTo());
 
     WorkflowElement[] result = new WorkflowElement[al.size()];
     al.toArray(result);
@@ -417,11 +421,11 @@ public final class WorkflowElement {
    */
   public WorkflowElement[] getPreviousElements() {
 
-    ArrayList al = new ArrayList();
-    final Map map = this.previousLinks;
+    List<WorkflowElement> al = new ArrayList<WorkflowElement>();
+    final Map<String, WorkflowLink> map = this.previousLinks;
     Iterator it = map.keySet().iterator();
     while (it.hasNext())
-      al.add(((WorkflowLink) map.get(it.next())).getFrom());
+      al.add((map.get(it.next())).getFrom());
 
     WorkflowElement[] result = new WorkflowElement[al.size()];
     al.toArray(result);
@@ -432,8 +436,7 @@ public final class WorkflowElement {
   /**
    * Add link to a next element.
    * @param wfl Workflow link to add
-   * @throws PlatformException if an error occurs while the link is
-   *                 created.
+   * @throws PlatformException if an error occurs while the link is created.
    */
   void addNextElementLink(final WorkflowLink wfl) throws PlatformException {
 
@@ -448,11 +451,9 @@ public final class WorkflowElement {
   /**
    * Add link to a previous element.
    * @param wfl Workflow link to add
-   * @throws PlatformException if an error occurs while the link is
-   *                 created.
+   * @throws PlatformException if an error occurs while the link is created.
    */
-  void addPreviousElementLink(final WorkflowLink wfl)
-      throws PlatformException {
+  void addPreviousElementLink(final WorkflowLink wfl) throws PlatformException {
 
     if (wfl == null)
       throw new PlatformException("link is null");
@@ -465,11 +466,9 @@ public final class WorkflowElement {
   /**
    * Remove link to a next element.
    * @param wfl Workflow link to remove
-   * @throws PlatformException if an error occurs while the link is
-   *                 removed.
+   * @throws PlatformException if an error occurs while the link is removed.
    */
-  void removeNextElementLink(final WorkflowLink wfl)
-      throws PlatformException {
+  void removeNextElementLink(final WorkflowLink wfl) throws PlatformException {
 
     if (wfl == null)
       throw new PlatformException("link is null");
@@ -482,8 +481,7 @@ public final class WorkflowElement {
   /**
    * Remove link to a next element.
    * @param wfl Workflow link to remove
-   * @throws PlatformException if an error occurs while the link is
-   *                 removed.
+   * @throws PlatformException if an error occurs while the link is removed.
    */
   void removePreviousElementLink(final WorkflowLink wfl)
       throws PlatformException {
@@ -508,22 +506,20 @@ public final class WorkflowElement {
   /**
    * Replace all the links which use reference for the out element by link which
    * use WorkflowElement objects.
-   * @throws PlatformException if an error occurs while replacing
-   *                 references
+   * @throws PlatformException if an error occurs while replacing references
    */
   void replaceAllLinkReferences() throws PlatformException {
 
     Iterator it = this.nextLinks.keySet().iterator();
     while (it.hasNext()) {
-      WorkflowLink wfl = (WorkflowLink) this.nextLinks.get(it.next());
+      WorkflowLink wfl = this.nextLinks.get(it.next());
       wfl.replaceReferenceByElement();
     }
   }
 
   /**
    * Activate all link of this element.
-   * @throws PlatformException if an error occurs while activating the
-   *                 links
+   * @throws PlatformException if an error occurs while activating the links
    */
   void activate() throws PlatformException {
 
@@ -537,7 +533,7 @@ public final class WorkflowElement {
 
     Iterator it = this.nextLinks.keySet().iterator();
     while (it.hasNext()) {
-      WorkflowLink wfl = (WorkflowLink) this.nextLinks.get(it.next());
+      WorkflowLink wfl = this.nextLinks.get(it.next());
       wfl.linkAlgorithms();
     }
 

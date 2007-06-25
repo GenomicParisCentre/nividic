@@ -24,16 +24,27 @@ package fr.ens.transcriptome.nividic.om.filters;
 
 import fr.ens.transcriptome.nividic.om.Spot;
 
+/**
+ * This class define a comparator for spot. It use first the M value and then
+ * the A value.
+ * @author Laurent Jourdren
+ */
 public class BioAssayMASorterComparator implements SpotComparator {
 
   private boolean descending;
 
-  public int compare(Spot a, Spot b) {
+  /**
+   * Compare two spots.
+   * @param a first spot to compare
+   * @param b second spot to compare
+   * @return 0 if equals, -1 if b is greater than a.
+   */
+  public int compare(final Spot a, final Spot b) {
 
     return this.descending ? -internalCompare(a, b) : internalCompare(a, b);
   }
 
-  private int internalCompare(Spot a, Spot b) {
+  private int internalCompare(final Spot a, final Spot b) {
 
     if (a == null && b == null)
       return 0;
@@ -54,11 +65,18 @@ public class BioAssayMASorterComparator implements SpotComparator {
   // Constructor
   //
 
+  /**
+   * Public constructor.
+   */
   public BioAssayMASorterComparator() {
 
     this(false);
   }
 
+  /**
+   * Public constructor.
+   * @param descending true to use descending order
+   */
   public BioAssayMASorterComparator(final boolean descending) {
 
     this.descending = descending;

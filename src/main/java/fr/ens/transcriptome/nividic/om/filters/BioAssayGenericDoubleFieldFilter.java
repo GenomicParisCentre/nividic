@@ -56,7 +56,7 @@ public abstract class BioAssayGenericDoubleFieldFilter implements
 
     for (int i = 0; i < size; i++)
       if (!test(data[i]))
-        al.add(new Integer(i));
+        al.add(i);
 
     int[] toRemove = new int[al.size()];
     for (int i = 0; i < toRemove.length; i++)

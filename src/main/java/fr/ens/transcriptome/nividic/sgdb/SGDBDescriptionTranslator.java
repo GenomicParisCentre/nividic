@@ -24,6 +24,10 @@ package fr.ens.transcriptome.nividic.sgdb;
 
 import fr.ens.transcriptome.nividic.om.translators.BasicTranslator;
 
+/**
+ * Define a translator for sgdb yeast chip annotation.
+ * @author Laurent Jourdren
+ */
 public class SGDBDescriptionTranslator extends BasicTranslator {
 
   private static final String[] FIELDS = {"Probe", "ORF", "Description"};
@@ -38,7 +42,7 @@ public class SGDBDescriptionTranslator extends BasicTranslator {
    */
   public String[] getFields() {
 
-    return FIELDS;
+    return FIELDS.clone();
   }
 
   /**
@@ -118,7 +122,6 @@ public class SGDBDescriptionTranslator extends BasicTranslator {
 
   /**
    * Public constructor.
-   * @param bioAssay BioAssay used for the annotation
    */
   public SGDBDescriptionTranslator() {
     setDefaultField(FIELDS[1]);

@@ -53,7 +53,7 @@ public final class PlatformRegistery {
     return Registery.getRegistery().getProperty(
         "nividic.base.dir",
         SystemUtils.getClassSource(PlatformRegistery.class).getParentFile()
-            .getParentFile().getAbsolutePath().toString());
+            .getParentFile().getAbsolutePath());
   }
 
   /**

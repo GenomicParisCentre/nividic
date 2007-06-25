@@ -107,7 +107,7 @@ public class HistoryEntry {
    */
   public Date getDate() {
 
-    return date;
+    return date == null ? null : (Date) date.clone();
   }
 
   //
@@ -130,14 +130,14 @@ public class HistoryEntry {
 
   private void setActionResult(final HistoryActionResult actionResult) {
 
-    this.actionResult = actionResult != null ? actionResult
-        : HistoryActionResult.UNKNOWN;
+    this.actionResult =
+        actionResult != null ? actionResult : HistoryActionResult.UNKNOWN;
   }
 
   private void setActionType(final HistoryActionType actionType) {
 
-    this.actionType = actionType != null ? actionType
-        : HistoryActionType.UNKNOWN;
+    this.actionType =
+        actionType != null ? actionType : HistoryActionType.UNKNOWN;
   }
 
   private void setArguments(final String arguments) {

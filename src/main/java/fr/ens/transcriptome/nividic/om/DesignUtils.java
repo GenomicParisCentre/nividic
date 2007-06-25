@@ -24,8 +24,6 @@ package fr.ens.transcriptome.nividic.om;
 
 import java.util.List;
 
-import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
-
 /**
  * Utils methods for Design.
  * @author Laurent Jourdren

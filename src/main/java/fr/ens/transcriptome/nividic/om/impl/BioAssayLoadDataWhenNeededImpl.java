@@ -40,8 +40,8 @@ public abstract class BioAssayLoadDataWhenNeededImpl extends BioAssayImpl
   /** serial version for serialization. */
   static final long serialVersionUID = 6766133047639912494L;
 
-  //Load fields
-  private Map fieldnames = new HashMap();
+  // Load fields
+  private Map<String, Boolean> fieldnames = new HashMap<String, Boolean>();
   private FieldNameConverter converter;
 
   //
@@ -244,11 +244,11 @@ public abstract class BioAssayLoadDataWhenNeededImpl extends BioAssayImpl
 
     String[] fields = super.getFields();
 
-    Map m = new HashMap();
+    Map<String, String> m = new HashMap<String, String>();
     for (int i = 0; i < fields.length; i++)
       m.put(fields[i], "");
 
-    Iterator it = this.fieldnames.keySet().iterator();
+    Iterator<String> it = this.fieldnames.keySet().iterator();
     while (it.hasNext())
       m.put(it.next(), "");
 
@@ -257,7 +257,7 @@ public abstract class BioAssayLoadDataWhenNeededImpl extends BioAssayImpl
     it = m.keySet().iterator();
     int i = 0;
     while (it.hasNext())
-      result[i++] = (String) it.next();
+      result[i++] = it.next();
 
     return result;
   }
@@ -291,7 +291,7 @@ public abstract class BioAssayLoadDataWhenNeededImpl extends BioAssayImpl
    * @param loaded Status of the field
    */
   private void setFieldLoadedStatus(final String field, final boolean loaded) {
-    this.fieldnames.put(field, new Boolean(loaded));
+    this.fieldnames.put(field, loaded);
   }
 
 }

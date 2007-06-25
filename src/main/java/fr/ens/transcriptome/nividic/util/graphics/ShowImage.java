@@ -38,7 +38,7 @@ import javax.swing.JDialog;
  */
 public class ShowImage extends JDialog {
 
-  private class ImageCanvas extends Canvas {
+  private static final class ImageCanvas extends Canvas {
 
     private Image img;
 

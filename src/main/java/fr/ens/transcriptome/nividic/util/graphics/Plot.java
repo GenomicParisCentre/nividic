@@ -71,7 +71,7 @@ public class Plot {
   private double xFactor;
   private double yFactor;
 
-  //private static final double MARGIN_FACTOR = 0.12;
+  // private static final double MARGIN_FACTOR = 0.12;
   private static final double X_MARGIN_FACTOR = 0.05;
   private static final double Y_MARGIN_FACTOR = 0.12;
 
@@ -455,14 +455,11 @@ public class Plot {
       sizeXLeftUnit = (int) bounds.getWidth();
     }
 
-    int xLeftMargin = new Double(X_MARGIN_FACTOR * getWidth()).intValue()
-        + sizeXLeftUnit;
-    int xRightMargin = new Double(X_MARGIN_FACTOR * getWidth()).intValue()
-        + sizeXRightUnit;
+    int xLeftMargin = (int) (X_MARGIN_FACTOR * getWidth()) + sizeXLeftUnit;
+    int xRightMargin = (int) (X_MARGIN_FACTOR * getWidth()) + sizeXRightUnit;
+    int yMargin = (int) (Y_MARGIN_FACTOR * getHeight());
 
-    int yMargin = new Double(Y_MARGIN_FACTOR * getHeight()).intValue();
-
-    //setXPlotZone(xMargin);
+    // setXPlotZone(xMargin);
     setXPlotZone(xLeftMargin);
     setYPlotZone(yMargin);
     setWidthPlotZone(getWidth() - (xLeftMargin + xRightMargin));
@@ -478,7 +475,7 @@ public class Plot {
     if (getXPlotDescription() == null)
       return;
 
-    double y = getHeight() / 2;
+    double y = getHeight() / (double) 2;
     double x = (getXPlotZone() + getWidthPlotZone()) * 1.05;
 
     final Graphics2D g = getGraphics();
@@ -494,7 +491,7 @@ public class Plot {
 
     g.drawString(getXPlotDescription(), (int) x + 15, (int) (y + bounds
         .getHeight() / 3));
-    //bounds .getMaxY()
+    // bounds .getMaxY()
   }
 
   private void drawXAxis(final double min, final double max, final double range) {
@@ -515,12 +512,12 @@ public class Plot {
         + getHeightPlotZone() + 3, getXPlotZone() + getWidthPlotZone() + 7,
         getYPlotZone() + getHeightPlotZone() + 1);
 
-    //int windows = (int) ((max - min) / range) + 1;
-    //int step = (int) (getWidthPlotZone() / windows);
+    // int windows = (int) ((max - min) / range) + 1;
+    // int step = (int) (getWidthPlotZone() / windows);
 
     g.setFont(FONT_AXIS);
 
-    //double xFactor = getWidthPlotZone() / (max - min);
+    // double xFactor = getWidthPlotZone() / (max - min);
 
     for (double d = min; d <= max; d += range) {
 
@@ -547,7 +544,7 @@ public class Plot {
     g.drawLine(getXPlotZone() - 1, getYPlotZone() + getHeightPlotZone() + 1,
         getXPlotZone() - 1, getYPlotZone() - 5);
 
-    //  Arrow
+    // Arrow
     g.drawLine(getXPlotZone() - 3, getYPlotZone() - 5, getXPlotZone() - 1,
         getYPlotZone() - 7);
     g.drawLine(getXPlotZone() + 1, getYPlotZone() - 5, getXPlotZone() - 1,
@@ -560,7 +557,7 @@ public class Plot {
     else
       windows = (int) ((max - min) / range) + 1;
 
-    int step = (int) (getHeightPlotZone() / windows);
+    // int step = (int) (getHeightPlotZone() / windows);
 
     g.setFont(FONT_AXIS);
     Font f = g.getFont();
@@ -609,7 +606,7 @@ public class Plot {
   private void searchFactors(final boolean hist) {
 
     if (Double.isNaN(getMinX()))
-      //minX = getData().getMinX();
+      // minX = getData().getMinX();
       setMinX(0);
 
     else
@@ -621,8 +618,8 @@ public class Plot {
       if (hist) {
         // The last column must be on the axis
         int n = (int) (maxX / getHistRange());
-       maxX = (n + 1) * getHistRange();
-      } 
+        maxX = (n + 1) * getHistRange();
+      }
       setMaxX(maxX);
     }
 
@@ -638,8 +635,8 @@ public class Plot {
       if (getData() == null || getData().size() == 0)
         return;
 
-    //double minX;
-    //double maxX;
+    // double minX;
+    // double maxX;
     /*
      * double range = getHistRange(); if (Double.isNaN(getMinX())) //minX =
      * getData().getMinX(); minX = 0; else minX = getMinX(); if
@@ -694,8 +691,8 @@ public class Plot {
     else
       maxY = getMaxY();
 
-    //double xFactor = getWidthPlotZone() / (maxX - minX);
-    //double yFactor = getHeightPlotZone() / (maxY - minY);
+    // double xFactor = getWidthPlotZone() / (maxX - minX);
+    // double yFactor = getHeightPlotZone() / (maxY - minY);
 
     final int size = getData().size();
     final ArrayList alX = getData().getXs();
@@ -730,8 +727,8 @@ public class Plot {
       if (getData() == null || getData().size() == 0)
         return;
 
-    //double minX;
-    //double maxX;
+    // double minX;
+    // double maxX;
     final double range = getHistRange();
 
     int windows = (int) ((getMaxX() - getMinX()) / range) + 1;
@@ -750,7 +747,7 @@ public class Plot {
     }
 
     final Graphics2D g = getGraphics();
-    //double yFactor;
+    // double yFactor;
 
     if (isLogMode())
       setYFactor(((double) getHeightPlotZone())
@@ -758,7 +755,7 @@ public class Plot {
     else
       setYFactor(((double) getHeightPlotZone()) / ((double) getMax(hist)));
 
-    //double xFactor = getWidthPlotZone() / (getMaxX() - getMinX());
+    // double xFactor = getWidthPlotZone() / (getMaxX() - getMinX());
 
     boolean b = false;
     for (int i = 0; i < windows; i++) {
@@ -838,8 +835,8 @@ public class Plot {
     g.setColor(Color.BLACK);
 
     g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-    //g.drawRect(getXPlotZone(),getYPlotZone(),
-    //getWidthPlotZone(),getHeightPlotZone());
+    // g.drawRect(getXPlotZone(),getYPlotZone(),
+    // getWidthPlotZone(),getHeightPlotZone());
 
     computePlotZone();
 
@@ -865,8 +862,8 @@ public class Plot {
   //
 
   public Plot() {
-    //this(800, 600);
-    //this(200,200);
+    // this(800, 600);
+    // this(200,200);
   }
 
   public Plot(final int width, final int height) {

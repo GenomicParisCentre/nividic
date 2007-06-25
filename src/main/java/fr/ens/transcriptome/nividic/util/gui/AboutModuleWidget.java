@@ -78,9 +78,6 @@ public class AboutModuleWidget extends JPanel {
       return count;
     }
 
-    if (value == null)
-      return count;
-
     JLabel fieldLabel = new JLabel(name);
 
     fieldLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -95,8 +92,8 @@ public class AboutModuleWidget extends JPanel {
 
     panel.add(valueField);
 
-    //panel.add(new JLabel(" "));
-    //panel.add(new JLabel(" "));
+    // panel.add(new JLabel(" "));
+    // panel.add(new JLabel(" "));
 
     return count + 1;
   }
@@ -150,10 +147,10 @@ public class AboutModuleWidget extends JPanel {
     c = addInfo(infoPanel, c, "Website", m.getWebsite());
     c = addInfo(infoPanel, c, "Organization", m.getOrganisation());
 
-    SpringUtilities.makeCompactGrid(infoPanel, c, 2, //rows,
+    SpringUtilities.makeCompactGrid(infoPanel, c, 2, // rows,
         // cols
-        6, 6, //initX, initY
-        6, 6); //xPad, yPad
+        6, 6, // initX, initY
+        6, 6); // xPad, yPad
 
     this.add(infoPanel);
 

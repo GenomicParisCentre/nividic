@@ -60,7 +60,7 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
   private static final int HASHCODE_ODD_NUMBER_2 = 1235;
 
   private BiologicalName name = new BiologicalName(this);
-  private Set list = new HashSet();
+  private Set<String> list = new HashSet<String>();
   private Annotation annotation = AnnotationFactory.createAnnotation();
   private HistoryImpl history = new HistoryImpl();
 
@@ -541,7 +541,7 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
   // Constructor
   //
 
-  private BiologicalListImpl(final BiologicalList list, boolean addHistory) {
+  private BiologicalListImpl(final BiologicalList list, final boolean addHistory) {
 
     add(list);
     if (addHistory)

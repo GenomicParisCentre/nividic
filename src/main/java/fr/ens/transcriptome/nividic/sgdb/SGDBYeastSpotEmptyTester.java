@@ -35,8 +35,8 @@ import fr.ens.transcriptome.nividic.om.SpotEmptyTester;
 public class SGDBYeastSpotEmptyTester implements SpotEmptyTester {
 
   /** Idenfiers of the empty spots. */
-  String[] EMPTY_SPOTS_IDENTIFIERS = {"", "empty",
-      "Corning Pronto Universal Spotting Solution"};
+  String[] EMPTY_SPOTS_IDENTIFIERS =
+      {"", "empty", "Corning Pronto Universal Spotting Solution"};
 
   private String[] emptySpotsIds;
 
@@ -110,11 +110,10 @@ public class SGDBYeastSpotEmptyTester implements SpotEmptyTester {
   /**
    * Default contructor.
    * @param emptySpotsIds An array of "empty" identifiers
-   * @param descriptionToTest true if the value to test is the description
    */
   public SGDBYeastSpotEmptyTester(final String[] emptySpotsIds) {
 
-    this.emptySpotsIds = emptySpotsIds;
+    this.emptySpotsIds = emptySpotsIds == null ? null : emptySpotsIds.clone();
 
   }
 

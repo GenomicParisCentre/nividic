@@ -48,7 +48,7 @@ public abstract class BioAssayTabularReader extends BioAssayTextReader {
    * @return The fields names
    */
   public String[] getFieldNames() {
-    return fieldNames;
+    return fieldNames == null ? null : fieldNames.clone();
   }
 
   /**
@@ -56,7 +56,7 @@ public abstract class BioAssayTabularReader extends BioAssayTextReader {
    * @param strings the fieldnames to set
    */
   public void setFieldNames(final String[] strings) {
-    fieldNames = strings;
+    fieldNames = strings == null ? null : strings.clone();
   }
 
   //
@@ -95,7 +95,7 @@ public abstract class BioAssayTabularReader extends BioAssayTextReader {
       for (int i = 0; i < result.length; i++) {
         result[i] = StringUtils.removeDoubleQuotes(result[i]);
 
-        Map map = new HashMap();
+        Map<String, String> map = new HashMap<String, String>();
 
         if (map.containsKey(result[i]))
           throw new NividicIOException("Two column have the same name");

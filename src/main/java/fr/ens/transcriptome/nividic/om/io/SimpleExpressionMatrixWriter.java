@@ -47,7 +47,7 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
   private BufferedWriter bw;
   private static final String SEPARATOR = "\t";
-  private final String type = "id/M";
+  private static final String type = "id/M";
 
   /** Dimension separator. */
   public static final String DIMENSION_SEPARATOR = "$";

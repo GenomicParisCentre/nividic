@@ -23,7 +23,6 @@
 package fr.ens.transcriptome.nividic.om.filters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +64,7 @@ public class ExpressionMatrixMerger {
 
   private boolean addStatData = false;
 
-  private final class Location implements Comparable {
+  private final static class Location implements Comparable {
 
     private static final int INITIAL_NO_ZERO_ODD_NUMBER = 17;
     private static final int MULTIPLIER_NO_ZERO_ODD_NUMBER = 37;
@@ -75,6 +74,9 @@ public class ExpressionMatrixMerger {
     int dimension;
 
     public boolean equals(final Object o) {
+
+      if (o == null || !(o instanceof Location))
+        return false;
 
       final Location loc = (Location) o;
 
@@ -536,14 +538,13 @@ public class ExpressionMatrixMerger {
 
     final boolean medianMode = isMedianMode();
 
-    for (Location loc : locationValues.keySet()) {
+    for (Map.Entry<Location, List<Double>> e : locationValues.entrySet()) {
 
-      List<Double> doubleValues = locationValues.get(loc);
-      final StatMerger statLoc = new StatMerger(doubleValues);
+      final StatMerger statLoc = new StatMerger(e.getValue());
       final double me = medianMode ? statLoc.getMedian() : statLoc.getMean();
 
-      mergedValues.put(loc, me);
-      statsData.put(loc, statLoc);
+      mergedValues.put(e.getKey(), me);
+      statsData.put(e.getKey(), statLoc);
     }
 
     // Rebuild an ExpressionMatrix Object
@@ -824,6 +825,10 @@ public class ExpressionMatrixMerger {
     this.dimensionIndex.remove(index);
   }
 
+  /**
+   * Add a dimension.
+   * @param dimensionName name of the dimension to add
+   */
   public void addDimension(final String dimensionName) {
 
     if (dimensionName == null

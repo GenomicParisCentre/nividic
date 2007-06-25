@@ -495,7 +495,7 @@ public class SpotImpl implements Spot, Serializable {
   void setBioAssay(final BioAssay bioAssay) {
 
     if (bioAssay == null)
-      new BioAssayRuntimeException(BioAssayRuntimeException.NULL_POINTER,
+      throw new BioAssayRuntimeException(BioAssayRuntimeException.NULL_POINTER,
           "BioAssay is null");
 
     this.bioAssay = bioAssay;
@@ -521,6 +521,10 @@ public class SpotImpl implements Spot, Serializable {
       this.ratios = bioAssay.getRatios();
     if (bioAssay.isReds())
       this.reds = bioAssay.getReds();
+    if (bioAssay.isStdDevAs())
+      this.stdDevA = bioAssay.getStdDevAs();
+    if (bioAssay.isStdDevMs())
+      this.stdDevM = bioAssay.getStdDevMs();
 
   }
 

@@ -84,7 +84,7 @@ public interface BioAssay extends BioAssayBase, BiologicalObject {
    * @return An annotations object
    */
   Annotation getAnnotation();
-  
+
   /**
    * Get the reds data.
    * @return An int vector containing the data of the field

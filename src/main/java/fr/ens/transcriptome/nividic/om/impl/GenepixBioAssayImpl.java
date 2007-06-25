@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om.impl;
 
 import java.applet.Applet;
+import java.io.Serializable;
 
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.io.GPRConverterFieldNames;
@@ -33,7 +34,8 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
  * This class allow to load in memory Genepix dat only when the user request it.
  * @author Laurent Jourdren
  */
-public class GenepixBioAssayImpl extends BioAssayLoadDataWhenNeededImpl {
+public class GenepixBioAssayImpl extends BioAssayLoadDataWhenNeededImpl
+    implements Serializable {
 
   /** serial version for serialization. */
   static final long serialVersionUID = 3951209739865591061L;
@@ -91,8 +93,8 @@ public class GenepixBioAssayImpl extends BioAssayLoadDataWhenNeededImpl {
     if (lines == null)
       return;
 
-    //if (getAnnotation() == null)
-    //  setAnnotation(AnnotationFactory.createAnnotation());
+    // if (getAnnotation() == null)
+    // setAnnotation(AnnotationFactory.createAnnotation());
     Annotation annotations = getAnnotation();
 
     for (int i = 0; i < lines.length; i++) {

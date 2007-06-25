@@ -23,12 +23,9 @@
 package fr.ens.transcriptome.nividic.om.impl;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.commons.collections.primitives.ArrayIntList;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayBase;
@@ -195,7 +192,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     // met à jour la map _dir à chaque fois qu'il y a un setData()
     this.hashInteger.put(field, value);
-    this.hashDir.put(field, new Integer(BioAssayBase.DATATYPE_INTEGER));
+    this.hashDir.put(field, BioAssayBase.DATATYPE_INTEGER);
 
   }
 
@@ -225,7 +222,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     // met à jour la map _dir à chaque fois qu'il y a un setData()
     this.hashDouble.put(field, value);
-    this.hashDir.put(field, new Integer(BioAssayBase.DATATYPE_DOUBLE));
+    this.hashDir.put(field, BioAssayBase.DATATYPE_DOUBLE);
   }
 
   /**
@@ -254,7 +251,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     // met à jour la map _dir à chaque fois qu'il y a un setData()
     this.hashString.put(field, value);
-    this.hashDir.put(field, new Integer(BioAssayBase.DATATYPE_STRING));
+    this.hashDir.put(field, BioAssayBase.DATATYPE_STRING);
 
     if (isReference() && field.equals(getReferenceField()))
       makeReferences();
@@ -334,7 +331,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     case BioAssayBase.DATATYPE_INTEGER:
       this.hashInteger.remove(field);
       this.hashDir.remove(field);
-      if (field == FIELD_NAME_LOCATION)
+      if (FIELD_NAME_LOCATION.equals(field))
         indexLoc.clear();
       break;
 
@@ -373,7 +370,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
    */
   public int getIndexFromALocation(final int location) {
 
-    Object o = indexLoc.get(new Integer(location));
+    Object o = indexLoc.get(location);
 
     if (o == null)
       return -1;
@@ -514,52 +511,6 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
   }
 
   /**
-   * Test if the size of the data equals bioAssaySize,
-   * @param data Data to test
-   * @return true if data is not null or its size is wrong
-   */
-  private boolean testSize(final int[] data) {
-
-    if (data == null)
-      return false;
-
-    if (this.size == -1)
-      return true;
-    return data.length == this.size;
-
-  }
-
-  /**
-   * Test if the size of the data equals bioAssaySize,
-   * @param data Data to test
-   * @return true if data is not null or its size is wrong
-   */
-  private boolean testSize(final double[] data) {
-
-    if (data == null)
-      return false;
-
-    if (this.size == -1)
-      return true;
-    return data.length == this.size;
-  }
-
-  /**
-   * Test if the size of the data equals bioAssaySize,
-   * @param data Data to test
-   * @return true if data is not null or its size is wrong
-   */
-  private boolean testSize(final String[] data) {
-
-    if (data == null)
-      return false;
-
-    if (this.size == -1)
-      return true;
-    return data.length == this.size;
-  }
-
-  /**
    * Rename a field.
    * @param oldName Name of the field to rename
    * @param newName New name of the field
@@ -623,7 +574,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
       throw new NullPointerException("One or more fieldname is null");
 
     if (!isField(fieldA) || !isField(fieldB))
-      new NividicRuntimeException("One ore more field doesn't exists");
+      throw new NividicRuntimeException("One ore more field doesn't exists");
 
     if (this.getFieldType(fieldA) != this.getFieldType(fieldB))
       throw new NividicRuntimeException(

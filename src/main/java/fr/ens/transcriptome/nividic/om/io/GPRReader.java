@@ -32,11 +32,11 @@ import java.io.InputStream;
 public class GPRReader extends ATFReader {
 
   /** Fields names usualy readed in a GPR file. */
-  private static String[] fieldNameInGPR = {"Block", "Column", "Row", "Name",
+  private static final String[] fieldNameInGPR = {"Block", "Column", "Row", "Name",
       "ID", "F635 Median", "F532 Median", "Flags"};
 
   /** Name of integer field names. */
-  private static String[] intFieldNames = {"Block", "Column", "Row", "X", "Y",
+  private static final String[] intFieldNames = {"Block", "Column", "Row", "X", "Y",
       "Dia.", "F635 Median", "F635 Mean", "F635 SD", "F635 CV", "B635 CV",
       "B635", "B635 Median", "B635 Mean", "B635 SD", "% > B635+1SD",
       "% > B635+2SD", "F635 % Sat.", "F532 Median", "F532 Mean", "F532 SD",
@@ -49,7 +49,7 @@ public class GPRReader extends ATFReader {
       "Flags", "Normalize", "Autoflag"};
 
   /** Name of double field names. */
-  private static String[] doubleFieldNames = {"Ratio of Medians (635/532)",
+  private static final String[] doubleFieldNames = {"Ratio of Medians (635/532)",
       "Ratio of Means (635/532)", "Median of Ratios (635/532)",
       "Mean of Ratios (635/532)", "Ratios SD (635/532)", "Rgn Ratio (635/532)",
       "Rgn R2 (635/532)", "Log Ratio (635/532)", "SNR 635", "SNR 532"};
@@ -73,7 +73,7 @@ public class GPRReader extends ATFReader {
    * @return An string array of field names
    */
   public String[] getIntFieldNames() {
-    return GPRReader.intFieldNames;
+    return GPRReader.intFieldNames.clone();
   }
 
   /**
@@ -81,7 +81,7 @@ public class GPRReader extends ATFReader {
    * @return An string array of field names
    */
   public String[] getDoubleFieldNames() {
-    return GPRReader.doubleFieldNames;
+    return GPRReader.doubleFieldNames.clone();
   }
 
   //

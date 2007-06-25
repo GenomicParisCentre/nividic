@@ -36,14 +36,14 @@ import fr.ens.transcriptome.nividic.om.io.NividicIOException;
  * Netscape library is need for compiling this class but it seems to be already
  * shipped in Sun JRE plugin for Internet Explorer.
  * @author Laurent Jourdren TODO this class must be only visible for class of
- *               this package.
+ *         this package.
  */
 public class GenepixObjectModel implements Serializable {
 
   /** serial version for serialization. */
   static final long serialVersionUID = -6474109031084968849L;
 
-  private JSObject window;
+  private transient JSObject window;
   private int height;
   private int width;
   private String[] columnNames;
@@ -122,7 +122,7 @@ public class GenepixObjectModel implements Serializable {
 
     Object[] args = new Object[2];
     args[0] = columnName;
-    args[1] = new Integer(row);
+    args[1] = row;
 
     Object result = getWindow().call("getValueAt", args);
 
@@ -140,7 +140,7 @@ public class GenepixObjectModel implements Serializable {
   private String readGenepixColumnName(final int column) {
 
     Object[] args = new Object[1];
-    args[0] = new Integer(column);
+    args[0] = column;
 
     Object result = getWindow().call("getColumnName", args);
 
@@ -253,7 +253,7 @@ public class GenepixObjectModel implements Serializable {
    */
   public String[] getColumnNames() {
 
-    return this.columnNames;
+    return this.columnNames.clone();
   }
 
   /**

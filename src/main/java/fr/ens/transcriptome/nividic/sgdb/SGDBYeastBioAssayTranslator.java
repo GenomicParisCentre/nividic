@@ -23,15 +23,20 @@
 package fr.ens.transcriptome.nividic.sgdb;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
 import fr.ens.transcriptome.nividic.om.translators.BasicTranslator;
 
+/**
+ * Define a translator for sgdb yeast chip annotation.
+ * @author Laurent Jourdren
+ */
 public class SGDBYeastBioAssayTranslator extends BasicTranslator {
 
   private static final String[] FIELDS = {"Probe", "ORF", "Description"};
-  private HashMap annotations = new HashMap();
+  private Map<String, String> annotations = new HashMap<String, String>();
 
   /**
    * Set the bioAssay.
@@ -49,8 +54,8 @@ public class SGDBYeastBioAssayTranslator extends BasicTranslator {
       final String id = si.getId();
       final String description = si.getDescription();
 
-      this.annotations.put(id == null ? null : id.trim(),
-          description == null ? null : description.trim());
+      this.annotations.put(id == null ? null : id.trim(), description == null
+          ? null : description.trim());
     }
   }
 
@@ -77,7 +82,7 @@ public class SGDBYeastBioAssayTranslator extends BasicTranslator {
    */
   public String[] getFields() {
 
-    return FIELDS;
+    return FIELDS.clone();
   }
 
   /**
@@ -167,7 +172,7 @@ public class SGDBYeastBioAssayTranslator extends BasicTranslator {
     if (id == null)
       return null;
 
-    return (String) this.annotations.get(id.trim());
+    return this.annotations.get(id.trim());
   }
 
   //

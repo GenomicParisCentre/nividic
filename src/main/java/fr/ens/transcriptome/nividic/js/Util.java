@@ -28,8 +28,6 @@ package fr.ens.transcriptome.nividic.js;
  */
 public final class Util {
 
-  
-
   //
   // Constructor
   //

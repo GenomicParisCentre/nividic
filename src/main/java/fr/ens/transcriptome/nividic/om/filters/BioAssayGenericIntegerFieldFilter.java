@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om.filters;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
@@ -51,15 +52,15 @@ public abstract class BioAssayGenericIntegerFieldFilter implements
     final int[] data = bioAssay.getDataFieldInt(getFieldToFilter());
 
     int size = bioAssay.size();
-    ArrayList al = new ArrayList();
+    List<Integer> al = new ArrayList<Integer>();
 
     for (int i = 0; i < size; i++)
       if (!test(data[i]))
-        al.add(new Integer(i));
+        al.add(i);
 
     int[] toRemove = new int[al.size()];
     for (int i = 0; i < toRemove.length; i++)
-      toRemove[i] = ((Integer) al.get(i)).intValue();
+      toRemove[i] = al.get(i);
 
     return BioAssayUtils.removeRowsFromBioAssay(bioAssay, toRemove);
   }

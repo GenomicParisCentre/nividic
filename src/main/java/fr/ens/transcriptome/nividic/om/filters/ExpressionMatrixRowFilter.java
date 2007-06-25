@@ -128,7 +128,7 @@ public abstract class ExpressionMatrixRowFilter implements
 
     for (int i = 0; i < size; i++)
       if (testRow(getValuesToTest(d.getRowToArray(rowNames[i]))))
-        al.add(new String(rowNames[i]));
+        al.add(rowNames[i]);
 
     positiveRows = al.toArray(positiveRows);
 

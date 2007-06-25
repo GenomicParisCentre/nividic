@@ -22,7 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om;
 
-import org.apache.commons.collections.OrderedMapIterator;
+import java.util.Set;
 
 /**
  * This interface define annotations
@@ -77,10 +77,10 @@ public interface Annotation {
   void clear();
 
   /**
-   * Get an iterator for the object.
+   * Get a set of the keys for the object.
    * @return A iterator
    */
-  OrderedMapIterator iterator();
+  Set<String> keySet();
 
   /**
    * Returns the annotations keys.

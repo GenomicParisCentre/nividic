@@ -29,12 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
-// import org.apache.commons.collections.IterableMap;
-// import org.apache.commons.collections.map.LinkedMap;
-// import org.apache.commons.collections.primitives.ArrayDoubleList;
-
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
@@ -51,13 +45,13 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
 public class ExpressionMatrixDimensionImpl implements
     ExpressionMatrixDimension, ExpressionMatrixListener {
 
-  private static final int INIRIAL_NON_ZERO_ODD_NUMMER = 11;
-  private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 29;
+  // private static final int INIRIAL_NON_ZERO_ODD_NUMMER = 11;
+  // private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 29;
 
   private String name;
   private ExpressionMatrixImpl matrix;
 
-  private Set listeners = new HashSet();
+  private Set<ExpressionMatrixListener> listeners = new HashSet<ExpressionMatrixListener>();
 
   private Map<String, List<Double>> referencesToColumnNamesMap;
 
@@ -223,12 +217,13 @@ public class ExpressionMatrixDimensionImpl implements
 
     matrix.throwExceptionIfColumnDoesntExists(columnName);
 
-    double[] columnValues = new double[matrix.getRowCount()];
+    /*
+     * double[] columnValues = new double[matrix.getRowCount()]; columnValues =
+     * NividicUtils.toArray(referencesToColumnNamesMap .get(columnName)); return
+     * columnValues;
+     */
 
-    columnValues = NividicUtils.toArray(referencesToColumnNamesMap
-        .get(columnName));
-
-    return columnValues;
+    return NividicUtils.toArray(referencesToColumnNamesMap.get(columnName));
   }
 
   /**

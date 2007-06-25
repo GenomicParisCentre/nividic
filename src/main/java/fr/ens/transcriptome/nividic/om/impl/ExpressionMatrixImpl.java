@@ -25,13 +25,10 @@ package fr.ens.transcriptome.nividic.om.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.collections.IterableMap;
-import org.apache.commons.collections.map.LinkedMap;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
@@ -60,7 +57,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
 public class ExpressionMatrixImpl implements ExpressionMatrix,
     ExpressionMatrixListenerHandler {
 
-  private IterableMap idsMap;
+  private Map<String, Integer> idsMap;
   private int rowCreatedCount;
   // private IterableMap referencesToColumnNamesMap;
 
@@ -71,14 +68,14 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
   private static int count;
   private static int copyNumber;
-  private static Random random = new Random(System.currentTimeMillis());
+
   private Set<ExpressionMatrixListener> listeners = new HashSet<ExpressionMatrixListener>();
 
-  private static final int HASHCODE_ODD_NUMBER_1 = 16052005;
-  private static final int HASHCODE_ODD_NUMBER_2 = 17;
+  // private static final int HASHCODE_ODD_NUMBER_1 = 16052005;
+  // private static final int HASHCODE_ODD_NUMBER_2 = 17;
   private HistoryImpl history = new HistoryImpl();
 
-  private IterableMap dimensionMap;
+  private Map<String, ExpressionMatrixDimensionImpl> dimensionMap;
   private String defaultDimensionName = ExpressionMatrix.DIMENSION_M;
 
   //
@@ -120,13 +117,14 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   /**
    * Get a dimension of the matrix.
    * @param name Name of the dimension
+   * @return the requested dimension
    */
   public ExpressionMatrixDimension getDimension(final String name) {
 
     if (name == null)
       return null;
 
-    return (ExpressionMatrixDimension) this.dimensionMap.get(name);
+    return this.dimensionMap.get(name);
   }
 
   /**
@@ -186,8 +184,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     if (!containsDimension(name))
       return;
 
-    ExpressionMatrixDimensionImpl emd = (ExpressionMatrixDimensionImpl) this.dimensionMap
-        .get(name);
+    ExpressionMatrixDimensionImpl emd = this.dimensionMap.get(name);
 
     removeListener(emd);
 
@@ -283,7 +280,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     throwExceptionIfRowNameDoesntExists(rowId);
 
-    int index = ((Integer) this.idsMap.get(rowId)).intValue();
+    int index = this.idsMap.get(rowId);
 
     return index;
   }
@@ -377,7 +374,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     throwExceptionIfColumnDoesntExists(columnNumber);
 
-    return (String) this.columnNamesArrayList.get(columnNumber);
+    return this.columnNamesArrayList.get(columnNumber);
   }
 
   //
@@ -424,7 +421,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       throw new ExpressionMatrixRuntimeException("The name " + newName
           + " that you intent to set does exist yet");
 
-    Integer index = new Integer(this.getInternalRowIdIndex(formerName));
+    final int index = this.getInternalRowIdIndex(formerName);
     this.removeRow(formerName);
 
     this.idsMap.put(newName, index);
@@ -624,8 +621,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     String result = null;
 
-    while (containsColumn(result = newColumnName + "-" + count))
-      count++;
+    do
+      result = newColumnName + "-" + count;
+    while (containsColumn(result));
 
     return result;
   }
@@ -1033,7 +1031,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     sendEvent(new ExpressionMatrixEvent(this,
         ExpressionMatrixEvent.ADD_ROW_EVENT, rowName));
 
-    this.idsMap.put(rowName, new Integer(rowCreatedCount++));
+    this.idsMap.put(rowName, rowCreatedCount++);
   }
 
   /**
@@ -1047,7 +1045,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       throw new ExpressionMatrixRuntimeException(
           "the dimension doesn't exists name : " + oldName);
 
-    Object d = this.dimensionMap.get(oldName);
+    ExpressionMatrixDimensionImpl d = this.dimensionMap.get(oldName);
     this.dimensionMap.put(newName, d);
 
     if (this.defaultDimensionName.equals(oldName))
@@ -1347,9 +1345,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     if (name != null)
       setName(name);
 
-    this.idsMap = new LinkedMap();
+    this.idsMap = new LinkedHashMap<String, Integer>();
     this.columnNamesArrayList = new ArrayList<String>();
-    this.dimensionMap = new LinkedMap();
+    this.dimensionMap = new LinkedHashMap<String, ExpressionMatrixDimensionImpl>();
     addDimension(getDefaultDimensionName());
     addConstructorHistoryEntry();
   }
@@ -1374,9 +1372,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     copyNumber++;
 
-    this.idsMap = new LinkedMap();
+    this.idsMap = new LinkedHashMap<String, Integer>();
     this.columnNamesArrayList = new ArrayList<String>();
-    this.dimensionMap = new LinkedMap();
+    this.dimensionMap = new LinkedHashMap<String, ExpressionMatrixDimensionImpl>();
 
     if (name == null)
       this.setName("copy(" + copyNumber + ")of-" + matrix.getName());

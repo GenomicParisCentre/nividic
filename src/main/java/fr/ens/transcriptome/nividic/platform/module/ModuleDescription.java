@@ -62,7 +62,7 @@ public final class ModuleDescription implements AboutModule {
    * @return The authors of the module
    */
   public String[] getAuthors() {
-    return authors;
+    return authors == null ? null : authors.clone();
   }
 
   /**
@@ -70,7 +70,7 @@ public final class ModuleDescription implements AboutModule {
    * @return The dependancies of the module
    */
   public ModuleDependancy[] getDependancies() {
-    return dependancies;
+    return dependancies == null ? null : dependancies.clone();
   }
 
   /**
@@ -166,7 +166,7 @@ public final class ModuleDescription implements AboutModule {
    * @return The date of the version of the module
    */
   public Date getVersionDate() {
-    return versionDate;
+    return (Date) versionDate.clone();
   }
 
   /**
@@ -174,7 +174,7 @@ public final class ModuleDescription implements AboutModule {
    * @return The bibliography about the module
    */
   public String[] getBibliography() {
-    return bibliography;
+    return bibliography == null ? null : bibliography.clone();
   }
 
   /**
@@ -194,7 +194,7 @@ public final class ModuleDescription implements AboutModule {
    * @param names the names of the authors
    */
   public void setAuthors(final String[] names) {
-    authors = names;
+    authors = names == null ? null : names.clone();
   }
 
   /**
@@ -202,7 +202,7 @@ public final class ModuleDescription implements AboutModule {
    * @param dependancies The dependancies to set
    */
   public void setDependancies(final ModuleDependancy[] dependancies) {
-    this.dependancies = dependancies;
+    this.dependancies = dependancies == null ? null : dependancies.clone();
   }
 
   /**
@@ -240,8 +240,7 @@ public final class ModuleDescription implements AboutModule {
    */
   public void setName(final String name) throws PlatformException {
     if (name == null || name.equals(""))
-      throw new PlatformException(
-          "the name of a module can't be null or empty");
+      throw new PlatformException("the name of a module can't be null or empty");
     moduleName = name;
   }
 
@@ -303,7 +302,7 @@ public final class ModuleDescription implements AboutModule {
    * @param bibliography The bibliography about the module
    */
   public void setBibliography(final String[] bibliography) {
-    this.bibliography = bibliography;
+    this.bibliography = bibliography == null ? null : bibliography.clone();
   }
 
   /**
@@ -327,7 +326,7 @@ public final class ModuleDescription implements AboutModule {
    * @param date The date of the version of the module
    */
   public void setVersionDate(final Date date) {
-    versionDate = date;
+    versionDate = date == null ? null : (Date) date.clone();
   }
 
   /**

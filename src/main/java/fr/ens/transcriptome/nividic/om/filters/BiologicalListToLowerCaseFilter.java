@@ -22,7 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
-
 /**
  * This class define a filter that transform the list to lowe case.
  * @author Laurent Jourdren
@@ -42,7 +41,7 @@ public class BiologicalListToLowerCaseFilter extends
 
     return memberId.toLowerCase();
   }
-  
+
   /**
    * Get parameter filter information for the history
    * @return a String with information about the parameter of the filter

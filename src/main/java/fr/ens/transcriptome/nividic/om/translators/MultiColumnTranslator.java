@@ -34,7 +34,8 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
  */
 public class MultiColumnTranslator extends BasicTranslator {
 
-  private Map<String, Map<String, String>> annotations = new HashMap<String, Map<String, String>>();
+  private Map<String, Map<String, String>> annotations =
+      new HashMap<String, Map<String, String>>();
   private String[] fieldNames;
 
   /**
@@ -71,7 +72,7 @@ public class MultiColumnTranslator extends BasicTranslator {
    */
   public String[] getFields() {
 
-    return fieldNames;
+    return this.fieldNames == null ? null : this.fieldNames.clone();
   }
 
   /**

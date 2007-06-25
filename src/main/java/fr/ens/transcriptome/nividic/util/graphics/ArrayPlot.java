@@ -171,7 +171,7 @@ public class ArrayPlot {
    * @param blocks The blocks to set
    */
   public void setBlocks(final ArrayBlock[] blocks) {
-    this.blocks = blocks;
+    this.blocks = blocks==null?null:blocks.clone();
   }
 
   /**

@@ -145,7 +145,7 @@ public final class Version implements Comparable {
    * Compare 2 Version object.
    * @param version Version to compare.
    * @return a negative integer, zero, or a positive integer as this object is
-   *               less than, equal to, or greater than the specified object.
+   *         less than, equal to, or greater than the specified object.
    */
   public int compareTo(final Object version) {
 
@@ -154,17 +154,17 @@ public final class Version implements Comparable {
 
     final Version v = (Version) version;
 
-    final int compMajor = new Integer(getMajor()).compareTo(new Integer(v
-        .getMajor()));
+    final int compMajor = Integer.valueOf(getMajor()).compareTo(v
+        .getMajor());
     if (compMajor != 0)
       return compMajor;
 
-    final int compMinor = new Integer(getMinor()).compareTo(new Integer(v
-        .getMinor()));
+    final int compMinor = Integer.valueOf(getMinor()).compareTo(v
+        .getMinor());
     if (compMinor != 0)
       return compMinor;
 
-    return new Integer(getRevision()).compareTo(new Integer(v.getRevision()));
+    return Integer.valueOf(getRevision()).compareTo(v.getRevision());
   }
 
   /**

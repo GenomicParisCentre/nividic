@@ -25,10 +25,8 @@ package fr.ens.transcriptome.nividic.sgdb.lims;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.collections.primitives.ArrayIntList;
-import org.apache.commons.collections.primitives.IntList;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType;
@@ -165,19 +163,19 @@ public class SpotProbeTranslator extends LimsBasicTranslator {
 
       SpotProbe[] probes = port.getSpotsProbes(ids);
 
-      System.out.println("probes: " + probes);
+      //System.out.println("probes: " + probes);
 
       if (probes == null)
         return null;
 
-      Map map = new HashMap();
+      Map<String, String> map = new HashMap<String, String>();
 
       for (int i = 0; i < probes.length; i++)
         map.put("" + probes[i].getSpotId(), "" + probes[i].getProbeId());
 
       result = new String[spotIds.length];
       for (int i = 0; i < spotIds.length; i++)
-        result[i] = (String) map.get(spotIds[i]);
+        result[i] =  map.get(spotIds[i]);
 
     } catch (RemoteException e) {
       System.err.println(e.getMessage());
@@ -193,25 +191,25 @@ public class SpotProbeTranslator extends LimsBasicTranslator {
 
     if (spotIds == null)
       return null;
-    
-    ArrayIntList ail = new ArrayIntList();
-    ArrayList allProbes = new ArrayList();
+
+    List<Integer> ail = new ArrayList<Integer>();
 
     for (int i = 0; i < spotIds.length; i++)
       ail.add(spotIds[i]);
 
     for (int i = 0; i < spotIds.length; i = i + 500) {
-      IntList subList = ail.subList(i, i + 500);
 
-      //SpotProbe [] probes =  port.getSpotsProbes(subList.toArray());
-      
+      List<Integer> subList = ail.subList(i, i + 500);
+
+      // SpotProbe [] probes = port.getSpotsProbes(subList.toArray());
+
       //
       // ERROR
       //
-      
+
     }
 
-      return null;
+    return null;
   }
 
   //

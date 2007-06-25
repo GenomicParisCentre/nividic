@@ -108,6 +108,7 @@ public class BrowserWidget {
 
     if (url == null)
       return;
+    this.url = url;
     jep.setPage(url);
   }
 

@@ -24,14 +24,18 @@ package fr.ens.transcriptome.nividic.om.filters;
 
 import fr.ens.transcriptome.nividic.om.Spot;
 
+/**
+ * An interface to define comparators for spots.
+ * @author Laurent Jourdren
+ */
 public interface SpotComparator {
 
   /**
    * Compare two spot
    * @param a first spot to compare
    * @param b second spot to compare
-   * @return like compare(Object) method 
+   * @return like compare(Object) method
    */
   int compare(Spot a, Spot b);
-  
+
 }

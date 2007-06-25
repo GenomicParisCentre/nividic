@@ -27,11 +27,6 @@ import java.util.Arrays;
 
 public final class Echo {
 
-  public static final Echo out = new Echo(System.out);
-  public static final Echo err = new Echo(System.err);
-
-  private PrintStream output;
-
   //
   // print
   //
@@ -170,9 +165,7 @@ public final class Echo {
   // Constructor
   //
 
-  public Echo(PrintStream pstream) {
-
-    this.output = pstream;
+  private Echo() {
   }
-
+  
 }

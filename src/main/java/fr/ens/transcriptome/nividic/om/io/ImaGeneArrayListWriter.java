@@ -35,8 +35,8 @@ public class ImaGeneArrayListWriter extends BioAssayWriter {
   private static final String DOS_EOL = "\r\n";
   private static final char SEPARATOR_TAB = '\t';
 
-  private final String eol = DOS_EOL;
-  private final char separator = SEPARATOR_TAB;
+  private static final String eol = DOS_EOL;
+  private static final char separator = SEPARATOR_TAB;
 
   /** Field name for meta rows. */
   public static final String FIELD_NAME_META_ROW = "Meta Row";
@@ -46,7 +46,6 @@ public class ImaGeneArrayListWriter extends BioAssayWriter {
   public static final String FIELD_NAME_ROW = "Row";
   /** Field name for column. */
   public static final String FIELD_NAME_COLUMN = "Column";
-
 
   /** Order of the fields. */
   public static final String[] FIELDS_ORDER = {FIELD_NAME_META_ROW,
@@ -98,7 +97,7 @@ public class ImaGeneArrayListWriter extends BioAssayWriter {
 
     // Nothing to do
   }
-  
+
   private void addFields() {
     addFieldToWrite(BioAssay.FIELD_NAME_ID);
   }

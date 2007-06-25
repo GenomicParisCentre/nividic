@@ -25,6 +25,8 @@ package fr.ens.transcriptome.nividic.platform.workflow;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import fr.ens.transcriptome.nividic.platform.data.Data;
 
@@ -38,8 +40,8 @@ public final class Container {
 
   private int id = count++;
 
-  private HashMap dataMap = new HashMap();
-  private HashSet dataVector = new HashSet();
+  private Map<Integer, Data> dataMap = new HashMap<Integer, Data>();
+  private Set<Data> dataVector = new HashSet<Data>();
 
   //
   // Getters
@@ -65,9 +67,9 @@ public final class Container {
   public boolean add(final Data nividicData) {
     if (nividicData == null)
       return false;
-    if (this.dataMap.containsKey(new Integer(nividicData.getInstanceId())))
+    if (this.dataMap.containsKey(nividicData.getInstanceId()))
       return false;
-    this.dataMap.put(new Integer(nividicData.getInstanceId()), nividicData);
+    this.dataMap.put(nividicData.getInstanceId(), nividicData);
     this.dataVector.add(nividicData);
     return true;
   }
@@ -80,7 +82,7 @@ public final class Container {
   public boolean remove(final Data nividicData) {
     if (nividicData == null)
       return false;
-    this.dataMap.remove(new Integer(nividicData.getInstanceId()));
+    this.dataMap.remove(nividicData.getInstanceId());
     this.dataVector.remove(nividicData);
     return true;
   }
@@ -91,7 +93,7 @@ public final class Container {
    * @return A data object
    */
   public Data get(final int id) {
-    return (Data) this.dataMap.get(new Integer(id));
+    return this.dataMap.get(id);
   }
 
   /**

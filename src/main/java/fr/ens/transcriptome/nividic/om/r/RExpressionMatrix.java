@@ -98,10 +98,11 @@ public class RExpressionMatrix implements RObject {
       return;
 
     final ExpressionMatrix matrix = getMatrix();
-    final ExpressionMatrixDimension mDimension = matrix.getDefaultDimension();
 
     if (matrix == null)
       return;
+
+    final ExpressionMatrixDimension mDimension = matrix.getDefaultDimension();
 
     final String identifier = "tmp_" + System.currentTimeMillis() + "_";
 

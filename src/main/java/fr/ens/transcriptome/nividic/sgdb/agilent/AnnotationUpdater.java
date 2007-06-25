@@ -52,7 +52,6 @@ public class AnnotationUpdater {
         new FileInputStream(ENSEMBL_ANNOT_FILE)));
 
     String line;
-    StringBuilder sb = new StringBuilder();
 
     boolean first = true;
 
@@ -152,7 +151,6 @@ public class AnnotationUpdater {
         new FileInputStream(ENTREZ_ANNOT_FILE)));
 
     String line;
-    StringBuilder sb = new StringBuilder();
 
     while ((line = in.readLine()) != null) {
 

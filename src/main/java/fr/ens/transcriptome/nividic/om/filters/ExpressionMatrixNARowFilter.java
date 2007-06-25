@@ -22,7 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 
@@ -111,7 +110,7 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
 
     return "Rate=" + getRate() + "RemovePositiveRows=" + isRemovePositiveRows();
   }
-  
+
   //
   // Constructor
   //

@@ -55,7 +55,7 @@ public class ATFReader extends BioAssayTextReader {
    * A Classe to store headers dimensions
    * @author Laurent Jourdren
    */
-  private class ReadedDimensions {
+  private static final class ReadedDimensions {
     private int numberHeaders;
     private int numberDataFields;
     private String[] fieldNames;

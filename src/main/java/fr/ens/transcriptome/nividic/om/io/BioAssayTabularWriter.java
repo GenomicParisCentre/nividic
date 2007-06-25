@@ -39,11 +39,10 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
   private static final String DOS_EOL = "\r\n";
   private static final char SEPARATOR_TAB = '\t';
 
-  private final String eol = DOS_EOL;
-  private final char separator = SEPARATOR_TAB;
+  private static final String eol = DOS_EOL;
+  private static final char separator = SEPARATOR_TAB;
   private BufferedWriter bw;
 
-  
   /**
    * Get the meta row field name.
    * @return The name of the field for meta row
@@ -76,7 +75,6 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
     return null;
   }
 
-  
   protected void writeHeaders() throws NividicIOException {
     bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
 

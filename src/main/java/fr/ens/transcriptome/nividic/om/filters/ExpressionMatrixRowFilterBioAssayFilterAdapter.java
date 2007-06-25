@@ -75,8 +75,8 @@ public class ExpressionMatrixRowFilterBioAssayFilterAdapter extends
         if (doubleFilter.test(values[i]))
           count++;
     } else {
-      for (int j = 0; j < values.length; j++)
-        if (doubleFilter.test(values[j]))
+      for (int i = 0; i < values.length; i++)
+        if (integerFilter.test(  (int) values[i]))
           count++;
     }
 

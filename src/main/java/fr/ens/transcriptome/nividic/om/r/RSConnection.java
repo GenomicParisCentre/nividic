@@ -273,7 +273,7 @@ public class RSConnection {
       return null;
 
     case REXP.XT_INT:
-      return new Integer(exp.asInt());
+      return exp.asInt();
 
     case REXP.XT_DOUBLE:
       return new Double(exp.asDouble());

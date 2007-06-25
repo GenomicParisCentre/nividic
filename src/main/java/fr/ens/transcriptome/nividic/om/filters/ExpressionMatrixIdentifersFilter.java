@@ -33,7 +33,7 @@ import java.util.Set;
 public abstract class ExpressionMatrixIdentifersFilter extends
     ExpressionMatrixIdFilter {
 
-  private Set idsToFilter = new HashSet();
+  private Set<String> idsToFilter = new HashSet<String>();
   private boolean selectNull;
 
   /**

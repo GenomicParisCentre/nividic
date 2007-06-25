@@ -174,7 +174,7 @@ public abstract class ExpressionMatrixColumnFilter implements
 
     for (int i = 0; i < size; i++)
       if (testColumn(getValuesToTest(d.getColumn(columnNames[i]))))
-        al.add(new String(columnNames[i]));
+        al.add(columnNames[i]);
 
     String[] positiveColumns = new String[al.size()];
     positiveColumns = al.toArray(positiveColumns);
@@ -197,13 +197,13 @@ public abstract class ExpressionMatrixColumnFilter implements
 
     ExpressionMatrixDimension d = em.getDimension(getDimensionToFilter());
 
-    final String[] ColumnNames = d.getColumnNames();
+    final String[] columnNames = d.getColumnNames();
 
-    final int size = ColumnNames.length;
+    final int size = columnNames.length;
     int count = 0;
 
     for (int i = 0; i < size; i++)
-      if (testColumn(getValuesToTest(d.getColumn(ColumnNames[i]))))
+      if (testColumn(getValuesToTest(d.getColumn(columnNames[i]))))
         count++;
 
     return count;

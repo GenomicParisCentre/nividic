@@ -28,7 +28,7 @@ import fr.ens.transcriptome.nividic.om.BiologicalList;
  * This interface define a filter on a biological list
  * @author Laurent Jourdren
  */
-public interface BiologicalListFilter extends BiologicalFilter<BiologicalList>{
+public interface BiologicalListFilter extends BiologicalFilter<BiologicalList> {
 
   /**
    * Filter a biological list object.

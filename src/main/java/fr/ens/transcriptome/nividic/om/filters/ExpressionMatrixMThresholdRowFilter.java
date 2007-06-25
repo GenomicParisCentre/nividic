@@ -155,7 +155,7 @@ public class ExpressionMatrixMThresholdRowFilter extends
         + ";AbsoluteThreshold=" + isAbsoluteThreshold() + "RemovePositiveRows="
         + isRemovePositiveRows();
   }
-  
+
   //
   // Constructor
   //

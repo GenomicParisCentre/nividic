@@ -97,9 +97,8 @@ public final class MatrixDemo {
         bar.addFieldToRead(BioAssay.FIELD_NAME_RATIO);
 
         BioAssay b = bar.read();
-        b.setName((filesToRead[i].toString()).substring(new String("data/")
-            .length(), (filesToRead[i].toString().length())
-            - (new String(".txt")).length()));
+        b.setName((filesToRead[i].toString()).substring("data/".length(),
+            (filesToRead[i].toString().length()) - ".txt".length()));
 
         is.close();
 
@@ -140,8 +139,7 @@ public final class MatrixDemo {
 
       OutputStream os = new FileOutputStream(outputFile);
 
-      SimpleExpressionMatrixWriter emw = new SimpleExpressionMatrixWriter(
-          os);
+      SimpleExpressionMatrixWriter emw = new SimpleExpressionMatrixWriter(os);
 
       emw.write(em);
       os.close();
@@ -186,9 +184,8 @@ public final class MatrixDemo {
         bar.addFieldToRead(BioAssay.FIELD_NAME_RATIO);
 
         BioAssay b = bar.read();
-        b.setName((filesToRead[i].toString()).substring(new String("data/")
-            .length(), (filesToRead[i].toString().length())
-            - (new String(".txt")).length()));
+        b.setName((filesToRead[i].toString()).substring("data/".length(),
+            (filesToRead[i].toString().length()) - (".txt".length())));
 
         is.close();
 
@@ -226,8 +223,7 @@ public final class MatrixDemo {
 
       OutputStream os2 = new FileOutputStream(outputFile2);
 
-      SimpleExpressionMatrixWriter emMAw = new SimpleExpressionMatrixWriter(
-          os2);
+      SimpleExpressionMatrixWriter emMAw = new SimpleExpressionMatrixWriter(os2);
 
       emMAw.write(em);
       os2.close();
@@ -281,7 +277,7 @@ public final class MatrixDemo {
     con.voidEval(sb.toString());
 
     // cleaning the StringBuffer
-    sb = new StringBuffer();
+    sb.setLength(0);
 
     con.voidEval("em.t=t(as.matrix(em))");
 

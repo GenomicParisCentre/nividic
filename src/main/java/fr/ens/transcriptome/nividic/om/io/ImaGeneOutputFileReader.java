@@ -77,7 +77,7 @@ public class ImaGeneOutputFileReader extends
 
   private Header header;
 
-  private class Header {
+  private static final class Header {
 
     private static final String END_HEADER_STRING = "End Header";
     private static final String BEGIN_SECTION_STRING = "Begin ";

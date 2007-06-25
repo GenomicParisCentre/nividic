@@ -123,7 +123,7 @@ public class ReplaceSpotIdsByProbeIdsFilter implements BioAssayFilter {
     String[] newIds = this.annot.getAnnotations(ids,
         SpotProbeTranslator.PROBE_ID_FIELD);
 
-    System.out.println("newids: " + newIds);
+    //System.out.println("newids: " + newIds);
     if (newIds == null)
       return bioAssay;
 

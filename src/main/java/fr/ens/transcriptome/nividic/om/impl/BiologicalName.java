@@ -22,14 +22,15 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
+import java.io.Serializable;
 
 /**
  * This class define a class to handle a biological name.
  * @author Laurent Jourdren
  */
-class BiologicalName {
+class BiologicalName implements Serializable {
 
-  private static int currentId = 0;
+  private static int currentId;
 
   private int id = currentId++;
   private String name;

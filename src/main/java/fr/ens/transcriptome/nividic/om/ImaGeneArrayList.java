@@ -118,7 +118,7 @@ public class ImaGeneArrayList {
    */
   public ArrayBlock[] getBlocks() {
 
-    Map blocks = new TreeMap();
+    Map<Integer, Map<Integer, ArrayBlock>> blocks = new TreeMap<Integer, Map<Integer, ArrayBlock>>();
 
     SpotIterator si = getBioAssay().iterator();
     int count = 0;
@@ -129,20 +129,20 @@ public class ImaGeneArrayList {
       final int mr = si.getMetaRow();
       final int mc = si.getMetaColumn();
 
-      final Integer wmr = new Integer(mr);
-      final Integer wmc = new Integer(mc);
+      // final Integer wmr = new Integer(mr);
+      // final Integer wmc = new Integer(mc);
 
-      final Map ssBlocks;
+      final Map<Integer, ArrayBlock> ssBlocks;
 
-      if (!blocks.containsKey(wmr)) {
-        ssBlocks = new TreeMap();
-        blocks.put(wmr, ssBlocks);
+      if (!blocks.containsKey(mr)) {
+        ssBlocks = new TreeMap<Integer, ArrayBlock>();
+        blocks.put(mr, ssBlocks);
       } else
-        ssBlocks = (Map) blocks.get(wmr);
+        ssBlocks = blocks.get(mr);
 
       final ArrayBlock ab;
 
-      if (!ssBlocks.containsKey(wmc)) {
+      if (!ssBlocks.containsKey(mc)) {
         ab = new ArrayBlock();
 
         count++;
@@ -150,9 +150,9 @@ public class ImaGeneArrayList {
         ab.setMetaRow(mr);
         ab.setMetaColumn(mc);
 
-        ssBlocks.put(wmc, ab);
+        ssBlocks.put(mc, ab);
       } else
-        ab = (ArrayBlock) ssBlocks.get(wmc);
+        ab = ssBlocks.get(mc);
 
       int row = si.getRow();
       int col = si.getColumn();
@@ -171,7 +171,7 @@ public class ImaGeneArrayList {
 
     while (it1.hasNext()) {
 
-      final Map ssBlocks = (Map) blocks.get(it1.next());
+      final Map ssBlocks = blocks.get(it1.next());
 
       Iterator it2 = ssBlocks.keySet().iterator();
 

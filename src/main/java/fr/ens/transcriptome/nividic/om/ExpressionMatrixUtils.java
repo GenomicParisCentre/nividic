@@ -455,9 +455,13 @@ public final class ExpressionMatrixUtils {
 
     Map<String, Integer> translationCurrentCount = new HashMap<String, Integer>();
 
-    for (String row : translation.keySet()) {
+    // for (String row : translation.keySet()) {
+    for (Map.Entry<String, String> e : translation.entrySet()) {
 
-      String t = translation.get(row);
+      // String t = translation.get(row);
+      final String row = e.getKey();
+      final String t = e.getValue();
+
       int count = translationCount.get(t);
 
       if (count > 1) {

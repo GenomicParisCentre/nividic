@@ -41,8 +41,8 @@ public class ATFWriter extends BioAssayWriter {
   private static final String DOS_EOL = "\r\n";
   private static final char SEPARATOR_TAB = '\t';
 
-  private final String eol = DOS_EOL;
-  private final char separator = SEPARATOR_TAB;
+  private static final String eol = DOS_EOL;
+  private static final char separator = SEPARATOR_TAB;
   private BufferedWriter bw;
 
   protected FieldNameConverter getFieldNameConverter() {
