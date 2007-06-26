@@ -146,7 +146,6 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
       while ((line = br.readLine()) != null) {
 
         String[] data = line.split(separator);
-        System.out.println(Arrays.toString(data));
 
         if (data.length == 0 || data[0].trim().startsWith("#"))
           continue;
