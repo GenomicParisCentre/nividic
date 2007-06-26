@@ -52,6 +52,8 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
   private ExpressionMatrix matrix;
   private String[] fieldNames;
   private ExpressionMatrixDimension[] dimensions;
+  private boolean decimalSeparatorFound;
+  private boolean commaDecimalSepartor;
 
   //
   // Other Methods
@@ -70,7 +72,8 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
     }
 
     final List<String> fieldNames = new ArrayList<String>();
-    final List<ExpressionMatrixDimension> dimensions = new ArrayList<ExpressionMatrixDimension>();
+    final List<ExpressionMatrixDimension> dimensions =
+        new ArrayList<ExpressionMatrixDimension>();
 
     for (int i = 0; i < columnNames.length; i++) {
 
@@ -143,6 +146,7 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
       while ((line = br.readLine()) != null) {
 
         String[] data = line.split(separator);
+        System.out.println(Arrays.toString(data));
 
         if (data.length == 0 || data[0].trim().startsWith("#"))
           continue;
@@ -175,19 +179,8 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
         this.matrix.addRow(id);
 
         // Double values
-        for (int i = 1; i < data.length; i++) {
-
-          double value;
-
-          try {
-            value = Double.parseDouble(data[i].trim());
-
-          } catch (NumberFormatException e) {
-            value = Double.NaN;
-          }
-
-          dimensions[i - 1].setValue(id, fieldNames[i], value);
-        }
+        for (int i = 1; i < data.length; i++)
+          dimensions[i - 1].setValue(id, fieldNames[i], parseValues(data[i]));
 
       }
     } catch (IOException e) {
@@ -203,6 +196,47 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
     }
 
     return addReaderHistoryEntry(this.matrix);
+  }
+
+  private double parseValues(final String s) {
+
+    double value;
+
+    if (!this.decimalSeparatorFound)
+      foundDecimalSeparator(s);
+
+    try {
+
+      String toParse = s.trim();
+
+      if (this.commaDecimalSepartor)
+        toParse = s.replace(',', '.');
+
+      value = Double.parseDouble(toParse);
+
+    } catch (NumberFormatException e) {
+      value = Double.NaN;
+    }
+
+    return value;
+  }
+
+  private void foundDecimalSeparator(final String s) {
+
+    int index = s.indexOf('.');
+
+    if (index != -1) {
+      this.commaDecimalSepartor = false;
+      this.decimalSeparatorFound = true;
+    }
+
+    index = s.indexOf(',');
+
+    if (index != -1) {
+      this.commaDecimalSepartor = true;
+      this.decimalSeparatorFound = true;
+    }
+
   }
 
   private String findNewRowDuplicatedName(final String rowName) {
@@ -228,10 +262,11 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
-            + "RowNumbers=" + matrix.getRowCount() + ";ColumnNumber="
-            + matrix.getColumnCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.LOAD, s
+                + "RowNumbers=" + matrix.getRowCount() + ";ColumnNumber="
+                + matrix.getColumnCount(), HistoryActionResult.PASS);
 
     matrix.getHistory().add(entry);
 
