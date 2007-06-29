@@ -39,6 +39,8 @@ import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrixListener;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrixListenerHandler;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
@@ -69,7 +71,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   private static int count;
   private static int copyNumber;
 
-  private Set<ExpressionMatrixListener> listeners = new HashSet<ExpressionMatrixListener>();
+  private Set<ExpressionMatrixListener> listeners =
+      new HashSet<ExpressionMatrixListener>();
 
   // private static final int HASHCODE_ODD_NUMBER_1 = 16052005;
   // private static final int HASHCODE_ODD_NUMBER_2 = 17;
@@ -167,7 +170,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     final String[] dimensionNames = getDimensionNames();
 
-    ExpressionMatrixDimension[] result = new ExpressionMatrixDimension[dimensionNames.length];
+    ExpressionMatrixDimension[] result =
+        new ExpressionMatrixDimension[dimensionNames.length];
 
     for (int i = 0; i < result.length; i++)
       result[i] = getDimension(dimensionNames[i]);
@@ -203,16 +207,16 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     if (containsDimension(dimensionName))
       throw new ExpressionMatrixRuntimeException("Dimension already exists");
 
-    ExpressionMatrixDimensionImpl emd = new ExpressionMatrixDimensionImpl(this,
-        dimensionName);
+    ExpressionMatrixDimensionImpl emd =
+        new ExpressionMatrixDimensionImpl(this, dimensionName);
     addListener(emd);
 
     this.dimensionMap.put(dimensionName, emd);
 
-    final HistoryEntry entry = new HistoryEntry("Add Dimension "
-        + dimensionName, HistoryActionType.ADD,
-        "DimensionAdded=1;DimensionCount=" + getDimensionCount(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Add Dimension " + dimensionName,
+            HistoryActionType.ADD, "DimensionAdded=1;DimensionCount="
+                + getDimensionCount(), HistoryActionResult.PASS);
 
     getHistory().add(entry);
 
@@ -418,8 +422,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
       return;
 
     if (this.idsMap.containsKey(newName))
-      throw new ExpressionMatrixRuntimeException("The name " + newName
-          + " that you intent to set does exist yet");
+      throw new ExpressionMatrixRuntimeException("The name "
+          + newName + " that you intent to set does exist yet");
 
     final int index = this.getInternalRowIdIndex(formerName);
     this.removeRow(formerName);
@@ -462,8 +466,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     final int index = getColumnIndex(newName);
 
     if (index != -1)
-      throw new ExpressionMatrixRuntimeException("The name " + newName
-          + " that you intent to set does exist yet");
+      throw new ExpressionMatrixRuntimeException("The name "
+          + newName + " that you intent to set does exist yet");
 
     this.columnNamesArrayList.set(getColumnIndex(formerName), newName);
 
@@ -578,6 +582,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     if (matrix == null)
       return;
 
+    final int rowsBefore = getRowCount();
+    final int colsBefore = getColumnCount();
+
     final String[] dimensionNames = matrix.getDimensionNames();
     final String[] columnNames = matrix.getColumnNames();
     final String[] newColumnNames;
@@ -604,6 +611,17 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
       for (int j = 0; j < columnNames.length; j++)
         myDim.addBioAssay(dim.getColumn(columnNames[j]), newColumnNames[j]);
+
+      final int rowsAfter = getRowCount();
+      final int colsAfter = getColumnCount();
+
+      if ((rowsAfter - rowsBefore) > 0)
+        sendEvent(new ExpressionMatrixEvent(this,
+            ExpressionMatrixEvent.ADD_MANY_ROW_EVENT, null));
+
+      if ((colsAfter - colsBefore) > 0)
+        sendEvent(new ExpressionMatrixEvent(this,
+            ExpressionMatrixEvent.ADD_MANY_COLUMN_EVENT, null));
 
     }
 
@@ -692,7 +710,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     for (int i = 0; i < dimensionNames.length; i++)
       if (bioAssay.isField(dimensionNames[i])) {
 
-        final ExpressionMatrixDimension dimension = getDimension(dimensionNames[i]);
+        final ExpressionMatrixDimension dimension =
+            getDimension(dimensionNames[i]);
 
         dimension
             .addBioAssay(bioAssay, columnName, translator, translatorField);
@@ -701,11 +720,20 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     final int rowsAfter = getRowCount();
     final int colsAfter = getColumnCount();
 
-    final HistoryEntry entry = new HistoryEntry("Add BioAssay (#"
-        + bioAssay.getBiologicalId() + ")", HistoryActionType.ADD, "RowAdded="
-        + (rowsAfter - rowsBefore) + ";RowCount=" + rowsAfter + ";ColumnAdd="
-        + (colsAfter - colsBefore) + ";ColumnCount=" + colsAfter,
-        HistoryActionResult.PASS);
+    if ((rowsAfter - rowsBefore) > 0)
+      sendEvent(new ExpressionMatrixEvent(this,
+          ExpressionMatrixEvent.ADD_MANY_ROW_EVENT, null));
+
+    if ((colsAfter - colsBefore) > 0)
+      sendEvent(new ExpressionMatrixEvent(this,
+          ExpressionMatrixEvent.ADD_MANY_COLUMN_EVENT, null));
+
+    final HistoryEntry entry =
+        new HistoryEntry("Add BioAssay (#" + bioAssay.getBiologicalId() + ")",
+            HistoryActionType.ADD, "RowAdded="
+                + (rowsAfter - rowsBefore) + ";RowCount=" + rowsAfter
+                + ";ColumnAdd=" + (colsAfter - colsBefore) + ";ColumnCount="
+                + colsAfter, HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }
@@ -796,8 +824,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     SubExpressionMatrix sem;
 
     if (columns == null)
-      sem = new SubExpressionMatrix(this, this.getRowNames(), this
-          .getColumnNames());
+      sem =
+          new SubExpressionMatrix(this, this.getRowNames(), this
+              .getColumnNames());
     else
       sem = new SubExpressionMatrix(this, this.getRowNames(), columns);
 
@@ -816,8 +845,9 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     SubExpressionMatrix sem;
 
     if (columns == null)
-      sem = new SubExpressionMatrix(this, this.getRowNames(), this
-          .getColumnNames());
+      sem =
+          new SubExpressionMatrix(this, this.getRowNames(), this
+              .getColumnNames());
     else
       sem = new SubExpressionMatrix(this, this.getRowNames(), columns);
 
@@ -1198,9 +1228,10 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     if (result != null) {
 
-      HistoryEntry entry = new HistoryEntry(filter.getClass().getSimpleName(),
-          HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
-          HistoryEntry.HistoryActionResult.PASS);
+      HistoryEntry entry =
+          new HistoryEntry(filter.getClass().getSimpleName(),
+              HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
+              HistoryEntry.HistoryActionResult.PASS);
 
       result.getHistory().add(entry);
     }
@@ -1237,10 +1268,12 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
   private void addConstructorHistoryEntry() {
 
-    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
-        + getBiologicalId() + ")", HistoryActionType.CREATE, "RowNumbers="
-        + getRowCount() + ";ColumnNumber=" + getColumnCount()
-        + ";DimensionNumber=" + getDimensionCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create Matrix (#" + getBiologicalId() + ")",
+            HistoryActionType.CREATE, "RowNumbers="
+                + getRowCount() + ";ColumnNumber=" + getColumnCount()
+                + ";DimensionNumber=" + getDimensionCount(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }
@@ -1347,7 +1380,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     this.idsMap = new LinkedHashMap<String, Integer>();
     this.columnNamesArrayList = new ArrayList<String>();
-    this.dimensionMap = new LinkedHashMap<String, ExpressionMatrixDimensionImpl>();
+    this.dimensionMap =
+        new LinkedHashMap<String, ExpressionMatrixDimensionImpl>();
     addDimension(getDefaultDimensionName());
     addConstructorHistoryEntry();
   }
@@ -1374,7 +1408,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     this.idsMap = new LinkedHashMap<String, Integer>();
     this.columnNamesArrayList = new ArrayList<String>();
-    this.dimensionMap = new LinkedHashMap<String, ExpressionMatrixDimensionImpl>();
+    this.dimensionMap =
+        new LinkedHashMap<String, ExpressionMatrixDimensionImpl>();
 
     if (name == null)
       this.setName("copy(" + copyNumber + ")of-" + matrix.getName());
@@ -1390,11 +1425,13 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     setDefaultDimensionName(matrix.getDefaultDimensionName());
 
-    final HistoryEntry entry = new HistoryEntry("Create Matrix (#"
-        + getBiologicalId() + "), copy of #" + matrix.getBiologicalId(),
-        HistoryActionType.CREATE, "RowNumbers=" + getRowCount()
-            + ";ColumnNumber=" + getColumnCount() + ";DimensionNumber="
-            + getDimensionCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create Matrix (#"
+            + getBiologicalId() + "), copy of #" + matrix.getBiologicalId(),
+            HistoryActionType.CREATE, "RowNumbers="
+                + getRowCount() + ";ColumnNumber=" + getColumnCount()
+                + ";DimensionNumber=" + getDimensionCount(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }

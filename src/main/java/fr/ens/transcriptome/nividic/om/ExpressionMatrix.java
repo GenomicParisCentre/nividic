@@ -30,7 +30,7 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
  * @author Laurent Jourdren
  */
 public interface ExpressionMatrix extends ExpressionMatrixBase,
-    BiologicalObject {
+    BiologicalObject, ExpressionMatrixListenerHandler {
 
   /** Constant for name of the dimension for A values. */
   String DIMENSION_A = BioAssay.FIELD_NAME_A;

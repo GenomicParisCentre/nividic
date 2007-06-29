@@ -20,7 +20,9 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.impl;
+package fr.ens.transcriptome.nividic.om;
+
+import fr.ens.transcriptome.nividic.om.impl.ExpressionMatrixEvent;
 
 /**
  * This interface provide a listener for ExpressionMatrixDimension.

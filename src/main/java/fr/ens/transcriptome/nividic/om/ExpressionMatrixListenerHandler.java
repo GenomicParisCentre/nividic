@@ -20,9 +20,10 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.impl;
+package fr.ens.transcriptome.nividic.om;
 
 import java.util.Set;
+
 
 /**
  * This interface defines how manage listeners for ExpressionMatrixDimension

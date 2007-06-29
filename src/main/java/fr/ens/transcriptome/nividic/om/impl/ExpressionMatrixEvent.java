@@ -58,6 +58,33 @@ public class ExpressionMatrixEvent extends SimpleGenericEvent {
   /** Workflow add column event. */
   public static final int ADD_DIMENSION_EVENT = 9;
 
+  /** Workflow remove identifer event. */
+  public static final int REMOVE_MANY_ROW_EVENT = 10;
+
+  /** Workflow remove column event. */
+  public static final int REMOVE_MANY_COLUMN_EVENT = 11;
+
+  /** Workflow remove dimension event. */
+  public static final int REMOVE_MANY_DIMENSION_EVENT = 12;
+
+  /** Workflow rename identifer event. */
+  public static final int RENAME_MANY_ROW_EVENT = 13;
+
+  /** Workflow rename column event. */
+  public static final int RENAME_MANY_COLUMN_EVENT = 14;
+
+  /** Workflow rename dimension event. */
+  public static final int RENAME_MANY_DIMENSION_EVENT = 15;
+
+  /** Workflow add identifer event. */
+  public static final int ADD_MANY_ROW_EVENT = 16;
+
+  /** Workflow add column event. */
+  public static final int ADD_MANY_COLUMN_EVENT = 17;
+
+  /** Workflow add column event. */
+  public static final int ADD_MANY_DIMENSION_EVENT = 18;
+
   /**
    * Get the source of the event.
    * @return Returns the source

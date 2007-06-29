@@ -38,6 +38,8 @@ import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrixListener;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrixListenerHandler;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
@@ -64,6 +66,9 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   private BiologicalName name = new BiologicalName(this);
   private String defaultDimensionName;
   private HistoryImpl history;
+
+  private Set<ExpressionMatrixListener> listeners =
+      new HashSet<ExpressionMatrixListener>();
 
   // private static int count;
 
@@ -179,6 +184,34 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   public void setName(final String name) {
 
     this.name.setName(name);
+  }
+
+  //
+  // Listeners
+  //
+
+  /**
+   * add a new ExpressionMatrixListener to the set of Listeners
+   * @param listener the new ExpressionMatrixListener to add
+   */
+  public void addListener(final ExpressionMatrixListener listener) {
+    this.listeners.add(listener);
+  }
+
+  /**
+   * remove a Listener from the ExpressionMatrixListener list
+   * @param listener the listener to remove
+   */
+  public void removeListener(final ExpressionMatrixListener listener) {
+    this.listeners.remove(listener);
+  }
+
+  /**
+   * Get a Set of the listener of the object.
+   * @return A Set of the listeners
+   */
+  public Set getListeners() {
+    return this.listeners;
   }
 
   //
@@ -496,8 +529,8 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixRows(final String[] rowsId) {
 
-    SubExpressionMatrix sem = new SubExpressionMatrix(this.matrix, rowsId, this
-        .getColumnNames());
+    SubExpressionMatrix sem =
+        new SubExpressionMatrix(this.matrix, rowsId, this.getColumnNames());
 
     if (getMatrix() instanceof ExpressionMatrixListenerHandler)
       ((ExpressionMatrixListenerHandler) getMatrix()).addListener(sem);
@@ -512,8 +545,8 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixColumns(final int[] columns) {
 
-    SubExpressionMatrix sem = new SubExpressionMatrix(this.matrix, this
-        .getRowNames(), columns);
+    SubExpressionMatrix sem =
+        new SubExpressionMatrix(this.matrix, this.getRowNames(), columns);
 
     if (getMatrix() instanceof ExpressionMatrixListenerHandler)
       ((ExpressionMatrixListenerHandler) getMatrix()).addListener(sem);
@@ -528,8 +561,8 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixColumns(final String[] columns) {
 
-    SubExpressionMatrix sem = new SubExpressionMatrix(this.matrix, this
-        .getRowNames(), columns);
+    SubExpressionMatrix sem =
+        new SubExpressionMatrix(this.matrix, this.getRowNames(), columns);
 
     if (getMatrix() instanceof ExpressionMatrixListenerHandler)
       ((ExpressionMatrixListenerHandler) getMatrix()).addListener(sem);
@@ -544,8 +577,8 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixDimensions(final String[] dimensionNames) {
 
-    SubExpressionMatrix sem = new SubExpressionMatrix(this.matrix,
-        dimensionNames);
+    SubExpressionMatrix sem =
+        new SubExpressionMatrix(this.matrix, dimensionNames);
 
     if (getMatrix() instanceof ExpressionMatrixListenerHandler)
       ((ExpressionMatrixListenerHandler) getMatrix()).addListener(sem);
@@ -1054,7 +1087,8 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
     final String[] dimensionNames = getDimensionNames();
 
-    ExpressionMatrixDimension[] result = new ExpressionMatrixDimension[dimensionNames.length];
+    ExpressionMatrixDimension[] result =
+        new ExpressionMatrixDimension[dimensionNames.length];
 
     for (int i = 0; i < result.length; i++)
       result[i] = getDimension(dimensionNames[i]);
@@ -1156,9 +1190,10 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
     if (result != null) {
 
-      HistoryEntry entry = new HistoryEntry(filter.getClass().getSimpleName(),
-          HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
-          HistoryEntry.HistoryActionResult.PASS);
+      HistoryEntry entry =
+          new HistoryEntry(filter.getClass().getSimpleName(),
+              HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
+              HistoryEntry.HistoryActionResult.PASS);
 
       result.getHistory().add(entry);
     }
@@ -1263,10 +1298,12 @@ public class SubExpressionMatrix implements ExpressionMatrix,
 
   private void addConstructorHistoryEntry() {
 
-    final HistoryEntry entry = new HistoryEntry("Create SubMatrix (#"
-        + getBiologicalId() + ")", HistoryActionType.CREATE, "RowNumbers="
-        + getRowCount() + ";ColumnNumber=" + getColumnCount()
-        + ";DimensionNumber=" + getDimensionCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create SubMatrix (#" + getBiologicalId() + ")",
+            HistoryActionType.CREATE, "RowNumbers="
+                + getRowCount() + ";ColumnNumber=" + getColumnCount()
+                + ";DimensionNumber=" + getDimensionCount(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }
@@ -1364,8 +1401,9 @@ public class SubExpressionMatrix implements ExpressionMatrix,
         }
 
       if (colName != null) {
-        SubExpressionMatrixDimension subDimension = new SubExpressionMatrixDimension(
-            this, (ExpressionMatrixDimensionImpl) matrix.getDimension(colName));
+        SubExpressionMatrixDimension subDimension =
+            new SubExpressionMatrixDimension(this,
+                (ExpressionMatrixDimensionImpl) matrix.getDimension(colName));
         this.dimensions.put(colName, subDimension);
       }
 
