@@ -99,11 +99,11 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
           bw.write(SEPARATOR);
           bw.write('"');
           bw.write(columnNames[i]);
-          bw.write('"');
           if (dimensions.length > 1 || this.showDimensionName) {
             bw.write(DIMENSION_SEPARATOR);
             bw.write(dimensions[j].getDimensionName());
           }
+          bw.write('"');
         }
       }
 
@@ -160,10 +160,11 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.SAVE, s
-            + "RowNumbers=" + matrix.getRowCount() + ";ColumnNumber="
-            + matrix.getColumnCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.SAVE, s
+                + "RowNumbers=" + matrix.getRowCount() + ";ColumnNumber="
+                + matrix.getColumnCount(), HistoryActionResult.PASS);
 
     matrix.getHistory().add(entry);
 
@@ -179,7 +180,8 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
   private static double[][] getValues(final String[] columnNames,
       final ExpressionMatrixDimension[] dimensions) {
 
-    final double[][] result = new double[columnNames.length * dimensions.length][];
+    final double[][] result =
+        new double[columnNames.length * dimensions.length][];
 
     int count = 0;
 
@@ -229,8 +231,8 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
       if (this.dimensionsToWrite.contains(cols[i]))
         dimensionNames.add(cols[i]);
 
-    ExpressionMatrixDimension[] result = new ExpressionMatrixDimension[dimensionNames
-        .size()];
+    ExpressionMatrixDimension[] result =
+        new ExpressionMatrixDimension[dimensionNames.size()];
 
     int count = 0;
     for (String name : dimensionNames)

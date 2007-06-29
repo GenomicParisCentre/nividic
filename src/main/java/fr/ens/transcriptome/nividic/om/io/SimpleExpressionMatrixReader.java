@@ -179,7 +179,9 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
 
         // Double values
         for (int i = 1; i < data.length; i++)
-          dimensions[i - 1].setValue(id, fieldNames[i], parseValues(data[i]));
+          // dimensions[i - 1].setValue(id, fieldNames[i],
+          // parseValues(data[i]));
+          dimensions[i].setValue(id, fieldNames[i], parseValues(data[i]));
 
       }
     } catch (IOException e) {
