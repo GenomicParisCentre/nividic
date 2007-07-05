@@ -72,7 +72,12 @@ public class MultiColumnTranslator extends BasicTranslator {
    */
   public String[] getFields() {
 
-    return this.fieldNames == null ? null : this.fieldNames.clone();
+    if (this.fieldNames == null)
+      return null;
+
+    final String[] result = this.fieldNames.clone();
+
+    return result;
   }
 
   /**
@@ -83,14 +88,21 @@ public class MultiColumnTranslator extends BasicTranslator {
    */
   public String translateField(final String id, final String fieldName) {
 
-    if (id == null || fieldName == null)
+    if (id == null)
       return null;
+
+    final String field;
+
+    if (fieldName == null)
+      field = getDefaultField();
+    else
+      field = fieldName;
 
     final Map<String, String> map = this.annotations.get(id);
     if (map == null)
       return null;
 
-    return map.get(fieldName);
+    return map.get(field);
   }
 
   /**
