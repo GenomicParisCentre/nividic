@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
@@ -35,6 +36,8 @@ import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This abstract class defines how to write BioAssay Stream.
@@ -45,7 +48,7 @@ public abstract class BioAssayWriter {
   private String dataSource;
   private OutputStream outputStream;
   private BioAssay bioAssay;
-  private Set fieldsToWrite = new HashSet();
+  private Set<String> fieldsToWrite = new HashSet<String>();
   private boolean writeAllFields;
 
   private String[] bioAssayFieldsToWrite;
@@ -56,6 +59,7 @@ public abstract class BioAssayWriter {
   private int[] column;
   private int[] row;
   private int bioAssaySize;
+  private Translator translator;
 
   //
   // Getters
@@ -93,6 +97,14 @@ public abstract class BioAssayWriter {
     return this.dataSource;
   }
 
+  /**
+   * Get the translator.
+   * @return The translator
+   */
+  public Translator getTranslator() {
+    return this.translator;
+  }
+
   //
   // Setters
   //
@@ -118,6 +130,14 @@ public abstract class BioAssayWriter {
    */
   public void addAllFieldsToWrite() {
     this.writeAllFields = true;
+  }
+
+  /**
+   * Set the translator.
+   * @param translator The translator
+   */
+  public void setTranslator(final Translator translator) {
+    this.translator = translator;
   }
 
   //
@@ -180,31 +200,14 @@ public abstract class BioAssayWriter {
   }
 
   /**
-   * Convert an array list to an array of string.
-   * @param al ArrayList to convert
-   * @return An array of String
-   */
-  private String[] convert(final ArrayList al) {
-
-    if (al == null)
-      return null;
-
-    String[] result = new String[al.size()];
-    for (int i = 0; i < al.size(); i++)
-      result[i] = (String) al.get(i);
-
-    return result;
-  }
-
-  /**
    * Create the array of field names used by the write methods
    */
   private void createFieldsArrays() {
 
     final String[] order = getFieldNamesOrder();
     // Map flagsFields = new HashMap();
-    ArrayList alBioAssayFieldsToWrite = new ArrayList();
-    ArrayList alStreamFieldsToWrite = new ArrayList();
+    List<String> alBioAssayFieldsToWrite = new ArrayList<String>();
+    List<String> alStreamFieldsToWrite = new ArrayList<String>();
 
     final FieldNameConverter converter = getFieldNameConverter();
 
@@ -242,15 +245,15 @@ public abstract class BioAssayWriter {
       }
     }
 
-    this.bioAssayFieldsToWrite = convert(alBioAssayFieldsToWrite);
-    this.streamFieldsToWrite = convert(alStreamFieldsToWrite);
+    this.bioAssayFieldsToWrite = NividicUtils.toArray(alBioAssayFieldsToWrite);
+    this.streamFieldsToWrite = NividicUtils.toArray(alStreamFieldsToWrite);
 
     // Cached variable to optimize the code
 
     this.bioAssayFieldsToWriteTypes = new int[bioAssayFieldsToWrite.length];
     for (int i = 0; i < this.bioAssayFieldsToWrite.length; i++) {
-      this.bioAssayFieldsToWriteTypes[i] = getBioAssay().getFieldType(
-          bioAssayFieldsToWrite[i]);
+      this.bioAssayFieldsToWriteTypes[i] =
+          getBioAssay().getFieldType(bioAssayFieldsToWrite[i]);
     }
 
     this.bioAssaySize = getBioAssay().size();
@@ -264,8 +267,8 @@ public abstract class BioAssayWriter {
    */
   protected final String getFieldName(final int column) {
 
-    if (this.streamFieldsToWrite == null || column < 0
-        || column >= this.streamFieldsToWrite.length)
+    if (this.streamFieldsToWrite == null
+        || column < 0 || column >= this.streamFieldsToWrite.length)
       return null;
 
     return this.streamFieldsToWrite[column];
@@ -278,8 +281,8 @@ public abstract class BioAssayWriter {
    */
   protected final int getFieldType(final int column) {
 
-    if (this.bioAssayFieldsToWrite == null || column < 0
-        || column >= this.bioAssayFieldsToWrite.length)
+    if (this.bioAssayFieldsToWrite == null
+        || column < 0 || column >= this.bioAssayFieldsToWrite.length)
 
       return -1;
 
@@ -328,7 +331,8 @@ public abstract class BioAssayWriter {
    */
   protected final String getData(final int row, final int column) {
 
-    if (column < 0 || column >= this.bioAssayFieldsToWrite.length || row < 0
+    if (column < 0
+        || column >= this.bioAssayFieldsToWrite.length || row < 0
         || row >= this.bioAssaySize)
       return null;
 
@@ -415,10 +419,11 @@ public abstract class BioAssayWriter {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.CREATE, s
-            + "RowNumbers=" + bioAssay.size() + ";ColumnNumber="
-            + bioAssay.getFields().length, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.CREATE, s
+                + "RowNumbers=" + bioAssay.size() + ";ColumnNumber="
+                + bioAssay.getFields().length, HistoryActionResult.PASS);
 
     bioAssay.getHistory().add(entry);
   }

@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 /**
  * This abstract class define a reader for generic tabular files.
@@ -88,6 +89,22 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
       sb.append(getFieldName(i));
       sb.append('"');
     }
+
+    if (getTranslator() != null) {
+
+      String[] fields = getTranslator().getFields();
+      if (fields != null)
+        for (int i = 0; i < fields.length; i++) {
+
+          sb.append(separator);
+
+          sb.append('"');
+          sb.append(fields[i]);
+          sb.append('"');
+        }
+
+    }
+
     sb.append(eol);
 
     try {
@@ -105,6 +122,14 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
 
     final int countCol = getColumnCount();
     final int countRow = getRowColumn();
+    final Translator translator = getTranslator();
+    final String[] translatorFields;
+    final String[] ids = getBioAssay() == null ? null : getBioAssay().getIds();
+
+    if (translator == null)
+      translatorFields = null;
+    else
+      translatorFields = translator.getFields();
 
     try {
       StringBuffer sb = new StringBuffer();
@@ -140,11 +165,33 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
             break;
           }
 
-          if (j == (countCol - 1))
+          if (translatorFields == null && (j == (countCol - 1)))
             sb.append(eol);
           else
             sb.append(separator);
         }
+
+        for (int j = 0; j < translatorFields.length; j++) {
+
+          final String value;
+
+          if (ids == null)
+            value = null;
+          else
+            value = translator.translateField(ids[i], translatorFields[j]);
+
+          if (value != null) {
+            sb.append('\"');
+            sb.append(value);
+            sb.append('\"');
+          }
+
+          if (j == (translatorFields.length - 1))
+            sb.append(eol);
+          else
+            sb.append(separator);
+        }
+
         this.bw.write(sb.toString());
         sb.delete(0, sb.length());
       }
