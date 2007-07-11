@@ -49,6 +49,19 @@ public class GPRReaderTest extends TestCase {
     super(arg0);
   }
 
+  public void testReadGPR3WithOptionalFields() {
+
+    ATFFileToTest atf = new ATFFileToTest();
+    atf.name = "/files/testGPR3_with_optional_fields.gpr";
+    atf.version = "GenePix Results 3";
+    atf.nbOptionalheaders = 30;
+    atf.nbFields = 61;
+    atf.totalNbLines = 15777;
+
+    read(atf, false);
+
+  }
+
   public void testReadGPR3() {
 
     ATFFileToTest atf = new ATFFileToTest();
@@ -102,7 +115,8 @@ public class GPRReaderTest extends TestCase {
 
       String[] keys = b.getAnnotation().getPropertiesKeys();
 
-      assertEquals(atf.nbOptionalheaders, b.getAnnotation().getPropertiesKeys().length);
+      assertEquals(atf.nbOptionalheaders,
+          b.getAnnotation().getPropertiesKeys().length);
       assertEquals(atf.version, b.getAnnotation().getProperty("Type"));
 
       String[] tab = b.getAnnotation().getPropertiesKeys();
@@ -122,4 +136,3 @@ public class GPRReaderTest extends TestCase {
   }
 
 }
-

@@ -112,11 +112,12 @@ public abstract class BioAssayTextReader extends BioAssayReader {
     if (existingFields == null || existingFields.length == 0)
       return getBioAssay();
 
-    final boolean[] arrayFieldsToRead = createArrayOfFieldsToRead(existingFields);
-    final boolean[] arrayIntFields = createArrayOfTypeFields(existingFields,
-        getIntFieldNames());
-    final boolean[] arrayDoubleFields = createArrayOfTypeFields(existingFields,
-        getDoubleFieldNames());
+    final boolean[] arrayFieldsToRead =
+        createArrayOfFieldsToRead(existingFields);
+    final boolean[] arrayIntFields =
+        createArrayOfTypeFields(existingFields, getIntFieldNames());
+    final boolean[] arrayDoubleFields =
+        createArrayOfTypeFields(existingFields, getDoubleFieldNames());
 
     // Flag location fields as integer fields
     searchFieldAndFlagIt(existingFields, getMetaRowField(), arrayIntFields);
@@ -128,8 +129,8 @@ public abstract class BioAssayTextReader extends BioAssayReader {
     final String separator = getSeparatorField();
     String line = null;
 
-    final int columnCount = getFieldNamesOrder() == null ? 0
-        : getFieldNamesOrder().length;
+    final int columnCount =
+        getFieldNamesOrder() == null ? 0 : getFieldNamesOrder().length;
 
     final String endTag = getEndTag();
 
@@ -143,14 +144,20 @@ public abstract class BioAssayTextReader extends BioAssayReader {
 
         String[] data = line.split(separator);
 
-        if (data.length != columnCount)
+        if (data.length == 1 && data[0].length() == 0)
           continue;
 
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < columnCount; i++) {
 
-          final String s = data[i].trim();
-          final String s2 = removeQuotes ? StringUtils.removeDoubleQuotes(s)
-              : s;
+          final String s2;
+
+          if (i >= data.length)
+            s2 = "";
+          else {
+
+            final String s = data[i].trim();
+            s2 = removeQuotes ? StringUtils.removeDoubleQuotes(s) : s;
+          }
 
           if (arrayFieldsToRead[i])
             if (arrayIntFields[i]) {
@@ -216,10 +223,11 @@ public abstract class BioAssayTextReader extends BioAssayReader {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
-            + "RowNumbers=" + bioAssay.size() + ";ColumnNumber="
-            + bioAssay.getFields().length, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.LOAD, s
+                + "RowNumbers=" + bioAssay.size() + ";ColumnNumber="
+                + bioAssay.getFields().length, HistoryActionResult.PASS);
 
     bioAssay.getHistory().add(entry);
 
