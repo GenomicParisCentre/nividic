@@ -73,6 +73,44 @@ public final class ExpressionMatrixFactory {
     return new ExpressionMatrixImpl(matrix, matrixName);
   }
 
+  /**
+   * Create a ExpressionMatrix Object with M and A dimensions.
+   * @return A new ExpressionMatrix Object
+   */
+  public static ExpressionMatrix createExpressionMatrixMA() {
+
+    return addADimension(new ExpressionMatrixImpl());
+  }
+
+  /**
+   * Create a copy of a expression matrix object with M and A dimensions.
+   * @param matrix Matrix to copy
+   * @return A new ExpressionMatrix Object
+   */
+  public static ExpressionMatrix createExpressionMatrixMA(
+      final ExpressionMatrix matrix) {
+
+    return addADimension(new ExpressionMatrixImpl(matrix));
+  }
+
+  /**
+   * Create a copy of a expression matrix object with M and A dimensions.
+   * @param matrix Matrix to copy
+   * @param matrixName The name of the copy matrix
+   * @return A new ExpressionMatrix Object
+   */
+  public static ExpressionMatrix createExpressionMatrixMA(
+      final ExpressionMatrix matrix, final String matrixName) {
+
+    return addADimension(new ExpressionMatrixImpl(matrix, matrixName));
+  }
+
+  private static ExpressionMatrix addADimension(final ExpressionMatrix matrix) {
+
+    matrix.addDimension(BioAssay.FIELD_NAME_A);
+    return matrix;
+  }
+
   //
   // Constructor
   //
