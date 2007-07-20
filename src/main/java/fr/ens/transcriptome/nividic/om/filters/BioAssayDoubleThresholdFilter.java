@@ -34,6 +34,7 @@ public class BioAssayDoubleThresholdFilter extends
   private String field = BioAssay.FIELD_NAME_M;
   private static final Comparator defaultComparator = Comparator.UPPER;
   private double threshold;
+  private boolean absolute;
 
   private Comparator comparator = Comparator.UPPER;
 
@@ -118,6 +119,15 @@ public class BioAssayDoubleThresholdFilter extends
     return this.threshold;
   }
 
+  /**
+   * test if the value to test is absolute.
+   * @return true if the value to test is absolute
+   */
+  public boolean isAbsolute() {
+
+    return this.absolute;
+  }
+
   //
   // Setter
   //
@@ -149,6 +159,15 @@ public class BioAssayDoubleThresholdFilter extends
     this.threshold = threshold;
   }
 
+  /**
+   * Set if the value to test is absolute.
+   * @param absolute true to enable absolute values
+   */
+  public void setAbsolute(final boolean absolute) {
+
+    this.absolute = absolute;
+  }
+
   //
   // Other methods
   //
@@ -163,22 +182,26 @@ public class BioAssayDoubleThresholdFilter extends
 
     final double threshold = this.threshold;
 
-    if (Double.isNaN(threshold))
-      return false;
+    final double v = this.absolute ? Math.abs(value) : value;
+
+    if (this.absolute)
+
+      if (Double.isNaN(threshold))
+        return false;
 
     switch (this.comparator) {
     case LOWER:
-      return value < threshold;
+      return v < threshold;
     case LOWEREQUALS:
-      return value <= threshold;
+      return v <= threshold;
     case EQUALS:
-      return value == threshold;
+      return v == threshold;
     case NOTEQUALS:
-      return value != threshold;
+      return v != threshold;
     case UPPEREQUALS:
-      return value >= threshold;
+      return v >= threshold;
     case UPPER:
-      return value > threshold;
+      return v > threshold;
 
     default:
       return false;
@@ -191,8 +214,9 @@ public class BioAssayDoubleThresholdFilter extends
    */
   public String getParameterInfo() {
 
-    return "Field=" + getFieldToFilter() + ";Comparator="
-        + getComparator() + ";Threshold=" + getThreshold();
+    return "Field="
+        + getFieldToFilter() + ";Comparator=" + getComparator() + ";Threshold="
+        + getThreshold();
   }
 
   //
@@ -208,9 +232,22 @@ public class BioAssayDoubleThresholdFilter extends
   public BioAssayDoubleThresholdFilter(final String field,
       final double threshold, final String comparator) {
 
+    this(field, threshold, comparator, false);
+  }
+
+  /**
+   * Public constructor.
+   * @param field Field to test
+   * @param threshold Threshold of the test
+   * @param comparator comparator to use
+   */
+  public BioAssayDoubleThresholdFilter(final String field,
+      final double threshold, final String comparator, final boolean absolute) {
+
     setFieldToFilter(field);
     setThreshold(threshold);
     setComparator(comparator);
+    setAbsolute(absolute);
   }
 
 }
