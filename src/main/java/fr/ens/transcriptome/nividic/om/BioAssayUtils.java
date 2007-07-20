@@ -357,7 +357,8 @@ public final class BioAssayUtils {
   public static int[] encodeLocation(final int[] metaRow,
       final int[] metaColumn, final int[] row, final int[] column) {
 
-    if (metaRow == null || metaColumn == null || row == null || column == null
+    if (metaRow == null
+        || metaColumn == null || row == null || column == null
         || metaRow.length != metaColumn.length
         || metaColumn.length != row.length || row.length != column.length)
       return null;
@@ -400,8 +401,9 @@ public final class BioAssayUtils {
     bioAssay.setAs(a);
     bioAssay.setMs(m);
 
-    final HistoryEntry entry = new HistoryEntry("calc MA",
-        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("calc MA", HistoryActionType.MODIFY, null,
+            HistoryActionResult.PASS);
 
     bioAssay.getHistory().add(entry);
   }
@@ -428,8 +430,9 @@ public final class BioAssayUtils {
 
     bioAssay.setMs(ms);
 
-    final HistoryEntry entry = new HistoryEntry("swap",
-        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("swap", HistoryActionType.MODIFY, null,
+            HistoryActionResult.PASS);
 
     bioAssay.getHistory().add(entry);
   }
@@ -459,8 +462,9 @@ public final class BioAssayUtils {
       ratio[i] = (double) red[i] / (double) green[i];
     }
 
-    final HistoryEntry entry = new HistoryEntry("calc rotios",
-        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("calc rotios", HistoryActionType.MODIFY, null,
+            HistoryActionResult.PASS);
 
     bioAssay.getHistory().add(entry);
   }
@@ -631,9 +635,10 @@ public final class BioAssayUtils {
 
     addFieldToBioAssay(result, b);
 
-    final HistoryEntry entry = new HistoryEntry("merge bioAssay",
-        HistoryActionType.MODIFY, a.getName() + " " + b.getName(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("merge bioAssay", HistoryActionType.MODIFY, a
+            .getName()
+            + " " + b.getName(), HistoryActionResult.PASS);
 
     result.getHistory().add(entry);
 
@@ -796,8 +801,9 @@ public final class BioAssayUtils {
     bam.mergeAllIds();
     BioAssay result = bam.getBioAssay();
 
-    final HistoryEntry entry = new HistoryEntry("merge ids",
-        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("merge ids", HistoryActionType.MODIFY, null,
+            HistoryActionResult.PASS);
 
     result.getHistory().add(entry);
 
@@ -818,8 +824,9 @@ public final class BioAssayUtils {
     bam.mergeAllDescription();
     BioAssay result = bam.getBioAssay();
 
-    final HistoryEntry entry = new HistoryEntry("merge descriptions",
-        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("merge descriptions", HistoryActionType.MODIFY, null,
+            HistoryActionResult.PASS);
 
     result.getHistory().add(entry);
 
@@ -864,10 +871,36 @@ public final class BioAssayUtils {
       idsCount.put(id, count);
     }
 
-    final HistoryEntry entry = new HistoryEntry("create unique identifers",
-        HistoryActionType.MODIFY, null, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("create unique identifers", HistoryActionType.MODIFY,
+            null, HistoryActionResult.PASS);
 
     bioAssay.getHistory().add(entry);
+  }
+
+  /**
+   * Add new field to the bioAssay with the translations from a translator
+   * @param bioAssay BioAssay to use
+   * @param translator Translator to generate data
+   */
+  public static void addTranslationsToBioAssay(final BioAssay bioAssay,
+      final Translator translator) {
+
+    if (bioAssay == null || translator == null)
+      return;
+
+    final String[] ids = bioAssay.getIds();
+
+    if (ids == null)
+      return;
+
+    final String[] fields = translator.getFields();
+
+    final String[][] data = translator.translate(ids);
+
+    for (int i = 0; i < fields.length; i++)
+      bioAssay.setDataFieldString(fields[i], data[i]);
+
   }
 
   //
