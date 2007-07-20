@@ -91,10 +91,39 @@ public interface Translator {
   String[] translateField(String[] ids);
 
   /**
+   * Test if the link information is available for the field
+   * @param field Field to test
+   * @return true if link information is available
+   */
+  boolean isLinkInfo(String field);
+
+  /**
+   * Get link information.
+   * @param translatedId Translated id
+   * @param field field of the id
+   * @return a link for the translated id
+   */
+  String getLinkInfo(String translatedId, String field);
+
+  /**
+   * Get links information.
+   * @param translatedIds Translated ids
+   * @param field field of the id
+   * @return a array of links for the translated ids
+   */
+  String[] getLinkInfo(String[] translatedIds, String field);
+
+  /**
    * Test if the field exists.
    * @param field Field to test
    * @return true if the field exists
    */
   boolean isField(String field);
+
+  /**
+   * Get the reverse translator for this translator.
+   * @return a reverse translator
+   */
+  Translator getReverseTranslator();
 
 }
