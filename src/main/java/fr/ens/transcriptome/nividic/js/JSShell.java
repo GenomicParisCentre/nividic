@@ -313,7 +313,7 @@ public class JSShell {
     if (fileToExecute != null)
       try {
         this.engine.eval(new FileInputStream(fileToExecute), fileToExecute);
-        //System.exit(0);
+        System.exit(0);
       } catch (FileNotFoundException e) {
         System.err.println("File not found: " + fileToExecute);
         System.exit(1);
