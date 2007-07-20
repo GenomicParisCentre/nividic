@@ -58,6 +58,27 @@ public class AddIdentifierTranslator extends BasicTranslator {
     return this.translator.translateField(id, field);
   }
 
+  /**
+   * Test if the link information is available for the field
+   * @param field Field to test
+   * @return true if link information is available
+   */
+  public boolean isLinkInfo(final String field) {
+
+    return this.translator.isLinkInfo(field);
+  }
+
+  /**
+   * Get link information.
+   * @param translatedId Translated id
+   * @param field field of the id
+   * @return a link for the translated id
+   */
+  public String getLinkInfo(final String translatedId, final String field) {
+
+    return this.translator.getLinkInfo(translatedId, field);
+  }
+
   //
   // Other methods
   //

@@ -62,6 +62,37 @@ public class ConcatTranslator extends BasicTranslator {
   }
 
   /**
+   * Test if the link information is available for the field
+   * @param field Field to test
+   * @return true if link information is available
+   */
+  public boolean isLinkInfo(final String field) {
+
+    Translator t = this.translators.get(field);
+
+    if (t == null)
+      return false;
+
+    return t.isLinkInfo(field);
+  }
+
+  /**
+   * Get link information.
+   * @param translatedId Translated id
+   * @param field field of the id
+   * @return a link for the translated id
+   */
+  public String getLinkInfo(final String translatedId, final String field) {
+
+    Translator t = this.translators.get(field);
+
+    if (t == null)
+      return null;
+
+    return t.getLinkInfo(translatedId, field);
+  }
+
+  /**
    * Add a translator to the concat translator.
    * @param translator Translator to add
    */
