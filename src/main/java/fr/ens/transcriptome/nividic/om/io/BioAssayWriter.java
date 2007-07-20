@@ -205,6 +205,7 @@ public abstract class BioAssayWriter {
   private void createFieldsArrays() {
 
     final String[] order = getFieldNamesOrder();
+
     // Map flagsFields = new HashMap();
     List<String> alBioAssayFieldsToWrite = new ArrayList<String>();
     List<String> alStreamFieldsToWrite = new ArrayList<String>();
@@ -242,6 +243,33 @@ public abstract class BioAssayWriter {
 
         alBioAssayFieldsToWrite.add(bioAssayFieldName);
         alStreamFieldsToWrite.add(otherFieldName);
+      }
+    }
+
+    if (isWriteAllFields()) {
+
+      String[] bioAssayFields = getBioAssay().getFields();
+
+      for (int i = 0; i < bioAssayFields.length; i++) {
+
+        if (BioAssay.FIELD_NAME_LOCATION.equals(bioAssayFields[i]))
+          continue;
+
+        final String bioAssayFieldName;
+
+        if (converter == null)
+          bioAssayFieldName = bioAssayFields[i];
+        else
+          bioAssayFieldName = converter.getBioAssayFieldName(bioAssayFields[i]);
+
+        final String otherFieldName = bioAssayFields[i];
+
+        if (!alBioAssayFieldsToWrite.contains(bioAssayFieldName)) {
+
+          alBioAssayFieldsToWrite.add(bioAssayFieldName);
+          alStreamFieldsToWrite.add(otherFieldName);
+        }
+
       }
     }
 
