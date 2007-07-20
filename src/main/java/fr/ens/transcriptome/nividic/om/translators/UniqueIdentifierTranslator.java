@@ -35,6 +35,8 @@ public class UniqueIdentifierTranslator extends BasicTranslator {
   private static final String DEFAULT_FIELD = "UniqueId";
 
   private Map<String, String> mapUniqueId = new HashMap<String, String>();
+  private Map<String, String> reversemapUniqueId =
+      new HashMap<String, String>();
   private String[] fields;
   private String newFieldName = DEFAULT_FIELD;
 
@@ -65,6 +67,27 @@ public class UniqueIdentifierTranslator extends BasicTranslator {
     return this.translator.translateField(translatedId, field);
   }
 
+  /**
+   * Test if the link information is available for the field
+   * @param field Field to test
+   * @return true if link information is available
+   */
+  public boolean isLinkInfo(final String field) {
+
+    return this.translator.isLinkInfo(field);
+  }
+
+  /**
+   * Get link information.
+   * @param translatedId Translated id
+   * @param field field of the id
+   * @return a link for the translated id
+   */
+  public String getLinkInfo(final String translatedId, final String field) {
+
+    return this.translator.getLinkInfo(translatedId, field);
+  }
+
   //
   // Other methods
   //
@@ -73,33 +96,71 @@ public class UniqueIdentifierTranslator extends BasicTranslator {
 
     final Translator translator = this.translator;
 
+    Map<String, String> translation = new HashMap<String, String>();
     Map<String, Integer> translationCount = new HashMap<String, Integer>();
 
-    final String fieldName;
-
-    if (field == null)
-      fieldName = translator.getDefaultField();
-    else
-      fieldName = field;
+    final String fieldName =
+        field == null ? translator.getDefaultField() : field;
 
     for (int i = 0; i < ids.length; i++) {
 
-      final String row = ids[i];
+      String row = ids[i];
       String t = translator.translateField(row, fieldName);
 
       if (t == null || "".equals(t))
         t = row;
 
+      translation.put(row, t);
       if (translationCount.containsKey(t)) {
         int count = translationCount.get(t);
         translationCount.put(t, ++count);
-        // System.out.println(t + "#" + count + "\t" + row);
-        mapUniqueId.put(t + "#" + count, row);
-      } else {
+
+      } else
         translationCount.put(t, 1);
-        // System.out.println(t + "\t" + row);
-        mapUniqueId.put(t, row);
+
+    }
+
+    Map<String, Integer> translationCurrentCount =
+        new HashMap<String, Integer>();
+
+    // for (String row : translation.keySet()) {
+    for (Map.Entry<String, String> e : translation.entrySet()) {
+
+      // String t = translation.get(row);
+      final String row = e.getKey();
+      final String t = e.getValue();
+      // System.out.println(row+"\t"+t);
+      int count = translationCount.get(t);
+
+      if (count > 1) {
+
+        String postfix;
+
+        if (translationCurrentCount.containsKey(t)) {
+
+          int currentCount = translationCurrentCount.get(t);
+          currentCount++;
+          translationCurrentCount.put(t, currentCount);
+          postfix = "#" + currentCount;
+        } else {
+          translationCurrentCount.put(t, 1);
+          postfix = "#1";
+        }
+
+        translation.put(row, t + postfix);
       }
+
+    }
+
+    for (int i = 0; i < ids.length; i++) {
+
+      final String id = ids[i];
+      final String newId = translation.get(id);
+
+      // System.out.println(id + "\t" + newId);
+
+      mapUniqueId.put(newId, id);
+      reversemapUniqueId.put(id, newId);
 
     }
 
@@ -134,6 +195,30 @@ public class UniqueIdentifierTranslator extends BasicTranslator {
 
     else
       this.newFieldName = newFieldName;
+  }
+
+  /**
+   * Get the reverse translator for this translator.
+   * @return a reverse translator
+   */
+  public Translator getReverseTranslator() {
+
+    return new BasicTranslator() {
+
+      public String[] getFields() {
+
+        return new String[] {newFieldName};
+      }
+
+      public String translateField(final String id, final String field) {
+        if (newFieldName.equals(field))
+          return reversemapUniqueId.get(id);
+
+        return null;
+      }
+
+    };
+
   }
 
   //
@@ -184,6 +269,7 @@ public class UniqueIdentifierTranslator extends BasicTranslator {
     this.translator = translator;
 
     translateIds(ids.clone(), translatorField);
+
     setNewFieldName(newFieldName);
     updateFields();
   }
