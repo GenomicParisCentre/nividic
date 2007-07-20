@@ -145,3 +145,22 @@ function dir(dir) {
   
   return a;
 }
+
+
+/**
+ * Zip files.
+ * @param outputfile The output file
+ * @param files files to add to the zip
+ * @return nothing
+ */
+function zip(outputFile, files) {
+
+  if (outputFile.constructor==String) { outputFile = sf(outputFile); }
+	
+  for (var i=0; i<files.length;i++) {
+    if (files[i].constructor==String) { files[i] = sf(files[i]); }
+  }
+	
+  Packages.fr.ens.transcriptome.nividic.util
+    .SystemUtils.zipFiles(outputFile, files);
+}
