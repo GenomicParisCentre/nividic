@@ -46,8 +46,10 @@ public class GenepixArrayList {
   private static final String GAL_HEADER_URL = "URL";
 
   private static final String GAL_HEADER_SUPPLIER = "Supplier";
-  private static final String GAL_HEADER_ARRAYERSOFTWARENAME = "ArrayerSoftwareName";
-  private static final String GAL_HEADER_ARRAYERSOFTWAREVERSION = "ArrayerSoftwareVersion";
+  private static final String GAL_HEADER_ARRAYERSOFTWARENAME =
+      "ArrayerSoftwareName";
+  private static final String GAL_HEADER_ARRAYERSOFTWAREVERSION =
+      "ArrayerSoftwareVersion";
   private static final String GAL_HEADER_ARRAYNAME = "ArrayName";
   private static final String GAL_HEADER_ARRAYREVISON = "ArrayRevison";
   private static final String GAL_HEADER_SLIDEBARCODE = "SlideBarCode";
@@ -511,7 +513,7 @@ public class GenepixArrayList {
         return ab;
 
       if (st.hasMoreTokens())
-        ab.setFeatureDiameter(Integer.parseInt(st.nextToken().trim()));
+        ab.setFeatureDiameter(Double.parseDouble(st.nextToken().trim()));
       else
         return ab;
 
