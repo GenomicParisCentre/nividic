@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
+import java.io.File;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
@@ -31,8 +32,10 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils;
+import fr.ens.transcriptome.nividic.om.io.ExpressionMatrixWriter;
+import fr.ens.transcriptome.nividic.om.io.NividicIOException;
+import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixWriter;
 import fr.ens.transcriptome.nividic.om.translators.MultiColumnTranslator;
-import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 public class ExpressionMatrixMergerTest extends TestCase {
 
@@ -265,6 +268,45 @@ public class ExpressionMatrixMergerTest extends TestCase {
     assertEquals(rowT2[2], Double.NaN);
     assertEquals(rowT2[3], Double.NaN);
 
+  }
+
+  public void testMergeBioAssay() throws NividicIOException {
+
+    final String[] ids1 = {"id1", "id2", "id3", "id2"};
+    final String[] ids2 = {"id1", "id2", "id3", "id2"};
+
+    final double[] m1 = {1.1, 2.2, 3.3, 4.4};
+    final double[] m2 = {11.1, 44.4, Double.NaN, 77.7};
+
+    final double[] a1 = {11111.1, 22222.2, 33333.3, 444444.4};
+    final double[] a2 = {111111.1, 444444.4, Double.NaN, 777777.7};
+
+    final BioAssay ba1 = makeBioAssay(ids1, m1, a1);
+    final BioAssay ba2 = makeBioAssay(ids1, m1, a1);
+
+    ba1.setName("ba1");
+    ba2.setName("ba2");
+
+    ExpressionMatrixMerger merger = new ExpressionMatrixMerger();
+
+    merger.addDimension(BioAssay.FIELD_NAME_M);
+    merger.addDimension(BioAssay.FIELD_NAME_A);
+
+    merger.addBioAssay(ba1);
+    merger.addBioAssay(ba2);
+
+    merger.setAddStatData(true);
+
+    ExpressionMatrix matrix = merger.getMatrix();
+
+    assertNotNull(matrix);
+    assertEquals(3, matrix.getRowCount());
+
+    ExpressionMatrixDimension dim = matrix.getDimension("m n");
+    assertEquals(2.0, dim.getValue("id2", "ba1"));
+
+    dim = matrix.getDimension("m");
+    assertEquals(3.3, dim.getValue("id2", "ba1"), 0.01);
   }
 
 }
