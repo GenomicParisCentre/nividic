@@ -143,7 +143,7 @@ public class ArrayBlock {
    * Set the diameter of the features of the block.
    * @param featureDiameter The featureDiameter to set
    */
-  public void setFeatureDiameter(final int featureDiameter) {
+  public void setFeatureDiameter(final double featureDiameter) {
     this.featureDiameter = featureDiameter;
   }
 
