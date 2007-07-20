@@ -109,7 +109,7 @@ public class MultiColumnTranslatorReader {
    * Set if the quotes of the fields must be removed
    * @param removeQuotes The removeQuotes to set
    */
-  public void setRemoveQuotes(boolean removeQuotes) {
+  public void setRemoveQuotes(final boolean removeQuotes) {
     this.removeQuotes = removeQuotes;
   }
 
