@@ -106,8 +106,7 @@ public abstract class BioAssayTabularReader extends BioAssayTextReader {
       // TODO check if <code>isSameName(result)</code> and
       // <code>map.containsKey(result[i])</code>
       // TODO have the same function
-      if (isSameName(result))
-        throw new NividicIOException("Two column have the same name");
+      testSameName(result);
 
       setFieldNames(result);
 
@@ -122,8 +121,10 @@ public abstract class BioAssayTabularReader extends BioAssayTextReader {
    * Test if a string is present twice in an array of string.
    * @param strings Strings to test.
    * @return <b>true </b> if a string exist in double
+   * @throws NividicIOException
    */
-  private boolean isSameName(final String[] strings) {
+  private boolean testSameName(final String[] strings)
+      throws NividicIOException {
 
     if (strings == null)
       return false;
@@ -131,7 +132,8 @@ public abstract class BioAssayTabularReader extends BioAssayTextReader {
     for (int i = 0; i < strings.length; i++)
       for (int j = i + 1; j < strings.length; j++)
         if (strings[i].equals(strings[j]))
-          return true;
+          throw new NividicIOException("Two column have the same name: "
+              + strings[i]);
 
     return false;
   }
