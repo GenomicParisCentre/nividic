@@ -210,6 +210,11 @@ function _getBioAssayWriter(file, type) {
 
       case "total.summary":
         return new TotalSummaryWriter(file);
+       
+      case  "total.summary.xsl":
+        var writer = new TotalSummaryWriter(file);
+        writer.setXSLBackend(true);
+        return writer;
     }
   }
 
@@ -224,13 +229,15 @@ function _getBioAssayWriter(file, type) {
  * @param allFields Write all the fields or only default fields
  * @return nothing
  */
-function writeBioAssay(bioAssay, file, type, allFields) {
+function writeBioAssay(bioAssay, file, type, allFields, translator) {
 
   var writer = _getBioAssayWriter(file, type);
 
   if (allFields==true) { 
     writer.addAllFieldsToWrite(); 
   }
+  if (translator!=undefined)
+    writer.setTranslator(translator);
 
   writer.write(bioAssay);
 }
@@ -268,11 +275,23 @@ function writeIDMA(bioAssay, file) {
 /**
  * Shortcut to write total.summary file.
  * @param file File to write
+ * @param translator Translator to use
  * @return nothing
  */
-function writeTotalSummary(bioAssay, file) {
+function writeTotalSummary(bioAssay, file, translator) {
 
-  writeBioAssay(bioAssay, file, "total.summary", true);
+  writeBioAssay(bioAssay, file, "total.summary", true, translator);
+}
+
+/**
+ * Shortcut to write total.summary file.
+ * @param file File to write
+ * @param translator Translator to use
+ * @return nothing
+ */
+function writeTotalSummaryXSL(bioAssay, file, translator) {
+
+  writeBioAssay(bioAssay, file, "total.summary.xsl", true, translator);
 }
 
 /*
