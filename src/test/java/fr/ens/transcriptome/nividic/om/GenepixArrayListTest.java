@@ -71,13 +71,13 @@ public class GenepixArrayListTest extends TestCase {
 
     ArrayBlock ab = gal.getBlock(1);
 
-    assertEquals(3000, ab.getXOrigin());
-    assertEquals(16420, ab.getYOrigin());
-    assertEquals(110, ab.getFeatureDiameter());
+    assertEquals(3000.0, ab.getXOrigin());
+    assertEquals(16420.0, ab.getYOrigin());
+    assertEquals(110.0, ab.getFeatureDiameter());
     assertEquals(18, ab.getXFeatures());
-    assertEquals(240, ab.getXSpacing());
+    assertEquals(240.0, ab.getXSpacing());
     assertEquals(18, ab.getYFeatures());
-    assertEquals(240, ab.getYSpacing());
+    assertEquals(240.0, ab.getYSpacing());
 
   }
 
