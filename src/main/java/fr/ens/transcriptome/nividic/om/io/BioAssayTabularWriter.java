@@ -22,14 +22,8 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
-import fr.ens.transcriptome.nividic.om.BioAssay;
-import fr.ens.transcriptome.nividic.om.translators.Translator;
 
 /**
  * This abstract class define a reader for generic tabular files.
@@ -37,12 +31,8 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
  */
 public abstract class BioAssayTabularWriter extends BioAssayWriter {
 
-  private static final String DOS_EOL = "\r\n";
-  private static final char SEPARATOR_TAB = '\t';
-
-  private static final String eol = DOS_EOL;
-  private static final char separator = SEPARATOR_TAB;
-  private BufferedWriter bw;
+  private BioAssayTabularWriterBackend backend;
+  private boolean xslBackend;
 
   /**
    * Get the meta row field name.
@@ -77,130 +67,18 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
   }
 
   protected void writeHeaders() throws NividicIOException {
-    bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
 
-    StringBuffer sb = new StringBuffer();
+    if (isXSLBackend())
+      this.backend = new BioAssayTabularWriterXSLBackend(this);
+    else
+      this.backend = new BioAssayTabularWriterTSVBackend(this);
 
-    // Write Fields names
-    for (int i = 0; i < getColumnCount(); i++) {
-      if (i != 0)
-        sb.append(separator);
-      sb.append('"');
-      sb.append(getFieldName(i));
-      sb.append('"');
-    }
-
-    if (getTranslator() != null) {
-
-      String[] fields = getTranslator().getFields();
-      if (fields != null)
-        for (int i = 0; i < fields.length; i++) {
-
-          sb.append(separator);
-
-          sb.append('"');
-          sb.append(fields[i]);
-          sb.append('"');
-        }
-
-    }
-
-    sb.append(eol);
-
-    try {
-      bw.write(sb.toString());
-    } catch (IOException e) {
-      throw new NividicIOException("Error while writing stream header : "
-          + e.getMessage());
-    }
+    this.backend.writeHeaders();
   }
 
   protected void writeData() throws NividicIOException {
 
-    if (this.bw == null)
-      throw new NividicIOException("No stream to write");
-
-    final int countCol = getColumnCount();
-    final int countRow = getRowColumn();
-    final Translator translator = getTranslator();
-    final String[] translatorFields;
-    final String[] ids = getBioAssay() == null ? null : getBioAssay().getIds();
-
-    if (translator == null)
-      translatorFields = null;
-    else
-      translatorFields = translator.getFields();
-
-    try {
-      StringBuffer sb = new StringBuffer();
-      for (int i = 0; i < countRow; i++) {
-
-        for (int j = 0; j < countCol; j++) {
-
-          String value = getData(i, j);
-          if (value == null)
-            value = "";
-
-          switch (getFieldType(j)) {
-          case BioAssay.DATATYPE_STRING:
-            sb.append('\"');
-            sb.append(value);
-            sb.append('\"');
-            break;
-
-          case BioAssay.DATATYPE_INTEGER:
-            sb.append(value);
-            break;
-
-          case BioAssay.DATATYPE_DOUBLE:
-            if (value.equals("NA"))
-              sb.append("Error");
-            else
-              sb.append(value);
-            break;
-
-          // Locations type
-          default:
-            sb.append(value);
-            break;
-          }
-
-          if (translatorFields == null && (j == (countCol - 1)))
-            sb.append(eol);
-          else
-            sb.append(separator);
-        }
-
-        for (int j = 0; j < translatorFields.length; j++) {
-
-          final String value;
-
-          if (ids == null)
-            value = null;
-          else
-            value = translator.translateField(ids[i], translatorFields[j]);
-
-          if (value != null) {
-            sb.append('\"');
-            sb.append(value);
-            sb.append('\"');
-          }
-
-          if (j == (translatorFields.length - 1))
-            sb.append(eol);
-          else
-            sb.append(separator);
-        }
-
-        this.bw.write(sb.toString());
-        sb.delete(0, sb.length());
-      }
-
-      this.bw.close();
-    } catch (IOException e) {
-      throw new NividicIOException("Error while writing stream : "
-          + e.getMessage());
-    }
+    this.backend.writeData();
   }
 
   /**
@@ -215,6 +93,24 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
   //
   // Other methods
   //
+
+  /**
+   * Enable the XSL backend.
+   * @param xslBackend switch to enable XSL backend
+   */
+  public void setXSLBackend(final boolean xslBackend) {
+
+    this.xslBackend = xslBackend;
+  }
+
+  /**
+   * Test if XSL backend is enabled.
+   * @return true if the XSL backend is enable
+   */
+  public boolean isXSLBackend() {
+
+    return this.xslBackend;
+  }
 
   /**
    * adds fields to read
