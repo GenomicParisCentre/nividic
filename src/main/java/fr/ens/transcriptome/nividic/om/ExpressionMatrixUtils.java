@@ -186,6 +186,68 @@ public final class ExpressionMatrixUtils {
   }
 
   /**
+   * Convert the matrix to HTML.
+   * @param matrix Matrix to concert
+   * @return a String with the matrix in html
+   */
+  public static String toHTML(final ExpressionMatrix matrix) {
+
+    if (matrix == null)
+      return null;
+
+    StringBuilder sb = new StringBuilder();
+
+    final String[] dimensionsNames = matrix.getDimensionNames();
+    final String[] columnNames = matrix.getColumnNames();
+    final String[] rowNames = matrix.getRowNames();
+
+    final boolean oneDimension = dimensionsNames.length == 1;
+
+    final double[][] data =
+        new double[dimensionsNames.length * columnNames.length][];
+
+    sb.append("<table width=\"100%\" border=\"1\" cellspacing=\"0\">\n");
+    sb.append("<tr bgcolor=\"lightgray\" font size=\"+1\"><th>Ids</th>");
+
+    final ExpressionMatrixDimension[] dimensions = matrix.getDimensions();
+
+    int count = 0;
+
+    for (int i = 0; i < columnNames.length; i++)
+      for (int j = 0; j < dimensionsNames.length; j++) {
+
+        data[count++] = dimensions[j].getColumnToArray(columnNames[i]);
+
+        sb.append("<th>");
+        sb.append(columnNames[i]);
+        if (!oneDimension) {
+          sb.append("$");
+          sb.append(dimensionsNames[j]);
+        }
+        sb.append("</th>");
+      }
+
+    sb.append("</tr>\n");
+
+    for (int i = 0; i < rowNames.length; i++) {
+
+      sb.append("<tr><td>");
+      sb.append(rowNames[i]);
+      sb.append("</td>");
+
+      for (int j = 0; j < data.length; j++) {
+        sb.append("<td>");
+        sb.append(data[j][i]);
+        sb.append("</td>");
+      }
+      sb.append("</tr>\n");
+    }
+
+    sb.append("</table\n");
+    return sb.toString();
+  }
+
+  /**
    * Swap M values of a column.
    * @param matrix Matrix to process
    * @param columnName column to process
@@ -213,8 +275,9 @@ public final class ExpressionMatrixUtils {
 
     dim.setValues(matrix.getRowNames(), columnName, ms);
 
-    final HistoryEntry entry = new HistoryEntry("Swap",
-        HistoryActionType.MODIFY, columnName, HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Swap", HistoryActionType.MODIFY, columnName,
+            HistoryActionResult.PASS);
 
     matrix.getHistory().add(entry);
   }
@@ -243,9 +306,9 @@ public final class ExpressionMatrixUtils {
     final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrix.meanCenterExperiments(doubleMatrix);
 
-    final HistoryEntry entry = new HistoryEntry("Center columns",
-        HistoryActionType.MODIFY, dimension.getDimensionName(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Center columns", HistoryActionType.MODIFY, dimension
+            .getDimensionName(), HistoryActionResult.PASS);
 
     dimension.getMatrix().getHistory().add(entry);
   }
@@ -274,9 +337,9 @@ public final class ExpressionMatrixUtils {
     final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrix.meanCenterSpots(doubleMatrix);
 
-    final HistoryEntry entry = new HistoryEntry("Center rows",
-        HistoryActionType.MODIFY, dimension.getDimensionName(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Center rows", HistoryActionType.MODIFY, dimension
+            .getDimensionName(), HistoryActionResult.PASS);
 
     dimension.getMatrix().getHistory().add(entry);
   }
@@ -305,9 +368,9 @@ public final class ExpressionMatrixUtils {
     final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrix.divideExperimentsSD(doubleMatrix);
 
-    final HistoryEntry entry = new HistoryEntry("Reducing columns",
-        HistoryActionType.MODIFY, dimension.getDimensionName(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Reducing columns", HistoryActionType.MODIFY,
+            dimension.getDimensionName(), HistoryActionResult.PASS);
 
     dimension.getMatrix().getHistory().add(entry);
   }
@@ -336,9 +399,9 @@ public final class ExpressionMatrixUtils {
     final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrix.divideSpotsSD(doubleMatrix);
 
-    final HistoryEntry entry = new HistoryEntry("Reducing columns",
-        HistoryActionType.MODIFY, dimension.getDimensionName(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Reducing columns", HistoryActionType.MODIFY,
+            dimension.getDimensionName(), HistoryActionResult.PASS);
 
     dimension.getMatrix().getHistory().add(entry);
   }
@@ -453,7 +516,8 @@ public final class ExpressionMatrixUtils {
 
     }
 
-    Map<String, Integer> translationCurrentCount = new HashMap<String, Integer>();
+    Map<String, Integer> translationCurrentCount =
+        new HashMap<String, Integer>();
 
     // for (String row : translation.keySet()) {
     for (Map.Entry<String, String> e : translation.entrySet()) {
