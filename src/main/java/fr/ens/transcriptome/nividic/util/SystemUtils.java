@@ -24,12 +24,16 @@ package fr.ens.transcriptome.nividic.util;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 
@@ -40,8 +44,9 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 public final class SystemUtils {
 
   private static final String PREFIX_URL_FILE = "file:";
-
   private static final String PREFIX_URL_FILE_IN_JAR = "jar:file:";
+  private static final int ZIP_BUFFER = 1024;
+  private static final int MAX_JAVA_VERSION_BOOTSTRAP = 5;
 
   /**
    * Get the source (a class file or a jar file) of a class.
@@ -110,8 +115,8 @@ public final class SystemUtils {
       } else if (strUrl.startsWith(PREFIX_URL_FILE_IN_JAR)) {
         final int posJarFile = PREFIX_URL_FILE_IN_JAR.length();
         final int posRessource = strUrl.indexOf(resource);
-        final String jarFileName = strUrl.substring(posJarFile,
-            posRessource - 1);
+        final String jarFileName =
+            strUrl.substring(posJarFile, posRessource - 1);
         File jarFile = new File(jarFileName);
         return jarFile.getParentFile();
       }
@@ -147,6 +152,7 @@ public final class SystemUtils {
 
         sb.append(line);
       }
+      in.close();
 
       return sb.toString();
     } catch (IOException e) {
@@ -189,8 +195,8 @@ public final class SystemUtils {
       return null;
 
     String className = c.getName();
-    String packageName = c.getPackage() == null ? null : c.getPackage()
-        .getName();
+    String packageName =
+        c.getPackage() == null ? null : c.getPackage().getName();
 
     if (packageName == null || packageName.equals(""))
       return className;
@@ -244,6 +250,75 @@ public final class SystemUtils {
       throw new NividicRuntimeException("Unable to lanch the editor");
     }
 
+  }
+
+  /**
+   * This class bootstrap the JVM is needed (Java Web Start under Mac OS X).
+   */
+  public static void bootstrapJWSUnderOSX() {
+
+    if (!isMacOsX())
+      return;
+
+    final String[] tab = System.getenv("java.version").split("\\.");
+
+    final int version = Integer.parseInt(tab[1]);
+
+    if (version > MAX_JAVA_VERSION_BOOTSTRAP)
+      return;
+
+    try {
+      SystemUtils.class.getClassLoader().loadClass(
+          "com.sun.jnlp.JNLPClassLoader");
+      InternalBootstrapOSX.bootstrap();
+    } catch (ClassNotFoundException e) {
+      return;
+    }
+  }
+
+  /**
+   * Create a zip file.
+   * @param outputFile Output file
+   * @param files File to add to the zip
+   * @throws IOException if an error occurs while creating the zip file
+   */
+  public static void zipFiles(final File outputFile, final File[] files)
+      throws IOException {
+
+    if (outputFile == null || files == null)
+      return;
+
+    // Create a buffer for reading the files
+    final byte[] buf = new byte[ZIP_BUFFER];
+
+    // Create the ZIP file
+    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(outputFile));
+
+    // Compress the files
+    for (int i = 0; i < files.length; i++) {
+
+      final File f = files[i];
+
+      if (f == null)
+        continue;
+
+      FileInputStream in = new FileInputStream(f);
+
+      // Add ZIP entry to output stream.
+      out.putNextEntry(new ZipEntry(f.getName()));
+
+      // Transfer bytes from the file to the ZIP file
+      int len;
+      while ((len = in.read(buf)) > 0) {
+        out.write(buf, 0, len);
+      }
+
+      // Complete the entry
+      out.closeEntry();
+      in.close();
+    }
+
+    out.close();
   }
 
   //
