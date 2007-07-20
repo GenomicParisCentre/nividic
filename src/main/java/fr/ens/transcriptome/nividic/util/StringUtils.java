@@ -88,6 +88,26 @@ public final class StringUtils {
   }
 
   /**
+   * Get the extension of a filename
+   * @param filename The filename
+   * @return The extension of the filename if exists, null if filename is null.
+   */
+  public static String getFilenameWithoutExtension(final String filename) {
+
+    if (filename == null)
+      return null;
+
+    String[] words = filename.split("\\.");
+    if (words.length == 0)
+      return null;
+
+    if (words.length == 1)
+      return filename;
+
+    return words[0];
+  }
+
+  /**
    * Generate a random identifier.
    * @param prefix Prefix of the identifier
    * @return a random identifier
@@ -242,7 +262,7 @@ public final class StringUtils {
     for (int i = 0; i < idsToRemove.length; i++)
       set.remove(idsToRemove[i]);
 
-    String [] result = new String[set.size()];
+    String[] result = new String[set.size()];
 
     set.toArray(result);
 
