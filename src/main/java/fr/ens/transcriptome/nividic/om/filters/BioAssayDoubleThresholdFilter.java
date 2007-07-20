@@ -240,6 +240,7 @@ public class BioAssayDoubleThresholdFilter extends
    * @param field Field to test
    * @param threshold Threshold of the test
    * @param comparator comparator to use
+   * @param absolute true if the threshold is absolute value
    */
   public BioAssayDoubleThresholdFilter(final String field,
       final double threshold, final String comparator, final boolean absolute) {
