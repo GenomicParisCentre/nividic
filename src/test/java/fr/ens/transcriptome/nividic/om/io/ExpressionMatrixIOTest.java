@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import fr.ens.transcriptome.nividic.om.BioAssay;
@@ -39,10 +40,13 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixUtils;
 import fr.ens.transcriptome.nividic.om.impl.ExpressionMatrixImpl;
 import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixReader;
 import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixWriter;
+import fr.ens.transcriptome.nividic.om.translators.DummyTranslator;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
- * JUnit class for SimpleExpressionMatrixReader and
- * SimpleExpressionMatrixWriter objects
+ * JUnit class for SimpleExpressionMatrixReader and SimpleExpressionMatrixWriter
+ * objects
  * @author Lory Montout
  */
 public class ExpressionMatrixIOTest extends TestCase {
@@ -134,6 +138,53 @@ public class ExpressionMatrixIOTest extends TestCase {
     is.close();
 
     assertTrue(em2.dataEquals(em));
+
+  }
+
+  public void testReadWriteExistingMatrix() throws NividicIOException,
+      IOException {
+
+    String file1 = "/files/PDR1gal_ctrred.txt";
+    //String file1 = "/files/PDR1_huge.txt";
+
+    InputStream is = this.getClass().getResourceAsStream(file1);
+    SimpleExpressionMatrixReader reader = new SimpleExpressionMatrixReader(is);
+
+    ExpressionMatrix matrix = reader.read();
+
+    Translator t = new DummyTranslator(3);
+
+    String outputFile = "/tmp/testExpressionMatrix2.txt";
+
+    OutputStream os = new FileOutputStream(outputFile);
+
+    SimpleExpressionMatrixWriter emw = new SimpleExpressionMatrixWriter(os);
+    emw.setTranslator(t);
+
+    emw.write(matrix);
+    os.close();
+
+    is = new FileInputStream(outputFile);
+    SimpleExpressionMatrixReader emr = new SimpleExpressionMatrixReader(is, 4);
+    ExpressionMatrix em2 = emr.read();
+    is.close();
+
+    Translator t2 = emr.getTranslator();
+    assertNotNull(t2);
+
+    assertTrue(em2.dataEquals(matrix));
+
+    String outputFile2 = "/tmp/testExpressionMatrix3.txt";
+
+    os = new FileOutputStream(outputFile2);
+
+    emw = new SimpleExpressionMatrixWriter(os);
+    emw.setTranslator(t2);
+
+    emw.write(em2);
+    os.close();
+
+    assertTrue(NividicUtils.compareFile(outputFile, outputFile2));
 
   }
 
