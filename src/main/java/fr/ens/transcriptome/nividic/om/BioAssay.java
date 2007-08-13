@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -27,8 +27,8 @@ import fr.ens.transcriptome.nividic.om.filters.SpotComparator;
 
 /**
  * This interface discribe a bioassay object. This code is based on previous
- * work in c++ developped at the Service de Génomique Fonctionelle of The
- * Commissariat à l'Énergie Atomique (CEA) by Laurent Jourdren, Miramme Allouche
+ * work in c++ developped at the Service de Gï¿½nomique Fonctionelle of The
+ * Commissariat ï¿½ l'ï¿½nergie Atomique (CEA) by Laurent Jourdren, Miramme Allouche
  * and Vincent Frouin.
  * @author Laurent Jourdren
  * @author Vincent Frouin
@@ -37,9 +37,9 @@ import fr.ens.transcriptome.nividic.om.filters.SpotComparator;
 public interface BioAssay extends BioAssayBase, BiologicalObject {
 
   /** Column name for red data. */
-  String FIELD_NAME_RED = "red";
+  String FIELD_NAME_RED = PhysicalConstants.RED_FIELD;
   /** Column name for green data. */
-  String FIELD_NAME_GREEN = "green";
+  String FIELD_NAME_GREEN = PhysicalConstants.GREEN_FIELD;
   /** Column name for flags data. */
   String FIELD_NAME_FLAG = "flags";
   /** Column name for name data. */
