@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.translators;
+package fr.ens.transcriptome.nividic.om.translators.io;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,6 +38,7 @@ import org.biojavax.bio.seq.RichSequenceIterator;
 import org.biojavax.bio.seq.RichSequence.IOTools;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
+import fr.ens.transcriptome.nividic.om.translators.BasicTranslator;
 
 /**
  * This class define a translator to handle annotation from fasta file.
