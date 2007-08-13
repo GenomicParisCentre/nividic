@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
@@ -259,6 +260,12 @@ public abstract class ExpressionMatrixReader {
    * @throws NividicIOException if an error occurs while reading the stream
    */
   public abstract ExpressionMatrix read() throws NividicIOException;
+
+  /**
+   * Get once data read the translator for the annotation of data.
+   * @return a new translator object or null if there is no annotation with data
+   */
+  public abstract Translator getTranslator();
 
   //
   // Constructor
