@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -28,7 +28,7 @@ import java.io.Serializable;
  * This class define a class to handle a biological name.
  * @author Laurent Jourdren
  */
-class BiologicalName implements Serializable {
+public class BiologicalName implements Serializable {
 
   private static int currentId;
 
@@ -78,7 +78,7 @@ class BiologicalName implements Serializable {
    * Public constructor
    * @param o instance of the class
    */
-  BiologicalName(final Object o) {
+  public BiologicalName(final Object o) {
 
     this(o.getClass());
   }
