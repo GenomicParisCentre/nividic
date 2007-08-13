@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -37,6 +37,8 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
+import fr.ens.transcriptome.nividic.om.translators.MultiColumnTranslator;
+import fr.ens.transcriptome.nividic.om.translators.Translator;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
@@ -50,8 +52,11 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
   private static final String DUPPLICATED_SUFFIX = "_DUPLICATED_";
 
   private ExpressionMatrix matrix;
+  private MultiColumnTranslator translator;
   private String[] fieldNames;
+  private String[] annotNames;
   private ExpressionMatrixDimension[] dimensions;
+  private int firstDataColumn = 1;
   private boolean decimalSeparatorFound;
   private boolean commaDecimalSepartor;
 
@@ -59,14 +64,47 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
   // Other Methods
   //
 
+  private String[] getColumnNamesFromFieldNames(final String[] fieldNames) {
+
+    final int pos = this.firstDataColumn - 1;
+
+    if (pos == 1)
+      return fieldNames;
+
+    final int len = fieldNames.length - pos;
+
+    final String[] result = new String[len];
+
+    System.arraycopy(fieldNames, pos, result, 0, len);
+
+    return result;
+  }
+
+  private String[] getAnnotNamesFromFieldNames(final String[] fieldNames) {
+
+    final int pos = this.firstDataColumn - 1;
+
+    if (pos == 1)
+      return new String[] {};
+
+    final String[] result = new String[pos];
+
+    System.arraycopy(fieldNames, 1, result, 0, pos);
+
+    return result;
+  }
+
   private void defineFieldNamesAndDimensions() {
 
-    final String[] columnNames = getFieldNames();
+    final String[] readFieldNames = getFieldNames();
+    final String[] columnNames = getColumnNamesFromFieldNames(readFieldNames);
+    this.annotNames = getAnnotNamesFromFieldNames(readFieldNames);
 
     if (columnNames == null) {
 
       this.fieldNames = null;
       this.dimensions = null;
+      this.translator = null;
 
       return;
     }
@@ -74,6 +112,11 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
     final List<String> fieldNames = new ArrayList<String>();
     final List<ExpressionMatrixDimension> dimensions =
         new ArrayList<ExpressionMatrixDimension>();
+
+    if (annotNames.length == 0)
+      this.translator = null;
+    else
+      this.translator = new MultiColumnTranslator(annotNames, false);
 
     for (int i = 0; i < columnNames.length; i++) {
 
@@ -138,9 +181,12 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
     defineFieldNamesAndDimensions();
 
     final String[] fieldNames = this.fieldNames;
+    final String[] annotNames = this.annotNames;
     final ExpressionMatrixDimension[] dimensions = this.dimensions;
 
     setMatrixColumnNames(matrix, fieldNames);
+
+    final int firstDataIndex = annotNames.length + 1;
 
     try {
       while ((line = br.readLine()) != null) {
@@ -150,9 +196,10 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
         if (data.length == 0 || data[0].trim().startsWith("#"))
           continue;
 
-        if (data.length != fieldNames.length) {
+        // Complete uncompleted rows
+        if (data.length != fieldNames.length + annotNames.length) {
 
-          String[] newData = new String[fieldNames.length];
+          String[] newData = new String[fieldNames.length + annotNames.length];
           Arrays.fill(newData, "");
           for (int i = 0; i < newData.length; i++) {
 
@@ -177,11 +224,21 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
 
         this.matrix.addRow(id);
 
+        // Add annotations to translator
+        if (firstDataIndex > 1) {
+
+          final String[] annotData = new String[annotNames.length];
+          System.arraycopy(data, 1, annotData, 0, annotData.length);
+
+          this.translator.addRow(id, annotData);
+        }
+
         // Double values
-        for (int i = 1; i < data.length; i++)
+        for (int i = 1; i < data.length - annotNames.length; i++)
           // dimensions[i - 1].setValue(id, fieldNames[i],
           // parseValues(data[i]));
-          dimensions[i].setValue(id, fieldNames[i], parseValues(data[i]));
+          dimensions[i].setValue(id, fieldNames[i], parseValues(data[i
+              + firstDataIndex - 1]));
 
       }
     } catch (IOException e) {
@@ -283,6 +340,34 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
     return DIMENSION_SEPARATOR;
   }
 
+  /**
+   * Get the first column with data.
+   * @return Returns the firstDataColumn
+   */
+  public int getFirstDataColumn() {
+    return firstDataColumn;
+  }
+
+  /**
+   * Set the first column with data
+   * @param firstDataColumn The index of the first column with data
+   */
+  public void setFirstDataColumn(final int firstDataColumn) {
+
+    if (firstDataColumn < 1)
+      return;
+    this.firstDataColumn = firstDataColumn;
+  }
+
+  /**
+   * Get once data read the translator for the annotation of data.
+   * @return a new translator object or null if there is no annotation with data
+   */
+  public Translator getTranslator() {
+
+    return this.translator;
+  }
+
   //
   // Constructor
   //
@@ -307,4 +392,30 @@ public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
       throws NividicIOException {
     super(is);
   }
+
+  /**
+   * Public constructor.
+   * @param file file to read
+   * @param firstDataColumn The index of the first column with data
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public SimpleExpressionMatrixReader(final File file, final int firstDataColumn)
+      throws NividicIOException {
+    this(file);
+    setFirstDataColumn(firstDataColumn);
+  }
+
+  /**
+   * Public constructor
+   * @param is Input stream to read
+   * @param firstDataColumn The index of the first column with data
+   * @throws NividicIOException if the stream is null
+   */
+  public SimpleExpressionMatrixReader(final InputStream is,
+      final int firstDataColumn) throws NividicIOException {
+    this(is);
+    setFirstDataColumn(firstDataColumn);
+  }
+
 }
