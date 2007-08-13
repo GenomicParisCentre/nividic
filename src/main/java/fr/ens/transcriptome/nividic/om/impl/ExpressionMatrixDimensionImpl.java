@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -52,7 +52,8 @@ public class ExpressionMatrixDimensionImpl implements
   private String name;
   private ExpressionMatrixImpl matrix;
 
-  private Set<ExpressionMatrixListener> listeners = new HashSet<ExpressionMatrixListener>();
+  private Set<ExpressionMatrixListener> listeners =
+      new HashSet<ExpressionMatrixListener>();
 
   private Map<String, List<Double>> referencesToColumnNamesMap;
 
@@ -60,6 +61,14 @@ public class ExpressionMatrixDimensionImpl implements
   private int lastGetSetValueRowIndex;
   private String lastGetSetValueColumnName;
   private List<Double> lastGetSetValueColumnData;
+
+  // for DoubleMatrix
+  private int rowCount;
+  private int columnCount;
+  private String[] columnNames;
+  private String[] rowNames;
+  private boolean columnNamesChanged = true;
+  private boolean rowNamesChanged = true;
 
   //
   // Getters
@@ -194,8 +203,8 @@ public class ExpressionMatrixDimensionImpl implements
 
     if (this.isNoRow())
       throw new ExpressionMatrixRuntimeException(
-          "the matrix is empty, the column number " + columnNumber
-              + " doesn't exist");
+          "the matrix is empty, the column number "
+              + columnNumber + " doesn't exist");
 
     String columnName = this.getColumnName(columnNumber);
 
@@ -242,8 +251,8 @@ public class ExpressionMatrixDimensionImpl implements
 
     if (this.isNoRow())
       throw new ExpressionMatrixRuntimeException(
-          "the matrix is empty, the column number" + columnNumber
-              + "and the row " + rowId + " dont exist");
+          "the matrix is empty, the column number"
+              + columnNumber + "and the row " + rowId + " dont exist");
 
     String columnName = this.getColumnName(columnNumber);
 
@@ -336,8 +345,8 @@ public class ExpressionMatrixDimensionImpl implements
 
       matrix.throwExceptionIfColumnDoesntExists(columnName);
       this.lastGetSetValueColumnName = columnName;
-      this.lastGetSetValueColumnData = this.referencesToColumnNamesMap
-          .get(columnName);
+      this.lastGetSetValueColumnData =
+          this.referencesToColumnNamesMap.get(columnName);
     }
 
     if (this.lastGetSetValueRowName == null
@@ -552,8 +561,8 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The length of data to add is not equals to the row count");
 
-    final List<Double> columnToFill = referencesToColumnNamesMap
-        .get(columnName);
+    final List<Double> columnToFill =
+        referencesToColumnNamesMap.get(columnName);
 
     final String[] ids = getRowNames();
 
@@ -589,8 +598,8 @@ public class ExpressionMatrixDimensionImpl implements
       throw new ExpressionMatrixRuntimeException(
           "The length of data to add is not equals to the row count");
 
-    final List<Double> columnToFill = referencesToColumnNamesMap
-        .get(columnName);
+    final List<Double> columnToFill =
+        referencesToColumnNamesMap.get(columnName);
 
     for (int i = 0; i < ids.length; i++) {
       if (ids[i] != null)
@@ -680,7 +689,8 @@ public class ExpressionMatrixDimensionImpl implements
    */
   public int getColumnCount() {
 
-    return this.matrix.getColumnCount();
+    // return this.matrix.getColumnCount();
+    return columnCount;
   }
 
   /**
@@ -709,7 +719,8 @@ public class ExpressionMatrixDimensionImpl implements
    */
   public int getRowCount() {
 
-    return this.matrix.getRowCount();
+    // return this.matrix.getRowCount();
+    return this.rowCount;
   }
 
   /**
@@ -895,6 +906,51 @@ public class ExpressionMatrixDimensionImpl implements
   }
 
   //
+  // DoubleMatrix methods
+  //
+
+  private void testAndUpdateRowColumnNames() {
+
+    if (rowNamesChanged) {
+      this.rowNames = getRowNames();
+      rowNamesChanged = false;
+    }
+
+    if (columnNamesChanged) {
+      this.columnNames = getColumnNames();
+      columnNamesChanged = false;
+    }
+
+  }
+
+  /**
+   * Set a single element.
+   * @param i Row index.
+   * @param j Column index.
+   * @param s A(i,j).
+   * @exception ArrayIndexOutOfBoundsException
+   */
+  public void set(final int i, final int j, final double s) {
+
+    testAndUpdateRowColumnNames();
+    setValue(this.rowNames[i], this.columnNames[j], s);
+  }
+
+  /**
+   * Get a single element.
+   * @param i Row index.
+   * @param j Column index.
+   * @return A(i,j)
+   * @exception ArrayIndexOutOfBoundsException
+   */
+
+  public double get(final int i, final int j) {
+
+    testAndUpdateRowColumnNames();
+    return getValue(this.rowNames[i], this.columnNames[j]);
+  }
+
+  //
   // Listeners
   //
 
@@ -924,6 +980,8 @@ public class ExpressionMatrixDimensionImpl implements
       columnToAdd.add(i, Double.NaN);
 
     this.referencesToColumnNamesMap.put(columnName, columnToAdd);
+    this.columnCount++;
+    columnNamesChanged = true;
   }
 
   /**
@@ -936,18 +994,20 @@ public class ExpressionMatrixDimensionImpl implements
     // String rowName = event.getStringValue();
 
     // final int nRows = this.matrix.getRowCreatedCount() + 1;
-    final int nColumns = this.matrix.getColumnCount();
+    /*
+     * final int nColumns = this.matrix.getColumnCount(); for (int i = 0; i <
+     * nColumns; i++) { final String columnName = this.matrix.getColumnName(i);
+     * final List<Double> refColNum = this.referencesToColumnNamesMap
+     * .get(columnName); // refColNum.add(nRows-1, Double.NaN);
+     * refColNum.add(Double.NaN); }
+     */
 
-    for (int i = 0; i < nColumns; i++) {
+    for (Map.Entry<String, List<Double>> entry : this.referencesToColumnNamesMap
+        .entrySet())
+      entry.getValue().add(Double.NaN);
 
-      final String columnName = this.matrix.getColumnName(i);
-
-      final List<Double> refColNum = this.referencesToColumnNamesMap
-          .get(columnName);
-      // refColNum.add(nRows-1, Double.NaN);
-      refColNum.add(Double.NaN);
-
-    }
+    this.rowCount = this.matrix.getRowCount();
+    rowNamesChanged = true;
 
   }
 
@@ -965,6 +1025,8 @@ public class ExpressionMatrixDimensionImpl implements
 
     this.lastGetSetValueColumnName = null;
     this.referencesToColumnNamesMap.remove(columnName);
+    this.columnCount--;
+    columnNamesChanged = true;
   }
 
   /**
@@ -986,6 +1048,7 @@ public class ExpressionMatrixDimensionImpl implements
 
     this.referencesToColumnNamesMap.remove(oldName);
     this.referencesToColumnNamesMap.put(newName, col);
+    columnNamesChanged = true;
 
   }
 
@@ -1059,6 +1122,8 @@ public class ExpressionMatrixDimensionImpl implements
 
     case ExpressionMatrixEvent.REMOVE_ROW_EVENT:
       this.lastGetSetValueRowName = null;
+      this.rowCount--;
+      rowNamesChanged = true;
       break;
 
     case ExpressionMatrixEvent.RENAME_COLUMN_EVENT:
@@ -1067,6 +1132,7 @@ public class ExpressionMatrixDimensionImpl implements
 
     case ExpressionMatrixEvent.RENAME_ROW_EVENT:
       this.lastGetSetValueRowName = null;
+      rowNamesChanged = true;
       break;
 
     case ExpressionMatrixEvent.RENAME_DIMENSION_EVENT:
