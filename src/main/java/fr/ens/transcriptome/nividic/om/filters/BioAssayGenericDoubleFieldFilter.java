@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -51,15 +51,17 @@ public abstract class BioAssayGenericDoubleFieldFilter implements
 
     final double[] data = bioAssay.getDataFieldDouble(getFieldToFilter());
 
-    int size = bioAssay.size();
-    List<Integer> al = new ArrayList<Integer>();
+    final int size = bioAssay.size();
+    final List<Integer> al = new ArrayList<Integer>(data.length);
 
     for (int i = 0; i < size; i++)
       if (!test(data[i]))
         al.add(i);
 
-    int[] toRemove = new int[al.size()];
-    for (int i = 0; i < toRemove.length; i++)
+    final int n = al.size();
+    final int[] toRemove = new int[n];
+
+    for (int i = 0; i < n; i++)
       toRemove[i] = al.get(i).intValue();
 
     return BioAssayUtils.removeRowsFromBioAssay(bioAssay, toRemove);
