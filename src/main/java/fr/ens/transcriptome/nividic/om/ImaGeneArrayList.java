@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -37,7 +37,8 @@ public class ImaGeneArrayList {
   private BioAssay bioAssay;
 
   /** Imagene Array list magic string. */
-  public static final String IMAGENE_ARRAYLIST_MAGIC_STRING = "ImaGene Array List";
+  public static final String IMAGENE_ARRAYLIST_MAGIC_STRING =
+      "ImaGene Array List";
   private static final String IMAGENE_ARRAYLIST_HEADER_TYPE = "Type";
 
   //
@@ -118,7 +119,8 @@ public class ImaGeneArrayList {
    */
   public ArrayBlock[] getBlocks() {
 
-    Map<Integer, Map<Integer, ArrayBlock>> blocks = new TreeMap<Integer, Map<Integer, ArrayBlock>>();
+    final Map<Integer, Map<Integer, ArrayBlock>> blocks =
+        new TreeMap<Integer, Map<Integer, ArrayBlock>>();
 
     SpotIterator si = getBioAssay().iterator();
     int count = 0;
