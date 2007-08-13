@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -76,7 +76,7 @@ public class ExpressionMatrixRowFilterBioAssayFilterAdapter extends
           count++;
     } else {
       for (int i = 0; i < values.length; i++)
-        if (integerFilter.test(  (int) values[i]))
+        if (integerFilter.test((int) values[i]))
           count++;
     }
 
@@ -93,11 +93,13 @@ public class ExpressionMatrixRowFilterBioAssayFilterAdapter extends
 
     if (doubleFilter != null)
 
-      return s + ";Adapter=" + this.doubleFilter.getClass().getSimpleName()
-          + ";" + this.doubleFilter.getParameterInfo();
+      return s
+          + ";Adapter=" + this.doubleFilter.getClass().getSimpleName() + ";"
+          + this.doubleFilter.getParameterInfo();
 
-    return s + ";Adapter=" + this.integerFilter.getClass().getSimpleName()
-        + ";" + this.integerFilter.getParameterInfo();
+    return s
+        + ";Adapter=" + this.integerFilter.getClass().getSimpleName() + ";"
+        + this.integerFilter.getParameterInfo();
   }
 
   //
