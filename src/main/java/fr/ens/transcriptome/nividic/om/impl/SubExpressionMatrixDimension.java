@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -45,6 +45,14 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
 
   private SubExpressionMatrix matrix;
   private ExpressionMatrixDimensionImpl matrixDimension;
+
+  // for DoubleMatrix
+  private int rowCount;
+  private int columnCount;
+  private String[] columnNames;
+  private String[] rowNames;
+  private boolean columnNamesChanged = true;
+  private boolean rowNamesChanged = true;
 
   //
   // Getters
@@ -306,8 +314,8 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
 
     matrix.throwExceptionIfColumnDoesntExists(columnName);
 
-    List<Double> columnToFill = matrixDimension.getReferencesToColumnNamesMap()
-        .get(columnName);
+    List<Double> columnToFill =
+        matrixDimension.getReferencesToColumnNamesMap().get(columnName);
 
     setValues(ids, columnToFill, values);
   }
@@ -627,7 +635,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    */
   public int getColumnCount() {
 
-    return this.matrix.getColumnCount();
+    return this.columnCount;
   }
 
   /**
@@ -665,7 +673,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    */
   public int getRowCount() {
 
-    return this.matrix.getRowCount();
+    return this.rowCount;
   }
 
   /**
@@ -687,6 +695,51 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
   }
 
   //
+  // DoubleMatrix methods
+  //
+
+  private void testAndUpdateRowColumnNames() {
+
+    if (rowNamesChanged) {
+      this.rowNames = getRowNames();
+      rowNamesChanged = false;
+    }
+
+    if (columnNamesChanged) {
+      this.columnNames = getColumnNames();
+      columnNamesChanged = false;
+    }
+
+  }
+
+  /**
+   * Set a single element.
+   * @param i Row index.
+   * @param j Column index.
+   * @param s A(i,j).
+   * @exception ArrayIndexOutOfBoundsException
+   */
+  public void set(final int i, final int j, final double s) {
+
+    testAndUpdateRowColumnNames();
+    setValue(this.rowNames[i], this.columnNames[j], s);
+  }
+
+  /**
+   * Get a single element.
+   * @param i Row index.
+   * @param j Column index.
+   * @return A(i,j)
+   * @exception ArrayIndexOutOfBoundsException
+   */
+
+  public double get(final int i, final int j) {
+
+    testAndUpdateRowColumnNames();
+    return getValue(this.rowNames[i], this.columnNames[j]);
+  }
+
+  //
   // Constructor
   //
 
@@ -700,6 +753,8 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
 
     this.matrix = submatrix;
     this.matrixDimension = matrixDimension;
+    this.columnCount = this.matrix.getColumnCount();
+    this.rowCount = this.matrix.getRowCount();
   }
 
 }
