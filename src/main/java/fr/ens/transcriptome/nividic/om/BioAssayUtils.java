@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -94,8 +94,8 @@ public final class BioAssayUtils {
     if (rowsToRemove == null)
       return bioAssay;
 
-    int size = bioAssay.size();
-    Map<String, String> mapFieldsToRemove = new HashMap<String, String>();
+    final int size = bioAssay.size();
+    Map<String, String> mapFieldsToRemove = new HashMap<String, String>(rowsToRemove.length);
 
     for (int i = 0; i < rowsToRemove.length; i++) {
       final int value = rowsToRemove[i];
@@ -105,7 +105,7 @@ public final class BioAssayUtils {
 
     }
 
-    int newSize = (size - mapFieldsToRemove.size());
+    final int newSize = (size - mapFieldsToRemove.size());
     BioAssay result = BioAssayFactory.createBioAssay();
 
     String[] fields = bioAssay.getFields();
@@ -116,8 +116,8 @@ public final class BioAssayUtils {
 
       case BioAssay.DATATYPE_INTEGER:
 
-        int[] dataInt = bioAssay.getDataFieldInt(fields[i]);
-        int[] newDataInt = new int[newSize];
+        final int[] dataInt = bioAssay.getDataFieldInt(fields[i]);
+        final int[] newDataInt = new int[newSize];
         int count = 0;
 
         for (int j = 0; j < dataInt.length; j++)
@@ -130,8 +130,8 @@ public final class BioAssayUtils {
 
       case BioAssay.DATATYPE_DOUBLE:
 
-        double[] dataDouble = bioAssay.getDataFieldDouble(fields[i]);
-        double[] newDataDouble = new double[newSize];
+        final double[] dataDouble = bioAssay.getDataFieldDouble(fields[i]);
+        final double[] newDataDouble = new double[newSize];
         count = 0;
 
         for (int j = 0; j < dataDouble.length; j++)
@@ -144,8 +144,8 @@ public final class BioAssayUtils {
 
       case BioAssay.DATATYPE_STRING:
 
-        String[] dataString = bioAssay.getDataFieldString(fields[i]);
-        String[] newDataString = new String[newSize];
+        final String[] dataString = bioAssay.getDataFieldString(fields[i]);
+        final String[] newDataString = new String[newSize];
         count = 0;
 
         for (int j = 0; j < dataString.length; j++)
