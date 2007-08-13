@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -34,7 +34,7 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
  * This class implements a History
  * @author Laurent Jourdren
  */
-class HistoryImpl implements History, Serializable {
+public class HistoryImpl implements History, Serializable {
 
   private List<HistoryEntry> entries = new ArrayList<HistoryEntry>();
 
@@ -101,7 +101,7 @@ class HistoryImpl implements History, Serializable {
   // Constructor
   //
 
-  HistoryImpl() {
+  public HistoryImpl() {
   }
 
   HistoryImpl(final History history) {
