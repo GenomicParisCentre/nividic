@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -35,7 +35,6 @@ import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
-import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixListener;
@@ -45,6 +44,7 @@ import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
+import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
