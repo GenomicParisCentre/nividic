@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -303,8 +303,8 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
-    DoubleMatrix.meanCenterExperiments(doubleMatrix);
+    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrixUtils.meanCenterExperiments(dimension);
 
     final HistoryEntry entry =
         new HistoryEntry("Center columns", HistoryActionType.MODIFY, dimension
@@ -334,8 +334,8 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
-    DoubleMatrix.meanCenterSpots(doubleMatrix);
+    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrixUtils.meanCenterSpots(dimension);
 
     final HistoryEntry entry =
         new HistoryEntry("Center rows", HistoryActionType.MODIFY, dimension
@@ -365,8 +365,8 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
-    DoubleMatrix.divideExperimentsSD(doubleMatrix);
+    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrixUtils.divideExperimentsSD(dimension);
 
     final HistoryEntry entry =
         new HistoryEntry("Reducing columns", HistoryActionType.MODIFY,
@@ -396,8 +396,8 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
-    DoubleMatrix.divideSpotsSD(doubleMatrix);
+    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    DoubleMatrixUtils.divideSpotsSD(dimension);
 
     final HistoryEntry entry =
         new HistoryEntry("Reducing columns", HistoryActionType.MODIFY,
