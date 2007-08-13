@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.io;
+package fr.ens.transcriptome.nividic.om.design.io;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,19 +28,28 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
-import java.util.Set;
 
-import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
-import fr.ens.transcriptome.nividic.om.Slide;
+import fr.ens.transcriptome.nividic.om.PhysicalConstants;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
-import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
+import fr.ens.transcriptome.nividic.om.design.Design;
+import fr.ens.transcriptome.nividic.om.design.ScanLabelSettings;
+import fr.ens.transcriptome.nividic.om.design.ScanLabelsSettings;
+import fr.ens.transcriptome.nividic.om.design.Slide;
+import fr.ens.transcriptome.nividic.om.design.SlideDescription;
+import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 
+/**
+ * This class implements a writer for limma design files.
+ * @author Laurent Jourdren
+ */
 public class LimmaDesignWriter extends DesignWriter {
 
   private BufferedWriter bw;
   private static final String SEPARATOR = "\t";
+  private static final String NEWLINE = "\r\n"; //System.getProperty("line.separator");
+  private boolean writeScanLabelsSettings = true;
 
   @Override
   public void write(final Design design) throws NividicIOException {
@@ -57,9 +66,10 @@ public class LimmaDesignWriter extends DesignWriter {
 
       List<String> labels = design.getLabelsNames();
       List<String> descriptionFields = design.getDescriptionFieldsNames();
+      List<String> scanLabelSettingsNames = design.getScanLabelSettingsKeys();
 
-      final boolean serialNumber = design
-          .isDescriptionField(SlideDescription.SERIAL_NUMBER_FIELD);
+      final boolean serialNumber =
+          design.isDescriptionField(SlideDescription.SERIAL_NUMBER_FIELD);
 
       // Write header
       bw.append("SlideNumber");
@@ -75,8 +85,17 @@ public class LimmaDesignWriter extends DesignWriter {
 
       for (String l : labels) {
         bw.append(SEPARATOR);
-        bw.append(l);
+        bw.append(PhysicalConstants.getDyeForColor(l));
       }
+
+      if (this.writeScanLabelsSettings)
+        for (String l : labels)
+          for (String s : scanLabelSettingsNames) {
+            bw.append(SEPARATOR);
+            bw.append(PhysicalConstants.getDyeForColor(l));
+            bw.append("_");
+            bw.append(s);
+          }
 
       for (String f : descriptionFields) {
 
@@ -87,7 +106,7 @@ public class LimmaDesignWriter extends DesignWriter {
         bw.append(f);
       }
 
-      bw.append("\n");
+      bw.append(NEWLINE);
 
       // Write data
       List<Slide> slides = design.getSlides();
@@ -120,6 +139,19 @@ public class LimmaDesignWriter extends DesignWriter {
           bw.append(s.getTarget(l));
         }
 
+        if (this.writeScanLabelsSettings) {
+          final ScanLabelsSettings ssls = s.getScanLabelsSettings();
+          for (String l : labels) {
+
+            ScanLabelSettings sls = ssls.getSetting(l);
+
+            for (String setting : scanLabelSettingsNames) {
+              bw.append(SEPARATOR);
+              bw.append(sls.getSetting(setting));
+            }
+          }
+        }
+
         for (String f : descriptionFields) {
 
           if (SlideDescription.SERIAL_NUMBER_FIELD.equals(f))
@@ -129,7 +161,7 @@ public class LimmaDesignWriter extends DesignWriter {
           bw.append(s.getDescription().getDescription(f));
         }
 
-        bw.append("\n");
+        bw.append(NEWLINE);
       }
 
       bw.close();
@@ -139,6 +171,23 @@ public class LimmaDesignWriter extends DesignWriter {
     }
 
     addReaderHistoryEntry(design);
+  }
+
+  /**
+   * Test if the scan labels settings must be written.
+   * @return Returns true if thq scan labels settings must be written
+   */
+  boolean isWriteScanLabelsSettings() {
+    return writeScanLabelsSettings;
+  }
+
+  /**
+   * Set if the scan labels settings must be written.
+   * @param writeScanLabelsSettings true if he scan labels settings must be
+   *          written
+   */
+  void setWriteScanLabelsSettings(final boolean writeScanLabelsSettings) {
+    this.writeScanLabelsSettings = writeScanLabelsSettings;
   }
 
   /**
@@ -154,10 +203,11 @@ public class LimmaDesignWriter extends DesignWriter {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.SAVE, s
-            + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
-            + design.getLabelCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.SAVE, s
+                + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
+                + design.getLabelCount(), HistoryActionResult.PASS);
 
     design.getHistory().add(entry);
   }

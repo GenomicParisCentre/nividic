@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,38 +20,25 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.impl;
+package fr.ens.transcriptome.nividic.om.design.impl;
+
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
+import fr.ens.transcriptome.nividic.om.design.SlideDescription;
 
 /**
  * This class define a slide description.
  * @author Laurent Jourdren
  */
-public class SlideDescription {
+public class SlideDescriptionImpl implements SlideDescription {
 
   private DesignImpl design;
   private int slideId;
 
-  /** Comment field. */
-  public static final String COMMENT_FIELD = "Comment";
-  /** Date field. */
-  public static final String DATE_FIELD = "Date";
-  /** Serial Number field. */
-  public static final String SERIAL_NUMBER_FIELD = "Serial number";
-  /** Operator field. */
-  public static final String OPERATOR_FIELD = "Operator";
-  /** Swap field. */
-  public static final String SWAP_FIELD = "Swap";
-
-  //
-  // Getters
-  //
-
-  /**
-   * Get a description.
-   * @param field Field of the description to get
-   * @return a String with the description
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getDescription(java.lang.String)
    */
   public String getDescription(final String field) {
 
@@ -64,45 +51,53 @@ public class SlideDescription {
   }
 
   /**
-   * Get the comment about the slide.
-   * @return Returns the comment
+   * Get the fields of the descriptions.
+   * @return a list of strings with the descriptions fields
+   */
+  public List<String> getDescriptionFields() {
+
+    return this.design.getDescriptionFieldsNames();
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getComment()
    */
   public String getComment() {
 
     return getDescription(COMMENT_FIELD);
   }
 
-  /**
-   * Get the date of the hybridation
-   * @return Returns the date
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getDate()
    */
   public String getDate() {
 
     return getDescription(DATE_FIELD);
   }
 
-  /**
-   * Get the name of the operator
-   * @return Returns the operator
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getOperator()
    */
   public String getOperator() {
 
     return getDescription(OPERATOR_FIELD);
   }
 
-  /**
-   * Get the serial number of the slide
-   * @return Returns the serialNumber
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getSerialNumber()
    */
   public String getSerialNumber() {
 
     return getDescription(SERIAL_NUMBER_FIELD);
   }
 
-  /**
-   * Get the swap field of the slide
-   * @return true if the value of the field is (case insensitive) "true", "t" or
-   *         "1"
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getSwap()
    */
   public boolean getSwap() {
 
@@ -120,10 +115,10 @@ public class SlideDescription {
   // Setters
   //
 
-  /**
-   * Set a field of the description.
-   * @param field Field to set
-   * @param value value to set
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setDescription(java.lang.String,
+   *      java.lang.String)
    */
   public void setDescription(final String field, final String value) {
 
@@ -135,69 +130,68 @@ public class SlideDescription {
     this.design.setDescription(slideName, field, value);
   }
 
-  /**
-   * Set the comment.
-   * @param comment The comment to set
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setComment(java.lang.String)
    */
   public void setComment(final String comment) {
 
     setDescription(COMMENT_FIELD, comment);
   }
 
-  /**
-   * Set the hybridation date
-   * @param date The date to set
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setDate(java.lang.String)
    */
   public void setDate(final String date) {
 
     setDescription(DATE_FIELD, date);
   }
 
-  /**
-   * Set the name of the operator
-   * @param operator The operator to set
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setOperator(java.lang.String)
    */
   public void setOperator(final String operator) {
 
     setDescription(OPERATOR_FIELD, operator);
   }
 
-  /**
-   * Set the serial number of the slide
-   * @param serialNumber The serialNumber to set
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSerialNumber(java.lang.String)
    */
   public void setSerialNumber(final String serialNumber) {
 
     setDescription(SERIAL_NUMBER_FIELD, serialNumber);
   }
 
-  /**
-   * Set the swap field of the slide
-   * @param swap The swap value of the slide
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSwap(boolean)
    */
   public void setSwap(final boolean swap) {
 
     setDescription(SWAP_FIELD, "" + swap);
   }
 
-  /**
-   * Set the swap field of the slide
-   * @param swap The swap value of the slide
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSwap(java.lang.String)
    */
   public void setSwap(final String swap) {
 
-    setSwap(swap == null ? false : swap.equals("true") || swap.equals("t")
-        || swap.equals("1"));
+    setSwap(swap == null ? false : swap.equals("true")
+        || swap.equals("t") || swap.equals("1"));
   }
 
   //
   // Fields tester
   //
 
-  /**
-   * Test if a field exists.
-   * @param field The field to test
-   * @return true if the field exists
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isField(java.lang.String)
    */
   public boolean isField(final String field) {
 
@@ -209,45 +203,45 @@ public class SlideDescription {
     return this.design.isDescriptionField(field);
   }
 
-  /**
-   * Test if the comment field exists.
-   * @return true if the field exists
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isCommentField()
    */
   public boolean isCommentField() {
 
     return isField(COMMENT_FIELD);
   }
 
-  /**
-   * Test if the date field exists.
-   * @return true if the field exists
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isDateField()
    */
   public boolean isDateField() {
 
     return isField(DATE_FIELD);
   }
 
-  /**
-   * Test if the operator field exists.
-   * @return true if the field exists
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isOperatorField()
    */
   public boolean isOperatorField() {
 
     return isField(OPERATOR_FIELD);
   }
 
-  /**
-   * Test if the serial number field exists.
-   * @return true if the field exists
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isSerialNumberField()
    */
   public boolean isSerialNumberField() {
 
     return isField(SERIAL_NUMBER_FIELD);
   }
 
-  /**
-   * Test if the swap field exists.
-   * @return true if the field exists
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isSwapField()
    */
   public boolean isSwapField() {
 
@@ -258,7 +252,7 @@ public class SlideDescription {
   // Constructor
   //
 
-  SlideDescription(final DesignImpl design, final int slideId) {
+  SlideDescriptionImpl(final DesignImpl design, final int slideId) {
 
     this.design = design;
     this.slideId = slideId;

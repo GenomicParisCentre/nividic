@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.impl;
+package fr.ens.transcriptome.nividic.om.design.impl;
 
 import java.io.InputStream;
 
@@ -28,17 +28,20 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
-import fr.ens.transcriptome.nividic.om.Slide;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
+import fr.ens.transcriptome.nividic.om.design.DesignUtils;
+import fr.ens.transcriptome.nividic.om.design.ScanLabelsSettings;
+import fr.ens.transcriptome.nividic.om.design.Slide;
+import fr.ens.transcriptome.nividic.om.design.SlideDescription;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatFinderInputStream;
 import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
-import fr.ens.transcriptome.nividic.om.io.BioAssayFormatFinderInputStream;
-import fr.ens.transcriptome.nividic.om.io.TotalSummaryReader;
+import fr.ens.transcriptome.nividic.sgdb.io.TotalSummaryReader;
 
 /**
  * This class implements a slide object.
@@ -93,6 +96,15 @@ class SlideImpl implements Slide {
       throw new NividicRuntimeException("The slide doesn't exists");
 
     return this.design.getTarget(slideName, label);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.exp.Slide#getScanLabelsSettings()
+   */
+  public ScanLabelsSettings getScanLabelsSettings() {
+
+    return new ScanLabelsSettingsImpl(this.design, this.slideId);
   }
 
   /*
@@ -280,8 +292,8 @@ class SlideImpl implements Slide {
 
     if (format == null) {
 
-      BioAssayFormatFinderInputStream finder = new BioAssayFormatFinderInputStream(
-          is);
+      BioAssayFormatFinderInputStream finder =
+          new BioAssayFormatFinderInputStream(is);
 
       format = finder.getBioAssayFormat();
       is = finder;
@@ -310,8 +322,12 @@ class SlideImpl implements Slide {
 
     setBioAssay(result);
 
-    final HistoryEntry entry = new HistoryEntry("Load slide data (" + getName()
-        + ")", HistoryActionType.LOAD, "", HistoryActionResult.PASS);
+    if (format == BioAssayFormat.GPR)
+      DesignUtils.addBioAssayScanSettingToDesign(this);
+
+    final HistoryEntry entry =
+        new HistoryEntry("Load slide data (" + getName() + ")",
+            HistoryActionType.LOAD, "", HistoryActionResult.PASS);
 
     this.design.getHistory().add(entry);
   }
@@ -331,8 +347,9 @@ class SlideImpl implements Slide {
 
       BioAssayUtils.swap(ba);
 
-      final HistoryEntry entry = new HistoryEntry("Swap slide (" + getName()
-          + ")", HistoryActionType.FILTER, "", HistoryActionResult.PASS);
+      final HistoryEntry entry =
+          new HistoryEntry("Swap slide (" + getName() + ")",
+              HistoryActionType.FILTER, "", HistoryActionResult.PASS);
 
       this.design.getHistory().add(entry);
     }

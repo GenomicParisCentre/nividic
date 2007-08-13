@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.io;
+package fr.ens.transcriptome.nividic.om.design.io;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,15 +32,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fr.ens.transcriptome.nividic.om.Design;
-import fr.ens.transcriptome.nividic.om.DesignFactory;
-import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
+import fr.ens.transcriptome.nividic.om.PhysicalConstants;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
-import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
+import fr.ens.transcriptome.nividic.om.design.Design;
+import fr.ens.transcriptome.nividic.om.design.DesignFactory;
+import fr.ens.transcriptome.nividic.om.design.SlideDescription;
+import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 
+/**
+ * This class define a design reader for limma design files.
+ * @author Laurent Jourdren
+ */
 public class LimmaDesignReader extends DesignReader {
 
   private static final String[] TARGET_FIELDS = {"Cy3", "Cy5"};
@@ -64,7 +69,7 @@ public class LimmaDesignReader extends DesignReader {
     List<String> fieldnames = new ArrayList<String>();
 
     boolean firstLine = true;
-    String ref = null;
+    // String ref = null;
 
     try {
 
@@ -94,13 +99,14 @@ public class LimmaDesignReader extends DesignReader {
 
             final String fieldName = fieldnames.get(i);
 
-            List l = data.get(fieldName);
+            List<String> l = data.get(fieldName);
 
             if ((SLIDENUMBER_FIELD.equals(fieldName) || NAME_FIELD
                 .equals(fieldName))
                 && l.contains(field))
               throw new NividicIOException(
-                  "Invalid file format: SlideNumber or Name fields can't contains duplicate values");
+                  "Invalid file format: "
+                      + "SlideNumber or Name fields can't contains duplicate values");
 
             l.add(field);
 
@@ -157,8 +163,8 @@ public class LimmaDesignReader extends DesignReader {
 
     for (String fd : fieldnames) {
 
-      if (SLIDENUMBER_FIELD.equals(fd) || NAME_FIELD.equals(fd)
-          || FILENAME_FIELD.equals(fd))
+      if (SLIDENUMBER_FIELD.equals(fd)
+          || NAME_FIELD.equals(fd) || FILENAME_FIELD.equals(fd))
         continue;
 
       boolean isTarget = false;
@@ -168,7 +174,8 @@ public class LimmaDesignReader extends DesignReader {
         final String target = TARGET_FIELDS[j];
         if (target.equals(fd)) {
 
-          design.addLabel(fd);
+          design.addLabel(PhysicalConstants
+              .getColorForDye(target));
 
           List<String> samples = data.get(fd);
 
@@ -178,11 +185,25 @@ public class LimmaDesignReader extends DesignReader {
             if (!design.getSamples().isSample(sample))
               design.getSamples().addSample(sample);
 
-            design.setTarget(ids.get(k++), target, sample);
+            design.setTarget(ids.get(k++), PhysicalConstants
+                .getColorForDye(target), sample);
           }
 
           isTarget = true;
           break;
+        }
+
+        if (fd.startsWith(target + "_")) {
+
+          String setting = fd.substring(fd.indexOf('_') + 1, fd.length());
+          List<String> values = data.get(fd);
+
+          int k = 0;
+          for (String value : values)
+            design.setScanLabelSetting(ids.get(k++), PhysicalConstants
+                .getColorForDye(target), setting, value);
+          isTarget = true;
+
         }
 
       }
@@ -217,10 +238,11 @@ public class LimmaDesignReader extends DesignReader {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
-            + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
-            + design.getLabelCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.LOAD, s
+                + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
+                + design.getLabelCount(), HistoryActionResult.PASS);
 
     design.getHistory().add(entry);
 

@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.io;
+package fr.ens.transcriptome.nividic.om.design.io;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +28,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import fr.ens.transcriptome.nividic.om.Design;
+import fr.ens.transcriptome.nividic.om.design.Design;
+import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 
 /**
  * This abstract class define a reader for designs.

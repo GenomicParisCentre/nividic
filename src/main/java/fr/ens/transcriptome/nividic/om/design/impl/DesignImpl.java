@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om.impl;
+package fr.ens.transcriptome.nividic.om.design.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,16 +32,19 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.AnnotationFactory;
 import fr.ens.transcriptome.nividic.om.BioAssay;
-import fr.ens.transcriptome.nividic.om.Design;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
-import fr.ens.transcriptome.nividic.om.Slide;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
+import fr.ens.transcriptome.nividic.om.design.Design;
+import fr.ens.transcriptome.nividic.om.design.Slide;
+import fr.ens.transcriptome.nividic.om.design.SlideDescription;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.DesignFilter;
+import fr.ens.transcriptome.nividic.om.impl.BiologicalName;
+import fr.ens.transcriptome.nividic.om.impl.HistoryImpl;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.om.samples.Samples;
@@ -61,8 +64,8 @@ public class DesignImpl implements Design {
   private List<String> slidesOrder = new ArrayList<String>();
   private Map<String, Integer> slides = new HashMap<String, Integer>();
   private Map<Integer, String> slidesReverse = new HashMap<Integer, String>();
-  // private Map<Integer, SlideDescription> slidesDescriptions = new
-  // HashMap<Integer, SlideDescription>();
+  // private Map<Integer, SlideDescriptionImpl> slidesDescriptions = new
+  // HashMap<Integer, SlideDescriptionImpl>();
 
   private Map<String, Integer> labels = new HashMap<String, Integer>();
   private List<String> labelsOrder = new ArrayList<String>();
@@ -70,15 +73,24 @@ public class DesignImpl implements Design {
   private Map<String, Integer> targets = new HashMap<String, Integer>();
 
   private Map<Integer, DataSource> sources = new HashMap<Integer, DataSource>();
-  private Map<Integer, BioAssayFormat> formats = new HashMap<Integer, BioAssayFormat>();
+  private Map<Integer, BioAssayFormat> formats =
+      new HashMap<Integer, BioAssayFormat>();
   private Map<Integer, BioAssay> bioassays = new HashMap<Integer, BioAssay>();
 
-  private Map<String, Integer> descriptionsFields = new HashMap<String, Integer>();
+  private Map<String, Integer> descriptionsFields =
+      new HashMap<String, Integer>();
   private List<String> descriptionsOrder = new ArrayList<String>();
   private Map<String, String> descriptionData = new HashMap<String, String>();
 
+  private Map<String, Integer> scanLabelSettingsFields =
+      new HashMap<String, Integer>();
+  private List<String> scanLabelSettingsOrder = new ArrayList<String>();
+  private Map<String, String> scanLabelSettingsData =
+      new HashMap<String, String>();
+
   private int countSlides;
   private int countLabels;
+  private int countLabelSettings;
 
   /**
    * Get the id of the biological Object
@@ -434,11 +446,14 @@ public class DesignImpl implements Design {
       throw new NullPointerException("Sample name can't be null");
 
     if (!isSlide(slide))
-      throw new NividicRuntimeException("The slide name doesn't exists");
+      throw new NividicRuntimeException("The slide name doesn't exists: "
+          + slide);
     if (!isLabel(label))
-      throw new NividicRuntimeException("The label name doesn't exists");
+      throw new NividicRuntimeException("The label name doesn't exists: "
+          + label);
     if (!this.samples.isSample(sample))
-      throw new NividicRuntimeException("The sample name doesn't exists");
+      throw new NividicRuntimeException("The sample name doesn't exists: "
+          + sample);
 
     final int sampleId = this.samples.getSampleId(sample);
 
@@ -481,6 +496,16 @@ public class DesignImpl implements Design {
     return slideId + "-" + fieldId;
   }
 
+  private String createkeyLabelScanLabelSetting(final String slide,
+      final String label, final String key) {
+
+    final int slideId = this.slides.get(slide);
+    final int labelId = this.labels.get(label);
+    final int settingId = this.scanLabelSettingsFields.get(key);
+
+    return slideId + "-" + labelId + "-" + settingId;
+  }
+
   /**
    * Get the description of a slide.
    * @param name Name of the slide
@@ -496,7 +521,7 @@ public class DesignImpl implements Design {
 
     final int id = this.slides.get(name);
 
-    return new SlideDescription(this, id);
+    return new SlideDescriptionImpl(this, id);
   }
 
   /**
@@ -815,6 +840,157 @@ public class DesignImpl implements Design {
   }
 
   //
+  // Scan labels setting
+  //
+
+  /**
+   * Get setting about the scan of a label.
+   * @param slide Slide of the target
+   * @param label Name of the label
+   * @param setting key of the setting
+   * @return the value of the setting
+   */
+  public String getScanLabelSetting(final String slide, final String label,
+      final String setting) {
+
+    if (slide == null)
+      throw new NullPointerException("Slide name can't be null");
+    if (label == null)
+      throw new NullPointerException("Label name can't be null");
+    if (setting == null)
+      throw new NullPointerException("Key can't be null");
+
+    if (!isSlide(slide))
+      throw new NividicRuntimeException("The slide name doesn't exists");
+    if (!isLabel(label))
+      throw new NividicRuntimeException("The label name doesn't exists");
+
+    if (!isScanLabelSetting(setting))
+      throw new NividicRuntimeException("The scan setting name doesn't exists");
+
+    return this.scanLabelSettingsData.get(createkeyLabelScanLabelSetting(slide,
+        label, setting));
+  }
+
+  /**
+   * Set setting about the scan of a label.
+   * @param slide Slide of the target
+   * @param label Name of the label
+   * @param setting key of the setting
+   * @param value value of the setting
+   */
+  public void setScanLabelSetting(final String slide, final String label,
+      final String setting, final String value) {
+
+    if (slide == null)
+      throw new NullPointerException("Slide name can't be null");
+    if (label == null)
+      throw new NullPointerException("Label name can't be null");
+    if (setting == null)
+      throw new NullPointerException("Key can't be null");
+
+    if (!isSlide(slide))
+      throw new NividicRuntimeException("The slide name doesn't exists");
+    if (!isLabel(label))
+      throw new NividicRuntimeException("The label name doesn't exists");
+
+    if (!isScanLabelSetting(setting))
+      addScanLabelSetting(setting);
+
+    this.scanLabelSettingsData.put(createkeyLabelScanLabelSetting(slide, label,
+        setting), value);
+
+  }
+
+  /**
+   * Add a scan label setting.
+   * @param setting Name of the setting to add
+   */
+  public void addScanLabelSetting(final String setting) {
+
+    if (setting == null)
+      throw new NividicRuntimeException("The scan setting name is null.");
+
+    if (isScanLabelSetting(setting))
+      throw new NividicRuntimeException("Label name already exists");
+
+    this.scanLabelSettingsFields.put(setting, countLabelSettings++);
+    this.scanLabelSettingsOrder.add(setting);
+  }
+
+  /**
+   * Get the names of the scan label settings.
+   * @return A List with the scan label settings
+   */
+  public List<String> getScanLabelSettingsKeys() {
+
+    return Collections.unmodifiableList(this.scanLabelSettingsOrder);
+  }
+
+  /**
+   * Test if the scan label setting is already set.
+   * @param setting Name of the description field to test
+   * @return true if the description exists
+   */
+  public boolean isScanLabelSetting(final String setting) {
+
+    return this.scanLabelSettingsFields.containsKey(setting);
+  }
+
+  /**
+   * Rename a scan label setting.
+   * @param oldName Old name of the scan label setting
+   * @param newName New name of the scan label setting
+   */
+  public void renameScanLabelSetting(final String oldName, final String newName) {
+
+    if (oldName == null)
+      throw new NividicRuntimeException("oldName name can't be null");
+    if (newName == null)
+      throw new NividicRuntimeException("newName name can't be null");
+
+    if (!isScanLabelSetting(oldName))
+      throw new NividicRuntimeException(
+          "the old scan label setting don't exists");
+    if (isScanLabelSetting(newName))
+      throw new NividicRuntimeException(
+          "the new scan label setting already exists");
+
+    int id = this.scanLabelSettingsFields.get(oldName);
+    this.scanLabelSettingsFields.remove(oldName);
+    this.scanLabelSettingsFields.put(newName, id);
+
+    final int index =
+        Collections.binarySearch(this.scanLabelSettingsOrder, oldName);
+    this.scanLabelSettingsOrder.set(index, newName);
+
+  }
+
+  /**
+   * Remove a scan label setting.
+   * @param setting Setting name to remove
+   */
+  public void removeScanLabelSetting(final String setting) {
+
+    if (setting == null)
+      throw new NividicRuntimeException("Scan label setting name can't be null");
+
+    if (!isScanLabelSetting(setting))
+      throw new NividicRuntimeException("the scan label setting doesn't exists");
+
+    // Remove targets
+    final String suffix = "-" + this.scanLabelSettingsFields.get(setting);
+
+    for (String key : this.scanLabelSettingsData.keySet())
+      if (key.endsWith(suffix))
+        this.scanLabelSettingsData.remove(key);
+
+    // Remove entry
+    this.scanLabelSettingsFields.remove(setting);
+    this.scanLabelSettingsOrder.remove(setting);
+  }
+
+  //
   // Other methods
   //
 
@@ -944,10 +1120,11 @@ public class DesignImpl implements Design {
 
   private void addConstructorHistoryEntry() {
 
-    final HistoryEntry entry = new HistoryEntry("Create Design (#"
-        + getBiologicalId() + ")", HistoryActionType.CREATE, "SlideNumbers="
-        + getSlideCount() + ";LabelNumber=" + getLabelCount(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create Design (#" + getBiologicalId() + ")",
+            HistoryActionType.CREATE, "SlideNumbers="
+                + getSlideCount() + ";LabelNumber=" + getLabelCount(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }

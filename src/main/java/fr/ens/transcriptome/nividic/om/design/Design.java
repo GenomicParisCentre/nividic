@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -20,12 +20,13 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om;
+package fr.ens.transcriptome.nividic.om.design;
 
 import java.util.List;
 
+import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.BiologicalObject;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
-import fr.ens.transcriptome.nividic.om.impl.SlideDescription;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.om.samples.Samples;
@@ -278,6 +279,58 @@ public interface Design extends BiologicalObject {
    * @return The value of the description
    */
   String getDescription(final String slide, final String descriptionField);
+
+  /**
+   * Get setting about the scan of a label.
+   * @param slide Slide of the target
+   * @param label Name of the label
+   * @param key key of the setting
+   * @return the value of the setting
+   */
+  String getScanLabelSetting(final String slide, final String label,
+      final String key);
+
+  /**
+   * Set setting about the scan of a label.
+   * @param slide Slide of the target
+   * @param label Name of the label
+   * @param setting key of the setting
+   * @param value value of the setting
+   */
+  void setScanLabelSetting(final String slide, final String label,
+      final String setting, final String value);
+
+  /**
+   * Test if the scan label setting is already set.
+   * @param setting Name of the description field to test
+   * @return true if the description exists
+   */
+  boolean isScanLabelSetting(final String setting);
+
+  /**
+   * Add a scan label setting.
+   * @param setting Name of the setting to add
+   */
+  void addScanLabelSetting(final String setting);
+
+  /**
+   * Rename a scan label setting.
+   * @param oldName Old name of the scan label setting
+   * @param newName New name of the scan label setting
+   */
+  void renameScanLabelSetting(final String oldName, final String newName);
+
+  /**
+   * Get the names of the scan label settings.
+   * @return A List with the scan label settings
+   */
+  List<String> getScanLabelSettingsKeys();
+
+  /**
+   * Remove a scan label setting.
+   * @param setting Setting name to remove
+   */
+  void removeScanLabelSetting(final String setting);
 
   //
   // Other methods
