@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -27,6 +27,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import fr.ens.transcriptome.nividic.util.NividicUtils;
+
 /**
  * A wrapper for a BioAssay object which provides methods for an easy access to
  * the object properties for real GPR data.
@@ -39,8 +41,8 @@ public final class GenepixResults {
 
   private static final String GPR_MAGIC_STRING = "GenePix Results";
 
-  private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-      "yyyy/MM/dd hh:mm:ss");
+  private static final DateFormat DATE_FORMAT =
+      new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
   private static final String GPR_HEADER_TYPE = "Type";
   private static final String GPR_HEADER_DATE_TIME = "DateTime";
   private static final String GPR_HEADER_SETTINGS = "Settings";
@@ -48,14 +50,17 @@ public final class GenepixResults {
   private static final String GPR_HEADER_PIXEL_SIZE = "PixelSize";
   private static final String GPR_HEADER_WAVELENGTH = "Wavelengths";
   private static final String GPR_HEADER_IMAGE_FILES = "ImageFiles";
-  private static final String GPR_HEADER_NORMALIZATION_METHOD = "NormalisationMethod";
-  private static final String GPR_HEADER_NORMALIZATION_FACTORS = "NormalizationFactors";
+  private static final String GPR_HEADER_NORMALIZATION_METHOD =
+      "NormalisationMethod";
+  private static final String GPR_HEADER_NORMALIZATION_FACTORS =
+      "NormalizationFactors";
   private static final String GPR_HEADER_JPEG_IMAGE = "JpegImage";
   private static final String GPR_HEADER_STD_DEV = "StdDev";
   private static final String GPR_HEADER_RATIO_FORMULATION = "RatioFormulation";
   private static final String GPR_HEADER_FEATURE_TYPE = "FeatureType";
   private static final String GPR_HEADER_BARCODE = "Barcode";
-  private static final String GPR_HEADER_BACKGROUND_SUBSTRACTION = "BackgroundSubstraction";
+  private static final String GPR_HEADER_BACKGROUND_SUBSTRACTION =
+      "BackgroundSubstraction";
   private static final String GPR_HEADER_IMAGE_ORIGIN = "ImageOrigin";
   private static final String GPR_HEADER_CREATOR = "Creator";
   private static final String GPR_HEADER_SCANNER = "Scanner";
@@ -65,6 +70,7 @@ public final class GenepixResults {
   private static final String GPR_HEADER_COMMENT = "Comment";
   private static final String GPR_HEADER_PMT_GAIN = "PMTGain";
   private static final String GPR_HEADER_SCAN_POWER = "ScanPower";
+  private static final String GPR_HEADER_LASER_POWER = "LaserPower";
   private static final String GPR_HEADER_LASER_ON_TIME = "LaserOnTime";
   private static final String GPR_HEADER_FILTERS = "FILTERS";
   private static final String GPR_HEADER_SCAN_REGION = "ScanRegion";
@@ -81,8 +87,10 @@ public final class GenepixResults {
 
   private static final String SPOT_SHAPE_NAME_CIRCULAR = "Circular";
   private static final String SPOT_SHAPE_NAME_SQUARE = "Square";
-  private static final String SPOT_SHAPE_NAME_IRREGULAR_NOT_FILLED = "Irregular, not Filled";
-  private static final String SPOT_SHAPE_NAME_IRREGULAR_FILLED = "Irregular, Filled";
+  private static final String SPOT_SHAPE_NAME_IRREGULAR_NOT_FILLED =
+      "Irregular, not Filled";
+  private static final String SPOT_SHAPE_NAME_IRREGULAR_FILLED =
+      "Irregular, Filled";
 
   /** Filter empty. */
   public static final String FILTER_EMPTY = "<Empty>";
@@ -310,13 +318,15 @@ public final class GenepixResults {
    * Get the laser on-time for each laser, in minutes.
    * @return The laser on-time.
    */
-  public String getLaserOnTime() {
+  public int[] getLaserOnTimes() {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return null;
 
-    return annotation.getProperty(GPR_HEADER_LASER_ON_TIME);
+    String s = annotation.getProperty(GPR_HEADER_LASER_ON_TIME);
+
+    return s == null ? null : NividicUtils.toArrayInt(s.split("\t"));
   }
 
   /**
@@ -375,13 +385,15 @@ public final class GenepixResults {
    * Get thePMT setting during the acquisition.
    * @return The PMT setting
    */
-  public String getPMTGain() {
+  public int[] getPMTGains() {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return null;
 
-    return annotation.getProperty(GPR_HEADER_PMT_GAIN);
+    String s = annotation.getProperty(GPR_HEADER_PMT_GAIN);
+
+    return s == null ? null : NividicUtils.toArrayInt(s.split("\t"));
   }
 
   /**
@@ -401,13 +413,30 @@ public final class GenepixResults {
    * Get the amount of laser transmission during acquisition.
    * @return The amount of laser transmission during acquisition
    */
-  public String getScanPower() {
+  public int[] getScanPowers() {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return null;
 
-    return annotation.getProperty(GPR_HEADER_SCAN_POWER);
+    String s = annotation.getProperty(GPR_HEADER_SCAN_POWER);
+
+    return s == null ? null : NividicUtils.toArrayInt(s.split("\t"));
+  }
+
+  /**
+   * Get the amount of laser transmission during acquisition.
+   * @return The amount of laser transmission during acquisition
+   */
+  public double[] getLaserPowers() {
+
+    Annotation annotation = getBioAssay().getAnnotation();
+    if (annotation == null)
+      return null;
+
+    String s = annotation.getProperty(GPR_HEADER_LASER_POWER);
+
+    return s == null ? null : NividicUtils.toArrayDouble(s.split("\t"));
   }
 
   /**
@@ -428,7 +457,7 @@ public final class GenepixResults {
    * Get the type and the serial number of the scanner used to acquire the
    * image.
    * @return The type and the serial number of the scanner used to acquire the
-   *               image
+   *         image
    */
   public String getScanner() {
 
@@ -509,13 +538,15 @@ public final class GenepixResults {
    * Get the installed laser excitation sources im nm.
    * @return The installed laser excitation sources.
    */
-  public String getWavelength() {
+  public int[] getWavelengths() {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return null;
 
-    return annotation.getProperty(GPR_HEADER_WAVELENGTH);
+    String s = annotation.getProperty(GPR_HEADER_WAVELENGTH);
+
+    return s == null ? null : NividicUtils.toArrayInt(s.split("\t"));
   }
 
   //
@@ -688,15 +719,27 @@ public final class GenepixResults {
 
   /**
    * Set the laser on-time for each laser (in minutes).
-   * @param laserOnTime Laser on-time to set
+   * @param laserOnTimes Laser on-time to set
    */
-  public void setLaserOnTime(final String laserOnTime) {
+  public void setLaserOnTimes(final int[] laserOnTimes) {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return;
 
-    annotation.setProperty(GPR_HEADER_LASER_ON_TIME, laserOnTime);
+    if (laserOnTimes == null)
+      return;
+
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = 0; i < laserOnTimes.length; i++) {
+
+      if (i > 0)
+        sb.append("\t");
+      sb.append(laserOnTimes[i]);
+    }
+
+    annotation.setProperty(GPR_HEADER_LASER_ON_TIME, sb.toString());
   }
 
   /**
@@ -754,15 +797,27 @@ public final class GenepixResults {
 
   /**
    * Set the PMT gain.
-   * @param pmt The PMT gain to set
+   * @param pmts The PMT gain to set
    */
-  public void setPMTGain(final String pmt) {
+  public void setPMTGains(final int[] pmts) {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return;
 
-    annotation.setProperty(GPR_HEADER_PMT_GAIN, pmt);
+    if (pmts == null)
+      return;
+
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = 0; i < pmts.length; i++) {
+
+      if (i > 0)
+        sb.append("\t");
+      sb.append(pmts[i]);
+    }
+
+    annotation.setProperty(GPR_HEADER_PMT_GAIN, sb.toString());
   }
 
   /**
@@ -780,15 +835,52 @@ public final class GenepixResults {
 
   /**
    * Set the scan power.
-   * @param power The scan power to set
+   * @param powers The scan power to set
    */
-  public void setScanPower(final String power) {
+  public void setScanPowers(final int[] powers) {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return;
 
-    annotation.setProperty(GPR_HEADER_SCAN_POWER, power);
+    if (powers == null)
+      return;
+
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = 0; i < powers.length; i++) {
+
+      if (i > 0)
+        sb.append("\t");
+      sb.append(powers[i]);
+    }
+
+    annotation.setProperty(GPR_HEADER_SCAN_POWER, sb.toString());
+  }
+
+  /**
+   * Set the scan power.
+   * @param powers The scan power to set
+   */
+  public void setLaserPowers(final double[] powers) {
+
+    Annotation annotation = getBioAssay().getAnnotation();
+    if (annotation == null)
+      return;
+
+    if (powers == null)
+      return;
+
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = 0; i < powers.length; i++) {
+
+      if (i > 0)
+        sb.append("\t");
+      sb.append(powers[i]);
+    }
+
+    annotation.setProperty(GPR_HEADER_LASER_POWER, sb.toString());
   }
 
   /**
@@ -884,15 +976,27 @@ public final class GenepixResults {
 
   /**
    * Set the wave length.
-   * @param waveLength The wawe length
+   * @param waveLengths The waves lengths
    */
-  public void setWaveLength(final String waveLength) {
+  public void setWaveLength(final int[] waveLengths) {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return;
 
-    annotation.setProperty(GPR_HEADER_WAVELENGTH, waveLength);
+    if (waveLengths == null)
+      return;
+
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = 0; i < waveLengths.length; i++) {
+
+      if (i > 0)
+        sb.append("\t");
+      sb.append(waveLengths[i]);
+    }
+
+    annotation.setProperty(GPR_HEADER_WAVELENGTH, sb.toString());
   }
 
   //
@@ -903,7 +1007,7 @@ public final class GenepixResults {
    * Return a value containg the name of the feature type.
    * @param featureType Identifier of the feature type.
    * @return a string containg the name of the feature type or null if the
-   *               identifier is bad.
+   *         identifier is bad.
    */
   public static String getNameFeatureType(final int featureType) {
 
