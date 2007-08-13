@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the �cole Normale Sup�rieure and the individual authors.
+ * of the École Normale Supérieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -22,23 +22,29 @@
 
 package fr.ens.transcriptome.nividic.om;
 
-/**
- * Define a useful interface to manipulate Double Matrix for Math methods.
- * @author Laurent Jourdren
- */
-public interface DoubleMatrix {
+public class ExpressionMatrixDimensionDoubleMatrix implements DoubleMatrix {
+
+  private ExpressionMatrixDimension dimension;
+  private String[] columnNames;
+  private String[] rowNames;
 
   /**
    * Get row dimension.
    * @return m, the number of rows.
    */
-  int getRowCount();
+
+  public int getRowCount() {
+    return rowNames.length;
+  }
 
   /**
    * Get column dimension.
    * @return n, the number of columns.
    */
-  int getColumnCount();
+
+  public int getColumnCount() {
+    return columnNames.length;
+  }
 
   /**
    * Set a single element.
@@ -47,7 +53,11 @@ public interface DoubleMatrix {
    * @param s A(i,j).
    * @exception ArrayIndexOutOfBoundsException
    */
-  void set(final int i, final int j, final double s);
+
+  public void set(final int i, final int j, final double s) {
+
+    this.dimension.setValue(this.rowNames[i], this.columnNames[j], s);
+  }
 
   /**
    * Get a single element.
@@ -56,6 +66,25 @@ public interface DoubleMatrix {
    * @return A(i,j)
    * @exception ArrayIndexOutOfBoundsException
    */
-  double get(final int i, final int j);
 
+  public double get(final int i, final int j) {
+
+    return this.dimension.getValue(this.rowNames[i], this.columnNames[j]);
+  }
+
+  //
+  // Static methods
+  //
+
+  ExpressionMatrixDimensionDoubleMatrix(final ExpressionMatrixDimension dimension) {
+
+    if (dimension == null)
+      throw new NullPointerException("The dimension is null");
+
+    this.dimension = dimension;
+
+    this.columnNames = dimension.getColumnNames();
+    this.rowNames = dimension.getRowNames();
+  }
+  
 }
