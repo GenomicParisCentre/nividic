@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -39,7 +39,8 @@ public class MultiColumnTranslator extends BasicTranslator {
   private String[] fieldNames;
 
   /**
-   * Add data to the translator
+   * Add data to the translator. The first value of the array data is the unique
+   * id for the traslator.
    * @param rowData data to add
    */
   public void addRow(final String[] rowData) {
@@ -47,19 +48,32 @@ public class MultiColumnTranslator extends BasicTranslator {
     if (rowData == null || rowData.length == 1)
       return;
 
-    final String[] dataArray = arrayWithFirstElement(rowData);
+    final String[] dataArray = arrayWithoutFirstElement(rowData);
+
+    addRow(rowData[0], dataArray);
+  }
+
+  /**
+   * Add data to the translator.
+   * @param id id for the traslator.
+   * @param rowData data to add
+   */
+  public void addRow(final String id, final String[] rowData) {
+
+    if (id == null || rowData == null)
+      return;
 
     Map<String, String> dataMap = new HashMap<String, String>();
 
-    final int sizeData = dataArray.length;
+    final int sizeData = rowData.length;
     final int sizeFields = this.fieldNames.length;
 
     final int size = Math.min(sizeData, sizeFields);
 
     for (int i = 0; i < size; i++)
-      dataMap.put(fieldNames[i], dataArray[i]);
+      dataMap.put(fieldNames[i], rowData[i]);
 
-    this.annotations.put(rowData[0], dataMap);
+    this.annotations.put(id, dataMap);
   }
 
   //
@@ -113,7 +127,7 @@ public class MultiColumnTranslator extends BasicTranslator {
     this.annotations.clear();
   }
 
-  private String[] arrayWithFirstElement(final String[] data) {
+  private String[] arrayWithoutFirstElement(final String[] data) {
 
     if (data == null)
       return null;
@@ -137,15 +151,36 @@ public class MultiColumnTranslator extends BasicTranslator {
    */
   public MultiColumnTranslator(final String[] fieldNames) {
 
+    this(fieldNames, true);
+  }
+
+  /**
+   * Public constructor.
+   * @param fieldNames Field names of the annotation
+   * @param fieldNamesWithId false if the first element of the fieldname array
+   *          is the key for the translator (must be ignored)
+   */
+  public MultiColumnTranslator(final String[] fieldNames,
+      final boolean fieldNamesWithId) {
+
     if (fieldNames == null)
       throw new NullPointerException("fieldnames is null");
 
-    if (fieldNames.length < 2)
+    if (fieldNamesWithId && fieldNames.length < 2)
       throw new NividicRuntimeException(
           "fieldNames must have at least 2 fields");
 
-    this.fieldNames = arrayWithFirstElement(fieldNames);
-    setDefaultField(fieldNames[1]);
+    if (!fieldNamesWithId && fieldNames.length < 1)
+      throw new NividicRuntimeException(
+          "fieldNames must have at least one fields");
+
+    if (fieldNamesWithId) {
+      this.fieldNames = arrayWithoutFirstElement(fieldNames);
+      setDefaultField(fieldNames[1]);
+    } else {
+      this.fieldNames = fieldNames;
+      setDefaultField(fieldNames[0]);
+    }
   }
 
 }
