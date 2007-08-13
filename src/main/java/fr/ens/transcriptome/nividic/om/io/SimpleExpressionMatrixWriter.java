@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +48,7 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
   private BufferedWriter bw;
   private static final String SEPARATOR = "\t";
-  private static final String type = "id/M";
+  private static final String type = "id";
 
   /** Dimension separator. */
   public static final String DIMENSION_SEPARATOR = "$";
@@ -85,6 +86,7 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
       if (annot != null) {
         final String[] annotationFields = annot.getFields();
+
         for (int i = 0; i < annotationFields.length; i++) {
 
           bw.write(SEPARATOR);
