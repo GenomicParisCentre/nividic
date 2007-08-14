@@ -20,14 +20,11 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims;
+package fr.ens.transcriptome.nividic.sgdb.lims.old;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.util.zip.GZIPInputStream;
 
@@ -35,13 +32,13 @@ import javax.xml.rpc.ServiceException;
 
 import org.apache.commons.codec.binary.Base64;
 
-import fr.ens.transcriptome.nividic.om.io.GALReader;
+import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsService;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsServiceLocator;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsService;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsServiceLocator;
 
-public class GALLimsReader extends GALReader {
+public class GPRLimsReader extends GPRReader {
 
   private static InputStream getArrayListLimsInputStream(final int listId)
       throws NividicIOException {
@@ -58,9 +55,13 @@ public class GALLimsReader extends GALReader {
       if (stringData == null)
         throw new NividicIOException("No data to read");
 
+      System.out.println("before base64 decode");
+      
       final byte[] byteData = Base64.decodeBase64(stringData
           .getBytes("US-ASCII"));
 
+      // System.out.println(new String(byteData));
+      System.out.println("before stream creation");
       return new GZIPInputStream(new ByteArrayInputStream(byteData));
 
     } catch (ServiceException e) {
@@ -74,7 +75,7 @@ public class GALLimsReader extends GALReader {
     return null;
   }
 
-  public GALLimsReader(int listId) throws NividicIOException {
+  public GPRLimsReader(int listId) throws NividicIOException {
     super(getArrayListLimsInputStream(listId));
   }
 

@@ -5,9 +5,9 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims.ws;
+package fr.ens.transcriptome.nividic.sgdb.lims.old.ws;
 
-public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType {
+public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
     private java.util.Vector cachedSerFactories = new java.util.Vector();
@@ -39,7 +39,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "SpotsIds"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("urn:Lims", "ArrayOfIntegers"), int[].class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("urn:Lims", "ArrayOfSpotDescription"));
-        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotDescription[].class);
+        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotDescription[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "return"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
@@ -61,7 +61,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "SpotsIds"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("urn:Lims", "ArrayOfIntegers"), int[].class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("urn:Lims", "ArrayOfSpotProbe"));
-        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe[].class);
+        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "return"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
@@ -72,7 +72,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "ProbeId"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("urn:Lims", "ProbeDescription"));
-        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription.class);
+        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "ProbeDescription"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
@@ -83,7 +83,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "ProbesIds"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("urn:Lims", "ArrayOfIntegers"), int[].class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("urn:Lims", "ArrayOfProbeDescription"));
-        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription[].class);
+        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "return"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
@@ -93,8 +93,8 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         oper.setName("getSlideDescription");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "SerialNumber"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("urn:Lims", "SlideDescription"));
-        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription.class);
+        oper.setReturnType(new javax.xml.namespace.QName("urn:Lims", "SlideDescriptionImpl"));
+        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "return"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
@@ -105,7 +105,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "SerialNumbers"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("urn:Lims", "ArrayOfStrings"), java.lang.String[].class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("urn:Lims", "ArrayOfSlideDescription"));
-        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription[].class);
+        oper.setReturnClass(fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription[].class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "return"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
@@ -175,7 +175,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 
             qName = new javax.xml.namespace.QName("urn:Lims", "ArrayOfProbeDescription");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription[].class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription[].class;
             cachedSerClasses.add(cls);
             qName = new javax.xml.namespace.QName("urn:Lims", "ProbeDescription");
             qName2 = null;
@@ -184,16 +184,16 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 
             qName = new javax.xml.namespace.QName("urn:Lims", "ArrayOfSlideDescription");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription[].class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription[].class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("urn:Lims", "SlideDescription");
+            qName = new javax.xml.namespace.QName("urn:Lims", "SlideDescriptionImpl");
             qName2 = null;
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
             qName = new javax.xml.namespace.QName("urn:Lims", "ArrayOfSpotDescription");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotDescription[].class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotDescription[].class;
             cachedSerClasses.add(cls);
             qName = new javax.xml.namespace.QName("urn:Lims", "SpotDescription");
             qName2 = null;
@@ -202,7 +202,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 
             qName = new javax.xml.namespace.QName("urn:Lims", "ArrayOfSpotProbe");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe[].class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe[].class;
             cachedSerClasses.add(cls);
             qName = new javax.xml.namespace.QName("urn:Lims", "SpotProbe");
             qName2 = null;
@@ -220,28 +220,28 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 
             qName = new javax.xml.namespace.QName("urn:Lims", "ProbeDescription");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription.class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("urn:Lims", "SlideDescription");
+            qName = new javax.xml.namespace.QName("urn:Lims", "SlideDescriptionImpl");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription.class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("urn:Lims", "SpotDescription");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotDescription.class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotDescription.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("urn:Lims", "SpotProbe");
             cachedSerQNames.add(qName);
-            cls = fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe.class;
+            cls = fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -344,7 +344,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 }
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotDescription[] getSpotsDescriptions(int[] spotsIds) throws java.rmi.RemoteException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotDescription[] getSpotsDescriptions(int[] spotsIds) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -365,9 +365,9 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         else {
             extractAttachments(_call);
             try {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotDescription[]) _resp;
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotDescription[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotDescription[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotDescription[].class);
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotDescription[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotDescription[].class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -406,7 +406,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 }
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe[] getSpotsProbes(int[] spotsIds) throws java.rmi.RemoteException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe[] getSpotsProbes(int[] spotsIds) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -427,9 +427,9 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         else {
             extractAttachments(_call);
             try {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe[]) _resp;
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe[].class);
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe[].class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -437,7 +437,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 }
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription getProbeDescription(int probeId) throws java.rmi.RemoteException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription getProbeDescription(int probeId) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -458,9 +458,9 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         else {
             extractAttachments(_call);
             try {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription) _resp;
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription) _resp;
             } catch (java.lang.Exception _exception) {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription.class);
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -468,7 +468,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 }
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription[] getProbesDescriptions(int[] probesIds) throws java.rmi.RemoteException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription[] getProbesDescriptions(int[] probesIds) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -489,9 +489,9 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         else {
             extractAttachments(_call);
             try {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription[]) _resp;
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription[].class);
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription[].class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -499,7 +499,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 }
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription getSlideDescription(java.lang.String serialNumber) throws java.rmi.RemoteException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription getSlideDescription(java.lang.String serialNumber) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -520,9 +520,9 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         else {
             extractAttachments(_call);
             try {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription) _resp;
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription) _resp;
             } catch (java.lang.Exception _exception) {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription.class);
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -530,7 +530,7 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
 }
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription[] getSlidesDescriptions(java.lang.String[] serialNumbers) throws java.rmi.RemoteException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription[] getSlidesDescriptions(java.lang.String[] serialNumbers) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -551,9 +551,9 @@ public class LimsBindingStub extends org.apache.axis.client.Stub implements fr.e
         else {
             extractAttachments(_call);
             try {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription[]) _resp;
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription[]) _resp;
             } catch (java.lang.Exception _exception) {
-                return (fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.ws.SlideDescription[].class);
+                return (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription[]) org.apache.axis.utils.JavaUtils.convert(_resp, fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SlideDescription[].class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

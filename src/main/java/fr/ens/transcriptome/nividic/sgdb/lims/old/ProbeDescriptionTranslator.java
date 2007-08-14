@@ -20,13 +20,13 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims;
+package fr.ens.transcriptome.nividic.sgdb.lims.old;
 
 import java.rmi.RemoteException;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**

@@ -1,29 +1,29 @@
 /**
- * SpotProbe.java
+ * SpotDescription.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims.ws;
+package fr.ens.transcriptome.nividic.sgdb.lims.old.ws;
 
-public class SpotProbe  implements java.io.Serializable {
+public class SpotDescription  implements java.io.Serializable {
     private int spotId;
-    private int probeId;
+    private java.lang.String spotDescription;
 
-    public SpotProbe() {
+    public SpotDescription() {
     }
 
-    public SpotProbe(
+    public SpotDescription(
            int spotId,
-           int probeId) {
+           java.lang.String spotDescription) {
            this.spotId = spotId;
-           this.probeId = probeId;
+           this.spotDescription = spotDescription;
     }
 
 
     /**
-     * Gets the spotId value for this SpotProbe.
+     * Gets the spotId value for this SpotDescription.
      * 
      * @return spotId
      */
@@ -33,7 +33,7 @@ public class SpotProbe  implements java.io.Serializable {
 
 
     /**
-     * Sets the spotId value for this SpotProbe.
+     * Sets the spotId value for this SpotDescription.
      * 
      * @param spotId
      */
@@ -43,28 +43,28 @@ public class SpotProbe  implements java.io.Serializable {
 
 
     /**
-     * Gets the probeId value for this SpotProbe.
+     * Gets the spotDescription value for this SpotDescription.
      * 
-     * @return probeId
+     * @return spotDescription
      */
-    public int getProbeId() {
-        return probeId;
+    public java.lang.String getSpotDescription() {
+        return spotDescription;
     }
 
 
     /**
-     * Sets the probeId value for this SpotProbe.
+     * Sets the spotDescription value for this SpotDescription.
      * 
-     * @param probeId
+     * @param spotDescription
      */
-    public void setProbeId(int probeId) {
-        this.probeId = probeId;
+    public void setSpotDescription(java.lang.String spotDescription) {
+        this.spotDescription = spotDescription;
     }
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof SpotProbe)) return false;
-        SpotProbe other = (SpotProbe) obj;
+        if (!(obj instanceof SpotDescription)) return false;
+        SpotDescription other = (SpotDescription) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -74,7 +74,9 @@ public class SpotProbe  implements java.io.Serializable {
         boolean _equals;
         _equals = true && 
             this.spotId == other.getSpotId() &&
-            this.probeId == other.getProbeId();
+            ((this.spotDescription==null && other.getSpotDescription()==null) || 
+             (this.spotDescription!=null &&
+              this.spotDescription.equals(other.getSpotDescription())));
         __equalsCalc = null;
         return _equals;
     }
@@ -87,17 +89,19 @@ public class SpotProbe  implements java.io.Serializable {
         __hashCodeCalc = true;
         int _hashCode = 1;
         _hashCode += getSpotId();
-        _hashCode += getProbeId();
+        if (getSpotDescription() != null) {
+            _hashCode += getSpotDescription().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(SpotProbe.class, true);
+        new org.apache.axis.description.TypeDesc(SpotDescription.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("urn:Lims", "SpotProbe"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("urn:Lims", "SpotDescription"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("spotId");
         elemField.setXmlName(new javax.xml.namespace.QName("", "SpotId"));
@@ -105,9 +109,9 @@ public class SpotProbe  implements java.io.Serializable {
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("probeId");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "ProbeId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        elemField.setFieldName("spotDescription");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "SpotDescription"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }

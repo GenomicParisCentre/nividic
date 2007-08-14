@@ -1,14 +1,14 @@
-package fr.ens.transcriptome.nividic.sgdb.lims;
+package fr.ens.transcriptome.nividic.sgdb.lims.old;
 
 import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.log4j.BasicConfigurator;
 
 
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsBindingStub;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsService;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsServiceLocator;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.ProbeDescription;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsBindingStub;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsService;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsServiceLocator;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.ProbeDescription;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe;
 
 class Test {
   public static void main(String[] args) throws Exception {

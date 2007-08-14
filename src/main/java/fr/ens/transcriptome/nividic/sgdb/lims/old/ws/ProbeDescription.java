@@ -5,7 +5,7 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims.ws;
+package fr.ens.transcriptome.nividic.sgdb.lims.old.ws;
 
 public class ProbeDescription  implements java.io.Serializable {
     private int probeId;

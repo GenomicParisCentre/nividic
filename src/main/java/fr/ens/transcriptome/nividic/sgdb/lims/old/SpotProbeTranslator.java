@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims;
+package fr.ens.transcriptome.nividic.sgdb.lims.old;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.SpotProbe;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.SpotProbe;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**

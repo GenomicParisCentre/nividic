@@ -20,14 +20,14 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims;
+package fr.ens.transcriptome.nividic.sgdb.lims.old;
 
 import javax.xml.rpc.ServiceException;
 
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsBindingStub;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsService;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsServiceLocator;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsBindingStub;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsService;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsServiceLocator;
 
 /**
  * This class define a connection to the webservices interface of the ENS sgdb

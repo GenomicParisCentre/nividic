@@ -20,7 +20,7 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims;
+package fr.ens.transcriptome.nividic.sgdb.lims.old;
 
 import org.apache.commons.collections.primitives.ArrayIntList;
 

@@ -20,13 +20,13 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims;
+package fr.ens.transcriptome.nividic.sgdb.lims.old;
 
 import javax.xml.rpc.ServiceException;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.translators.BasicTranslator;
-import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType;
+import fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType;
 
 public abstract class LimsBasicTranslator extends BasicTranslator {
 

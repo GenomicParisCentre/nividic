@@ -5,9 +5,9 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims.ws;
+package fr.ens.transcriptome.nividic.sgdb.lims.old.ws;
 
-public class LimsServiceLocator extends org.apache.axis.client.Service implements fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsService {
+public class LimsServiceLocator extends org.apache.axis.client.Service implements fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsService {
 
     public LimsServiceLocator() {
     }
@@ -39,7 +39,7 @@ public class LimsServiceLocator extends org.apache.axis.client.Service implement
         LimsPortWSDDServiceName = name;
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType getLimsPort() throws javax.xml.rpc.ServiceException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType getLimsPort() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(LimsPort_address);
@@ -50,9 +50,9 @@ public class LimsServiceLocator extends org.apache.axis.client.Service implement
         return getLimsPort(endpoint);
     }
 
-    public fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType getLimsPort(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType getLimsPort(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsBindingStub _stub = new fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsBindingStub(portAddress, this);
+            fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsBindingStub _stub = new fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsBindingStub(portAddress, this);
             _stub.setPortName(getLimsPortWSDDServiceName());
             return _stub;
         }
@@ -72,8 +72,8 @@ public class LimsServiceLocator extends org.apache.axis.client.Service implement
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
-                fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsBindingStub _stub = new fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsBindingStub(new java.net.URL(LimsPort_address), this);
+            if (fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsPort_PortType.class.isAssignableFrom(serviceEndpointInterface)) {
+                fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsBindingStub _stub = new fr.ens.transcriptome.nividic.sgdb.lims.old.ws.LimsBindingStub(new java.net.URL(LimsPort_address), this);
                 _stub.setPortName(getLimsPortWSDDServiceName());
                 return _stub;
             }

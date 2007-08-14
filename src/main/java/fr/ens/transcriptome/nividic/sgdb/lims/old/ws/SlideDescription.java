@@ -1,11 +1,11 @@
 /**
- * SlideDescription.java
+ * SlideDescriptionImpl.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package fr.ens.transcriptome.nividic.sgdb.lims.ws;
+package fr.ens.transcriptome.nividic.sgdb.lims.old.ws;
 
 public class SlideDescription  implements java.io.Serializable {
     private java.lang.String serialNumber;
@@ -65,7 +65,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the serialNumber value for this SlideDescription.
+     * Gets the serialNumber value for this SlideDescriptionImpl.
      * 
      * @return serialNumber
      */
@@ -75,7 +75,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the serialNumber value for this SlideDescription.
+     * Sets the serialNumber value for this SlideDescriptionImpl.
      * 
      * @param serialNumber
      */
@@ -85,7 +85,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the slideOrder value for this SlideDescription.
+     * Gets the slideOrder value for this SlideDescriptionImpl.
      * 
      * @return slideOrder
      */
@@ -95,7 +95,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the slideOrder value for this SlideDescription.
+     * Sets the slideOrder value for this SlideDescriptionImpl.
      * 
      * @param slideOrder
      */
@@ -105,7 +105,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the batchName value for this SlideDescription.
+     * Gets the batchName value for this SlideDescriptionImpl.
      * 
      * @return batchName
      */
@@ -115,7 +115,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the batchName value for this SlideDescription.
+     * Sets the batchName value for this SlideDescriptionImpl.
      * 
      * @param batchName
      */
@@ -125,7 +125,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the listId value for this SlideDescription.
+     * Gets the listId value for this SlideDescriptionImpl.
      * 
      * @return listId
      */
@@ -135,7 +135,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the listId value for this SlideDescription.
+     * Sets the listId value for this SlideDescriptionImpl.
      * 
      * @param listId
      */
@@ -145,7 +145,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the spottingDate value for this SlideDescription.
+     * Gets the spottingDate value for this SlideDescriptionImpl.
      * 
      * @return spottingDate
      */
@@ -155,7 +155,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the spottingDate value for this SlideDescription.
+     * Sets the spottingDate value for this SlideDescriptionImpl.
      * 
      * @param spottingDate
      */
@@ -165,7 +165,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the spottingBy value for this SlideDescription.
+     * Gets the spottingBy value for this SlideDescriptionImpl.
      * 
      * @return spottingBy
      */
@@ -175,7 +175,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the spottingBy value for this SlideDescription.
+     * Sets the spottingBy value for this SlideDescriptionImpl.
      * 
      * @param spottingBy
      */
@@ -185,7 +185,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the tipNumber value for this SlideDescription.
+     * Gets the tipNumber value for this SlideDescriptionImpl.
      * 
      * @return tipNumber
      */
@@ -195,7 +195,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the tipNumber value for this SlideDescription.
+     * Sets the tipNumber value for this SlideDescriptionImpl.
      * 
      * @param tipNumber
      */
@@ -205,7 +205,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the topMargin value for this SlideDescription.
+     * Gets the topMargin value for this SlideDescriptionImpl.
      * 
      * @return topMargin
      */
@@ -215,7 +215,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the topMargin value for this SlideDescription.
+     * Sets the topMargin value for this SlideDescriptionImpl.
      * 
      * @param topMargin
      */
@@ -225,7 +225,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the bottomMargin value for this SlideDescription.
+     * Gets the bottomMargin value for this SlideDescriptionImpl.
      * 
      * @return bottomMargin
      */
@@ -235,7 +235,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the bottomMargin value for this SlideDescription.
+     * Sets the bottomMargin value for this SlideDescriptionImpl.
      * 
      * @param bottomMargin
      */
@@ -245,7 +245,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the rightMargin value for this SlideDescription.
+     * Gets the rightMargin value for this SlideDescriptionImpl.
      * 
      * @return rightMargin
      */
@@ -255,7 +255,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the rightMargin value for this SlideDescription.
+     * Sets the rightMargin value for this SlideDescriptionImpl.
      * 
      * @param rightMargin
      */
@@ -265,7 +265,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the leftMargin value for this SlideDescription.
+     * Gets the leftMargin value for this SlideDescriptionImpl.
      * 
      * @return leftMargin
      */
@@ -275,7 +275,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the leftMargin value for this SlideDescription.
+     * Sets the leftMargin value for this SlideDescriptionImpl.
      * 
      * @param leftMargin
      */
@@ -285,7 +285,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the slideWidth value for this SlideDescription.
+     * Gets the slideWidth value for this SlideDescriptionImpl.
      * 
      * @return slideWidth
      */
@@ -295,7 +295,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the slideWidth value for this SlideDescription.
+     * Sets the slideWidth value for this SlideDescriptionImpl.
      * 
      * @param slideWidth
      */
@@ -305,7 +305,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the slideHeight value for this SlideDescription.
+     * Gets the slideHeight value for this SlideDescriptionImpl.
      * 
      * @return slideHeight
      */
@@ -315,7 +315,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the slideHeight value for this SlideDescription.
+     * Sets the slideHeight value for this SlideDescriptionImpl.
      * 
      * @param slideHeight
      */
@@ -325,7 +325,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the slideImage value for this SlideDescription.
+     * Gets the slideImage value for this SlideDescriptionImpl.
      * 
      * @return slideImage
      */
@@ -335,7 +335,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the slideImage value for this SlideDescription.
+     * Sets the slideImage value for this SlideDescriptionImpl.
      * 
      * @param slideImage
      */
@@ -345,7 +345,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the spottingOrder value for this SlideDescription.
+     * Gets the spottingOrder value for this SlideDescriptionImpl.
      * 
      * @return spottingOrder
      */
@@ -355,7 +355,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the spottingOrder value for this SlideDescription.
+     * Sets the spottingOrder value for this SlideDescriptionImpl.
      * 
      * @param spottingOrder
      */
@@ -365,7 +365,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Gets the slideImageURL value for this SlideDescription.
+     * Gets the slideImageURL value for this SlideDescriptionImpl.
      * 
      * @return slideImageURL
      */
@@ -375,7 +375,7 @@ public class SlideDescription  implements java.io.Serializable {
 
 
     /**
-     * Sets the slideImageURL value for this SlideDescription.
+     * Sets the slideImageURL value for this SlideDescriptionImpl.
      * 
      * @param slideImageURL
      */
@@ -475,7 +475,7 @@ public class SlideDescription  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(SlideDescription.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("urn:Lims", "SlideDescription"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("urn:Lims", "SlideDescriptionImpl"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("serialNumber");
         elemField.setXmlName(new javax.xml.namespace.QName("", "SerialNumber"));
