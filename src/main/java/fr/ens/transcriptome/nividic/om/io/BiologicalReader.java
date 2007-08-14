@@ -31,9 +31,10 @@ import fr.ens.transcriptome.nividic.om.BiologicalObject;
 public interface BiologicalReader {
 
   /**
-   * Read the design.
-   * @return a new Design object
-   * @throws NividicIOException if an error occurs while reading the design
+   * Read the biological object.
+   * @return a new biological object
+   * @throws NividicIOException if an error occurs while reading the biological
+   *           object
    */
   BiologicalObject read() throws NividicIOException;
 

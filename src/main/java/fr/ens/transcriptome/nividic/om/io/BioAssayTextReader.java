@@ -40,7 +40,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * replaced by 0
  * @author Laurent Jourdren
  */
-public abstract class BioAssayTextReader extends BioAssayReader {
+public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
 
   private BufferedReader bufferedReader;
   private boolean commaDecimalSeparator;

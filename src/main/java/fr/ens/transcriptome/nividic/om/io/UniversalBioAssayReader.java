@@ -28,9 +28,9 @@ import java.io.InputStream;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
-public class UniversalBioAssayReader extends BioAssayReader {
+public class UniversalBioAssayReader extends InputStreamBioAssayReader {
 
-  private BioAssayReader br;
+  private InputStreamBioAssayReader br;
 
   @Override
   protected String getColumnField() {

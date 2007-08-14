@@ -22,18 +22,21 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import fr.ens.transcriptome.nividic.om.BiologicalList;
+import fr.ens.transcriptome.nividic.om.BiologicalObject;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 
 /**
- * This interface defines how to read a BiologicalList.
+ * This interface define a reader for ExpressionMatrix objects.
  * @author Laurent Jourdren
  */
-public interface BiologicalListReader extends BiologicalReader{
+public interface ExpressionMatrixReader extends BiologicalObject {
 
   /**
-   * Read a BiologicalList.
-   * @return The readed BiologicalList
+   * Read the ExpressionMatrix.
+   * @return a new ExpressionMatrix object
+   * @throws NividicIOException if an error occurs while reading the
+   *           ExpressionMatrix
    */
-  BiologicalList read();
+  ExpressionMatrix read() throws NividicIOException;
 
 }

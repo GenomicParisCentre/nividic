@@ -45,7 +45,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * This implement a class to read ExpressionMatrixDimension objects
  * @author Lory Montout
  */
-public class SimpleExpressionMatrixReader extends ExpressionMatrixReader {
+public class SimpleExpressionMatrixReader extends InputStreamExpressionMatrixReader {
 
   /** Dimension separator. */
   public static final String DIMENSION_SEPARATOR = "$";

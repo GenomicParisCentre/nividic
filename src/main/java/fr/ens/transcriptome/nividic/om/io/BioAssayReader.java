@@ -22,18 +22,19 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import fr.ens.transcriptome.nividic.om.BiologicalList;
+import fr.ens.transcriptome.nividic.om.BioAssay;
 
 /**
- * This interface defines how to read a BiologicalList.
+ * This interface define a reader for BioAssay objects.
  * @author Laurent Jourdren
  */
-public interface BiologicalListReader extends BiologicalReader{
+public interface BioAssayReader extends BiologicalReader {
 
   /**
-   * Read a BiologicalList.
-   * @return The readed BiologicalList
+   * Read the BioAssay.
+   * @return a new BioAssay object
+   * @throws NividicIOException if an error occurs while reading the bioAssay
    */
-  BiologicalList read();
+  BioAssay read() throws NividicIOException;
 
 }
