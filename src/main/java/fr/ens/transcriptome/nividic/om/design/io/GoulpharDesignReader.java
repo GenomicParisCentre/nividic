@@ -44,7 +44,7 @@ import fr.ens.transcriptome.nividic.om.io.NividicIOException;
  * This class allow to read goulphar param file as a design.
  * @author Laurent Jourdren
  */
-public class GoulpharDesignReader extends DesignReader {
+public class GoulpharDesignReader extends InputStreamDesignReader {
 
   private boolean dataSourceNormalized = true;
 

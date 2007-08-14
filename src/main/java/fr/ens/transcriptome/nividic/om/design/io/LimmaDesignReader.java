@@ -46,7 +46,7 @@ import fr.ens.transcriptome.nividic.om.io.NividicIOException;
  * This class define a design reader for limma design files.
  * @author Laurent Jourdren
  */
-public class LimmaDesignReader extends DesignReader {
+public class LimmaDesignReader extends InputStreamDesignReader {
 
   private static final String[] TARGET_FIELDS = {"Cy3", "Cy5"};
   private static final String SLIDENUMBER_FIELD = "SlideNumber";
