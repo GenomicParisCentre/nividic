@@ -45,7 +45,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * integer fields in <code>read</code>, non int values will be replaced by 0
  * @author Laurent Jourdren
  */
-public abstract class BioAssayReader {
+public abstract class InputStreamBioAssayReader {
 
   private BioAssay bioAssay = BioAssayFactory.createBioAssay();
   private Set<String> fieldsToRead = new HashSet<String>();
@@ -496,7 +496,7 @@ public abstract class BioAssayReader {
    * @throws NividicIOException if an error occurs while reading the file or if
    *           the file is null.
    */
-  public BioAssayReader(final File file) throws NividicIOException {
+  public InputStreamBioAssayReader(final File file) throws NividicIOException {
 
     if (file == null)
       throw new NividicIOException("No file to load");
@@ -516,7 +516,7 @@ public abstract class BioAssayReader {
    * @param is Input stream to read
    * @throws NividicIOException if the stream is null
    */
-  public BioAssayReader(final InputStream is) throws NividicIOException {
+  public InputStreamBioAssayReader(final InputStream is) throws NividicIOException {
 
     setInputStream(is);
   }
@@ -524,7 +524,7 @@ public abstract class BioAssayReader {
   /**
    * Public constructor.
    */
-  protected BioAssayReader() {
+  protected InputStreamBioAssayReader() {
   }
 
 }

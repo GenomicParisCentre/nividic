@@ -39,7 +39,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * Abstract class to read ExpressionMatrixDimension files
  * @author Lory Montout
  */
-public abstract class ExpressionMatrixReader {
+public abstract class InputStreamExpressionMatrixReader {
 
   private InputStream is;
   private String dataSource;
@@ -277,7 +277,7 @@ public abstract class ExpressionMatrixReader {
    * @throws NividicIOException if an error occurs while reading the file or if
    *           the file is null.
    */
-  public ExpressionMatrixReader(final File file) throws NividicIOException {
+  public InputStreamExpressionMatrixReader(final File file) throws NividicIOException {
 
     if (file == null)
       throw new NividicIOException("No file to load");
@@ -297,7 +297,7 @@ public abstract class ExpressionMatrixReader {
    * @param is Input stream to read
    * @throws NividicIOException if the stream is null
    */
-  public ExpressionMatrixReader(final InputStream is) throws NividicIOException {
+  public InputStreamExpressionMatrixReader(final InputStream is) throws NividicIOException {
 
     setInputStream(is);
   }
