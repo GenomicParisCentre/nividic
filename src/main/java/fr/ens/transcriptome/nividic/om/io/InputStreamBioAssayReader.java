@@ -45,7 +45,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * integer fields in <code>read</code>, non int values will be replaced by 0
  * @author Laurent Jourdren
  */
-public abstract class InputStreamBioAssayReader {
+public abstract class InputStreamBioAssayReader implements BioAssayReader {
 
   private BioAssay bioAssay = BioAssayFactory.createBioAssay();
   private Set<String> fieldsToRead = new HashSet<String>();
@@ -516,7 +516,8 @@ public abstract class InputStreamBioAssayReader {
    * @param is Input stream to read
    * @throws NividicIOException if the stream is null
    */
-  public InputStreamBioAssayReader(final InputStream is) throws NividicIOException {
+  public InputStreamBioAssayReader(final InputStream is)
+      throws NividicIOException {
 
     setInputStream(is);
   }

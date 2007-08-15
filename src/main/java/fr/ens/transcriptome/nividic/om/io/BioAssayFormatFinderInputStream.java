@@ -136,7 +136,7 @@ public class BioAssayFormatFinderInputStream extends InputStream {
    * @throws IOException if an error occurs while reading data
    * @throws NividicIOException if an error occurs while reading data
    */
-  public BioAssayReader getBioAssayReader() throws IOException,
+  public InputStreamBioAssayReader getBioAssayReader() throws IOException,
       NividicIOException {
 
     BioAssayFormat format = getBioAssayFormat();

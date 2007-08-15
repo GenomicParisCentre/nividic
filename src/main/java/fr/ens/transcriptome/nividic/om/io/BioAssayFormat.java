@@ -88,7 +88,7 @@ public enum BioAssayFormat {
    * @return a BioAssayReader object to read the data
    * @throws NividicIOException if an error occurs while creating the reader
    */
-  public BioAssayReader getBioAssayReader(final InputStream is)
+  public InputStreamBioAssayReader getBioAssayReader(final InputStream is)
       throws NividicIOException {
 
     switch (this) {
