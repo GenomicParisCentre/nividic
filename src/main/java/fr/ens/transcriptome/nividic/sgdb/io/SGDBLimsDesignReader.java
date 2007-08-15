@@ -22,7 +22,6 @@
 
 package fr.ens.transcriptome.nividic.sgdb.io;
 
-import java.io.File;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,11 +36,9 @@ import fr.ens.transcriptome.nividic.om.PhysicalConstants;
 import fr.ens.transcriptome.nividic.om.datasources.URLDataSource;
 import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.DesignFactory;
-import fr.ens.transcriptome.nividic.om.design.DesignUtils;
 import fr.ens.transcriptome.nividic.om.design.ScanLabelSettings;
 import fr.ens.transcriptome.nividic.om.design.Slide;
 import fr.ens.transcriptome.nividic.om.design.io.DesignReader;
-import fr.ens.transcriptome.nividic.om.design.io.LimmaDesignWriter;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.sgdb.lims.ws.Hybridization;
 import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort;
@@ -113,8 +110,6 @@ public class SGDBLimsDesignReader implements DesignReader {
     try {
 
       for (String serialNumber : slideSerialNumbers) {
-
-        System.out.println(serialNumber);
 
         Hybridization hyb = this.port.getHybridization(serialNumber);
         if (hyb != null)
