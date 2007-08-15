@@ -30,7 +30,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
-import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
+import fr.ens.transcriptome.nividic.om.io.InputStreamBioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.platform.PlatformException;
@@ -91,7 +91,7 @@ public class TranslateGPRToBioAssayElement extends Algorithm implements Module {
       try {
 
         try {
-          BioAssayReader baio = new GPRReader(new FileInputStream(f));
+          InputStreamBioAssayReader baio = new GPRReader(new FileInputStream(f));
 
           b = baio.read();
         } catch (FileNotFoundException e) {
