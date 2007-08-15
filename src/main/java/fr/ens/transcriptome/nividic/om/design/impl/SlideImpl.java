@@ -37,7 +37,7 @@ import fr.ens.transcriptome.nividic.om.design.Slide;
 import fr.ens.transcriptome.nividic.om.design.SlideDescription;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormatFinderInputStream;
-import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
+import fr.ens.transcriptome.nividic.om.io.InputStreamBioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
@@ -288,7 +288,7 @@ class SlideImpl implements Slide {
 
     BioAssayFormat format = getFormat();
 
-    BioAssayReader reader;
+    InputStreamBioAssayReader reader;
 
     if (format == null) {
 
