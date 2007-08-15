@@ -113,7 +113,7 @@ class ScanLabelSettingsImpl implements ScanLabelSettings {
   public void setLaserOnTime(final int value) {
 
     if (!this.design.isScanLabelSetting(LASER_ON_TIME_FIELD))
-      return;
+      this.design.addScanLabelSetting(LASER_ON_TIME_FIELD);
 
     final String slideName = this.design.getSlideName(this.slideId);
 
@@ -124,7 +124,7 @@ class ScanLabelSettingsImpl implements ScanLabelSettings {
   public void setLaserPower(final double power) {
 
     if (!this.design.isScanLabelSetting(LASER_POWER_FIELD))
-      return;
+      this.design.addScanLabelSetting(LASER_POWER_FIELD);
 
     final String slideName = this.design.getSlideName(this.slideId);
 
@@ -135,7 +135,7 @@ class ScanLabelSettingsImpl implements ScanLabelSettings {
   public void setPMTGain(final int pmt) {
 
     if (!this.design.isScanLabelSetting(PMT_GAIN_FIELD))
-      return;
+      this.design.addScanLabelSetting(PMT_GAIN_FIELD);
 
     final String slideName = this.design.getSlideName(this.slideId);
 
@@ -146,7 +146,7 @@ class ScanLabelSettingsImpl implements ScanLabelSettings {
   public void setScanPower(final int power) {
 
     if (!this.design.isScanLabelSetting(SCAN_POWER_FIELD))
-      return;
+      this.design.addScanLabelSetting(SCAN_POWER_FIELD);
 
     final String slideName = this.design.getSlideName(this.slideId);
 
@@ -157,7 +157,7 @@ class ScanLabelSettingsImpl implements ScanLabelSettings {
   public void setSetting(final String settingName, final String value) {
 
     if (!this.design.isScanLabelSetting(settingName))
-      return;
+      this.design.addScanLabelSetting(settingName);
 
     final String slideName = this.design.getSlideName(this.slideId);
 
@@ -168,7 +168,7 @@ class ScanLabelSettingsImpl implements ScanLabelSettings {
   public void setWaveLength(final int waveLength) {
 
     if (!this.design.isScanLabelSetting(WAVELENGTH_FIELD))
-      return;
+      this.design.addScanLabelSetting(WAVELENGTH_FIELD);
 
     final String slideName = this.design.getSlideName(this.slideId);
 

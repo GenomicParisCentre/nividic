@@ -899,7 +899,6 @@ public class DesignImpl implements Design {
 
     this.scanLabelSettingsData.put(createkeyLabelScanLabelSetting(slide, label,
         setting), value);
-
   }
 
   /**
