@@ -151,11 +151,19 @@ public final class DesignUtils {
       ScanLabelSettings settings =
           slide.getScanLabelsSettings().getSetting(color);
 
-      settings.setWaveLength(wavelengths[i]);
-      settings.setPMTGain(pmts[i]);
-      settings.setScanPower(scanPowers[i]);
-      settings.setLaserPower(laserPowers[i]);
-      settings.setLaserOnTime(laserOnTimes[i]);
+      if (settings == null)
+        continue;
+
+      if (wavelengths != null)
+        settings.setWaveLength(wavelengths[i]);
+      if (pmts != null)
+        settings.setPMTGain(pmts[i]);
+      if (scanPowers != null)
+        settings.setScanPower(scanPowers[i]);
+      if (laserPowers != null)
+        settings.setLaserPower(laserPowers[i]);
+      if (laserOnTimes != null)
+        settings.setLaserOnTime(laserOnTimes[i]);
     }
 
   }
