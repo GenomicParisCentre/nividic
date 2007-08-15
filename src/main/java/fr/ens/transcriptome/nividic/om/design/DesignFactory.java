@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.design;
 
+import fr.ens.transcriptome.nividic.om.PhysicalConstants;
 import fr.ens.transcriptome.nividic.om.design.impl.DesignImpl;
 
 /**
@@ -37,8 +38,8 @@ public final class DesignFactory {
   public static Design create2ColorsDesign() {
 
     final Design d = new DesignImpl();
-    d.addLabel("Cy3");
-    d.addLabel("Cy5");
+    d.addLabel(PhysicalConstants.CY3_COLOR);
+    d.addLabel(PhysicalConstants.CY5_COLOR);
 
     return d;
   }
