@@ -317,6 +317,7 @@ class SlideImpl implements Slide {
 
     }
 
+    reader.addAllFieldsToRead();
     BioAssay result = reader.read();
     result.setName(getName());
 
