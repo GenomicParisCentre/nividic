@@ -39,7 +39,7 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
-import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
+import fr.ens.transcriptome.nividic.om.io.InputStreamBioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixWriter;
@@ -91,7 +91,7 @@ public final class MatrixDemo {
         // Read idma file
         InputStream is = new FileInputStream(filesToRead[i].getAbsolutePath());
 
-        BioAssayReader bar = new IDMAReader(is);
+        InputStreamBioAssayReader bar = new IDMAReader(is);
         bar.addFieldToRead(BioAssay.FIELD_NAME_ID);
         bar.addFieldToRead(BioAssay.FIELD_NAME_BRIGHT);
         bar.addFieldToRead(BioAssay.FIELD_NAME_RATIO);
@@ -178,7 +178,7 @@ public final class MatrixDemo {
         // Read idma file
         InputStream is = new FileInputStream(filesToRead[i].getAbsolutePath());
 
-        BioAssayReader bar = new IDMAReader(is);
+        InputStreamBioAssayReader bar = new IDMAReader(is);
         bar.addFieldToRead(BioAssay.FIELD_NAME_ID);
         bar.addFieldToRead(BioAssay.FIELD_NAME_BRIGHT);
         bar.addFieldToRead(BioAssay.FIELD_NAME_RATIO);
