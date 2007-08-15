@@ -30,6 +30,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
@@ -47,7 +49,8 @@ import fr.ens.transcriptome.nividic.om.r.RSException;
  */
 public class GoulpharWrapper {
 
-  private static final String GOULPHAR_SCRIPT_URL = "http://transcriptome.ens.fr/goulphar/Goulphar.R";
+  private static final String GOULPHAR_SCRIPT_URL =
+      "http://hestia.ens.fr/R/Goulphar.R";
 
   public static final int FOREGROUND_METHOD_MEDIAN = 0;
   public static final int FOREGROUND_METHOD_MEAN = 1;
@@ -58,7 +61,8 @@ public class GoulpharWrapper {
 
   public static final String PRINT_TIP_GROUP_LOWESS_NORMALISATION_METHOD = "p";
   public static final String GLOBAL_LOWESS_NORMALISATION_METHOD = "l";
-  public static final String GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALISATION_METHOD = "lmb";
+  public static final String GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALISATION_METHOD =
+      "lmb";
   public static final String GLOBAL_MEDIAN_NORMALISATION_METHOD = "m";
   public static final String PRINT_TIP_GROUP_MEDIAN_NORMALISATION_METHOD = "mb";
 
@@ -92,7 +96,8 @@ public class GoulpharWrapper {
   private int foregroundMethod = FOREGROUND_METHOD_MEDIAN;
   private int backgroundSubstraction = BACKGROUND_NO_SUBSTRACTION;
   // private String normalisationMethod = GLOBAL_LOWESS_NORMALISATION_METHOD;
-  private String normalisationMethod = GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALISATION_METHOD;
+  private String normalisationMethod =
+      GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALISATION_METHOD;
   private String flagFilter = DEFAULT_FLAG_FILTER;
   // private String flagFilterValue;
   private boolean removeSaturingSpots = REMOVE_SATURING_SPOTS;
@@ -321,10 +326,10 @@ public class GoulpharWrapper {
 
     final StringBuffer sb = new StringBuffer();
 
-    sb.append("result.file\t" + "software\t" + "foreground\t"
-        + "do.flagremoval\t" + "do.bgcorr\t" + "do.saturating\t"
-        + "saturating\t" + "do.diameter\t" + "diameter\t" + "norma\t"
-        + "alert.printtip\t" + "imagefile\t" + "gal.file\n");
+    sb.append("result.file\t"
+        + "software\t" + "foreground\t" + "do.flagremoval\t" + "do.bgcorr\t"
+        + "do.saturating\t" + "saturating\t" + "do.diameter\t" + "diameter\t"
+        + "norma\t" + "alert.printtip\t" + "imagefile\t" + "gal.file\n");
     sb.append(resultFile);
     sb.append("\t");
     sb.append("genepix");
@@ -384,8 +389,8 @@ public class GoulpharWrapper {
   }
 
   /**
-   * Normalize a bioAssay
-   * @param bioAssay
+   * Normalize a bioAssay.
+   * @param bioAssay bioAssay to normalize
    */
   public void normalize(final BioAssay bioAssay) {
 
@@ -395,6 +400,7 @@ public class GoulpharWrapper {
     if (bioAssay == null)
       return;
 
+    clean();
     setBioAssay(bioAssay);
     setNormalizedBioAssay(null);
 
@@ -426,8 +432,8 @@ public class GoulpharWrapper {
 
     try {
 
-      InputStream is = this.con.getFileInputStream(this.prefixGPRFilename
-          + ".gpr_norm.txt");
+      InputStream is =
+          this.con.getFileInputStream(this.prefixGPRFilename + ".gpr_norm.txt");
 
       this.normalizedBioAssay = new IDMAReader(is).read();
 
@@ -459,8 +465,37 @@ public class GoulpharWrapper {
 
   }
 
+  /**
+   * Clean imported and generated file on the RServer.
+   */
+  public void clean() {
+
+    if (this.prefixGPRFilename == null)
+      return;
+
+    List<String> files = new ArrayList<String>();
+
+    files.add("param_goulphar.dat");
+    files.add(this.prefixGPRFilename + ".gpr_norm.txt");
+    files.add(this.prefixGPRFilename + ".gpr.pdf");
+    files.add(this.prefixGPRFilename + ".gpr");
+
+    for (String filename : files)
+      try {
+        this.con.removeFile(filename);
+      } catch (RSException e) {
+        throw new NividicRuntimeException("An error occur while remove a file");
+      }
+
+    this.prefixGPRFilename = null;
+  }
+
+  /**
+   * Disconnect from RServe.
+   */
   public void disConnect() {
 
+    clean();
     this.con.disConnect();
   }
 
@@ -468,6 +503,9 @@ public class GoulpharWrapper {
   // Constructor
   //
 
+  /**
+   * Public constructor.
+   */
   public GoulpharWrapper() {
 
     loadScript();
@@ -478,7 +516,9 @@ public class GoulpharWrapper {
     System.out.println("start");
 
     // String filename = "/tmp/genepix.gpr";
-    String filename = "/home/jourdren/analyses/7eme/agilent/D-cone-croissance_900-950_0635.gpr";
+    String filename =
+        "/home/jourdren/analyses/7eme/agilent_serie1/"
+            + "D-cone-croissance_900-950_0635.gpr";
 
     GPRReader reader = new GPRReader(new File(filename));
     reader.addAllFieldsToRead();
