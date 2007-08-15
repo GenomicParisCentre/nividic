@@ -55,7 +55,7 @@ public class RSConnection {
   private Rconnection rConnection;
   private String sourceDirectory = "/tmp/rspsources";
 
-  private static int BUFFER_SIZE = 32* 1024;
+  private static int BUFFER_SIZE = 32 * 1024;
 
   //
   // Getters
@@ -134,8 +134,8 @@ public class RSConnection {
 
         System.out.println("this is a boolean");
 
-        REXP exp = new REXP(REXP.XT_BOOL, new RBool(((Boolean) value)
-            .booleanValue()));
+        REXP exp =
+            new REXP(REXP.XT_BOOL, new RBool(((Boolean) value).booleanValue()));
 
         System.out.println("exp=" + exp.asBool());
 
@@ -467,6 +467,26 @@ public class RSConnection {
   }
 
   /**
+   * Remove a file on the RServer
+   * @param filename File to remove
+   */
+  public void removeFile(final String filename) throws RSException {
+
+    try {
+      // Test if the file exists
+      Rconnection c = getRConnection();
+
+      REXP exists = c.eval("file.exists(\"" + filename + "\")");
+      if (exists.asBool().isTRUE())
+        c.voidEval("unlink(\"" + filename + "\", recursive = FALSE)");
+
+    } catch (RSrvException e) {
+      e.printStackTrace();
+      throw new RSException("RServe exception: " + e);
+    }
+  }
+
+  /**
    * Execute a R code.
    * @param source code to execute
    * @throws RSException if an error while executing the code
@@ -582,8 +602,8 @@ public class RSConnection {
   public static void showImage(final java.awt.Image image) {
 
     javax.swing.JFrame f = new javax.swing.JFrame("Test image");
-    javax.swing.JLabel b = new javax.swing.JLabel(new javax.swing.ImageIcon(
-        image));
+    javax.swing.JLabel b =
+        new javax.swing.JLabel(new javax.swing.ImageIcon(image));
     f.getContentPane().add(b);
     f.pack();
     f.setVisible(true);
