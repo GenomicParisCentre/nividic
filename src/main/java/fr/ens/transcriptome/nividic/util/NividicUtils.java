@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -265,7 +265,26 @@ public final class NividicUtils {
 
     return result;
   }
-  
+
+  /**
+   * Convert an array of int to an array of double
+   * @param array Array to convert
+   * @return a new array of double
+   */
+  public static double[] toArrayDouble(final String[] array) {
+
+    if (array == null)
+      return null;
+
+    final double[] result = new double[array.length];
+
+    for (int i = 0; i < result.length; i++)
+      if (array[i] != null)
+        result[i] = Double.parseDouble(array[i]);
+
+    return result;
+  }
+
   /**
    * Convert an array of double to an array of int
    * @param array Array to convert
@@ -280,6 +299,25 @@ public final class NividicUtils {
 
     for (int i = 0; i < result.length; i++)
       result[i] = (int) array[i];
+
+    return result;
+  }
+
+  /**
+   * Convert an array of double to an array of int
+   * @param array Array to convert
+   * @return a new array of double
+   */
+  public static int[] toArrayInt(final String[] array) {
+
+    if (array == null)
+      return null;
+
+    final int[] result = new int[array.length];
+
+    for (int i = 0; i < result.length; i++)
+      if (array[i] != null)
+        result[i] = Integer.parseInt(array[i]);
 
     return result;
   }
