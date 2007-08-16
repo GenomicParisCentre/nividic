@@ -29,7 +29,7 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayBadFlagsFilter;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayFilter;
-import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
+import fr.ens.transcriptome.nividic.om.io.InputStreamBioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 
@@ -45,7 +45,7 @@ public class BadFlagsFilterTest extends TestCase {
     InputStream is = this.getClass().getResourceAsStream(file1);
     assertNotNull(is);
 
-    BioAssayReader bar1 = new GPRReader(is);
+    InputStreamBioAssayReader bar1 = new GPRReader(is);
     bar1.addAllFieldsToRead();
 
     BioAssay b = bar1.read();

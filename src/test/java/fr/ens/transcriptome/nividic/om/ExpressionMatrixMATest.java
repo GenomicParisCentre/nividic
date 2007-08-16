@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import fr.ens.transcriptome.nividic.om.io.BioAssayReader;
+import fr.ens.transcriptome.nividic.om.io.InputStreamBioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 
@@ -498,7 +498,7 @@ public class ExpressionMatrixMATest extends TestCase {
 
     InputStream is = this.getClass().getResourceAsStream(file1);
     assertNotNull(is);
-    BioAssayReader bar1 = new IDMAReader(is);
+    InputStreamBioAssayReader bar1 = new IDMAReader(is);
     bar1.addFieldToRead(BioAssay.FIELD_NAME_ID);
     bar1.addFieldToRead(BioAssay.FIELD_NAME_M);
     bar1.addFieldToRead(BioAssay.FIELD_NAME_A);
@@ -510,7 +510,7 @@ public class ExpressionMatrixMATest extends TestCase {
 
     InputStream is2 = this.getClass().getResourceAsStream(file1);
     assertNotNull(is2);
-    BioAssayReader bar2 = new IDMAReader(is2);
+    InputStreamBioAssayReader bar2 = new IDMAReader(is2);
     bar2.addFieldToRead(BioAssay.FIELD_NAME_ID);
     bar2.addFieldToRead(BioAssay.FIELD_NAME_M);
     bar2.addFieldToRead(BioAssay.FIELD_NAME_A);
@@ -570,7 +570,7 @@ public class ExpressionMatrixMATest extends TestCase {
     String file1 = "/files/genepix01_878.gpr_norm.txt";
 
     InputStream is = this.getClass().getResourceAsStream(file1);
-    BioAssayReader bar1 = new IDMAReader(is);
+    InputStreamBioAssayReader bar1 = new IDMAReader(is);
     bar1.addFieldToRead(BioAssay.FIELD_NAME_ID);
     bar1.addFieldToRead(BioAssay.FIELD_NAME_M);
     bar1.addFieldToRead(BioAssay.FIELD_NAME_A);
@@ -580,7 +580,7 @@ public class ExpressionMatrixMATest extends TestCase {
     String file2 = "/files/genepix01_928.gpr_norm.txt";
 
     InputStream is2 = this.getClass().getResourceAsStream(file2);
-    BioAssayReader bar2 = new IDMAReader(is2);
+    InputStreamBioAssayReader bar2 = new IDMAReader(is2);
     bar2.addFieldToRead(BioAssay.FIELD_NAME_ID);
     bar2.addFieldToRead(BioAssay.FIELD_NAME_M);
     bar1.addFieldToRead(BioAssay.FIELD_NAME_A);
