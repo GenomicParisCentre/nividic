@@ -53,7 +53,7 @@ public class TotalSummaryIOTest extends TestCase {
     InputStream is = this.getClass().getResourceAsStream(file1);
     assertNotNull(is);
 
-    BioAssayReader bar1 = new TotalSummaryReader(is);
+    InputStreamBioAssayReader bar1 = new TotalSummaryReader(is);
     bar1.addAllFieldsToRead();
 
     BioAssay b = bar1.read();
@@ -103,7 +103,7 @@ public class TotalSummaryIOTest extends TestCase {
       InputStream is = this.getClass().getResourceAsStream(file1);
       assertNotNull(is);
 
-      BioAssayReader bar1 = new TotalSummaryReader(is);
+      InputStreamBioAssayReader bar1 = new TotalSummaryReader(is);
       bar1.addFieldToRead(BioAssay.FIELD_NAME_ID);
       bar1.addFieldToRead(BioAssay.FIELD_NAME_BRIGHT);
       bar1.addFieldToRead(BioAssay.FIELD_NAME_RATIO);
@@ -124,7 +124,7 @@ public class TotalSummaryIOTest extends TestCase {
       baw.write(b);
 
       InputStream is2 = new FileInputStream(outputFile1);
-      BioAssayReader bar2 = new TotalSummaryReader(is2);
+      InputStreamBioAssayReader bar2 = new TotalSummaryReader(is2);
       bar2.addAllFieldsToRead();
 
       BioAssay b2 = bar2.read();
@@ -175,7 +175,7 @@ public class TotalSummaryIOTest extends TestCase {
   private BioAssay readStream(InputStream is) throws NividicIOException,
       IOException {
 
-    BioAssayReader bar1 = new TotalSummaryReader(is);
+    InputStreamBioAssayReader bar1 = new TotalSummaryReader(is);
     bar1.addAllFieldsToRead();
     BioAssay b = bar1.read();
     assertNotNull(b);

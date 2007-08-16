@@ -59,7 +59,7 @@ public class ExpressionMatrixProfiling extends TestCase {
       FileNotFoundException {
 
     InputStream is = new FileInputStream(filename);
-    BioAssayReader bar = new IDMAReader(is);
+    InputStreamBioAssayReader bar = new IDMAReader(is);
 
     BioAssay ba = bar.read();
 

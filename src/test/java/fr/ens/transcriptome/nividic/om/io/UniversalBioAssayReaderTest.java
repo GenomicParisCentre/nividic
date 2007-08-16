@@ -94,7 +94,7 @@ public class UniversalBioAssayReaderTest extends TestCase {
 
       InputStream is = this.getClass().getResourceAsStream(atf.name);
 
-      BioAssayReader bar = new UniversalBioAssayReader(is);
+      InputStreamBioAssayReader bar = new UniversalBioAssayReader(is);
       if (!gal)
         bar.addFieldToRead("Log Ratio (532/635)");
 
@@ -134,7 +134,7 @@ public class UniversalBioAssayReaderTest extends TestCase {
 
       InputStream is = this.getClass().getResourceAsStream(idma.name);
 
-      BioAssayReader idmar = new UniversalBioAssayReader(is);
+      InputStreamBioAssayReader idmar = new UniversalBioAssayReader(is);
 
       BioAssay b = idmar.read();
 
@@ -178,7 +178,7 @@ public class UniversalBioAssayReaderTest extends TestCase {
     InputStream is = this.getClass().getResourceAsStream(file1);
     assertNotNull(is);
 
-    BioAssayReader bar1 = new UniversalBioAssayReader(is);
+    InputStreamBioAssayReader bar1 = new UniversalBioAssayReader(is);
     bar1.addAllFieldsToRead();
 
     BioAssay b = bar1.read();

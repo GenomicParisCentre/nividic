@@ -59,7 +59,7 @@ public class NewGPRIOTest extends TestCase {
       InputStream is = this.getClass().getResourceAsStream(file1);
       assertNotNull(is);
 
-      BioAssayReader bar1 = new GPRReader(is);
+      InputStreamBioAssayReader bar1 = new GPRReader(is);
       bar1.addAllFieldsToRead();
 
       BioAssay b = bar1.read();
@@ -76,7 +76,7 @@ public class NewGPRIOTest extends TestCase {
       baw.write(b);
 
       InputStream is2 = new FileInputStream(outputFile);
-      BioAssayReader bar2 = new GPRReader(is2);
+      InputStreamBioAssayReader bar2 = new GPRReader(is2);
       bar2.addAllFieldsToRead();
 
       BioAssay b2 = bar2.read();
@@ -121,7 +121,7 @@ public class NewGPRIOTest extends TestCase {
     InputStream is = this.getClass().getResourceAsStream(file1);
     assertNotNull(is);
 
-    BioAssayReader bar1 = new GALReader(is);
+    InputStreamBioAssayReader bar1 = new GALReader(is);
     bar1.addAllFieldsToRead();
 
     BioAssay b1 = bar1.read();

@@ -60,7 +60,7 @@ public class IDMAIOTest extends TestCase {
       InputStream is = this.getClass().getResourceAsStream(file1);
       assertNotNull(is);
 
-      BioAssayReader bar1 = new IDMAReader(is);
+      InputStreamBioAssayReader bar1 = new IDMAReader(is);
       bar1.addFieldToRead(BioAssay.FIELD_NAME_ID);
       bar1.addFieldToRead(BioAssay.FIELD_NAME_BRIGHT);
       bar1.addFieldToRead(BioAssay.FIELD_NAME_RATIO);
@@ -81,7 +81,7 @@ public class IDMAIOTest extends TestCase {
       baw.write(b);
 
       InputStream is2 = new FileInputStream(outputFile);
-      BioAssayReader bar2 = new IDMAReader(is2);
+      InputStreamBioAssayReader bar2 = new IDMAReader(is2);
       bar2.addAllFieldsToRead();
 
       BioAssay b2 = bar2.read();
@@ -123,7 +123,7 @@ public class IDMAIOTest extends TestCase {
 
       InputStream is = this.getClass().getResourceAsStream(file1);
       assertNotNull(is);
-      BioAssayReader bar1 = new IDMAReader(is);
+      InputStreamBioAssayReader bar1 = new IDMAReader(is);
       bar1.addAllFieldsToRead();
       BioAssay b = bar1.read();
       assertNotNull(b);
@@ -139,7 +139,7 @@ public class IDMAIOTest extends TestCase {
 
       InputStream is2 = new FileInputStream(outputFile);
       assertNotNull(is2);
-      BioAssayReader bar2 = new IDMAReader(is2);
+      InputStreamBioAssayReader bar2 = new IDMAReader(is2);
       bar2.addAllFieldsToRead();
       BioAssay b2 = bar2.read();
       assertNotNull(b2);
