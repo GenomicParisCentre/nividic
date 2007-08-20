@@ -48,14 +48,14 @@ public class DesignTest extends TestCase {
 
   public void testRead1() throws NividicIOException {
 
-    InputStream is = this.getClass().getResourceAsStream(
-        "/files/SwirlSample.txt");
+    InputStream is =
+        this.getClass().getResourceAsStream("/files/SwirlSample.txt");
     LimmaDesignReader ldr = new LimmaDesignReader(is);
 
     Design d = ldr.read();
 
     Slide s = d.getSlide(0);
-    //System.out.println("id: " + s.getName());
+    // System.out.println("id: " + s.getName());
     // System.out.println("s/n: "+s.getDescription().getSerialNumber());
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -63,27 +63,27 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    //System.out.println(os.toString());
+    // System.out.println(os.toString());
   }
 
   public void testRead2() throws NividicIOException {
 
-    InputStream is = this.getClass().getResourceAsStream(
-        "/files/ApoAITargets.txt");
+    InputStream is =
+        this.getClass().getResourceAsStream("/files/ApoAITargets.txt");
     LimmaDesignReader ldr = new LimmaDesignReader(is);
 
     Design d = ldr.read();
 
     Slide s = d.getSlide(0);
-    //System.out.println("id: " + s.getName());
-    //System.out.println("s/n: " + s.getDescription().getSerialNumber());
+    // System.out.println("id: " + s.getName());
+    // System.out.println("s/n: " + s.getDescription().getSerialNumber());
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
 
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    //System.out.println(os.toString());
+    // System.out.println(os.toString());
   }
 
   public void testGlobal() throws ParseException, NividicIOException {
@@ -99,28 +99,28 @@ public class DesignTest extends TestCase {
     d.addSlide("93");
     d.addSlide("94");
 
-    d.setDescription("81", SlideDescription.SERIAL_NUMBER_FIELD, "l81");
-    d.setDescription("82", SlideDescription.SERIAL_NUMBER_FIELD, "l82");
-    d.setDescription("93", SlideDescription.SERIAL_NUMBER_FIELD, "l93");
-    d.setDescription("94", SlideDescription.SERIAL_NUMBER_FIELD, "l94");
+    d.setDescription("81", SlideDescription.SLIDE_NUMBER_FIELD, "l81");
+    d.setDescription("82", SlideDescription.SLIDE_NUMBER_FIELD, "l82");
+    d.setDescription("93", SlideDescription.SLIDE_NUMBER_FIELD, "l93");
+    d.setDescription("94", SlideDescription.SLIDE_NUMBER_FIELD, "l94");
 
-    d.setTarget("81", "Cy3", "Swirl");
-    d.setTarget("81", "Cy5", "WT");
+    d.setTarget("81", PhysicalConstants.GREEN_FIELD, "Swirl");
+    d.setTarget("81", PhysicalConstants.RED_FIELD, "WT");
     d.setSource("81", "swirl.spot1");
     d.getSlideDescription("81").setDate("20/09/2001");
 
-    d.setTarget("82", "Cy3", "WT");
-    d.setTarget("82", "Cy5", "Swirl");
+    d.setTarget("82", PhysicalConstants.GREEN_FIELD, "WT");
+    d.setTarget("82", PhysicalConstants.RED_FIELD, "Swirl");
     d.setSource("82", "swirl.spot2");
     d.getSlideDescription("82").setDate("20/09/2001");
 
-    d.setTarget("93", "Cy3", "Swirl");
-    d.setTarget("93", "Cy5", "WT");
+    d.setTarget("93", PhysicalConstants.GREEN_FIELD, "Swirl");
+    d.setTarget("93", PhysicalConstants.RED_FIELD, "WT");
     d.setSource("93", "swirl.spot3");
     d.getSlideDescription("93").setDate("8/11/2001");
 
-    d.setTarget("94", "Cy3", "WT");
-    d.setTarget("94", "Cy5", "Swirl");
+    d.setTarget("94", PhysicalConstants.GREEN_FIELD, "WT");
+    d.setTarget("94", PhysicalConstants.RED_FIELD, "Swirl");
     d.setSource("94", "swirl.spot4");
     d.getSlideDescription("94").setDate("8/11/2001");
 
@@ -129,7 +129,7 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    //System.out.println(os.toString());
+    // System.out.println(os.toString());
 
   }
 
@@ -138,7 +138,7 @@ public class DesignTest extends TestCase {
     InputStream is = this.getClass().getResourceAsStream("/files/param.dat");
     GoulpharDesignReader ldr = new GoulpharDesignReader(is);
     ldr.setDataSourceNormalized(false);
-    
+
     Design d = ldr.read();
 
     ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -146,13 +146,14 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    //System.out.println(os.toString());
+    // System.out.println(os.toString());
 
   }
-  
+
   public void testGoulpha() throws NividicIOException {
 
-    InputStream is = this.getClass().getResourceAsStream("/files/param_goulphar.dat");
+    InputStream is =
+        this.getClass().getResourceAsStream("/files/param_goulphar.dat");
     GoulpharDesignReader ldr = new GoulpharDesignReader(is);
     ldr.setDataSourceNormalized(false);
 
@@ -163,7 +164,7 @@ public class DesignTest extends TestCase {
     DesignWriter dw = new LimmaDesignWriter(os);
     dw.write(d);
 
-    //System.out.println(os.toString());
+    // System.out.println(os.toString());
 
   }
 
@@ -186,8 +187,8 @@ public class DesignTest extends TestCase {
 
     Design d = createDesign();
 
-    assertTrue(d.isLabel("Cy3"));
-    assertTrue(d.isLabel("Cy5"));
+    assertTrue(d.isLabel(PhysicalConstants.GREEN_FIELD));
+    assertTrue(d.isLabel(PhysicalConstants.RED_FIELD));
     assertFalse(d.isLabel("Target"));
 
   }
@@ -210,7 +211,7 @@ public class DesignTest extends TestCase {
   }
 
   public void testRenameLabel() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetLabelsNames() {
@@ -224,71 +225,71 @@ public class DesignTest extends TestCase {
   }
 
   public void testRemoveLabel() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testIsSlide() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testAddSlide() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetSlideCount() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testRenameSlide() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetSlides() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testRemoveSlide() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testSetTarget() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetTarget() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetSlideDescription() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testSetSourceStringDataSource() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testSetSourceStringString() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testSetSourceFormatStringBioAssayFormat() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testSetSourceFormatStringString() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetSource() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetSourceInfo() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
   public void testGetFormat() {
-    //fail("Not yet implemented");
+    // fail("Not yet implemented");
   }
 
 }
