@@ -474,7 +474,7 @@ public abstract class BioAssayWriter {
     try {
       setOutputStream(new FileOutputStream(file));
     } catch (FileNotFoundException e) {
-      throw new NividicIOException("Error while reading file : "
+      throw new NividicIOException("Error while writing file : "
           + file.getName());
     }
     this.dataSource = file.getAbsolutePath();
