@@ -69,7 +69,7 @@ public class LimmaDesignWriter extends DesignWriter {
       List<String> scanLabelSettingsNames = design.getScanLabelSettingsKeys();
 
       final boolean serialNumber =
-          design.isDescriptionField(SlideDescription.SERIAL_NUMBER_FIELD);
+          design.isDescriptionField(SlideDescription.SLIDE_NUMBER_FIELD);
 
       // Write header
       bw.append("SlideNumber");
@@ -99,7 +99,7 @@ public class LimmaDesignWriter extends DesignWriter {
 
       for (String f : descriptionFields) {
 
-        if (SlideDescription.SERIAL_NUMBER_FIELD.equals(f))
+        if (SlideDescription.SLIDE_NUMBER_FIELD.equals(f))
           continue;
 
         bw.append(SEPARATOR);
@@ -115,7 +115,7 @@ public class LimmaDesignWriter extends DesignWriter {
 
         if (serialNumber) {
 
-          final String sn = s.getDescription().getSerialNumber();
+          final String sn = s.getDescription().getSlideNumber();
 
           bw.append(sn == null ? "" : sn);
           bw.append(SEPARATOR);
@@ -154,7 +154,7 @@ public class LimmaDesignWriter extends DesignWriter {
 
         for (String f : descriptionFields) {
 
-          if (SlideDescription.SERIAL_NUMBER_FIELD.equals(f))
+          if (SlideDescription.SLIDE_NUMBER_FIELD.equals(f))
             continue;
 
           bw.append(SEPARATOR);

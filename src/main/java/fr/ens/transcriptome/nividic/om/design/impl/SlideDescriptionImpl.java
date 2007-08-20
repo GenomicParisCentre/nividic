@@ -88,6 +88,15 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getSlideNumber()
+   */
+  public String getSlideNumber() {
+
+    return getDescription(SLIDE_NUMBER_FIELD);
+  }
+
+  /*
+   * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getSerialNumber()
    */
   public String getSerialNumber() {
@@ -155,6 +164,15 @@ public class SlideDescriptionImpl implements SlideDescription {
   public void setOperator(final String operator) {
 
     setDescription(OPERATOR_FIELD, operator);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSlideNumber(java.lang.String)
+   */
+  public void setSlideNumber(final int slideNumber) {
+
+    setDescription(SLIDE_NUMBER_FIELD, "" + slideNumber);
   }
 
   /*
@@ -236,7 +254,7 @@ public class SlideDescriptionImpl implements SlideDescription {
    */
   public boolean isSerialNumberField() {
 
-    return isField(SERIAL_NUMBER_FIELD);
+    return isField(SLIDE_NUMBER_FIELD);
   }
 
   /*

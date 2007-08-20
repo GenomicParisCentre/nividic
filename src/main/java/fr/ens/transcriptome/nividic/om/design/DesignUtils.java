@@ -22,11 +22,16 @@
 
 package fr.ens.transcriptome.nividic.om.design;
 
+import java.io.File;
 import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.GenepixResults;
 import fr.ens.transcriptome.nividic.om.PhysicalConstants;
+import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
+import fr.ens.transcriptome.nividic.om.io.GPRWriter;
+import fr.ens.transcriptome.nividic.om.io.NividicIOException;
+import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
  * Utils methods for Design.
@@ -164,6 +169,59 @@ public final class DesignUtils {
         settings.setLaserPower(laserPowers[i]);
       if (laserOnTimes != null)
         settings.setLaserOnTime(laserOnTimes[i]);
+    }
+
+  }
+
+  /**
+   * Convert all the DataSource of a design to FileDataSources.
+   * @param design Design to use
+   * @param baseDir Base directory of the BioAssays files of the design
+   */
+  public static void convertAllDataSourceToFileDataSources(final Design design,
+      final String baseDir) {
+
+    if (design == null)
+      return;
+
+    for (int i = 0; i < design.size(); i++) {
+
+      Slide slide = design.getSlide(i);
+
+      final String filename =
+          StringUtils.escapeFileSeparators(slide.getName()
+              + slide.getFormat().getExtension());
+
+      final File file;
+
+      if (baseDir == null || "".equals(baseDir))
+        file = new File(filename);
+      else
+        file = new File(baseDir, filename);
+
+      try {
+
+        boolean bioAssayAlreadyLoaded = false;
+
+        if (slide.getBioAssay() == null)
+          slide.loadSource();
+        else
+          bioAssayAlreadyLoaded = true;
+
+        GPRWriter gw = new GPRWriter(file);
+        gw.addAllFieldsToWrite();
+
+        gw.write(slide.getBioAssay());
+
+        slide.setSource(new FileDataSource(file));
+
+        if (bioAssayAlreadyLoaded)
+          slide.setBioAssay(null);
+
+      } catch (NividicIOException e) {
+        e.printStackTrace();
+        continue;
+      }
     }
 
   }

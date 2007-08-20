@@ -150,7 +150,7 @@ public class FileDataSource implements DataSource {
    */
   public FileDataSource(final File file) {
 
-    configSource(file == null ? null : file.getAbsolutePath());
+    configSource(file == null ? null : file.getPath());
   }
 
 }

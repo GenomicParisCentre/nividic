@@ -113,7 +113,7 @@ public class GoulpharDesignReader extends InputStreamDesignReader {
           final String rootFilename = rootFilename(new File(filename));
 
           final String slideId = rootFilename;
-          final String sn = "" + count;
+          final int sn = count;
           design.addSlide(slideId);
 
           String sourceFile = filename;
@@ -131,7 +131,7 @@ public class GoulpharDesignReader extends InputStreamDesignReader {
           }
 
           slide.setSource(new FileDataSource(this.baseDir, sourceFile));
-          slide.getDescription().setSerialNumber(sn);
+          slide.getDescription().setSlideNumber(sn);
 
           if (goulpharAroma && swapField >= 0)
             slide.getDescription().setSwap(fields[swapField]);
@@ -161,10 +161,11 @@ public class GoulpharDesignReader extends InputStreamDesignReader {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.LOAD, s
-            + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
-            + design.getLabelCount(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.LOAD, s
+                + "SlideNumber=" + design.getSlideCount() + ";LabelNumber="
+                + design.getLabelCount(), HistoryActionResult.PASS);
 
     design.getHistory().add(entry);
 
@@ -225,7 +226,7 @@ public class GoulpharDesignReader extends InputStreamDesignReader {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public GoulpharDesignReader(final File file) throws NividicIOException {
 
@@ -239,7 +240,7 @@ public class GoulpharDesignReader extends InputStreamDesignReader {
    * @param file file to read
    * @param dataSourceNormalized The dataSourceNormalized to set
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public GoulpharDesignReader(final File file,
       final boolean dataSourceNormalized) throws NividicIOException {

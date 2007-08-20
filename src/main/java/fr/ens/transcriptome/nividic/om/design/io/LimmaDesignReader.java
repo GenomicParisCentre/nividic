@@ -36,6 +36,8 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.PhysicalConstants;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
+import fr.ens.transcriptome.nividic.om.datasources.DataSource;
+import fr.ens.transcriptome.nividic.om.datasources.DataSourceUtils;
 import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
 import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.DesignFactory;
@@ -147,19 +149,26 @@ public class LimmaDesignReader extends InputStreamDesignReader {
     // Set SlideNumber field
     if (refName) {
 
-      design.addDescriptionField(SlideDescription.SERIAL_NUMBER_FIELD);
+      design.addDescriptionField(SlideDescription.SLIDE_NUMBER_FIELD);
 
       List<String> slides = data.get(SLIDENUMBER_FIELD);
 
       for (int i = 0; i < count; i++)
-        design.getSlideDescription(ids.get(i)).setSerialNumber(slides.get(i));
+        design.getSlideDescription(ids.get(i)).setSlideNumber(
+            Integer.parseInt(slides.get(i)));
     }
 
     // Set FileName field
     List<String> filenames = data.get(FILENAME_FIELD);
-    for (int i = 0; i < count; i++)
-      design.setSource(ids.get(i), new FileDataSource(this.baseDir, filenames
-          .get(i)));
+    for (int i = 0; i < count; i++) {
+
+      DataSource source =
+          DataSourceUtils.identifyDataSource(this.baseDir, filenames.get(i));
+
+      design.setSource(ids.get(i), source);
+      design.setSourceFormat(ids.get(i), DataSourceUtils
+          .identifyBioAssayFormat(source));
+    }
 
     for (String fd : fieldnames) {
 
@@ -174,8 +183,7 @@ public class LimmaDesignReader extends InputStreamDesignReader {
         final String target = TARGET_FIELDS[j];
         if (target.equals(fd)) {
 
-          design.addLabel(PhysicalConstants
-              .getColorForDye(target));
+          design.addLabel(PhysicalConstants.getColorForDye(target));
 
           List<String> samples = data.get(fd);
 
@@ -257,7 +265,7 @@ public class LimmaDesignReader extends InputStreamDesignReader {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public LimmaDesignReader(final File file) throws NividicIOException {
 

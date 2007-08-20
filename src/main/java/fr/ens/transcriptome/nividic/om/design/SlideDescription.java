@@ -34,6 +34,8 @@ public interface SlideDescription {
   String COMMENT_FIELD = "Comment";
   /** Date field. */
   String DATE_FIELD = "Date";
+  /** Slide Number field. */
+  String SLIDE_NUMBER_FIELD = "SildeNumber";
   /** Serial Number field. */
   String SERIAL_NUMBER_FIELD = "Serial number";
   /** Operator field. */
@@ -73,6 +75,12 @@ public interface SlideDescription {
   String getOperator();
 
   /**
+   * Get the slide number of the slide
+   * @return Returns the slide number
+   */
+  String getSlideNumber();
+
+  /**
    * Get the serial number of the slide
    * @return Returns the serialNumber
    */
@@ -109,6 +117,12 @@ public interface SlideDescription {
    * @param operator The operator to set
    */
   void setOperator(final String operator);
+
+  /**
+   * Set the slide number of the slide
+   * @param slideNumber The slideNumber to set
+   */
+  void setSlideNumber(final int slideNumber);
 
   /**
    * Set the serial number of the slide

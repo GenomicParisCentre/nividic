@@ -39,6 +39,7 @@ import fr.ens.transcriptome.nividic.om.design.DesignFactory;
 import fr.ens.transcriptome.nividic.om.design.ScanLabelSettings;
 import fr.ens.transcriptome.nividic.om.design.Slide;
 import fr.ens.transcriptome.nividic.om.design.io.DesignReader;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.sgdb.lims.ws.Hybridization;
 import fr.ens.transcriptome.nividic.sgdb.lims.ws.LimsPort;
@@ -168,7 +169,7 @@ public class SGDBLimsDesignReader implements DesignReader {
     for (int i = 0; i < scans.length; i++) {
 
       // Create the slide
-      final String slideName = hyb.getName() + "#" + (i + 1);
+      final String slideName = hyb.getName() + "_" + (i + 1);
       design.addSlide(slideName);
 
       Slide slide = design.getSlide(slideName);
@@ -200,8 +201,10 @@ public class SGDBLimsDesignReader implements DesignReader {
       // add additional descriptions
       slide.getDescription().setDate(hyb.getDate());
       slide.getDescription().setSwap(swap);
+      slide.getDescription().setSlideNumber(design.size());
       slide.getDescription().setSerialNumber(hyb.getSlideSerialNumber());
       slide.getDescription().setOperator(hyb.getOwner());
+      slide.setSourceFormat(BioAssayFormat.GPR);
     }
 
   }
