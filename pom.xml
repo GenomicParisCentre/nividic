@@ -9,7 +9,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>Nividic</name>
 	<!--url>http://transcriptome.ens.fr/nividic</url-->
-	<url>http://hagen.ens.fr/nividic</url>
+	<url>http://hestia.ens.fr/nividic</url>
 	<description>A library to handle microarray data</description>
 
 	<organization>
@@ -81,6 +81,17 @@
 			<name>java.net repository</name>
 			<url>https://maven-repository.dev.java.net/nonav/repository</url>
 			<layout>legacy</layout>
+		</repository>
+		<repository>
+			<id>mygrid-repository</id>
+			<name>myGrid Repository</name>
+			<url>http://www.mygrid.org.uk/maven/repository</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 	</repositories>
 
@@ -227,6 +238,35 @@
 			<version>1.0.0-beta</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- to remove later -->
+		<dependency>
+			<groupId>sun</groupId>
+			<artifactId>javaws</artifactId>
+			<version>1.5</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.0-FINAL</version>
+		</dependency>
+		<dependency>
+			<groupId>biojava</groupId>
+			<artifactId>biojava</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>biojava</groupId>
+			<artifactId>bytecode</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>uk.org.mygrid.taverna.processors</groupId>
+			<artifactId>taverna-java-processor</artifactId>
+			<version>1.5.2.0</version>
+			<scope>compile</scope>
+                </dependency>
+		
 	</dependencies>
 
 	<build>
@@ -262,7 +302,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
-						<skip>true</skip>
+						<skip>false</skip>
 					</configuration>
 			</plugin>
 			<!--plugin>
@@ -365,9 +405,9 @@
 							<include>log4j:log4j</include-->
 							<include>commons-primitives:commons-primitives</include>
 							<include>commons-lang:commons-lang</include>
-							<!--include>rosuda:JRclient</include>
+							<!--include>rosuda:JRclient</include-->
 							<include>commons-math:commons-math</include>
-							<include>commons-codec:commons-codec</include>
+							<!--include>commons-codec:commons-codec</include>
 							<include>axis:axis</include>
 							<include>axis:axis-jaxrpc</include-->
 							<include>com.sun.phobos:jsr223-api</include>
@@ -512,6 +552,10 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
 			</plugin>
 			<!--<plugin>
 				<groupId>maven</groupId>
