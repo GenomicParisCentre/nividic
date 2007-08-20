@@ -23,12 +23,15 @@
 package fr.ens.transcriptome.nividic.om.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.jfree.data.Values;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
@@ -258,14 +261,13 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
       final String columnName = columnNames[i];
 
-      d.addColumn(columnName);
+      addColumn(columnName);
 
       final int columnIndex = d.getColumnIndex(columnName);
       final double[] values = dimension.getColumnToArray(columnIndex);
 
       d.setValues(ids, columnIndex, values);
     }
-
   }
 
   /**
@@ -273,7 +275,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param rowId The name of the row that you want the index
    * @return an int value
    * @throws ExpressionMatrixRuntimeException if the id which index you want
-   *           doesn't exist
+   *             doesn't exist
    */
   int getInternalRowIdIndex(final String rowId)
       throws ExpressionMatrixRuntimeException {
@@ -407,7 +409,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param formerName The former name of the row That you want to rename
    * @param newName The name that you want to set
    * @throws ExpressionMatrixRuntimeException if you try to rename a row that
-   *           doesn't exist or if the new name of the row does exist yet
+   *             doesn't exist or if the new name of the row does exist yet
    */
   public void renameRow(final String formerName, final String newName)
       throws ExpressionMatrixRuntimeException {
@@ -441,7 +443,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param columnNumber The index of the column That you want to rename
    * @param newName The name that you want to set
    * @throws ExpressionMatrixRuntimeException if you try to rename a column that
-   *           doesn't exist or if the new name of the column does exist yet
+   *             doesn't exist or if the new name of the column does exist yet
    */
   public void renameColumn(final int columnNumber, final String newName)
       throws ExpressionMatrixRuntimeException {
@@ -456,7 +458,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * @param formerName The former name of the column That you want to rename
    * @param newName The name that you want to set
    * @throws ExpressionMatrixRuntimeException if you try to rename a column that
-   *           doesn't exist
+   *             doesn't exist
    */
   public void renameColumn(final String formerName, final String newName)
       throws ExpressionMatrixRuntimeException {
@@ -481,7 +483,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * Remove an Id row
    * @param rowId the id of the spot
    * @throws ExpressionMatrixRuntimeException if the row id that you try to
-   *           remove doesn't exist
+   *             remove doesn't exist
    */
   public void removeRow(final String rowId)
       throws ExpressionMatrixRuntimeException {
@@ -503,7 +505,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * Remove an Experience field
    * @param columnName the index of the Experience
    * @throws ExpressionMatrixRuntimeException if the column that you try to
-   *           remove doesn't exist
+   *             remove doesn't exist
    */
   public void removeColumn(final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -516,7 +518,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * Remove an Experience field
    * @param index the index of the Experience
    * @throws ExpressionMatrixRuntimeException if the column that you try to
-   *           remove doesn't exist
+   *             remove doesn't exist
    */
   public void removeColumn(final int index)
       throws ExpressionMatrixRuntimeException {
@@ -937,7 +939,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * Checks if <b>this </b> ExpressionMatrixDimension object and the
    * ExpressionMatrixDimension em are equals.
    * @param o The other ExpressionMatrixDimension that you want to compare to
-   *          <b>this </b> one
+   *            <b>this </b> one
    * @return <b>true </b> if em and this are aquals.
    */
   public boolean equals(final Object o) {
@@ -1199,18 +1201,13 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public ExpressionMatrix filter(final BiologicalFilter filter) {
 
-    System.out.println("test0");
-
     if (filter == null)
       return null;
-
-    System.out.println("test1");
 
     if (!(filter instanceof ExpressionMatrixFilter))
       throw new NividicRuntimeException(
           "Only BiologicalListFilter can filter BiologicalList");
 
-    System.out.println("test2");
     return filter((ExpressionMatrixFilter) filter);
   }
 
@@ -1397,7 +1394,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   }
 
   /**
-   * Constructor of the class ExpressionMatrixImpl, makes a sopy of an other
+   * Constructor of the class ExpressionMatrixImpl, makes a copy of an other
    * ExpressionMatrixDimension object
    * @param matrix the matrix that you want to copy
    * @param name the new name of the copy

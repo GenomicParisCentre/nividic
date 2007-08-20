@@ -139,8 +139,16 @@ public class ExpressionMatrixMATest extends TestCase {
     assertTrue(("id4").equals("id4"));
 
     em.addBioAssay(b2);
+    int count = em.size() - 1;
 
     em.removeRow("id2");
+    assertEquals(count, em.size());
+
+    ExpressionMatrixDimension[] dims = em.getDimensions();
+    for (int i = 0; i < dims.length; i++) {
+      assertEquals(count, dims[i].getRowCount());
+      assertEquals(count, dims[i].getRowNames().length);
+    }
 
     try {
       em.removeRow("id2");
@@ -330,7 +338,8 @@ public class ExpressionMatrixMATest extends TestCase {
 
     assertEquals(em.getColumnCount(), em.getColumnNames().length);
 
-    String[] idValues = {"id1", "id2", "id3", "id4", "id5", "id7", "id6", "id8"};
+    String[] idValues =
+        {"id1", "id2", "id3", "id4", "id5", "id7", "id6", "id8"};
 
     ids = em.getRowNames();
     for (int i = 0; i < ids.length; i++) {
@@ -597,8 +606,8 @@ public class ExpressionMatrixMATest extends TestCase {
 
     ExpressionMatrix em1 = constructMatrix();
 
-    ExpressionMatrix em2 = ExpressionMatrixFactory.createExpressionMatrix(em1,
-        "copy_of_em1");
+    ExpressionMatrix em2 =
+        ExpressionMatrixFactory.createExpressionMatrix(em1, "copy_of_em1");
 
     assertEquals("copy_of_em1", em2.getName());
     assertTrue(em1.dataEquals(em2));
@@ -632,6 +641,22 @@ public class ExpressionMatrixMATest extends TestCase {
     assertTrue(ba.isField(BioAssay.FIELD_NAME_ID));
     assertTrue(ba.isField(BioAssay.FIELD_NAME_M));
     assertTrue(ba.isField(BioAssay.FIELD_NAME_A));
+
+  }
+
+  public void testDimensionRowCount() throws NividicIOException, IOException {
+
+    ExpressionMatrix em1 = constructMatrix();
+
+    int count = em1.getRowCount();
+    assertEquals(count, em1.size());
+
+    ExpressionMatrixDimension[] dims = em1.getDimensions();
+
+    for (int i = 0; i < dims.length; i++) {
+      assertEquals(count, dims[i].getRowCount());
+      assertEquals(count, dims[i].getRowNames().length);
+    }
 
   }
 

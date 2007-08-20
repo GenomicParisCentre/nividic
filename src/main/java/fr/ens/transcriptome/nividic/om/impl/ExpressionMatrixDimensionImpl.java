@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -109,7 +110,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @param rowName The name of the row to extract
    * @return a tab of double values
    * @throws ExpressionMatrixRuntimeException if the matrix is empty or if the
-   *           row that you want to extract doesn't exist
+   *             row that you want to extract doesn't exist
    */
   public double[] getRowToArray(final String rowName)
       throws ExpressionMatrixRuntimeException {
@@ -141,7 +142,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @param columnNumber The index of the column to extract
    * @return a BioAssay Object
    * @throws ExpressionMatrixRuntimeException if we are unable to create the new
-   *           BioAssay object
+   *             BioAssay object
    */
   public BioAssay getColumn(final int columnNumber)
       throws ExpressionMatrixRuntimeException {
@@ -158,7 +159,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @param columnName The name of the column to extract
    * @return a BioAssay object
    * @throws ExpressionMatrixRuntimeException if we are unable to create the new
-   *           BioAssay object
+   *             BioAssay object
    */
   public BioAssay getColumn(final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -196,7 +197,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @param columnNumber The index of the column to extract
    * @return a tab of double values
    * @throws ExpressionMatrixRuntimeException if you try to extract a column
-   *           that doesn't exist
+   *             that doesn't exist
    */
   public double[] getColumnToArray(final int columnNumber)
       throws ExpressionMatrixRuntimeException {
@@ -216,7 +217,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @param columnName The column to extract
    * @return a tab of double values
    * @throws ExpressionMatrixRuntimeException if the matrix is empty or if the
-   *           column doesn't exist
+   *             column doesn't exist
    */
   public double[] getColumnToArray(final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -239,12 +240,12 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Extract a value from the matrix
    * @param rowId the id of the spot, name of the row where the value is to be
-   *          found
+   *            found
    * @param columnNumber the xp code, name of the column where the value is to
-   *          be found
+   *            be found
    * @return a double value
    * @throws ExpressionMatrixRuntimeException if the row or the column don't
-   *           exist
+   *             exist
    */
   public double getValue(final String rowId, final int columnNumber)
       throws ExpressionMatrixRuntimeException {
@@ -262,12 +263,12 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Extract a value from the matrix
    * @param rowName the id of the spot, name of the row where the value is to be
-   *          found
+   *            found
    * @param columnName the xp code, name of the column where the value is to be
-   *          found
+   *            found
    * @return a double value
    * @throws ExpressionMatrixRuntimeException if the column or the row doesn't
-   *           exist
+   *             exist
    */
   public double getValue(final String rowName, final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -314,10 +315,10 @@ public class ExpressionMatrixDimensionImpl implements
    * Set in a column <code>ArrayDoubleList</code> a given value
    * @param value The value to set in the column
    * @param rowId The index in the <code>ArrayDoubleList</code> where you put
-   *          the value
+   *            the value
    * @param column the <code>ArrayDoubleList</code> to fill
    * @throws ExpressionMatrixRuntimeException if the rowId is invalide or the
-   *           column to fill doesn't exist
+   *             column to fill doesn't exist
    */
   private void setValue(final String rowId, final List<Double> column,
       final double value) throws ExpressionMatrixRuntimeException {
@@ -363,9 +364,9 @@ public class ExpressionMatrixDimensionImpl implements
    * @param value the value to set in
    * @param rowName The name of the row where you want to insert your value
    * @param columnName The name of the column where you want to insert your
-   *          value
+   *            value
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValue(final String rowName, final String columnName,
       final double value) throws ExpressionMatrixRuntimeException {
@@ -380,9 +381,9 @@ public class ExpressionMatrixDimensionImpl implements
    * @param value the value to set in
    * @param rowId The name of the row where you want to insert your value
    * @param columnNumber The index of the column where you want to insert your
-   *          value
+   *            value
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValue(final String rowId, final int columnNumber,
       final double value) throws ExpressionMatrixRuntimeException {
@@ -395,11 +396,11 @@ public class ExpressionMatrixDimensionImpl implements
   /**
    * Set in a column <code>ArrayDoubleList</code> a given value
    * @param ids The index in the <code>ArrayDoubleList</code> where you put
-   *          the value
+   *            the value
    * @param column the <code>ArrayDoubleList</code> to fill
    * @param values The values to set in the column
    * @throws ExpressionMatrixRuntimeException if the rowId is invalide or the
-   *           column to fill doesn't exist
+   *             column to fill doesn't exist
    */
   void setValues(final String[] ids, final List<Double> column,
       final double[] values) throws ExpressionMatrixRuntimeException {
@@ -417,16 +418,18 @@ public class ExpressionMatrixDimensionImpl implements
 
     for (int i = 0; i < ids.length; i++)
       setValue(ids[i], column, values[i]);
+
+    this.rowCount = this.matrix.getRowCount();
   }
 
   /**
    * Set a value in the matrix
    * @param ids The names of the rows where you want to insert your value
    * @param columnName The name of the column where you want to insert your
-   *          value
+   *            value
    * @param values the values to set in the matrix
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValues(final String[] ids, final String columnName,
       final double[] values) throws ExpressionMatrixRuntimeException {
@@ -442,10 +445,10 @@ public class ExpressionMatrixDimensionImpl implements
    * Set a value in the matrix
    * @param ids The name of the row where you want to insert your value
    * @param columnNumber The index of the column where you want to insert your
-   *          value
+   *            value
    * @param values the values to set in the matrix
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValues(final String[] ids, final int columnNumber,
       final double[] values) throws ExpressionMatrixRuntimeException {
@@ -457,7 +460,7 @@ public class ExpressionMatrixDimensionImpl implements
    * Checks if <b>this </b> ExpressionMatrixDimension object and the
    * ExpressionMatrixDimension em are equals.
    * @param o The other ExpressionMatrixDimension that you want to compare to
-   *          <b>this </b> one
+   *            <b>this </b> one
    * @return <b>true </b> if em and this are aquals.
    */
   public boolean equals(final Object o) {
@@ -633,7 +636,7 @@ public class ExpressionMatrixDimensionImpl implements
    * @param data An array of double that you want to add to your matrix
    * @param name The name of the row that you want to add
    * @param columnNames the names of the columns where you want to append a
-   *          value
+   *            value
    */
   public void addRow(final String name, final String[] columnNames,
       final double[] data) {
@@ -651,7 +654,6 @@ public class ExpressionMatrixDimensionImpl implements
 
     for (int i = 0; i < data.length; i++)
       setValue(name, columnNames[i], data[i]);
-
   }
 
   /**
@@ -1006,9 +1008,9 @@ public class ExpressionMatrixDimensionImpl implements
         .entrySet())
       entry.getValue().add(Double.NaN);
 
-    this.rowCount = this.matrix.getRowCount();
-    rowNamesChanged = true;
+    this.rowCount++; // this.matrix.getRowCount();
 
+    rowNamesChanged = true;
   }
 
   /**
@@ -1122,7 +1124,7 @@ public class ExpressionMatrixDimensionImpl implements
 
     case ExpressionMatrixEvent.REMOVE_ROW_EVENT:
       this.lastGetSetValueRowName = null;
-      this.rowCount--;
+      this.rowCount = this.matrix.getRowCount();
       rowNamesChanged = true;
       break;
 
@@ -1154,7 +1156,8 @@ public class ExpressionMatrixDimensionImpl implements
     this.matrix = matrix;
     this.name = name;
     this.referencesToColumnNamesMap = new LinkedHashMap<String, List<Double>>();
-
+    this.columnCount = matrix.getColumnCount();
+    this.rowCount = matrix.getRowCount();
   }
 
 }
