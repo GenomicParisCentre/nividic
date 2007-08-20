@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -282,6 +283,21 @@ public final class StringUtils {
       return null;
 
     return s.split(regex);
+  }
+
+  /**
+   * Escape path separators
+   * @param s String to use
+   * @return a String with escaping path separator
+   */
+  public static String escapeFileSeparators(final String s) {
+
+    if (s == null)
+      return null;
+
+    final String separator = File.separator;
+
+    return s.replaceAll(separator, "_");
   }
 
   //
