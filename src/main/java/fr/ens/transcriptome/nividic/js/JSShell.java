@@ -106,11 +106,11 @@ public class JSShell {
 
       Process p = Runtime.getRuntime().exec(cmd);
 
-      BufferedReader stdInput = new BufferedReader(new InputStreamReader(p
-          .getInputStream()));
+      BufferedReader stdInput =
+          new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-      BufferedReader errInput = new BufferedReader(new InputStreamReader(p
-          .getInputStream()));
+      BufferedReader errInput =
+          new BufferedReader(new InputStreamReader(p.getInputStream()));
 
       // read the output from the command
       String s = null;
@@ -234,7 +234,7 @@ public class JSShell {
    * Load a script.
    * @param file File to load
    * @throws FileNotFoundException throws FileNotFoundException if cannot find
-   *           the script
+   *             the script
    */
   public void source(final File file) throws FileNotFoundException {
 
@@ -325,7 +325,11 @@ public class JSShell {
   // Main methos
   //
 
-  public static void main(String[] args) {
+  /**
+   * Main class for javascript interpreter.
+   * @param args command line arguments
+   */
+  public static void main(final String[] args) {
 
     String javascriptPath = null;
     String filetoExecute = null;
