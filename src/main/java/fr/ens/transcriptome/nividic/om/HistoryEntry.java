@@ -22,13 +22,14 @@
 
 package fr.ens.transcriptome.nividic.om;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * This class define a history entry.
  * @author Laurent Jourdren
  */
-public class HistoryEntry {
+public class HistoryEntry implements Serializable {
 
   /**
    * This enum describe all the actions of an event log in a history entry.
