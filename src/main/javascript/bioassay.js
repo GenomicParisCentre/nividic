@@ -59,7 +59,7 @@ function _getBioAssayReader(file, type) {
         return new IDMAReader(file);
 
       case "total.summary":
-        return new TotalSummaryReader(file);
+        return new Packages.fr.ens.transcriptome.nividic.om.sgdb.io.TotalSummaryReader(file);
         
       case "universal":
         return new UniversalBioAssayReader(file);
@@ -209,10 +209,10 @@ function _getBioAssayWriter(file, type) {
         return new IDMAWriter(file);
 
       case "total.summary":
-        return new TotalSummaryWriter(file);
+        return new Packages.fr.ens.transcriptome.nividic.sgdb.io.TotalSummaryWriter(file);
        
       case  "total.summary.xsl":
-        var writer = new TotalSummaryWriter(file);
+        var writer = new Packages.fr.ens.transcriptome.nividic.sgdb.io.TotalSummaryWriter(file);
         writer.setXSLBackend(true);
         return writer;
     }

@@ -16,7 +16,7 @@
 function create2ColorsDesign() {
 
   var nividicNames = JavaImporter();
-  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.design);
 
   with (nividicNames)  {
 
@@ -32,7 +32,7 @@ function create2ColorsDesign() {
 function createEmptyDesign() {
 
   var nividicNames = JavaImporter();
-  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.design);
 
   with (nividicNames)  {
 
@@ -53,7 +53,7 @@ function createEmptyDesign() {
  function showDesign(design) {
 
   var nividicNames = JavaImporter();
-  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om);
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.design);
 
   with (nividicNames)  {
   
@@ -61,7 +61,25 @@ function createEmptyDesign() {
   }
 
 }
- 
+  
+ /*
+ * Convert all the DataSource of a design to FileDataSources.
+ * @param design Design to use
+ * @param baseDir Base directory of the BioAssays files of the design
+ * @return nothing
+ */
+ function convertAllDataSourceToFileDataSources(design, baseDir) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.design);
+
+  with (nividicNames)  {
+  
+    return DesignUtils.convertAllDataSourceToFileDataSources(design, baseDir);
+  }
+
+}
+  
  
  /*
  * Reader methods
@@ -79,7 +97,7 @@ function readLimmaDesign(file) {
   if (file.constructor==String) { file = sf(file); }
 
   var nividicNames = JavaImporter();
-  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.design.io);
 
   with (nividicNames)  {
   
@@ -104,7 +122,7 @@ function readGoulpharDesign(file, normalizedFiles) {
   if (file.constructor==String) { file = sf(file); }
 
   var nividicNames = JavaImporter();
-  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.design.io);
 
   with (nividicNames)  {
   
@@ -122,6 +140,28 @@ function readGoulpharDesign(file, normalizedFiles) {
 
 }
 
+/**
+ * Shortcut to read design from the lims
+ * @param slideSerialNumbers Serial numbers of the slide of the design
+ * @return A design Object
+ */
+function readDesignFromLims(slideSerialNumbers) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.sgdb.io);
+
+  with (nividicNames)  {
+  
+    var reader = new SGDBLimsDesignReader(slideSerialNumbers);
+    
+        
+    var design =  reader.read();      
+    return design;
+  }
+
+}
+
+
 /*
  * Writer methods
  */
@@ -137,7 +177,7 @@ function writeLimmaDesign(design, file) {
   if (file.constructor==String) { file = sf(file); }
 
   var nividicNames = JavaImporter();
-  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.design.io);
 
   with (nividicNames)  {
 

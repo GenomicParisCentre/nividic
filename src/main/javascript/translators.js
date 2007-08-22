@@ -51,7 +51,7 @@ function createTranslatorFromAnnotationFile(file) {
   if (file.constructor==String) { file = sf(file); }
 
   var nividicNames = JavaImporter();
-  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.io);
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.translators.io);
   
   with (nividicNames)  {
   
@@ -125,7 +125,7 @@ function createFastaTranslator(file) {
   
   if (file.constructor==String) { file = sf(file); }
   
-  return new Packages.fr.ens.transcriptome.nividic.om.translators
+  return new Packages.fr.ens.transcriptome.nividic.om.translators.io
     .FastaTranslator(file);
 }
 
