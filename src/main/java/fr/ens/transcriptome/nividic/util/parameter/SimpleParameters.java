@@ -22,9 +22,10 @@
 
 package fr.ens.transcriptome.nividic.util.parameter;
 
-import org.apache.commons.collections.OrderedMap;
-import org.apache.commons.collections.OrderedMapIterator;
-import org.apache.commons.collections.map.LinkedMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This class defines an object to contain parameters.
@@ -32,7 +33,8 @@ import org.apache.commons.collections.map.LinkedMap;
  */
 class SimpleParameters implements Parameters {
 
-  private OrderedMap params = new LinkedMap();
+  private Map<String, Parameter> params =
+      new LinkedHashMap<String, Parameter>();
   private boolean fixedParameters;
 
   /**
@@ -51,20 +53,7 @@ class SimpleParameters implements Parameters {
    */
   public String[] getParametersNames() {
 
-    OrderedMapIterator it = this.params.orderedMapIterator();
-
-    String[] result = new String[this.params.size()];
-
-    int i = 0;
-    while (it.hasNext())
-      result[i++] = (String) it.next();
-
-    //  Object[] ao = this.params.keySet().toArray();
-    /*
-     * for (int i = 0; i < ao.length; i++) result[i] = (String) ao[i];
-     */
-
-    return result;
+    return NividicUtils.toArray(this.params.keySet());
   }
 
   /**
@@ -72,7 +61,7 @@ class SimpleParameters implements Parameters {
    * @param name Name of the parameter
    * @param value Value to set
    * @throws ParameterException if the value of paramter is bad or if the
-   *                 parameter doesn't exits
+   *             parameter doesn't exits
    */
   public void setParameter(final String name, final String value)
       throws ParameterException {

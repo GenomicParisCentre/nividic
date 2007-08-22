@@ -22,8 +22,8 @@
 
 package fr.ens.transcriptome.nividic.platform.workflow;
 
-import org.apache.commons.collections.Buffer;
-import org.apache.commons.collections.buffer.UnboundedFifoBuffer;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import fr.ens.transcriptome.nividic.platform.PlatformException;
 
@@ -33,13 +33,13 @@ import fr.ens.transcriptome.nividic.platform.PlatformException;
  */
 public abstract class PadIn {
 
-  private Buffer buffer = new UnboundedFifoBuffer();;
+  private Queue<Container> buffer = new LinkedList<Container>();;
 
   /**
    * Get the buffer of the Pad.
    * @return The buffer of the pad
    */
-  Buffer getBuffer() {
+  Queue<Container> getBuffer() {
     return this.buffer;
   }
 

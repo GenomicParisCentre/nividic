@@ -29,10 +29,6 @@ import java.io.OutputStream;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-
-import org.apache.commons.collections.OrderedMap;
-import org.apache.commons.collections.map.LinkedMap;
-
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
 import fr.ens.transcriptome.nividic.util.NividicUtils;
@@ -86,15 +82,6 @@ public class NewGPRIOTest extends TestCase {
       assertTrue(Arrays.equals(b.getReds(), b2.getReds()));
       assertTrue(Arrays.equals(b.getGreens(), b2.getGreens()));
       assertTrue(Arrays.equals(b.getFlags(), b2.getFlags()));
-
-      OrderedMap map = new LinkedMap();
-      map.put("FIVE", "5");
-      map.put("SIX", "6");
-      map.put("SEVEN", "7");
-
-      map.firstKey(); // returns "FIVE"
-      map.nextKey("FIVE"); // returns "SIX"
-      map.nextKey("SIX"); // returns "SEVEN"
 
       OutputStream os2 = new FileOutputStream("/tmp/test4.gpr");
       BioAssayWriter baw2 = new GPRWriter(os2);

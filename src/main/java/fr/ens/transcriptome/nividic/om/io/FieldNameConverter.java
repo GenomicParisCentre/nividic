@@ -22,8 +22,8 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import org.apache.commons.collections.BidiMap;
-import org.apache.commons.collections.bidimap.TreeBidiMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Convert field name from BioAssay to another represation and from the other
@@ -32,7 +32,9 @@ import org.apache.commons.collections.bidimap.TreeBidiMap;
  */
 public class FieldNameConverter {
 
-  private BidiMap table = new TreeBidiMap();
+  // private BidiMap table = new TreeBidiMap();
+  private Map<String, String> table = new HashMap<String, String>();
+  private Map<String, String> reverseTable = new HashMap<String, String>();
 
   /**
    * Add an entry.
@@ -41,6 +43,7 @@ public class FieldNameConverter {
    */
   public void add(final String bioAssayFieldName, final String otherFieldName) {
     this.table.put(bioAssayFieldName, otherFieldName);
+    this.reverseTable.put(otherFieldName, bioAssayFieldName);
   }
 
   /**
@@ -79,7 +82,8 @@ public class FieldNameConverter {
    * @return The bioAssay name of the field
    */
   public String getBioAssayFieldName(final String otherFieldName) {
-    String result = (String) this.table.inverseBidiMap().get(otherFieldName);
+
+    String result = this.reverseTable.get(otherFieldName);
 
     if (result == null)
       return otherFieldName;
