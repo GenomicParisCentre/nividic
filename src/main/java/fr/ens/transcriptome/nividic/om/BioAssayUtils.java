@@ -84,7 +84,7 @@ public final class BioAssayUtils {
    * @param rowsToRemove Array of the number of the rows to remove
    * @return A new BioAssay object without the deleted rows
    * @throws BioAssayRuntimeException if an error occurs while creating the new
-   *           bioassay object
+   *             bioassay object
    */
   public static BioAssay removeRowsFromBioAssay(final BioAssay bioAssay,
       final int[] rowsToRemove) throws BioAssayRuntimeException {
@@ -95,7 +95,8 @@ public final class BioAssayUtils {
       return bioAssay;
 
     final int size = bioAssay.size();
-    Map<String, String> mapFieldsToRemove = new HashMap<String, String>(rowsToRemove.length);
+    Map<String, String> mapFieldsToRemove =
+        new HashMap<String, String>(rowsToRemove.length);
 
     for (int i = 0; i < rowsToRemove.length; i++) {
       final int value = rowsToRemove[i];
@@ -739,6 +740,58 @@ public final class BioAssayUtils {
   }
 
   /**
+   * Convert to a String the bioAssay.
+   * @param bioAssay BioAssay to convert
+   * @return a string with the bioAssay
+   */
+  public static String toString(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return null;
+
+    final StringBuilder sb = new StringBuilder();
+
+    String[] fields = bioAssay.getFields();
+    String[] ids = bioAssay.getIds();
+
+    for (int i = 0; i < fields.length; i++) {
+      if (i > 0)
+        sb.append("\t");
+      sb.append(fields[i]);
+    }
+    sb.append("\n");
+
+    for (int i = 0; i < ids.length; i++) {
+
+      for (int j = 0; j < fields.length; j++) {
+
+        switch (bioAssay.getFieldType(fields[j])) {
+        case BioAssayBase.DATATYPE_DOUBLE:
+          sb.append(bioAssay.getDataFieldDouble(fields[j])[i]);
+          break;
+
+        case BioAssayBase.DATATYPE_INTEGER:
+          sb.append(bioAssay.getDataFieldInt(fields[j])[i]);
+          break;
+
+        case BioAssayBase.DATATYPE_STRING:
+          sb.append(bioAssay.getDataFieldString(fields[j])[i]);
+          break;
+
+        default:
+          break;
+        }
+
+        sb.append("\t");
+      }
+      sb.append("\n");
+
+    }
+
+    return sb.toString();
+  }
+
+  /**
    * Print a BioAssay object.
    * @param bioAssay BioAssay to print
    */
@@ -747,44 +800,7 @@ public final class BioAssayUtils {
     if (bioAssay == null)
       return;
 
-    String[] fields = bioAssay.getFields();
-    String[] ids = bioAssay.getIds();
-
-    for (int i = 0; i < fields.length; i++) {
-      if (i > 0)
-        System.out.print("\t");
-      System.out.print(fields[i]);
-    }
-    System.out.println();
-
-    for (int i = 0; i < ids.length; i++) {
-
-      for (int j = 0; j < fields.length; j++) {
-
-        switch (bioAssay.getFieldType(fields[j])) {
-        case BioAssayBase.DATATYPE_DOUBLE:
-          System.out.print(bioAssay.getDataFieldDouble(fields[j])[i]);
-          break;
-
-        case BioAssayBase.DATATYPE_INTEGER:
-          System.out.print(bioAssay.getDataFieldInt(fields[j])[i]);
-          break;
-
-        case BioAssayBase.DATATYPE_STRING:
-          System.out.print(bioAssay.getDataFieldString(fields[j])[i]);
-          break;
-
-        default:
-          break;
-        }
-
-        System.out.print("\t");
-
-      }
-      System.out.println();
-
-    }
-
+    System.out.println(toString(bioAssay));
   }
 
   /**
