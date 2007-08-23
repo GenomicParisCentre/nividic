@@ -42,6 +42,8 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
 public class SubExpressionMatrixDimension implements ExpressionMatrixDimension,
     Serializable {
 
+  static final long serialVersionUID = -1896263818230277582L;
+
   private static final int INIRIAL_NON_ZERO_ODD_NUMMER = 31;
   private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 23;
 

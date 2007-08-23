@@ -36,6 +36,8 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 public class MultiColumnTranslator extends BasicTranslator implements
     Serializable {
 
+  static final long serialVersionUID = -6434086257744017469L;
+
   private Map<String, Map<String, String>> annotations =
       new HashMap<String, Map<String, String>>();
   private String[] fieldNames;

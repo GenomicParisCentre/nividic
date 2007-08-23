@@ -31,6 +31,8 @@ import java.io.Serializable;
 public class AddIdentifierTranslator extends BasicTranslator implements
     Serializable {
 
+  static final long serialVersionUID = -6780143822648820975L;
+
   private static final String DEFAULT_FIELD = "OrignalId";
 
   private String[] fields;

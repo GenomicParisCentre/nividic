@@ -36,6 +36,8 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
  */
 public class HistoryImpl implements History, Serializable {
 
+  static final long serialVersionUID = 6468900425251456591L;
+
   private List<HistoryEntry> entries = new ArrayList<HistoryEntry>();
 
   /**
@@ -50,7 +52,7 @@ public class HistoryImpl implements History, Serializable {
 
   /**
    * Add a history log to the current history.
-   * @param entry Entry to add
+   * @param history Entry to add
    */
   public void add(final History history) {
 
@@ -101,6 +103,9 @@ public class HistoryImpl implements History, Serializable {
   // Constructor
   //
 
+  /**
+   * Public constructor.
+   */
   public HistoryImpl() {
   }
 

@@ -59,6 +59,8 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
 public class SubExpressionMatrix implements ExpressionMatrix,
     ExpressionMatrixListener, Serializable {
 
+  static final long serialVersionUID = 722106574978832571L;
+
   private Set<String> idsSet;
   private Set<String> referencesToColumnNamesSet;
   private List<String> columnNames;
@@ -1367,7 +1369,6 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   /**
    * constructor of SubExpressionMatrix
    */
-
 
   private SubExpressionMatrix(final ExpressionMatrix em,
       final String[] dimensionNames, final String[] ids, final int columnSize) {

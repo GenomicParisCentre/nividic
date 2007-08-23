@@ -28,7 +28,9 @@ import java.io.Serializable;
  * This translator is only for tests.
  * @author Laurent Jourdren
  */
-public class DummyTranslator extends BasicTranslator implements Serializable{
+public class DummyTranslator extends BasicTranslator implements Serializable {
+
+  static final long serialVersionUID = -6709993613812055385L;
 
   private int fieldCount;
 

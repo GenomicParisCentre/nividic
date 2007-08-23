@@ -31,6 +31,8 @@ import java.io.Serializable;
 public class CommonLinksInfoTranslator extends BasicTranslator implements
     Serializable {
 
+  static final long serialVersionUID = -6974613812819684107L;
+
   private Translator translator;
 
   /**

@@ -47,6 +47,8 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
 public class ExpressionMatrixDimensionImpl implements
     ExpressionMatrixDimension, ExpressionMatrixListener, Serializable {
 
+  static final long serialVersionUID = -4023401919644841965L;
+  
   // private static final int INIRIAL_NON_ZERO_ODD_NUMMER = 11;
   // private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 29;
 

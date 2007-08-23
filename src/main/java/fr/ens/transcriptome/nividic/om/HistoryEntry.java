@@ -31,6 +31,8 @@ import java.util.Date;
  */
 public class HistoryEntry implements Serializable {
 
+  static final long serialVersionUID = 4890350817593750746L;
+
   /**
    * This enum describe all the actions of an event log in a history entry.
    * @author Laurent Jourdren

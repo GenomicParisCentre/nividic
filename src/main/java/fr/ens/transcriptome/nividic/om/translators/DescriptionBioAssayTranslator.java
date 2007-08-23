@@ -39,6 +39,8 @@ import fr.ens.transcriptome.nividic.om.design.Slide;
 public class DescriptionBioAssayTranslator extends BasicTranslator implements
     Serializable {
 
+  static final long serialVersionUID = -7681178871505529059L;
+
   private static final String DESCRIPTION_FIELD =
       BioAssay.FIELD_NAME_DESCRIPTION;
   private Map<String, String> annotations = new HashMap<String, String>();

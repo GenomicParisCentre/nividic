@@ -30,6 +30,8 @@ package fr.ens.transcriptome.nividic.om;
  */
 public class DefaultSpotEmptyTester implements SpotEmptyTester {
 
+  static final long serialVersionUID = 6853784535994683333L;
+
   private String[] emptySpotsIds;
   private boolean descriptionToTest;
 

@@ -39,6 +39,8 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
  */
 public class SimpleAnnotationsImpl implements Annotation, Serializable {
 
+  static final long serialVersionUID = -3706417043759109770L;
+
   private Map<String, String> data = new LinkedHashMap<String, String>();
 
   private static final int HASHCODE_ODD_NUMBER_1 = 4505;
@@ -149,8 +151,9 @@ public class SimpleAnnotationsImpl implements Annotation, Serializable {
 
     Annotation a = (Annotation) o;
 
-    EqualsBuilder eb = new EqualsBuilder().appendSuper(super.equals(o)).append(
-        size(), a.size());
+    EqualsBuilder eb =
+        new EqualsBuilder().appendSuper(super.equals(o)).append(size(),
+            a.size());
 
     for (String key : keySet()) {
       eb.append(getProperty(key), a.getProperty(key));
@@ -165,8 +168,8 @@ public class SimpleAnnotationsImpl implements Annotation, Serializable {
    */
   public int hashCode() {
 
-    HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
-        HASHCODE_ODD_NUMBER_2);
+    HashCodeBuilder hcb =
+        new HashCodeBuilder(HASHCODE_ODD_NUMBER_1, HASHCODE_ODD_NUMBER_2);
 
     hcb.append(data);
 

@@ -30,6 +30,8 @@ import java.io.Serializable;
  */
 public class BiologicalName implements Serializable {
 
+  static final long serialVersionUID = -7235611996504358259L;
+
   private static int currentId;
 
   private int id = currentId++;

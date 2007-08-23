@@ -34,6 +34,8 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
  */
 public class ConcatTranslator extends BasicTranslator implements Serializable {
 
+  static final long serialVersionUID = -4399421603725706310L;
+
   private Map<String, Translator> translators =
       new LinkedHashMap<String, Translator>();
 

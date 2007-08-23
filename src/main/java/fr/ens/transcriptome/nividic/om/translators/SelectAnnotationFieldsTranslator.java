@@ -31,6 +31,8 @@ import java.io.Serializable;
 public class SelectAnnotationFieldsTranslator extends BasicTranslator implements
     Serializable {
 
+  static final long serialVersionUID = 1959696915819992209L;
+
   private Translator translator;
   private String[] fields;
 

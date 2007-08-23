@@ -31,6 +31,8 @@ import java.io.Serializable;
  */
 public abstract class BasicTranslator implements Translator, Serializable {
 
+  static final long serialVersionUID = -8206397893686231443L;
+
   private String defaultField;
   private boolean originalDefaultFieldSearchDone;
 

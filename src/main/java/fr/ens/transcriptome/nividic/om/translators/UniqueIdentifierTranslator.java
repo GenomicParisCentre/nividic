@@ -34,6 +34,8 @@ import java.util.Map;
 public class UniqueIdentifierTranslator extends BasicTranslator implements
     Serializable {
 
+  static final long serialVersionUID = -97628326893103851L;
+
   private static final String DEFAULT_FIELD = "UniqueId";
 
   private Map<String, String> mapUniqueId = new HashMap<String, String>();

@@ -61,6 +61,8 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
 public class ExpressionMatrixImpl implements ExpressionMatrix,
     ExpressionMatrixListenerHandler, Serializable {
 
+  static final long serialVersionUID = 6797873395313395L;
+
   private Map<String, Integer> idsMap;
   private int rowCreatedCount;
   // private IterableMap referencesToColumnNamesMap;
