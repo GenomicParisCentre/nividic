@@ -33,6 +33,7 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.util.StringUtils;
+import java.util.regex.Pattern;
 
 /**
  * This abstract class defines how to read text BioAssay File. Warning: when
@@ -126,7 +127,7 @@ public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
     searchFieldAndFlagIt(existingFields, getColumnField(), arrayIntFields);
 
     BufferedReader br = getBufferedReader();
-    final String separator = getSeparatorField();
+    final Pattern pattern = Pattern.compile(getSeparatorField());
     String line = null;
 
     final int columnCount =
@@ -142,7 +143,7 @@ public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
         if (endTag != null && line.startsWith(endTag))
           break;
 
-        String[] data = line.split(separator);
+        String[] data = pattern.split(line);
 
         if (data.length == 1 && data[0].length() == 0)
           continue;
