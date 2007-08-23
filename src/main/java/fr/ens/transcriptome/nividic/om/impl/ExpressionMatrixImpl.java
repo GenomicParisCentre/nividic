@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * @author montout
  */
 public class ExpressionMatrixImpl implements ExpressionMatrix,
-    ExpressionMatrixListenerHandler {
+    ExpressionMatrixListenerHandler, Serializable {
 
   private Map<String, Integer> idsMap;
   private int rowCreatedCount;

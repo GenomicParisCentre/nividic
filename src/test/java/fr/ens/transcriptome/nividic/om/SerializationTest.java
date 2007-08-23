@@ -33,6 +33,7 @@ import java.io.ObjectOutputStream;
 
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
+import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixReader;
 
 import junit.framework.TestCase;
 
@@ -76,6 +77,62 @@ public class SerializationTest extends TestCase {
     ois.close();
 
     assertEquals(b.getBiologicalId(), copy.getBiologicalId());
+
+    f.delete();
+  }
+
+  public void testExpressionMatrix() throws FileNotFoundException, IOException,
+      ClassNotFoundException, NividicIOException {
+
+    InputStream is =
+        this.getClass().getResourceAsStream("/files/PDR1gal_ctrred.txt");
+    SimpleExpressionMatrixReader reader = new SimpleExpressionMatrixReader(is);
+    ExpressionMatrix matrix = reader.read();
+
+    File f = new File("/tmp/bioassaySerialized");
+    
+    try {
+    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+    oos.writeObject(matrix);
+    oos.close();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      e.printStackTrace();
+    }
+
+    ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+    ExpressionMatrix copy = (ExpressionMatrix) ois.readObject();
+    ois.close();
+
+    assertEquals(matrix.getBiologicalId(), copy.getBiologicalId());
+
+    f.delete();
+  }
+
+  public void testSubExpressionMatrix() throws FileNotFoundException,
+      IOException, ClassNotFoundException, NividicIOException {
+
+    InputStream is =
+        this.getClass().getResourceAsStream("/files/PDR1gal_ctrred.txt");
+    SimpleExpressionMatrixReader reader = new SimpleExpressionMatrixReader(is);
+    ExpressionMatrix matrix = reader.read();
+
+    File f = new File("/tmp/bioassaySerialized");
+
+    String[] rowNames = matrix.getRowNames();
+    ExpressionMatrix subMatrix =
+        matrix.subMatrixRows(new String[] {rowNames[0], rowNames[1],
+            rowNames[2]});
+
+    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+    oos.writeObject(subMatrix);
+    oos.close();
+
+    ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+    ExpressionMatrix copy = (ExpressionMatrix) ois.readObject();
+    ois.close();
+
+    assertEquals(subMatrix.getBiologicalId(), copy.getBiologicalId());
 
     f.delete();
   }

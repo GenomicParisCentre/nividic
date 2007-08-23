@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -38,7 +39,8 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
  * This class implements a dimension for a sub expression matrix.
  * @author Laurent Jourdren
  */
-public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
+public class SubExpressionMatrixDimension implements ExpressionMatrixDimension,
+    Serializable {
 
   private static final int INIRIAL_NON_ZERO_ODD_NUMMER = 31;
   private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 23;
@@ -81,7 +83,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param rowName The name of the row to extract
    * @return a tab of double values
    * @throws ExpressionMatrixRuntimeException if the matrix is empty or if the
-   *           row that you want to extract doesn't exist
+   *             row that you want to extract doesn't exist
    */
   public double[] getRowToArray(final String rowName)
       throws ExpressionMatrixRuntimeException {
@@ -96,7 +98,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param columnNumber The index of the column to extract
    * @return a BioAssay Object
    * @throws ExpressionMatrixRuntimeException if we are unable to create the new
-   *           BioAssay object
+   *             BioAssay object
    */
   public BioAssay getColumn(final int columnNumber)
       throws ExpressionMatrixRuntimeException {
@@ -109,7 +111,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param columnName The name of the column to extract
    * @return a BioAssay object
    * @throws ExpressionMatrixRuntimeException if we are unable to create the new
-   *           BioAssay object
+   *             BioAssay object
    */
   public BioAssay getColumn(final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -147,7 +149,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param columnNumber The index of the column to extract
    * @return a tab of double values
    * @throws ExpressionMatrixRuntimeException if you try to extract a column
-   *           that doesn't exist
+   *             that doesn't exist
    */
   public double[] getColumnToArray(final int columnNumber)
       throws ExpressionMatrixRuntimeException {
@@ -160,7 +162,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param columnName The column to extract
    * @return a tab of double values
    * @throws ExpressionMatrixRuntimeException if the matrix is empty or if the
-   *           column doesn't exist
+   *             column doesn't exist
    */
   public double[] getColumnToArray(final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -180,12 +182,12 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
   /**
    * Extract a value from the matrix
    * @param rowId the id of the spot, name of the row where the value is to be
-   *          found
+   *            found
    * @param columnNumber the xp code, name of the column where the value is to
-   *          be found
+   *            be found
    * @return a double value
    * @throws ExpressionMatrixRuntimeException if the row or the column don't
-   *           exist
+   *             exist
    */
   public double getValue(final String rowId, final int columnNumber)
       throws ExpressionMatrixRuntimeException {
@@ -196,12 +198,12 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
   /**
    * Extract a value from the matrix
    * @param rowId the id of the spot, name of the row where the value is to be
-   *          found
+   *            found
    * @param columnName the xp code, name of the column where the value is to be
-   *          found
+   *            found
    * @return a double value
    * @throws ExpressionMatrixRuntimeException if the column or the row doesn't
-   *           exist
+   *             exist
    */
   public double getValue(final String rowId, final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -242,9 +244,9 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param value the value to set in
    * @param rowId The name of the row where you want to insert your value
    * @param columnName The name of the column where you want to insert your
-   *          value
+   *            value
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValue(final String rowId, final String columnName,
       final double value) throws ExpressionMatrixRuntimeException {
@@ -260,9 +262,9 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param value the value to set in
    * @param rowId The name of the row where you want to insert your value
    * @param columnNumber The index of the column where you want to insert your
-   *          value
+   *            value
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValue(final String rowId, final int columnNumber,
       final double value) throws ExpressionMatrixRuntimeException {
@@ -275,11 +277,11 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
   /**
    * Set in a column <code>ArrayDoubleList</code> a given value
    * @param ids The index in the <code>ArrayDoubleList</code> where you put
-   *          the value
+   *            the value
    * @param column the <code>ArrayDoubleList</code> to fill
    * @param values The values to set in the column
    * @throws ExpressionMatrixRuntimeException if the rowId is invalide or the
-   *           column to fill doesn't exist
+   *             column to fill doesn't exist
    */
   private void setValues(final String[] ids, final List<Double> column,
       final double[] values) throws ExpressionMatrixRuntimeException {
@@ -304,10 +306,10 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * Set a value in the matrix
    * @param ids The names of the rows where you want to insert your value
    * @param columnName The name of the column where you want to insert your
-   *          value
+   *            value
    * @param values the values to set in the matrix
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValues(final String[] ids, final String columnName,
       final double[] values) throws ExpressionMatrixRuntimeException {
@@ -324,10 +326,10 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * Set a value in the matrix
    * @param ids The name of the row where you want to insert your value
    * @param columnNumber The index of the column where you want to insert your
-   *          value
+   *            value
    * @param values the values to set in the matrix
    * @throws ExpressionMatrixRuntimeException if the column that you want to
-   *           reach doesn't exist
+   *             reach doesn't exist
    */
   public void setValues(final String[] ids, final int columnNumber,
       final double[] values) throws ExpressionMatrixRuntimeException {
@@ -339,7 +341,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * Checks if <b>this </b> ExpressionMatrixDimension object and the
    * ExpressionMatrixDimension em are equals.
    * @param o The other ExpressionMatrixDimension that you want to compare to
-   *          <b>this </b> one
+   *            <b>this </b> one
    * @return <b>true </b> if em and this are aquals.
    */
   public boolean equals(final Object o) {
@@ -570,7 +572,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension {
    * @param row An array of double that you want to add to your matrix
    * @param name The name of the row that you want to add
    * @param columnNames the names of the columns where you want to append a
-   *          value
+   *            value
    */
   public void addRow(final String name, final String[] columnNames,
       final double[] row) {

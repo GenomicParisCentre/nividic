@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,7 +57,7 @@ import fr.ens.transcriptome.nividic.util.StringUtils;
  * @author Laurent Jourdren
  */
 public class SubExpressionMatrix implements ExpressionMatrix,
-    ExpressionMatrixListener {
+    ExpressionMatrixListener, Serializable {
 
   private Set<String> idsSet;
   private Set<String> referencesToColumnNamesSet;

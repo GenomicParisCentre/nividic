@@ -22,8 +22,8 @@
 
 package fr.ens.transcriptome.nividic.om.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,7 +45,7 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
  * @author Laurent Jourdren
  */
 public class ExpressionMatrixDimensionImpl implements
-    ExpressionMatrixDimension, ExpressionMatrixListener {
+    ExpressionMatrixDimension, ExpressionMatrixListener, Serializable {
 
   // private static final int INIRIAL_NON_ZERO_ODD_NUMMER = 11;
   // private static final int MULTIPLIER_NON_ZERO_ODD_NUMBER = 29;
