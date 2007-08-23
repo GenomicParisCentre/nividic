@@ -32,7 +32,7 @@ import fr.ens.transcriptome.nividic.om.io.SimpleExpressionMatrixReader;
 
 public class ExpressionMatrixRowFilterSpeedTest extends TestCase {
 
-  public void testFilter() throws NividicIOException {
+  public void tesFilter1() throws NividicIOException {
 
     String file1 = "/files/PDR1_huge.txt";
 
@@ -40,8 +40,9 @@ public class ExpressionMatrixRowFilterSpeedTest extends TestCase {
     SimpleExpressionMatrixReader reader = new SimpleExpressionMatrixReader(is);
 
     ExpressionMatrix matrix = reader.read();
-    
-    //System.out.println(matrix.size() + " rows, "+ matrix.getColumnCount()+ " columns.");
+
+    // System.out.println(matrix.size() + " rows, "+ matrix.getColumnCount()+ "
+    // columns.");
 
     final double threshold = 1.0;
     final String comparator = "<";
@@ -54,15 +55,59 @@ public class ExpressionMatrixRowFilterSpeedTest extends TestCase {
     ExpressionMatrixFilter matrixfilter =
         new ExpressionMatrixRowFilterBioAssayFilterAdapter(bioAssayFilter, 0);
 
-    
     long start = System.currentTimeMillis();
 
     ExpressionMatrix m2 = matrix.filter(matrixfilter);
 
     long end = System.currentTimeMillis();
 
-    //System.out.println(m2.size() + " rows, result in " + (end - start) + " ms.");
+    // System.out.println(m2.size() + " rows, result in " + (end - start) + "
+    // ms.");
 
   }
 
+  public void testFilter2() throws NividicIOException {
+
+    String file1 = "/files/huge_matrix.txt";
+
+    InputStream is = this.getClass().getResourceAsStream(file1);
+    SimpleExpressionMatrixReader reader = new SimpleExpressionMatrixReader(is);
+
+    ExpressionMatrix matrix = reader.read();
+
+    /*System.out.println("rows: "
+        + matrix.getRowCount() + "\tcolumns: " + matrix.getColumnCount()
+        + "\tdimensions: " + matrix.getDimensionCount());*/
+
+    // System.out.println(matrix.size() + " rows, "+ matrix.getColumnCount()+ "
+    // columns.");
+
+    final double threshold = 1.0;
+    final String comparator = "<";
+    final boolean absolute = true;
+
+    BioAssayDoubleThresholdFilter bioAssayFilter =
+        new BioAssayDoubleThresholdFilter(BioAssay.FIELD_NAME_M, threshold,
+            comparator, absolute);
+
+    ExpressionMatrixFilter matrixfilter =
+        new ExpressionMatrixRowFilterBioAssayFilterAdapter(bioAssayFilter, 0);
+
+    long start = System.currentTimeMillis();
+
+    ExpressionMatrix m2 = matrix.filter(matrixfilter);
+
+    long end = System.currentTimeMillis();
+
+    /*System.out
+        .println(m2.size() + " rows, result in " + (end - start) + " ms.");*/
+
+  }
+
+  public static void main(String [] args) throws Exception{
+      
+      new ExpressionMatrixRowFilterSpeedTest().testFilter2();
+      
+  }
+  
 }
