@@ -223,7 +223,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param formerName The former name of the row That you want to rename
    * @param newName The name that you want to set
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void renameRow(final String formerName, final String newName)
       throws ExpressionMatrixRuntimeException {
@@ -236,7 +236,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param columnNumber The index of the column That you want to rename
    * @param name The name that you want to set
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void renameColumn(final int columnNumber, final String name)
       throws ExpressionMatrixRuntimeException {
@@ -249,7 +249,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param formerName The former name of the column That you want to rename
    * @param newName The name that you want to set
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void renameColumn(final String formerName, final String newName)
       throws ExpressionMatrixRuntimeException {
@@ -261,7 +261,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Remove an Id row
    * @param id the id of the spot
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void removeRow(final String id)
       throws ExpressionMatrixRuntimeException {
@@ -273,7 +273,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Remove an Experience field
    * @param columnName the id of the Experience
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void removeColumn(final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -285,7 +285,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Remove an Experience field
    * @param columnNumber the index of the Experience
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void removeColumn(final int columnNumber)
       throws ExpressionMatrixRuntimeException {
@@ -297,7 +297,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Add a column to the matrix
    * @param bioAssay The new column to add
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addBioAssay(final BioAssay bioAssay)
       throws ExpressionMatrixRuntimeException {
@@ -394,7 +394,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Add a column in the matrix, all the values are at NA
    * @param columnName The name of the column that you want to add
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addColumn(final String columnName)
       throws ExpressionMatrixRuntimeException {
@@ -407,7 +407,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param column An array of double that you want to add to your matrix
    * @param name The name of the column that you want to add
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addColumn(final String name, final double[] column)
       throws ExpressionMatrixRuntimeException {
@@ -421,7 +421,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param name The name of the column that you want to add
    * @param ids An array of string that contains the ID codes
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addColumn(final String name, final String[] ids,
       final double[] column) throws ExpressionMatrixRuntimeException {
@@ -433,7 +433,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Add a row in the matrix, all the values are at NA
    * @param name The name of the row that you want to add
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addRow(final String name) throws ExpressionMatrixRuntimeException {
 
@@ -445,7 +445,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param row An array of double that you want to add to your matrix
    * @param name The name of the row that you want to add
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addRow(final String name, final double[] row)
       throws ExpressionMatrixRuntimeException {
@@ -459,7 +459,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param name The name of the row that you want to add
    * @param columnName the names of the columns where you want to append a value
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addRow(final String name, final String[] columnName,
       final double[] row) throws ExpressionMatrixRuntimeException {
@@ -472,9 +472,9 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * @param row An array of double that you want to add to your matrix
    * @param name The name of the row that you want to add
    * @param columnNumber the number of the columns where you want to append a
-   *          value
+   *            value
    * @throws ExpressionMatrixRuntimeException this operation is illegal when
-   *           used in a SubExpressionMatrix object
+   *             used in a SubExpressionMatrix object
    */
   public void addRow(final String name, final int[] columnNumber,
       final double[] row) throws ExpressionMatrixRuntimeException {
@@ -593,7 +593,8 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixRowsExclude(final String[] rowsNames) {
 
-    return subMatrixRows(StringUtils.excludeStrings(rowsNames, getRowNames()));
+    return subMatrixRows(StringUtils.excludeUniqueStrings(rowsNames,
+        getRowNames()));
   }
 
   /**
@@ -610,7 +611,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     for (int i = 0; i < columnNames.length; i++)
       columnNames[i] = getColumnName(columns[i]);
 
-    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+    return subMatrixColumns(StringUtils.excludeUniqueStrings(columnNames,
         getColumnNames()));
   }
 
@@ -621,7 +622,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixColumnsExclude(final String[] columnNames) {
 
-    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+    return subMatrixColumns(StringUtils.excludeUniqueStrings(columnNames,
         getColumnNames()));
   }
 
@@ -633,7 +634,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   public ExpressionMatrix subMatrixDimensionsExclude(
       final String[] dimensionNames) {
 
-    return subMatrixDimensions(StringUtils.excludeStrings(dimensionNames,
+    return subMatrixDimensions(StringUtils.excludeUniqueStrings(dimensionNames,
         getDimensionNames()));
   }
 
@@ -662,7 +663,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
    * Checks if <b>this </b> ExpressionMatrixDimension object and the
    * ExpressionMatrixDimension em are equals.
    * @param o The ExpressionMatrixDimension that you want to compare to <b>this
-   *          </b> one
+   *            </b> one
    * @return <b>true </b> if em and this are aquals.
    */
   public boolean equals(final Object o) {
@@ -756,7 +757,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   /**
    * add Ids to the Ids set
    * @param em the ExpressionMatrixDimension from which you create the
-   *          SubExpressionMatrix
+   *            SubExpressionMatrix
    * @param ids the ids that you want to put in the set
    */
   private void addIds(final ExpressionMatrix em, final String[] ids) {
@@ -791,7 +792,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   /**
    * add column names to the column names set
    * @param em the ExpressionMatrixDimension from which you create the
-   *          SubExpressionMatrix
+   *            SubExpressionMatrix
    * @param columns the columns that you want to put in the set
    */
   private void addColumns(final ExpressionMatrix em, final int[] columns) {
@@ -1365,8 +1366,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   /**
    * constructor of SubExpressionMatrix
    */
-  private SubExpressionMatrix() {
-  }
+
 
   private SubExpressionMatrix(final ExpressionMatrix em,
       final String[] dimensionNames, final String[] ids, final int columnSize) {
@@ -1415,7 +1415,6 @@ public class SubExpressionMatrix implements ExpressionMatrix,
       setDefaultDimensionName(em.getDefaultDimensionName());
     else if (getDimensionCount() > 0)
       setDefaultDimensionName(getDimensionNames()[0]);
-
   }
 
   //
