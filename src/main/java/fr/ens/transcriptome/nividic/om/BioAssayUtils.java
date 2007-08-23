@@ -54,7 +54,7 @@ public final class BioAssayUtils {
   private static final int MASK_COL = 0x3fffff;
   /** Shift meta row. */
   private static final int SHIFT_META_ROW = 0;
-  /** Shift meta colummn. */
+  /** Shift meta column. */
   private static final int SHIFT_META_COLUMN = 6;
   /** Shift row. */
   private static final int SHIFT_ROW = 12;
