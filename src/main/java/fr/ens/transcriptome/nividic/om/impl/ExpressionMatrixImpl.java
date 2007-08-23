@@ -50,6 +50,7 @@ import fr.ens.transcriptome.nividic.om.design.Slide;
 import fr.ens.transcriptome.nividic.om.filters.BiologicalFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixFilter;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
@@ -298,11 +299,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     if (this.isNoRow())
       return new String[] {};
 
-    String[] ids = new String[this.idsMap.size()];
-
-    idsMap.keySet().toArray(ids);
-
-    return ids;
+    return NividicUtils.toArray(this.idsMap.keySet());
   }
 
   /**
@@ -876,7 +873,8 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixRowsExclude(final String[] rowsNames) {
 
-    return subMatrixRows(StringUtils.excludeStrings(rowsNames, getRowNames()));
+    return subMatrixRows(StringUtils.excludeUniqueStrings(rowsNames,
+        getRowNames()));
   }
 
   /**
@@ -893,7 +891,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     for (int i = 0; i < columnNames.length; i++)
       columnNames[i] = getColumnName(columns[i]);
 
-    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+    return subMatrixColumns(StringUtils.excludeUniqueStrings(columnNames,
         getColumnNames()));
   }
 
@@ -904,7 +902,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    */
   public ExpressionMatrix subMatrixColumnsExclude(final String[] columnNames) {
 
-    return subMatrixColumns(StringUtils.excludeStrings(columnNames,
+    return subMatrixColumns(StringUtils.excludeUniqueStrings(columnNames,
         getColumnNames()));
   }
 
@@ -916,7 +914,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
   public ExpressionMatrix subMatrixDimensionsExclude(
       final String[] dimensionNames) {
 
-    return subMatrixDimensions(StringUtils.excludeStrings(dimensionNames,
+    return subMatrixDimensions(StringUtils.excludeUniqueStrings(dimensionNames,
         getDimensionNames()));
   }
 

@@ -23,9 +23,10 @@
 package fr.ens.transcriptome.nividic.util;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Some static methods to manipulate strings.
@@ -252,22 +253,18 @@ public final class StringUtils {
    * @param ids Initial Strings
    * @return an array of String without removed String
    */
-  public static String[] excludeStrings(final String[] idsToRemove,
+  public static String[] excludeUniqueStrings(final String[] idsToRemove,
       final String[] ids) {
 
     if (idsToRemove == null || ids == null || idsToRemove.length == 0)
       return null;
 
-    List<String> set = new ArrayList<String>(Arrays.asList(ids));
+    final Set<String> listIds = new LinkedHashSet<String>(Arrays.asList(ids));
+    final List<String> listToRemove = Arrays.asList(idsToRemove);
 
-    for (int i = 0; i < idsToRemove.length; i++)
-      set.remove(idsToRemove[i]);
+    listIds.removeAll(listToRemove);
 
-    String[] result = new String[set.size()];
-
-    set.toArray(result);
-
-    return result;
+    return NividicUtils.toArray(listIds);
   }
 
   /**

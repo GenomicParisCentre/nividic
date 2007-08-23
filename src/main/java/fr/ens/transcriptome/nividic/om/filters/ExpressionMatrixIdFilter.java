@@ -128,7 +128,7 @@ public abstract class ExpressionMatrixIdFilter implements
     al.toArray(foundIds);
 
     if (isRemoveFoundId())
-      return em.subMatrixRows(StringUtils.excludeStrings(foundIds, rowIds));
+      return em.subMatrixRows(StringUtils.excludeUniqueStrings(foundIds, rowIds));
 
     return em.subMatrixRows(foundIds);
   }
