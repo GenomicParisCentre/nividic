@@ -22,12 +22,14 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
+
 /**
  * This abstract class implements basic methods to get several field or several
  * annotations.
  * @author Laurent Jourdren
  */
-public abstract class BasicTranslator implements Translator {
+public abstract class BasicTranslator implements Translator, Serializable {
 
   private String defaultField;
   private boolean originalDefaultFieldSearchDone;

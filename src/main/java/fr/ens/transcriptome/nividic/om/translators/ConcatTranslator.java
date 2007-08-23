@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
  * This class define a translator composed of several translators.
  * @author Laurent Jourdren
  */
-public class ConcatTranslator extends BasicTranslator {
+public class ConcatTranslator extends BasicTranslator implements Serializable {
 
   private Map<String, Translator> translators =
       new LinkedHashMap<String, Translator>();

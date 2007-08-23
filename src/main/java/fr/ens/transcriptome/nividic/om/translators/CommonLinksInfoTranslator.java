@@ -22,11 +22,14 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
+
 /**
  * This class define a translator that add commons links information.
  * @author Laurent Jourdren
  */
-public class CommonLinksInfoTranslator extends BasicTranslator {
+public class CommonLinksInfoTranslator extends BasicTranslator implements
+    Serializable {
 
   private Translator translator;
 

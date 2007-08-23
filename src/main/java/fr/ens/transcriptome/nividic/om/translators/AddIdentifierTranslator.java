@@ -22,11 +22,14 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
+
 /**
  * This class define a translator that add the identifier to translations.
  * @author Laurent Jourdren
  */
-public class AddIdentifierTranslator extends BasicTranslator {
+public class AddIdentifierTranslator extends BasicTranslator implements
+    Serializable {
 
   private static final String DEFAULT_FIELD = "OrignalId";
 

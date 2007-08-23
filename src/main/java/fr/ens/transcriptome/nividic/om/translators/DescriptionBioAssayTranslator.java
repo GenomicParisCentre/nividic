@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +36,11 @@ import fr.ens.transcriptome.nividic.om.design.Slide;
  * This class implement a feature annotation for BioAssay
  * @author Laurent Jourdren
  */
-public class DescriptionBioAssayTranslator extends BasicTranslator {
+public class DescriptionBioAssayTranslator extends BasicTranslator implements
+    Serializable {
 
-  private static final String DESCRIPTION_FIELD = BioAssay.FIELD_NAME_DESCRIPTION;
+  private static final String DESCRIPTION_FIELD =
+      BioAssay.FIELD_NAME_DESCRIPTION;
   private Map<String, String> annotations = new HashMap<String, String>();
 
   /**

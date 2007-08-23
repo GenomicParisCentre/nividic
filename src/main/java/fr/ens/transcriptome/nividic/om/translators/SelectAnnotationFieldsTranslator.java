@@ -22,11 +22,14 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
+
 /**
  * This class define a translator with only few of field of another translator.
  * @author Laurent Jourdren
  */
-public class SelectAnnotationFieldsTranslator extends BasicTranslator {
+public class SelectAnnotationFieldsTranslator extends BasicTranslator implements
+    Serializable {
 
   private Translator translator;
   private String[] fields;

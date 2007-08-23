@@ -22,11 +22,13 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
+
 /**
  * This translator is only for tests.
  * @author Laurent Jourdren
  */
-public class DummyTranslator extends BasicTranslator {
+public class DummyTranslator extends BasicTranslator implements Serializable{
 
   private int fieldCount;
 
@@ -51,10 +53,10 @@ public class DummyTranslator extends BasicTranslator {
   //
   // Translator
   //
-  
+
   public DummyTranslator(final int fieldCount) {
-    
+
     this.fieldCount = fieldCount;
   }
-  
+
 }

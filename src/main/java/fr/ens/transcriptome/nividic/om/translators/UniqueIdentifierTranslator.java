@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,8 @@ import java.util.Map;
  * translator and a array of identifers.
  * @author Laurent Jourdren
  */
-public class UniqueIdentifierTranslator extends BasicTranslator {
+public class UniqueIdentifierTranslator extends BasicTranslator implements
+    Serializable {
 
   private static final String DEFAULT_FIELD = "UniqueId";
 

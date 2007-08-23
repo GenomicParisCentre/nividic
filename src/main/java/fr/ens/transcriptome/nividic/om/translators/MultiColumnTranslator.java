@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.translators;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,8 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
  * column is the identifier.
  * @author Laurent Jourdren
  */
-public class MultiColumnTranslator extends BasicTranslator {
+public class MultiColumnTranslator extends BasicTranslator implements
+    Serializable {
 
   private Map<String, Map<String, String>> annotations =
       new HashMap<String, Map<String, String>>();
@@ -158,7 +160,7 @@ public class MultiColumnTranslator extends BasicTranslator {
    * Public constructor.
    * @param fieldNames Field names of the annotation
    * @param fieldNamesWithId false if the first element of the fieldname array
-   *          is the key for the translator (must be ignored)
+   *            is the key for the translator (must be ignored)
    */
   public MultiColumnTranslator(final String[] fieldNames,
       final boolean fieldNamesWithId) {
