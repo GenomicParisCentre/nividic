@@ -28,6 +28,7 @@ import java.util.List;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This class implements a generic filter for filtering using the value of a
@@ -108,7 +109,7 @@ public abstract class ExpressionMatrixRowFilter implements
    * @param em ExpressionMatrixDimension to filter
    * @return A new filtered ExpressionMatrixDimension object
    * @throws ExpressionMatrixRuntimeException if an error occurs while filtering
-   *           data
+   *             data
    */
   public ExpressionMatrix filter(final ExpressionMatrix em)
       throws ExpressionMatrixRuntimeException {
@@ -123,14 +124,13 @@ public abstract class ExpressionMatrixRowFilter implements
     String[] rowNames = d.getRowNames();
 
     final int size = d.getRowCount();
-    List<String> al = new ArrayList<String>();
-    String[] positiveRows = new String[al.size()];
+    List<String> al = new ArrayList<String>(size);
 
     for (int i = 0; i < size; i++)
       if (testRow(getValuesToTest(d.getRowToArray(rowNames[i]))))
         al.add(rowNames[i]);
 
-    positiveRows = al.toArray(positiveRows);
+    final String[] positiveRows = NividicUtils.toArray(al);
 
     if (isRemovePositiveRows())
       return em.subMatrixRowsExclude(positiveRows);
