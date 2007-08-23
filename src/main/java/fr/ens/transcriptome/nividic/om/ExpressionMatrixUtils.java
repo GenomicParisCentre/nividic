@@ -94,6 +94,56 @@ public final class ExpressionMatrixUtils {
   }
 
   /**
+   * Create a String with data of the ExpressionMatrixDimension.
+   * @param dimension ExpressionMatrixDimension to convert
+   * @return a String with the data of the dimension
+   */
+  public static String toString(final ExpressionMatrixDimension dimension) {
+
+    if (dimension == null)
+      return null;
+
+    StringBuilder sb = new StringBuilder();
+
+    String[] ids = dimension.getRowNames();
+    String[] columnNames = dimension.getColumnNames();
+
+    sb.append("Dimension name: " + dimension.getDimensionName());
+    sb.append("\t[" + dimension.getRowCount() + " row(s)");
+    sb.append(", " + dimension.getColumnCount() + " column(s)]");
+
+    sb.append("-------------");
+
+    sb.append("id");
+
+    for (int i = 0; i < columnNames.length; i++) {
+
+      String colName = columnNames[i];
+
+      sb.append("\t\t" + colName);
+
+    }
+    sb.append("\n");
+
+    for (int i = 0; i < ids.length; i++) {
+
+      String id = ids[i];
+      sb.append(id);
+
+      for (int j = 0; j < columnNames.length; j++) {
+        String colName = columnNames[j];
+        sb.append("\t\t");
+        sb.append(dimension.getValue(id, colName));
+
+      }
+      sb.append("\n");
+
+    }
+
+    return sb.toString();
+  }
+
+  /**
    * Print an expression matrix on a output stream.
    * @param matrix to print
    * @param out Output stream
@@ -110,6 +160,26 @@ public final class ExpressionMatrixUtils {
 
     for (int i = 0; i < dimensions.length; i++)
       printExpressionMatrixDimension(dimensions[i], out);
+  }
+
+  /**
+   * Create a String with data of the ExpressionMatrix.
+   * @param matrix ExpressionMatrix to convert
+   * @return a String with the data of the matrix
+   */
+  public static String toString(final ExpressionMatrix matrix) {
+
+    if (matrix == null)
+      return null;
+
+    StringBuilder sb = new StringBuilder();
+
+    ExpressionMatrixDimension[] dimensions = matrix.getDimensions();
+
+    for (int i = 0; i < dimensions.length; i++)
+      sb.append(toString(dimensions[i]));
+
+    return sb.toString();
   }
 
   /**
@@ -303,7 +373,7 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    // final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrixUtils.meanCenterExperiments(dimension);
 
     final HistoryEntry entry =
@@ -334,7 +404,7 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    // final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrixUtils.meanCenterSpots(dimension);
 
     final HistoryEntry entry =
@@ -365,7 +435,7 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    // final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrixUtils.divideExperimentsSD(dimension);
 
     final HistoryEntry entry =
@@ -396,7 +466,7 @@ public final class ExpressionMatrixUtils {
     if (dimension == null)
       throw new NullPointerException("Dimension is null");
 
-    //final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
+    // final DoubleMatrix doubleMatrix = new DoubleMatrix(dimension);
     DoubleMatrixUtils.divideSpotsSD(dimension);
 
     final HistoryEntry entry =
