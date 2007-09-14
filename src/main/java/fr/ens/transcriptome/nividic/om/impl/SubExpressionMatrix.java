@@ -111,6 +111,22 @@ public class SubExpressionMatrix implements ExpressionMatrix,
   }
 
   /**
+   * Get the index of a row that the Id is known
+   * @param rowId The name of the row that you want the index
+   * @return an int value
+   * @throws ExpressionMatrixRuntimeException if the id which index you want
+   *             doesn't exist
+   */
+  int getInternalRowIdIndex(final String rowId)
+      throws ExpressionMatrixRuntimeException {
+
+    if (this.idsSet.contains(rowId))
+      return this.matrix.getInternalRowIdIndex(rowId);
+
+    throw new ExpressionMatrixRuntimeException("Unknow row name");
+  }
+
+  /**
    * Get the names of the rows
    * @return return the names of the rows in an array of strings
    */

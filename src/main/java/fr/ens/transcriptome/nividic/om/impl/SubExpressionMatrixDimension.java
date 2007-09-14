@@ -276,32 +276,23 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension,
     this.matrixDimension.setValue(rowId, getColumnName(columnNumber), value);
   }
 
-  /**
-   * Set in a column <code>ArrayDoubleList</code> a given value
-   * @param ids The index in the <code>ArrayDoubleList</code> where you put
-   *            the value
-   * @param column the <code>ArrayDoubleList</code> to fill
-   * @param values The values to set in the column
-   * @throws ExpressionMatrixRuntimeException if the rowId is invalide or the
-   *             column to fill doesn't exist
-   */
-  private void setValues(final String[] ids, final List<Double> column,
-      final double[] values) throws ExpressionMatrixRuntimeException {
+  private int[] getRowsIndex(final String[] rowNames) {
 
-    if (ids == null)
+    if (rowNames == null)
       throw new ExpressionMatrixRuntimeException("String identifiers is null");
 
-    if (column == null)
-      throw new ExpressionMatrixRuntimeException(
-          "ArrayDoubleList column is null");
+    final int[] rowsIndex = new int[rowNames.length];
 
-    if (ids.length != values.length)
-      throw new ExpressionMatrixRuntimeException(
-          "The sizes of the arrays of identifier and data to add are not the same");
+    for (int i = 0; i < rowNames.length; i++) {
 
-    this.matrix.throwExceptionIfRowIdDoesntExists(ids);
+      final String rowName = rowNames[i];
 
-    this.matrixDimension.setValues(ids, column, values);
+      Integer index = matrix.getInternalRowIdIndex(rowName);
+
+      rowsIndex[i] = index;
+    }
+
+    return rowsIndex;
   }
 
   /**
@@ -316,12 +307,7 @@ public class SubExpressionMatrixDimension implements ExpressionMatrixDimension,
   public void setValues(final String[] ids, final String columnName,
       final double[] values) throws ExpressionMatrixRuntimeException {
 
-    matrix.throwExceptionIfColumnDoesntExists(columnName);
-
-    List<Double> columnToFill =
-        matrixDimension.getReferencesToColumnNamesMap().get(columnName);
-
-    setValues(ids, columnToFill, values);
+    this.matrixDimension.setValues(getRowsIndex(ids), columnName, values);
   }
 
   /**

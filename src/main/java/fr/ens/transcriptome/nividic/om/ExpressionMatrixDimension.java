@@ -213,17 +213,17 @@ public interface ExpressionMatrixDimension extends ExpressionMatrixSizes,
   /**
    * Add a column in the matrix
    * @param column An array of double that you want to add to your matrix
-   * @param name The name of the column that you want to add
+   * @param columnName The name of the column that you want to add
    */
-  void addColumn(String name, double[] column);
+  void addColumn(String columnName, double[] column);
 
   /**
    * Add a column in the matrix
-   * @param column An array of double that you want to add to your matrix
-   * @param name The name of the column that you want to add
+   * @param data An array of double that you want to add to your matrix
+   * @param columnName The name of the column that you want to add
    * @param ids An array of string that contains the ID codes
    */
-  void addColumn(String name, String[] ids, double[] column);
+  void addColumn(String columnName, String[] ids, double[] data);
 
   /**
    * Add a row in the matrix, all the values are at NA

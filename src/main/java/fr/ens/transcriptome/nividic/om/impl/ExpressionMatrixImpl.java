@@ -226,7 +226,6 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
     sendEvent(new ExpressionMatrixEvent(this,
         ExpressionMatrixEvent.ADD_DIMENSION_EVENT, dimensionName));
-
   }
 
   /**
@@ -264,10 +263,11 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
 
       addColumn(columnName);
 
-      final int columnIndex = d.getColumnIndex(columnName);
-      final double[] values = dimension.getColumnToArray(columnIndex);
+      /* final int columnIndex = d.getColumnIndex(columnName); */
+      final double[] values = dimension.getColumnToArray(columnName);
 
-      d.setValues(ids, columnIndex, values);
+      d.addColumn(columnName, ids, values);
+      // d.setValues(ids, columnIndex, values);*/
     }
   }
 
