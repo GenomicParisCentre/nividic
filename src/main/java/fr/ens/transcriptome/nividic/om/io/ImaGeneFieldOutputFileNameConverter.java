@@ -24,6 +24,10 @@ package fr.ens.transcriptome.nividic.om.io;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
+/**
+ * This class extends ConvertFieldNames for ImaGene Data.
+ * @author Laurent Jourdren
+ */
 public class ImaGeneFieldOutputFileNameConverter extends FieldNameConverter {
 
   /**
@@ -33,11 +37,11 @@ public class ImaGeneFieldOutputFileNameConverter extends FieldNameConverter {
 
     add(BioAssay.FIELD_NAME_ID, "Gene ID");
     add(BioAssay.FIELD_NAME_FLAG, "Flag");
-    //add("Dia.", "Diameter");
-    
-    //add(BioAssay.FIELD_NAME_RED, "GeneID");
-    //add(BioAssay.FIELD_NAME_GREEN, "GeneID");
-    //add(BioAssay.FIELD_NAME_DESCRIPTION, "Annotation1");
+    // add("Dia.", "Diameter");
+
+    // add(BioAssay.FIELD_NAME_RED, "GeneID");
+    // add(BioAssay.FIELD_NAME_GREEN, "GeneID");
+    // add(BioAssay.FIELD_NAME_DESCRIPTION, "Annotation1");
   }
-  
+
 }
