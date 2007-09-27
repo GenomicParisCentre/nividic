@@ -20,6 +20,11 @@
  *
  */
 
+/*
+ * This class contains code provided by the Tmev project (http://www.tm4.org/mev.html).
+ * As the Artistic licence is vague, this class is in Public domain.
+ */
+
 package fr.ens.transcriptome.nividic.om;
 
 import java.util.ArrayList;
