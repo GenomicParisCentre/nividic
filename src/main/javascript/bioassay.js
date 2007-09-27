@@ -289,7 +289,7 @@ function writeTotalSummary(bioAssay, file, translator) {
  * @param translator Translator to use
  * @return nothing
  */
-function writeTotalSummaryXSL(bioAssay, file, translator) {
+function writeTotalSummaryXLS(bioAssay, file, translator) {
 
   writeBioAssay(bioAssay, file, "total.summary.xsl", true, translator);
 }
