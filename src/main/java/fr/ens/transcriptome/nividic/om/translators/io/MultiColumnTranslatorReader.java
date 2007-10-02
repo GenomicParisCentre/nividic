@@ -45,6 +45,7 @@ public class MultiColumnTranslatorReader {
   private BufferedReader bufferedReader;
   private static final String SEPARATOR = "\t";
   private boolean removeQuotes = true;
+  private boolean noHeader;
 
   //
   // Getters
@@ -146,6 +147,13 @@ public class MultiColumnTranslatorReader {
           for (int i = 0; i < cols.length; i++)
             cols[i] = StringUtils.removeDoubleQuotesAndTrim(cols[i]);
 
+        if (result == null && this.noHeader) {
+          final String[] header = new String[cols.length];
+          for (int i = 0; i < header.length; i++)
+            header[i] = "#" + i;
+          result = new MultiColumnTranslator(header);
+        }
+
         if (result == null)
           result = new MultiColumnTranslator(cols);
         else
@@ -169,12 +177,27 @@ public class MultiColumnTranslatorReader {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public MultiColumnTranslatorReader(final File file) throws NividicIOException {
 
+    this(file, false);
+  }
+
+  /**
+   * Public constructor.
+   * @param file file to read
+   * @param noHeader true if there is no header for column names
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *             the file is null.
+   */
+  public MultiColumnTranslatorReader(final File file, final boolean noHeader)
+      throws NividicIOException {
+
     if (file == null)
       throw new NividicIOException("No file to load");
+
+    this.noHeader = noHeader;
 
     try {
       setInputStream(new FileInputStream(file));
@@ -193,6 +216,19 @@ public class MultiColumnTranslatorReader {
   public MultiColumnTranslatorReader(final InputStream is)
       throws NividicIOException {
 
+    this(is, false);
+  }
+
+  /**
+   * Public constructor
+   * @param is Input stream to read
+   * @param noHeader true if there is no header for column names
+   * @throws NividicIOException if the stream is null
+   */
+  public MultiColumnTranslatorReader(final InputStream is,
+      final boolean noHeader) throws NividicIOException {
+
+    this.noHeader = noHeader;
     setInputStream(is);
   }
 
