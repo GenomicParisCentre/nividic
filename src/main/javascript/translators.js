@@ -42,20 +42,25 @@ function createTranslatorFromDesign(design) {
 /*
  * Create a translator based on a annotation file.
  * @param file File to read
+ * @param noHeader true if there is no header for column names
  * @return a new translator
  */
-function createTranslatorFromAnnotationFile(file) {
+function createTranslatorFromAnnotationFile(file, noheader) {
 
   if (file==null) { return null; }
 
   if (file.constructor==String) { file = sf(file); }
+  
+  if (noheader==undefined) noheaderValue = false;
+  else noheaderValue = noheader;
 
   var nividicNames = JavaImporter();
   nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.translators.io);
   
+  
   with (nividicNames)  {
   
-    var reader = new MultiColumnTranslatorReader(file);
+    var reader = new MultiColumnTranslatorReader(file, noheaderValue);
   
   	return reader.read();
   }
@@ -143,6 +148,24 @@ function createConcatTranslator(translator1, translator2) {
     
   return new Packages.fr.ens.transcriptome.nividic.om.translators
     .ConcatTranslator(translator1, translator2);
+}
+
+/**
+ * Create a translator that join two other translators.
+ * @param translator1 First translator 
+ * @param joinField  
+ * @param translator2 Second translator 
+ * @return a new translator 
+ */
+function createJoinTranslator(translator1, joinField, translator2, returnTranslation1IfNoTranslation) {
+     
+   var rNoTranslation;
+   
+   if (returnTranslation1IfNoTranslation==undefined) rNoTranslation = false;
+   else rNoTranslation = returnTranslation1IfNoTranslation;
+     
+  return new Packages.fr.ens.transcriptome.nividic.om.translators
+    .JoinTranslator(translator1, joinField, translator2, rNoTranslation);
 }
 
 
