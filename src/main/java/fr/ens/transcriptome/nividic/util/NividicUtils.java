@@ -25,7 +25,9 @@ package fr.ens.transcriptome.nividic.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Utilitity class.
@@ -318,6 +320,60 @@ public final class NividicUtils {
     for (int i = 0; i < result.length; i++)
       if (array[i] != null)
         result[i] = Integer.parseInt(array[i]);
+
+    return result;
+  }
+
+  /**
+   * Convert an array of int to a list of Integers
+   * @param array Array to convert
+   * @return a new list of integers
+   */
+  public static List<Integer> toList(final int[] array) {
+
+    if (array == null)
+      return null;
+
+    final ArrayList<Integer> result = new ArrayList<Integer>(array.length);
+
+    for (int i = 0; i < array.length; i++)
+      result.add(Integer.valueOf(array[i]));
+
+    return result;
+  }
+
+  /**
+   * Convert an array of double to a list of Double
+   * @param array Array to convert
+   * @return a new list of Doubles
+   */
+  public static List<Double> toList(final double[] array) {
+
+    if (array == null)
+      return null;
+
+    final ArrayList<Double> result = new ArrayList<Double>(array.length);
+
+    for (int i = 0; i < array.length; i++)
+      result.add(Double.valueOf(array[i]));
+
+    return result;
+  }
+
+  /**
+   * Convert an array of booleans to a list of Booleans
+   * @param array Array to convert
+   * @return a new list of Booleans
+   */
+  public static List<Boolean> toList(final boolean[] array) {
+
+    if (array == null)
+      return null;
+
+    final ArrayList<Boolean> result = new ArrayList<Boolean>(array.length);
+
+    for (int i = 0; i < array.length; i++)
+      result.add(Boolean.valueOf(array[i]));
 
     return result;
   }
