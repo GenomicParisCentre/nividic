@@ -47,13 +47,19 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
 public class ExpressionMatrixMerger {
 
   private final Map<Integer, String> rowIndex = new HashMap<Integer, String>();
-  private final Map<Integer, String> columnIndex = new HashMap<Integer, String>();
-  private final Map<Integer, String> dimensionIndex = new HashMap<Integer, String>();
-  private final Map<String, Integer> rowReverseIndex = new HashMap<String, Integer>();
-  private final Map<String, Integer> columnReverseIndex = new HashMap<String, Integer>();
-  private final Map<String, Integer> dimensionReverseIndex = new HashMap<String, Integer>();
+  private final Map<Integer, String> columnIndex =
+      new HashMap<Integer, String>();
+  private final Map<Integer, String> dimensionIndex =
+      new HashMap<Integer, String>();
+  private final Map<String, Integer> rowReverseIndex =
+      new HashMap<String, Integer>();
+  private final Map<String, Integer> columnReverseIndex =
+      new HashMap<String, Integer>();
+  private final Map<String, Integer> dimensionReverseIndex =
+      new HashMap<String, Integer>();
 
-  private final Map<Integer, Location> locations = new HashMap<Integer, Location>();
+  private final Map<Integer, Location> locations =
+      new HashMap<Integer, Location>();
   private final Map<Integer, Double> values = new HashMap<Integer, Double>();
 
   // private AbstractUnivariateStatistic algo;
@@ -80,8 +86,8 @@ public class ExpressionMatrixMerger {
 
       final Location loc = (Location) o;
 
-      return loc.row == this.row && loc.column == this.column
-          && loc.dimension == this.dimension;
+      return loc.row == this.row
+          && loc.column == this.column && loc.dimension == this.dimension;
     }
 
     public int compareTo(final Object o) {
@@ -194,9 +200,10 @@ public class ExpressionMatrixMerger {
 
       final String dimensionName = dimensionNames[i];
 
-      final double[] data = bioAssay.getFieldType(dimensionName) == BioAssay.DATATYPE_DOUBLE ? bioAssay
-          .getDataFieldDouble(dimensionName)
-          : NividicUtils.toArrayDouble(bioAssay.getDataFieldInt(dimensionName));
+      final double[] data =
+          bioAssay.getFieldType(dimensionName) == BioAssay.DATATYPE_DOUBLE
+              ? bioAssay.getDataFieldDouble(dimensionName) : NividicUtils
+                  .toArrayDouble(bioAssay.getDataFieldInt(dimensionName));
 
       for (int k = 0; k < data.length; k++) {
 
@@ -261,8 +268,8 @@ public class ExpressionMatrixMerger {
 
           // final Location loc = new Location(k + 1, currentColumn,
           // currentDimension);
-          final Location loc = new Location(rowIds[k], columnIds[j],
-              dimensionIds[i]);
+          final Location loc =
+              new Location(rowIds[k], columnIds[j], dimensionIds[i]);
 
           this.locations.put(++this.currentValueCount, loc);
           this.values.put(this.currentValueCount, data[k]);
@@ -306,7 +313,8 @@ public class ExpressionMatrixMerger {
    */
   public void mergeRows(final String finalRowName, final String[] rowsToMerge) {
 
-    if (finalRowName == null || rowsToMerge == null
+    if (finalRowName == null
+        || rowsToMerge == null
         || !this.rowReverseIndex.containsKey(finalRowName))
       return;
 
@@ -354,7 +362,8 @@ public class ExpressionMatrixMerger {
   public void mergeColumns(final String finalColumnName,
       final String[] columnsToMerge) {
 
-    if (finalColumnName == null || columnsToMerge == null
+    if (finalColumnName == null
+        || columnsToMerge == null
         || !this.columnReverseIndex.containsKey(finalColumnName))
       return;
 
@@ -401,13 +410,14 @@ public class ExpressionMatrixMerger {
   public void mergeDimensions(final String finalDimensionName,
       final String[] dimensionsToMerge) {
 
-    if (finalDimensionName == null || dimensionsToMerge == null
+    if (finalDimensionName == null
+        || dimensionsToMerge == null
         || !this.dimensionReverseIndex.containsKey(finalDimensionName))
       return;
 
     // Define the list of real dimension to merge
-    final int finalDimensionId = this.dimensionReverseIndex
-        .get(finalDimensionName);
+    final int finalDimensionId =
+        this.dimensionReverseIndex.get(finalDimensionName);
     final List<Integer> dimensionIdsToMerge = new ArrayList<Integer>();
 
     for (int i = 0; i < dimensionsToMerge.length; i++) {
@@ -463,13 +473,19 @@ public class ExpressionMatrixMerger {
     if (newIds == null)
       return;
 
+    // Keep the identifier if there is no translation
+    for (int i = 0; i < newIds.length; i++)
+      if (newIds[i] == null)
+        newIds[i] = ids[i];
+
     // Create a map with old and new row names
     Map<String, String> mapOldNewRowNames = new HashMap<String, String>();
     for (int i = 0; i < ids.length; i++)
       mapOldNewRowNames.put(ids[i], newIds[i]);
 
     // Create a map with the rows to merge for each new Id
-    Map<String, List<String>> mapIdsToMerge = new HashMap<String, List<String>>();
+    Map<String, List<String>> mapIdsToMerge =
+        new HashMap<String, List<String>>();
 
     for (int i = 0; i < newIds.length; i++) {
 
@@ -490,7 +506,8 @@ public class ExpressionMatrixMerger {
 
     // Create temporary new rows index
     final Map<Integer, String> newRowIndex = new HashMap<Integer, String>();
-    final Map<String, Integer> newRowReverseIndex = new HashMap<String, Integer>();
+    final Map<String, Integer> newRowReverseIndex =
+        new HashMap<String, Integer>();
 
     for (String id : this.rowReverseIndex.keySet()) {
       int index = this.rowReverseIndex.get(id);
@@ -514,7 +531,8 @@ public class ExpressionMatrixMerger {
   public ExpressionMatrix getMatrix() {
 
     // Create a Map<Location, List<Double>
-    final Map<Location, List<Double>> locationValues = new HashMap<Location, List<Double>>();
+    final Map<Location, List<Double>> locationValues =
+        new HashMap<Location, List<Double>>();
 
     for (int index : this.locations.keySet()) {
 
@@ -534,7 +552,8 @@ public class ExpressionMatrixMerger {
     final Map<Location, Double> mergedValues = new HashMap<Location, Double>();
 
     // Create a Map for stats Map<Location, Stat>
-    final Map<Location, StatMerger> statsData = new HashMap<Location, StatMerger>();
+    final Map<Location, StatMerger> statsData =
+        new HashMap<Location, StatMerger>();
 
     final boolean medianMode = isMedianMode();
 
@@ -563,12 +582,12 @@ public class ExpressionMatrixMerger {
 
     ExpressionMatrix em = ExpressionMatrixFactory.createExpressionMatrix();
 
-    final List<Integer> dimensionIndexSorted = new ArrayList<Integer>(
-        this.dimensionIndex.keySet());
-    final List<Integer> columnIndexSorted = new ArrayList<Integer>(
-        this.columnIndex.keySet());
-    final List<Integer> rowIndexSorted = new ArrayList<Integer>(this.rowIndex
-        .keySet());
+    final List<Integer> dimensionIndexSorted =
+        new ArrayList<Integer>(this.dimensionIndex.keySet());
+    final List<Integer> columnIndexSorted =
+        new ArrayList<Integer>(this.columnIndex.keySet());
+    final List<Integer> rowIndexSorted =
+        new ArrayList<Integer>(this.rowIndex.keySet());
 
     Collections.sort(dimensionIndexSorted);
     Collections.sort(columnIndexSorted);
@@ -629,12 +648,12 @@ public class ExpressionMatrixMerger {
     // Sort the locations
     Collections.sort(locs);
 
-    final List<Integer> dimensionIndexSorted = new ArrayList<Integer>(
-        this.dimensionIndex.keySet());
-    final List<Integer> columnIndexSorted = new ArrayList<Integer>(
-        this.columnIndex.keySet());
-    final List<Integer> rowIndexSorted = new ArrayList<Integer>(this.rowIndex
-        .keySet());
+    final List<Integer> dimensionIndexSorted =
+        new ArrayList<Integer>(this.dimensionIndex.keySet());
+    final List<Integer> columnIndexSorted =
+        new ArrayList<Integer>(this.columnIndex.keySet());
+    final List<Integer> rowIndexSorted =
+        new ArrayList<Integer>(this.rowIndex.keySet());
 
     Collections.sort(dimensionIndexSorted);
     Collections.sort(columnIndexSorted);
@@ -648,8 +667,8 @@ public class ExpressionMatrixMerger {
 
       final String dimensionName = this.dimensionIndex.get(dimIndex);
 
-      final String[] statDimensions = {" n", " total n", " stdDev", " mean",
-          " median"};
+      final String[] statDimensions =
+          {" n", " total n", " stdDev", " mean", " median"};
 
       for (int i = 0; i < statDimensions.length; i++) {
 
@@ -851,7 +870,8 @@ public class ExpressionMatrixMerger {
 
         final int rowIndex = this.rowReverseIndex.get(rowName);
 
-        final Location loc = new Location(rowIndex, columnIndex, dimensionIndex);
+        final Location loc =
+            new Location(rowIndex, columnIndex, dimensionIndex);
         this.locations.put(++this.currentValueCount, loc);
         this.values.put(this.currentValueCount, Double.NaN);
       }
