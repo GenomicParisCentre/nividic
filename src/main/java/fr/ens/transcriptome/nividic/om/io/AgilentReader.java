@@ -521,8 +521,6 @@ public class AgilentReader extends InputStreamBioAssayReader {
     }
     data.resizeFields();
 
-    System.out.println("size: " + bioAssay.size());
-
     return bioAssay;
   }
 
