@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,7 +147,7 @@ public final class NividicUtils {
    * @param a First stream to compare
    * @param b Second stream to compare
    * @return true if the two stream are equals
-   * @throws IOException if an error occors while reading the streams
+   * @throws IOException if an error occurs while reading the streams
    */
   public static boolean compareFile(final InputStream a, final InputStream b)
       throws IOException {
@@ -185,12 +186,24 @@ public final class NividicUtils {
    * @param filenameA First filename to compare
    * @param filenameB Second filename to compare
    * @return true if the two stream are equals
-   * @throws IOException if an error occors while reading the streams
+   * @throws IOException if an error occurs while reading the streams
    */
   public static boolean compareFile(final String filenameA,
       final String filenameB) throws IOException {
     return compareFile(new FileInputStream(filenameA), new FileInputStream(
         filenameB));
+  }
+
+  /**
+   * Test if two stream are equals
+   * @param fileA First filename to compare
+   * @param fileB Second filename to compare
+   * @return true if the two stream are equals
+   * @throws IOException if an error occurs while reading the streams
+   */
+  public static boolean compareFile(final File fileA, final File fileB)
+      throws IOException {
+    return compareFile(new FileInputStream(fileA), new FileInputStream(fileB));
   }
 
   /**
