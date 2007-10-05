@@ -464,7 +464,7 @@ public abstract class BioAssayWriter {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public BioAssayWriter(final File file) throws NividicIOException {
 
