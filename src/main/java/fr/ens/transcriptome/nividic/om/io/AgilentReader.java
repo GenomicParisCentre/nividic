@@ -46,10 +46,11 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
  */
 public class AgilentReader extends InputStreamBioAssayReader {
 
-  private static final FieldNameConverter converter =
+  private static final FieldNameConverter CONVERTER =
       new AgilentConverterFieldNames();
   private static final String ROW_FIELD = "Row";
   private static final String COLUMN_FIELD = "Col";
+  private static final String SEPARATOR = "\t";
 
   private abstract class TableReader {
 
@@ -57,7 +58,7 @@ public class AgilentReader extends InputStreamBioAssayReader {
     private static final String INTEGER_TYPE = "integer";
     private static final String FLOAT_TYPE = "float";
     private static final String BOOLEAN_TYPE = "boolean";
-    private static final String SEPARATOR = "\t";
+
     private static final String ROW_TYPE_ID = "TYPE";
     private static final String ROW_DATA_ID = "DATA";
     private static final String ROW_END_ID = "*";
@@ -275,7 +276,14 @@ public class AgilentReader extends InputStreamBioAssayReader {
     private Map<String, List<String>> mapString =
         new HashMap<String, List<String>>();
 
+    private Set<String> FieldsToRead;
+
     private int location;
+
+    public void setFieldsToRead(final Set<String> fieldsToRead) {
+
+      this.FieldsToRead = fieldsToRead;
+    }
 
     @Override
     public void newRow(final int rowIndex) {
@@ -294,13 +302,19 @@ public class AgilentReader extends InputStreamBioAssayReader {
     @Override
     public void setFloat(final String field, final double value) {
 
+      if (!this.FieldsToRead.contains(field))
+        return;
+
       List<Double> doubles =
-          this.mapDouble.get(converter.getBioAssayFieldName(field));
+          this.mapDouble.get(CONVERTER.getBioAssayFieldName(field));
       doubles.add(value);
     }
 
     @Override
     public void setInteger(final String field, final int value) {
+
+      if (!this.FieldsToRead.contains(field))
+        return;
 
       if (ROW_FIELD.equals(field)) {
         this.location = BioAssayUtils.setRow(this.location, value);
@@ -313,24 +327,27 @@ public class AgilentReader extends InputStreamBioAssayReader {
       }
 
       // Test if Id is an integer
-      final String newField = converter.getBioAssayFieldName(field);
+      final String newField = CONVERTER.getBioAssayFieldName(field);
       if (BioAssay.FIELD_NAME_ID.equals(newField)) {
         List<String> strings =
-            this.mapString.get(converter.getBioAssayFieldName(field));
+            this.mapString.get(CONVERTER.getBioAssayFieldName(field));
         strings.add(String.valueOf(value));
         return;
       }
 
       List<Integer> ints =
-          this.mapInt.get(converter.getBioAssayFieldName(field));
+          this.mapInt.get(CONVERTER.getBioAssayFieldName(field));
       ints.add(value);
     }
 
     @Override
     public void setText(final String field, final String value) {
 
+      if (!this.FieldsToRead.contains(field))
+        return;
+
       List<String> strings =
-          this.mapString.get(converter.getBioAssayFieldName(field));
+          this.mapString.get(CONVERTER.getBioAssayFieldName(field));
       strings.add(value);
     }
 
@@ -356,11 +373,14 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
       for (final String fieldName : this.getFields()) {
 
+        if (!this.FieldsToRead.contains(fieldName))
+          continue;
+
         if (ROW_FIELD.equals(fieldName) || COLUMN_FIELD.equals(fieldName))
           continue;
 
         int fieldType = this.getFieldType(fieldName);
-        final String newFieldName = converter.getBioAssayFieldName(fieldName);
+        final String newFieldName = CONVERTER.getBioAssayFieldName(fieldName);
 
         if (BioAssay.FIELD_NAME_ID.equals(newFieldName))
           fieldType = BioAssay.DATATYPE_STRING;
@@ -420,20 +440,20 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
   @Override
   protected String getColumnField() {
-    // TODO Auto-generated method stub
-    return null;
+
+    return COLUMN_FIELD;
   }
 
   @Override
   protected String[] getDoubleFieldNames() {
-    // TODO Auto-generated method stub
+
     return null;
   }
 
   @Override
   protected FieldNameConverter getFieldNameConverter() {
-    // TODO Auto-generated method stub
-    return null;
+
+    return CONVERTER;
   }
 
   @Override
@@ -459,26 +479,26 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
   @Override
   protected String getMetaColumnField() {
-    // TODO Auto-generated method stub
+
     return null;
   }
 
   @Override
   protected String getMetaRowField() {
-    // TODO Auto-generated method stub
+
     return null;
   }
 
   @Override
   protected String getRowField() {
-    // TODO Auto-generated method stub
-    return null;
+
+    return ROW_FIELD;
   }
 
   @Override
   protected String getSeparatorField() {
-    // TODO Auto-generated method stub
-    return null;
+
+    return SEPARATOR;
   }
 
   /**
@@ -490,6 +510,9 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
     if (getInputStream() == null)
       throw new NividicIOException("No stream to read");
+
+    addFieldToRead(getRowField());
+    addFieldToRead(getColumnField());
 
     final BufferedReader reader =
         new BufferedReader(new InputStreamReader(getInputStream()));
@@ -515,6 +538,8 @@ public class AgilentReader extends InputStreamBioAssayReader {
     final DataTableReader data = new DataTableReader(reader, bioAssay);
 
     try {
+      data.readHeader();
+      data.setFieldsToRead(createSetOfFieldsToRead(data.getFields()));
       data.read();
     } catch (IOException e) {
       throw new NividicIOException(e);

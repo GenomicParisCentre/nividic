@@ -262,11 +262,25 @@ public abstract class InputStreamBioAssayReader implements BioAssayReader {
     return result;
   }
 
+  protected Set<String> createSetOfFieldsToRead(final Set<String> fields) {
+
+    if (fields == null)
+      return null;
+
+    Set<String> result = new HashSet<String>();
+
+    for (String field : fields)
+      if (isAllFieldsToRead() || this.fieldsToRead.contains(field))
+        result.add(field);
+
+    return result;
+  }
+
   /**
    * Create a boolean array of int fields.
    * @param fields Existing field in file
    * @param typeFields A string array of field of a specified type (int,
-   *          double...)
+   *            double...)
    * @return a boolean array
    */
   protected boolean[] createArrayOfTypeFields(final String[] fields,
@@ -494,7 +508,7 @@ public abstract class InputStreamBioAssayReader implements BioAssayReader {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public InputStreamBioAssayReader(final File file) throws NividicIOException {
 
