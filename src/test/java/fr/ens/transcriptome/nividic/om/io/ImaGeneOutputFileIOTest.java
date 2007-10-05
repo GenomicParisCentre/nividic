@@ -22,11 +22,15 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import fr.ens.transcriptome.nividic.om.AnnotationUtils;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 import junit.framework.TestCase;
 
@@ -34,14 +38,16 @@ public class ImaGeneOutputFileIOTest extends TestCase {
 
   public void testReader() throws NividicIOException, IOException {
 
-    InputStream is1 = this.getClass().getResourceAsStream(
-        "/files/imagene_1_1.txt");
-    InputStream is2 = this.getClass().getResourceAsStream(
-        "/files/imagene_1_2.txt");
+    InputStream is1 =
+        this.getClass().getResourceAsStream("/files/imagene_1_1.txt");
+    InputStream is2 =
+        this.getClass().getResourceAsStream("/files/imagene_1_2.txt");
 
     ImaGeneOutputFileReader igofr = new ImaGeneOutputFileReader(is1, is2);
 
     BioAssay ba = igofr.read();
+
+    // AnnotationUtils.printAnnotation(ba.getAnnotation());
 
     int[] locs = ba.getLocations();
     String[] ids = ba.getIds();
@@ -54,8 +60,7 @@ public class ImaGeneOutputFileIOTest extends TestCase {
     assertNotNull(ids);
     assertNotNull(reds);
     assertNotNull(greens);
-    
-    
+
     assertEquals(1, BioAssayUtils.getMetaRow(locs[10]));
     assertEquals(1, BioAssayUtils.getMetaColumn(locs[10]));
     assertEquals(1, BioAssayUtils.getRow(locs[10]));
@@ -98,5 +103,27 @@ public class ImaGeneOutputFileIOTest extends TestCase {
 
   }
 
-}
+  public void testReadWrite() throws NividicIOException, IOException {
 
+    InputStream is1 =
+        this.getClass().getResourceAsStream("/files/imagene_1_1.txt");
+
+    ImaGeneOutputFileReader igofr = new ImaGeneOutputFileReader(is1, "");
+
+    igofr.addAllFieldsToRead();
+    BioAssay ba = igofr.read();
+
+    File tmpFile = File.createTempFile("ImaGene", ".txt");
+
+    ImaGeneOutputFileWriter aw = new ImaGeneOutputFileWriter(tmpFile);
+
+    aw.setBioAssay(ba);
+    aw.addAllFieldsToWrite();
+    aw.write(ba);
+
+    is1 = this.getClass().getResourceAsStream("/files/imagene_1_1.txt");
+
+    assertTrue(NividicUtils.compareFile(is1, new FileInputStream(tmpFile)));
+
+  }
+}
