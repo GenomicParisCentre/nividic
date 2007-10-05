@@ -24,6 +24,7 @@ package fr.ens.transcriptome.nividic.om.io;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
@@ -36,7 +37,7 @@ import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 public abstract class BioAssayReaderMultipleStreamsReader extends
     BioAssayTextReader {
 
-  private ArrayList streams = new ArrayList();
+  private List<InputStream> streams = new ArrayList<InputStream>();
 
   //
   // Abstract methods
@@ -48,7 +49,7 @@ public abstract class BioAssayReaderMultipleStreamsReader extends
    * @param ba BioAssay to transform
    * @param count The number of the bioinfo in the multiples streams
    */
-  public abstract void tranformBioAssayBeforeMerging(final BioAssay ba,
+  protected abstract void tranformBioAssayBeforeMerging(final BioAssay ba,
       final int count);
 
   //
@@ -91,6 +92,16 @@ public abstract class BioAssayReaderMultipleStreamsReader extends
     if (this.streams.size() == 0)
       return null;
 
+    if (this.streams.size() == 1) {
+
+      super.setInputStream(this.streams.get(0));
+      final BioAssay ba = super.read();
+
+      tranformBioAssayBeforeMerging(ba, 0);
+
+      return ba;
+    }
+
     BioAssay result = null;
 
     for (int i = 0; i < this.streams.size(); i++) {
@@ -98,8 +109,7 @@ public abstract class BioAssayReaderMultipleStreamsReader extends
       if (i != 0)
         super.clear();
 
-      InputStream is = (InputStream) this.streams.get(i);
-      super.setInputStream(is);
+      super.setInputStream(this.streams.get(i));
       BioAssay ba = super.read();
 
       tranformBioAssayBeforeMerging(ba, i);

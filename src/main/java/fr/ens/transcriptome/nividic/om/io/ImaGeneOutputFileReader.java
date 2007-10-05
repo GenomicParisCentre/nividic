@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
@@ -33,32 +34,39 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.ImaGeneResult;
 import fr.ens.transcriptome.nividic.util.NividicUtils;
 
+/**
+ * This class implements a reader for ImaGene streams.
+ * @author Laurent Jourdren
+ */
 public class ImaGeneOutputFileReader extends
     BioAssayReaderMultipleStreamsReader {
 
-  private static String SIGNAL_FIELD = "Signal Median";
+  private static final String SIGNAL_FIELD = "Signal Median";
 
   /** Fields names usualy readed in a GPR file. */
-  private static String[] fieldNameInGPR = {"Fields", "Meta Row",
-      "Meta Column", "Row", "Column", "Gene ID", SIGNAL_FIELD, "Flag"};
+  private static final String[] fieldNameInGPR =
+      {"Fields", "Meta Row", "Meta Column", "Row", "Column", "Gene ID",
+          SIGNAL_FIELD, "Flag"};
 
   /** Name of integer field names. */
-  private static String[] intFieldNames = {"Meta Row", "Meta Column", "Row",
-      "Column", "Flag", "Control Failed",
-      "Control  Background contamination present",
-      "Signal contamination present", "Ignored % failed",
-      "Open perimeter failed", "Shape regularity failed Perim-to-area failed",
-      "Offset failed", "Empty spot", "Negative spot", "Selected spot"};
+  private static final String[] intFieldNames =
+      {"Meta Row", "Meta Column", "Row", "Column", "Flag", "Control Failed",
+          "Control  Background contamination present",
+          "Signal contamination present", "Ignored % failed",
+          "Open perimeter failed",
+          "Shape regularity failed Perim-to-area failed", "Offset failed",
+          "Empty spot", "Negative spot", "Selected spot"};
 
   /** Name of double field names. */
-  private static String[] doubleFieldNames = {"Signal Mean", "Background Mean",
-      "Signal Median", "Background Median", "Signal Mode", "Background Mode",
-      "Signal Area", "Background Area", "Signal Total", "Background Total",
-      "Signal Stdev", "Background Stdev", "Shape Regularity", "Ignored Area",
-      "Spot Area", "Ignored Median", "Area To Perimeter", "Open Perimeter",
-      "XCoord", "YCoord", "Diameter", "Position offset", "Offset X",
-      "Offset Y", "Expected X", "Expected Y", "CM-X", "CM-Y", "CM Offset",
-      "CM Offset-X", "CM Offset-Y", "Min Diam", "Max Diam"};
+  private static final String[] doubleFieldNames =
+      {"Signal Mean", "Background Mean", "Signal Median", "Background Median",
+          "Signal Mode", "Background Mode", "Signal Area", "Background Area",
+          "Signal Total", "Background Total", "Signal Stdev",
+          "Background Stdev", "Shape Regularity", "Ignored Area", "Spot Area",
+          "Ignored Median", "Area To Perimeter", "Open Perimeter", "XCoord",
+          "YCoord", "Diameter", "Position offset", "Offset X", "Offset Y",
+          "Expected X", "Expected Y", "CM-X", "CM-Y", "CM Offset",
+          "CM Offset-X", "CM Offset-Y", "Min Diam", "Max Diam"};
 
   /** Field name for meta row. */
   public static final String FIELD_NAME_META_ROW = "Meta Row";
@@ -74,7 +82,7 @@ public class ImaGeneOutputFileReader extends
   private static final String MAGICSTRING = "Begin Header";
 
   private boolean readHeadersDone;
-
+  private String signalField;
   private Header header;
 
   private static final class Header {
@@ -84,7 +92,7 @@ public class ImaGeneOutputFileReader extends
     private static final String END_SECTION_STRING = "End ";
     private static final String START_RAW_DATA_STRING = "Begin Raw Data";
 
-    private ArrayList sectionNames = new ArrayList();
+    private List<String> sectionNames = new ArrayList<String>();
     private boolean sectionChanged;
     private String currentSectionName;
     private BufferedReader reader;
@@ -93,7 +101,7 @@ public class ImaGeneOutputFileReader extends
     private boolean firstRowSection = true;;
     private boolean keyValueSection;
     private String[] columnFields;
-    private String[] RawDataFieldsNames;
+    private String[] rawDataFieldsNames;
 
     private void openSection(final String name) {
       this.sectionNames.add(name);
@@ -114,7 +122,7 @@ public class ImaGeneOutputFileReader extends
 
         final int n = this.sectionNames.size();
         for (int i = 0; i < n; i++) {
-          sb.append((String) sectionNames.get(i));
+          sb.append(sectionNames.get(i));
           if (i != n - 1)
             sb.append(".");
         }
@@ -138,7 +146,7 @@ public class ImaGeneOutputFileReader extends
     }
 
     public String[] getRawDataFieldsNames() {
-      return this.RawDataFieldsNames;
+      return this.rawDataFieldsNames;
     }
 
     public void read() throws NividicIOException {
@@ -156,7 +164,7 @@ public class ImaGeneOutputFileReader extends
 
             while ((line = this.reader.readLine()) != null) {
               if (find) {
-                this.RawDataFieldsNames = line.split("" + SEPARATOR);
+                this.rawDataFieldsNames = line.split("" + SEPARATOR);
                 return;
               } else if (line.startsWith(START_RAW_DATA_STRING)) {
                 find = true;
@@ -220,8 +228,8 @@ public class ImaGeneOutputFileReader extends
               if (ch.length > 2) {
 
                 if (ch[2].endsWith(":")) {
-                  String optionalKey = key + "."
-                      + ch[2].substring(0, ch[2].length() - 1);
+                  String optionalKey =
+                      key + "." + ch[2].substring(0, ch[2].length() - 1);
                   String optionalValue;
                   if (ch.length < 4)
                     optionalValue = "";
@@ -276,6 +284,10 @@ public class ImaGeneOutputFileReader extends
 
   }
 
+  /**
+   * ReadHeaders of the file.
+   * @throws NividicIOException if an error occurs while reading ATF stream
+   */
   public void readHeader() throws NividicIOException {
 
     if (this.readHeadersDone)
@@ -332,6 +344,10 @@ public class ImaGeneOutputFileReader extends
     return new ImaGeneFieldOutputFileNameConverter();
   }
 
+  /**
+   * Get the version of the format of the file
+   * @return The version of the file.
+   */
   public String getFormatVersion() {
     // TODO Auto-generated method stub
     return null;
@@ -376,12 +392,15 @@ public class ImaGeneOutputFileReader extends
   }
 
   /**
-   * This method allow to transform a bioassay before merging (e.g.
-   * change columns names).
+   * This method allow to transform a bioassay before merging (e.g. change
+   * columns names).
    * @param ba BioAssay to transform
    * @param count The number of the bioinfo in the multiples streams
    */
-  public void tranformBioAssayBeforeMerging(final BioAssay ba, final int count) {
+  protected void tranformBioAssayBeforeMerging(final BioAssay ba,
+      final int count) {
+
+    ba.removeField("");
 
     if (count < 0 || count > 1) {
       ba.removeField(SIGNAL_FIELD);
@@ -394,11 +413,21 @@ public class ImaGeneOutputFileReader extends
     if (values == null)
       return;
 
+    if (this.signalField != null) {
+
+      String newField = this.signalField;
+      if ("".equals(newField))
+        newField = SIGNAL_FIELD;
+
+      ba.setDataFieldDouble(newField, values);
+
+    } else
+
     if (count == 0)
       ba.setGreens(NividicUtils.arrayDoubleToArrayInt(values));
     else if (count == 1)
       ba.setReds(NividicUtils.arrayDoubleToArrayInt(values));
-    
+
     ImaGeneResult igr = new ImaGeneResult(getBioAssay());
     igr.setType(ImaGeneResult.IMAGENE_RESULT_MAGIC_STRING);
   }
@@ -422,6 +451,26 @@ public class ImaGeneOutputFileReader extends
     addDefaultFieldsToRead();
   }
 
+  /**
+   * Public constructor. Read only one stream.
+   * @param is stream to read
+   * @param signalField The new name of signal field (e.g. BioAssay.GREEN_FIELD
+   *            or BioAssay.RED_FIELD);
+   * @throws NividicIOException if an error occurs while creating the reader
+   */
+  public ImaGeneOutputFileReader(final InputStream is, final String signalField)
+      throws NividicIOException {
+    this();
+    this.signalField = signalField == null ? "" : signalField;
+    super.addStream(is);
+  }
+
+  /**
+   * Public constructor.
+   * @param isGreens stream of green data to read
+   * @param isReds stream of red data to read
+   * @throws NividicIOException if an error occurs while creating the reader
+   */
   public ImaGeneOutputFileReader(final InputStream isGreens,
       final InputStream isReds) throws NividicIOException {
     this();
