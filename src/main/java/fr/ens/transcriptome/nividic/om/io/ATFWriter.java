@@ -181,7 +181,7 @@ public class ATFWriter extends BioAssayWriter {
   }
 
   //
-  // Constructor
+  // Constructors
   //
 
   /**
