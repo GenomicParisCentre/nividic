@@ -27,7 +27,7 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
-import fr.ens.transcriptome.nividic.om.filters.BioAssayBadFlagsFilter;
+import fr.ens.transcriptome.nividic.om.filters.BioAssayAllBadFlagsFilter;
 import fr.ens.transcriptome.nividic.om.filters.BioAssayFilter;
 import fr.ens.transcriptome.nividic.om.io.InputStreamBioAssayReader;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
@@ -50,7 +50,7 @@ public class BadFlagsFilterTest extends TestCase {
 
     BioAssay b = bar1.read();
 
-    BioAssayFilter baf = new BioAssayBadFlagsFilter();
+    BioAssayFilter baf = new BioAssayAllBadFlagsFilter();
     BioAssay b2 = baf.filter(b);
 
     int[] flags = b2.getFlags();

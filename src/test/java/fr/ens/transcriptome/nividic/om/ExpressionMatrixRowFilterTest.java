@@ -25,7 +25,7 @@ package fr.ens.transcriptome.nividic.om;
 import junit.framework.TestCase;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixMFloorRowFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixMThresholdRowFilter;
-import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixNARowFilter;
+import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixRowNAFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixRowFilter;
 
 /**
@@ -132,7 +132,7 @@ public class ExpressionMatrixRowFilterTest extends TestCase {
     assertNotNull(em);
     // printValues(em);
 
-    ExpressionMatrixRowFilter emrf = new ExpressionMatrixNARowFilter();
+    ExpressionMatrixRowFilter emrf = new ExpressionMatrixRowNAFilter();
 
     ExpressionMatrix em2 = emrf.filter(em);
     ExpressionMatrixDimension mMatrix2 = em2.getDefaultDimension();
