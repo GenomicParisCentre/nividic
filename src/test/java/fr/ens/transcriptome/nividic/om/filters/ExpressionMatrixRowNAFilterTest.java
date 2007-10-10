@@ -24,26 +24,25 @@ package fr.ens.transcriptome.nividic.om.filters;
 
 import junit.framework.TestCase;
 
-public class ExpressionMatrixNARowFilterTest extends TestCase {
+public class ExpressionMatrixRowNAFilterTest extends TestCase {
 
   public void testTestRow() {
-    
-    
-    ExpressionMatrixNARowFilter filter = new ExpressionMatrixNARowFilter();
+
+    ExpressionMatrixRowNAFilter filter =
+        new ExpressionMatrixRowNAFilter(1.0 / 3.0);
 
     double[] data1 = {0.5, 0.6, 2.0, 0.8, 3.0, 1.0};
 
     assertTrue(filter.testRow(data1));
-    filter.setRate(1.0/3.0);
+
     assertTrue(filter.testRow(data1));
 
-    
-    filter = new ExpressionMatrixNARowFilter();
+    filter = new ExpressionMatrixRowNAFilter(1.0);
     double[] data2 = {1.5, Double.NaN, 2.0, 0.8, Double.NaN, 1.0};
     assertTrue(filter.testRow(data2));
-    filter.setRate(1.0);
+
     assertTrue(filter.testRow(data2));
-    filter.setRate(1.0/3.0);
+    filter = new ExpressionMatrixRowNAFilter(1.0 / 3.0);
     assertFalse(filter.testRow(data2));
   }
 
