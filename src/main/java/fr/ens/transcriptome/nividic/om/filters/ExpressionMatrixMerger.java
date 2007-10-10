@@ -68,9 +68,9 @@ public class ExpressionMatrixMerger {
   private int currentDimensionsIndex;
   private int currentValueCount;
 
-  private boolean addStatData = false;
+  private boolean addStatData;
 
-  private final static class Location implements Comparable {
+  private static final class Location implements Comparable {
 
     private static final int INITIAL_NO_ZERO_ODD_NUMBER = 17;
     private static final int MULTIPLIER_NO_ZERO_ODD_NUMBER = 37;
