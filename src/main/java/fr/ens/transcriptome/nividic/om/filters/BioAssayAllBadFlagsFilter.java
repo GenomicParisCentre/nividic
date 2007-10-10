@@ -28,7 +28,7 @@ package fr.ens.transcriptome.nividic.om.filters;
  * flag value lesser than 0.
  * @author Laurent Jourdren
  */
-public class BioAssayBadFlagsFilter extends BioAssayFlagsFilter {
+public class BioAssayAllBadFlagsFilter extends BioAssayFlagsFilter {
 
   /**
    * Test the flag value.
