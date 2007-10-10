@@ -51,12 +51,13 @@ public class ExpressionMatrixMergerTest extends TestCase {
 
   private static final double[] a1 = {11111.1, 22222.2, 33333.3, 444444.4};
   private static final double[] a2 = {111111.1, 444444.4, Double.NaN, 777777.7};
-  private static final double[] a3 = {6666666.6, 8888888.8, 1111111.1,
-      3333333.3};
+  private static final double[] a3 =
+      {6666666.6, 8888888.8, 1111111.1, 3333333.3};
   private static final double[] a4 = {6668.6, 8888.8, 1111.1, 3333.3};
 
-  private static final String[][] translatorData = { {"id1", "newid1"},
-      {"id2", "newid2"}, {"id3", "newid2"}, {"id4", "id1"},};
+  private static final String[][] translatorData =
+      { {"id1", "newid1"}, {"id2", "newid2"}, {"id3", "newid2"},
+          {"id4", "id1"},};
 
   private BioAssay makeBioAssay(final String[] ids, final double[] m,
       final double[] a) {
@@ -158,8 +159,8 @@ public class ExpressionMatrixMergerTest extends TestCase {
     ExpressionMatrixMerger emm = new ExpressionMatrixMerger();
     emm.addMatrix(em1);
 
-    MultiColumnTranslator translator = new MultiColumnTranslator(new String[] {
-        "id", "newId"});
+    MultiColumnTranslator translator =
+        new MultiColumnTranslator(new String[] {"id", "newId"});
 
     for (int i = 0; i < translatorData.length; i++) {
       translator.addRow(translatorData[i]);
@@ -220,8 +221,8 @@ public class ExpressionMatrixMergerTest extends TestCase {
     assertTrue(Arrays.equals(dimM1.getColumnToArray("b4"), dimM2
         .getColumnToArray("b4")));
 
-    double[] col = em2.getDimension(BioAssay.FIELD_NAME_M).getColumnToArray(
-        "b2");
+    double[] col =
+        em2.getDimension(BioAssay.FIELD_NAME_M).getColumnToArray("b2");
 
     assertEquals(col[0], mean(11.1, 66.66));
     assertEquals(col[1], mean(44.4, 88.88));
@@ -240,6 +241,9 @@ public class ExpressionMatrixMergerTest extends TestCase {
     emm.mergeDimensions(new String[] {"m", "a"});
 
     ExpressionMatrix em2 = emm.getMatrix();
+
+    // ExpressionMatrixUtils.printExpressionMatrix(em1);
+    // ExpressionMatrixUtils.printExpressionMatrix(em2);
 
     assertEquals(3, em1.getDimensionCount());
     assertEquals(2, em2.getDimensionCount());
