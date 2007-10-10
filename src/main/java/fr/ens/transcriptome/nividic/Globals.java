@@ -22,10 +22,6 @@
 
 package fr.ens.transcriptome.nividic;
 
-import fr.ens.transcriptome.nividic.platform.algorithms.ComputeRatiosElement;
-import fr.ens.transcriptome.nividic.platform.algorithms.LoadGPRNamesElement;
-import fr.ens.transcriptome.nividic.platform.algorithms.TranslateGPRToBioAssayElement;
-import fr.ens.transcriptome.nividic.platform.algorithms.WriteBioAssayOMToGPRFileElement;
 
 /**
  * PhysicalConstants of the project.
@@ -93,9 +89,7 @@ public final class Globals {
   //
 
   /** Internals modules. */
-  public static final Class[] INTERNALS_MODULES = {ComputeRatiosElement.class,
-      LoadGPRNamesElement.class, TranslateGPRToBioAssayElement.class,
-      WriteBioAssayOMToGPRFileElement.class};
+  public static final Class[] INTERNALS_MODULES = {};
 
   /** Module user directory. */
   public static final String MODULES_USER_DIRECTORY = "/home/jourdren/data/modules";
