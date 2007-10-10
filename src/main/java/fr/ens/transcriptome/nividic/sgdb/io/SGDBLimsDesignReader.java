@@ -140,6 +140,9 @@ public class SGDBLimsDesignReader implements DesignReader {
     final Target[] targets = this.port.getTargets(hyb.getId());
     final Scan[] scans = this.port.getScans(hyb.getId());
 
+    if (targets == null)
+      throw new NividicRuntimeException("No target defined for the hybridazation.");
+
     Map<String, String> labels = new HashMap<String, String>();
 
     // Analyse the targets
