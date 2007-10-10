@@ -75,13 +75,13 @@ public class ExpressionMatrixRowFilterSpeedTest extends TestCase {
 
     ExpressionMatrix matrix = reader.read();
 
-    /*System.out.println("rows: "
-        + matrix.getRowCount() + "\tcolumns: " + matrix.getColumnCount()
-        + "\tdimensions: " + matrix.getDimensionCount());*/
+    /*
+     * System.out.println("rows: " + matrix.getRowCount() + "\tcolumns: " +
+     * matrix.getColumnCount() + "\tdimensions: " + matrix.getDimensionCount());
+     */
 
     // System.out.println(matrix.size() + " rows, "+ matrix.getColumnCount()+ "
     // columns.");
-
     final double threshold = 1.0;
     final String comparator = "<";
     final boolean absolute = true;
@@ -99,15 +99,17 @@ public class ExpressionMatrixRowFilterSpeedTest extends TestCase {
 
     long end = System.currentTimeMillis();
 
-    /*System.out
-        .println(m2.size() + " rows, result in " + (end - start) + " ms.");*/
+    /*
+     * System.out .println(m2.size() + " rows, result in " + (end - start) + "
+     * ms.");
+     */
 
   }
 
-  public static void main(String [] args) throws Exception{
-      
-      new ExpressionMatrixRowFilterSpeedTest().testFilter2();
-      
+  public static void main(String[] args) throws Exception {
+
+    new ExpressionMatrixRowFilterSpeedTest().testFilter2();
+
   }
-  
+
 }
