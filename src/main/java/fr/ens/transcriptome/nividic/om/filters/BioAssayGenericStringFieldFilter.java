@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
@@ -80,7 +81,7 @@ public abstract class BioAssayGenericStringFieldFilter implements
   /**
    * Set the field of the translator to use during the translation.
    * @param translatorField the translator field. If null is set, the default
-   *          translator field will be used
+   *            translator field will be used
    */
   public void setTranslatorField(final String translatorField) {
 
@@ -99,7 +100,13 @@ public abstract class BioAssayGenericStringFieldFilter implements
     if (bioAssay == null)
       return null;
 
-    String[] data = bioAssay.getDataFieldString(getFieldToFilter());
+    final String field = getFieldToFilter();
+
+    if (!bioAssay.isField(field))
+      throw new NividicRuntimeException("Unknown field ("
+          + field + ") in bioAssay");
+
+    String[] data = bioAssay.getDataFieldString(field);
 
     int size = bioAssay.size();
     List<Integer> al = new ArrayList<Integer>();
@@ -110,8 +117,9 @@ public abstract class BioAssayGenericStringFieldFilter implements
 
     for (int i = 0; i < size; i++) {
 
-      final String id = translate ? translator.translateField(data[i],
-          translatorField) : data[i];
+      final String id =
+          translate
+              ? translator.translateField(data[i], translatorField) : data[i];
 
       if (!test(id))
         al.add(i);

@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.om.filters;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
@@ -49,7 +50,13 @@ public abstract class BioAssayGenericDoubleFieldFilter implements
     if (bioAssay == null)
       return null;
 
-    final double[] data = bioAssay.getDataFieldDouble(getFieldToFilter());
+    final String field = getFieldToFilter();
+
+    if (!bioAssay.isField(field))
+      throw new NividicRuntimeException("Unknown field ("
+          + field + ") in bioAssay");
+
+    final double[] data = bioAssay.getDataFieldDouble(field);
 
     final int size = bioAssay.size();
     final List<Integer> al = new ArrayList<Integer>(data.length);
