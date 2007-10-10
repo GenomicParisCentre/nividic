@@ -37,7 +37,8 @@ import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
 /**
- * This class implement a BioAssayWriter for Agilent streams
+ * This class implement a BioAssayWriter for Agilent streams. There is some
+ * issue to have the same float format that the original format.
  * @author Laurent Jourdren
  */
 public class AgilentWriter extends BioAssayWriter {
@@ -231,7 +232,7 @@ public class AgilentWriter extends BioAssayWriter {
 
   private final FieldNameConverter converter = new AgilentConverterFieldNames();
   private BufferedWriter bw;
-  private boolean doubleFormatStrict = true;
+  private boolean doubleFormatStrict = false;
 
   @Override
   protected String getColumnField() {
@@ -592,7 +593,7 @@ public class AgilentWriter extends BioAssayWriter {
 
   }
 
-  public static void main(final String[] args) throws NividicIOException {
+  private static void main(final String[] args) throws NividicIOException {
 
     test1("27.00000005", 27.00000005);
     test1("3.", 3.);
@@ -627,7 +628,7 @@ public class AgilentWriter extends BioAssayWriter {
 
   }
 
-  public static void main2(final String[] args) throws NividicIOException {
+  private static void main2(final String[] args) throws NividicIOException {
 
     AgilentReader ar =
         new AgilentReader(new File("/home/jourdren/Desktop/geo/GSM231607.txt"));
