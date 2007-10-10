@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 
@@ -31,11 +32,9 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
  * @author Lory Montout
  * @author Laurent Jourdren
  */
-public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
+public class ExpressionMatrixRowNAFilter extends ExpressionMatrixRowFilter {
 
-  private static final double RATE_DEFAULT = 2.0 / 3.0;
-
-  private double rate = RATE_DEFAULT;
+  private double threshold;
 
   /**
    * Test the values of a Row.
@@ -53,17 +52,13 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
 
     int count = 0;
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++)
       if (Double.isNaN(values[i]))
         count++;
-    }
 
     final double ratio = (double) count / (double) size;
 
-    if (ratio < getRate())
-      return true;
-
-    return false;
+    return ratio < this.threshold;
   }
 
   /**
@@ -85,21 +80,12 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
   }
 
   /**
-   * Get the rate of the filter.
-   * @return Returns the rate
+   * Get the threshold of the filter.
+   * @return Returns the threshold
    */
-  public double getRate() {
+  public double getThreshold() {
 
-    return rate;
-  }
-
-  /**
-   * Set the rate of the filter.
-   * @param rate The rate to set
-   */
-  public void setRate(final double rate) {
-
-    this.rate = rate;
+    return threshold;
   }
 
   /**
@@ -108,7 +94,8 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
    */
   public String getParameterInfo() {
 
-    return "Rate=" + getRate() + "RemovePositiveRows=" + isRemovePositiveRows();
+    return "Rate="
+        + getThreshold() + " RemovePositiveRows=" + isRemovePositiveRows();
   }
 
   //
@@ -118,16 +105,19 @@ public class ExpressionMatrixNARowFilter extends ExpressionMatrixRowFilter {
   /**
    * Default constructor.
    */
-  public ExpressionMatrixNARowFilter() {
+  public ExpressionMatrixRowNAFilter() {
   }
 
   /**
    * Constructor.
-   * @param rate The rate of the filter
+   * @param threshold The rate of the filter
    */
-  public ExpressionMatrixNARowFilter(final double rate) {
+  public ExpressionMatrixRowNAFilter(final double threshold) {
 
-    setRate(rate);
+    if (threshold < 0)
+      throw new NividicRuntimeException("Threshold can't be lower than 0.");
+
+    this.threshold = threshold;
   }
 
 }
