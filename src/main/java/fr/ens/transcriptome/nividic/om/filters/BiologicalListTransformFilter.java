@@ -22,8 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
-import java.util.Iterator;
-
 import fr.ens.transcriptome.nividic.om.BiologicalList;
 import fr.ens.transcriptome.nividic.om.BiologicalListFactory;
 
@@ -57,10 +55,8 @@ public abstract class BiologicalListTransformFilter implements
 
     BiologicalList result = BiologicalListFactory.createBiologicalList();
 
-    Iterator it = list.iterator();
-
-    while (it.hasNext())
-      result.add(transform((String) it.next()));
+    for (final String s : list)
+      result.add(transform(s));
 
     return result;
   }

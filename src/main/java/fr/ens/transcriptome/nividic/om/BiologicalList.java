@@ -22,7 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om;
 
-import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
@@ -31,7 +30,7 @@ import fr.ens.transcriptome.nividic.om.filters.BiologicalListFilter;
  * This interface defines a biological list.
  * @author Laurent Jourdren
  */
-public interface BiologicalList extends BiologicalObject {
+public interface BiologicalList extends BiologicalObject, Iterable<String> {
 
   /**
    * Add an element.
@@ -73,12 +72,6 @@ public interface BiologicalList extends BiologicalObject {
    * Clear the list.
    */
   void clear();
-
-  /**
-   * Get an iterator over elements in the list.
-   * @return A iterator over elements in the list
-   */
-  Iterator iterator();
 
   /**
    * Get the size of the list.

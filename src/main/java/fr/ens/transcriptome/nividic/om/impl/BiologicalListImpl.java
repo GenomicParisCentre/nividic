@@ -169,7 +169,7 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    * Get an iterator over elements in the list.
    * @return A iterator over elements in the list
    */
-  public Iterator iterator() {
+  public Iterator<String> iterator() {
     return this.list.iterator();
   }
 
@@ -231,12 +231,9 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
       return result;
     }
 
-    Iterator it = iterator();
-    while (it.hasNext()) {
-      String element = (String) it.next();
+    for (final String element : this)
       if (list.contains(element))
         result.add(element);
-    }
 
     return result;
   }
@@ -256,12 +253,9 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
       return result;
     }
 
-    Iterator it = iterator();
-    while (it.hasNext()) {
-      String element = (String) it.next();
+    for (final String element : this)
       if (!list.contains(element))
         result.add(element);
-    }
 
     return result;
   }
@@ -280,12 +274,9 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
       return result;
     }
 
-    Iterator it = list.iterator();
-    while (it.hasNext()) {
-      String element = (String) it.next();
+    for (final String element : list)
       if (!list.contains(element))
         result.add(element);
-    }
 
     return result;
   }
@@ -306,9 +297,8 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
     if (size() != list.size())
       return false;
 
-    Iterator it = list.iterator();
-    while (it.hasNext())
-      if (!contains((String) it.next()))
+    for (final String element : list)
+      if (!contains(element))
         return false;
 
     return true;
@@ -328,12 +318,11 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    */
   public int hashCode() {
 
-    HashCodeBuilder hcb = new HashCodeBuilder(HASHCODE_ODD_NUMBER_1,
-        HASHCODE_ODD_NUMBER_2);
+    HashCodeBuilder hcb =
+        new HashCodeBuilder(HASHCODE_ODD_NUMBER_1, HASHCODE_ODD_NUMBER_2);
 
-    Iterator it = list.iterator();
-    while (it.hasNext())
-      hcb.append(it.next());
+    for (final String element : list)
+      hcb.append(element);
 
     return hcb.toHashCode();
   }
@@ -369,9 +358,10 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
 
     if (result != null) {
 
-      HistoryEntry entry = new HistoryEntry(filter.getClass().getSimpleName(),
-          HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
-          HistoryEntry.HistoryActionResult.PASS);
+      HistoryEntry entry =
+          new HistoryEntry(filter.getClass().getSimpleName(),
+              HistoryEntry.HistoryActionType.FILTER, filter.getParameterInfo(),
+              HistoryEntry.HistoryActionResult.PASS);
 
       result.getHistory().add(entry);
     }
@@ -440,8 +430,8 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    */
   public BiologicalList startsWith(final String prefix) {
 
-    final BiologicalListFilter filter = new BiologicalListStartsWithFilter(
-        prefix);
+    final BiologicalListFilter filter =
+        new BiologicalListStartsWithFilter(prefix);
 
     return filter.filter(this);
   }
@@ -453,7 +443,8 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    */
   public BiologicalList endsWith(final String suffix) {
 
-    final BiologicalListFilter filter = new BiologicalListEndsWithFilter(suffix);
+    final BiologicalListFilter filter =
+        new BiologicalListEndsWithFilter(suffix);
 
     return filter.filter(this);
   }
@@ -497,7 +488,8 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
    */
   public BiologicalList removeIdentifersNumbers() {
 
-    final BiologicalListFilter filter = new BiologicalListIdentifierNumberRemoverFilter();
+    final BiologicalListFilter filter =
+        new BiologicalListIdentifierNumberRemoverFilter();
 
     return filter.filter(this);
   }
@@ -519,9 +511,11 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
 
     final BiologicalList result = new BiologicalListImpl(this);
 
-    final HistoryEntry entry = new HistoryEntry("Create Biological List (#"
-        + result.getBiologicalId() + "), copy of #" + getBiologicalId(),
-        HistoryActionType.CREATE, "Size=" + size(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create Biological List (#"
+            + result.getBiologicalId() + "), copy of #" + getBiologicalId(),
+            HistoryActionType.CREATE, "Size=" + size(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
 
@@ -530,9 +524,10 @@ public class BiologicalListImpl implements BiologicalList, Serializable {
 
   private void addConstructorHistoryEntry() {
 
-    final HistoryEntry entry = new HistoryEntry("Create Biological List(#"
-        + getBiologicalId() + ")", HistoryActionType.CREATE, "Size=" + size(),
-        HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry("Create Biological List(#" + getBiologicalId() + ")",
+            HistoryActionType.CREATE, "Size=" + size(),
+            HistoryActionResult.PASS);
 
     getHistory().add(entry);
   }

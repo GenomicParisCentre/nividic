@@ -22,8 +22,6 @@
 
 package fr.ens.transcriptome.nividic.om.filters;
 
-import java.util.Iterator;
-
 import fr.ens.transcriptome.nividic.om.BiologicalList;
 import fr.ens.transcriptome.nividic.om.BiologicalListFactory;
 
@@ -43,12 +41,10 @@ public abstract class BiologicalListTestFilter implements BiologicalListFilter {
     if (list == null)
       return 0;
 
-    final Iterator it = list.iterator();
-
     int count = 0;
-    while (it.hasNext()) {
 
-      final String s = (String) it.next();
+    for (final String s : list) {
+
       if (test(s))
         count++;
     }
@@ -66,15 +62,11 @@ public abstract class BiologicalListTestFilter implements BiologicalListFilter {
     if (list == null)
       return null;
 
-    final Iterator it = list.iterator();
-
     final BiologicalList result = BiologicalListFactory.createBiologicalList();
-    while (it.hasNext()) {
 
-      final String s = (String) it.next();
+    for (final String s : list)
       if (test(s))
         result.add(s);
-    }
 
     return result;
   }
