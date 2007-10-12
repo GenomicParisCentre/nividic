@@ -27,14 +27,15 @@ import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixRuntimeException;
 
 /**
- * This class implements a filter for filtering using the value of a double row
- * of the matrix
+ * This class implements a filter ExpressionMatrix Object on the number of NA
+ * values in rows.
  * @author Lory Montout
  * @author Laurent Jourdren
  */
 public class ExpressionMatrixRowNAFilter extends ExpressionMatrixRowFilter {
 
   private double threshold;
+  private String dimension = ExpressionMatrix.DIMENSION_M;
 
   /**
    * Test the values of a Row.
@@ -67,7 +68,7 @@ public class ExpressionMatrixRowNAFilter extends ExpressionMatrixRowFilter {
    */
   public String getDimensionToFilter() {
 
-    return ExpressionMatrix.DIMENSION_M;
+    return dimension;
   }
 
   /**
@@ -94,19 +95,13 @@ public class ExpressionMatrixRowNAFilter extends ExpressionMatrixRowFilter {
    */
   public String getParameterInfo() {
 
-    return "Rate="
+    return "Threshold="
         + getThreshold() + " RemovePositiveRows=" + isRemovePositiveRows();
   }
 
   //
   // Constructor
   //
-
-  /**
-   * Default constructor.
-   */
-  public ExpressionMatrixRowNAFilter() {
-  }
 
   /**
    * Constructor.
@@ -118,6 +113,19 @@ public class ExpressionMatrixRowNAFilter extends ExpressionMatrixRowFilter {
       throw new NividicRuntimeException("Threshold can't be lower than 0.");
 
     this.threshold = threshold;
+  }
+
+  /**
+   * Constructor.
+   * @param threshold The rate of the filter
+   * @param dimension Dimension to filter
+   */
+  public ExpressionMatrixRowNAFilter(final String dimension,
+      final double threshold) {
+
+    this(threshold);
+    this.dimension = dimension;
+
   }
 
 }

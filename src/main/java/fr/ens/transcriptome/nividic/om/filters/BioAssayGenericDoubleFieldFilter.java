@@ -55,6 +55,10 @@ public abstract class BioAssayGenericDoubleFieldFilter implements
     if (!bioAssay.isField(field))
       throw new NividicRuntimeException("Unknown field ("
           + field + ") in bioAssay");
+    
+    if (bioAssay.getFieldType(field)!=BioAssay.DATATYPE_DOUBLE)
+      throw new NividicRuntimeException("Invalid field type: "
+          + field + "is not a double field");
 
     final double[] data = bioAssay.getDataFieldDouble(field);
 

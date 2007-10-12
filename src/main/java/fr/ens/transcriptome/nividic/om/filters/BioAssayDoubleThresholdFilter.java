@@ -228,9 +228,9 @@ public class BioAssayDoubleThresholdFilter extends
    * @param comparator comparator to use
    */
   public BioAssayDoubleThresholdFilter(final String field,
-      final double threshold, final String comparator) {
+      final String comparator, final double threshold) {
 
-    this(field, threshold, comparator, false);
+    this(field, comparator, threshold, false);
   }
 
   /**
@@ -241,7 +241,7 @@ public class BioAssayDoubleThresholdFilter extends
    * @param absolute true if the threshold is absolute value
    */
   public BioAssayDoubleThresholdFilter(final String field,
-      final double threshold, final String comparator, final boolean absolute) {
+      final String comparator, final double threshold, final boolean absolute) {
 
     setFieldToFilter(field);
     setThreshold(threshold);

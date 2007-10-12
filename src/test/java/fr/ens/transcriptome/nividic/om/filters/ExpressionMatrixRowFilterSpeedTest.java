@@ -49,8 +49,8 @@ public class ExpressionMatrixRowFilterSpeedTest extends TestCase {
     final boolean absolute = true;
 
     BioAssayDoubleThresholdFilter bioAssayFilter =
-        new BioAssayDoubleThresholdFilter(BioAssay.FIELD_NAME_M, threshold,
-            comparator, absolute);
+        new BioAssayDoubleThresholdFilter(BioAssay.FIELD_NAME_M, comparator,
+            threshold, absolute);
 
     ExpressionMatrixFilter matrixfilter =
         new ExpressionMatrixRowFilterBioAssayFilterAdapter(bioAssayFilter, 0);
@@ -87,8 +87,8 @@ public class ExpressionMatrixRowFilterSpeedTest extends TestCase {
     final boolean absolute = true;
 
     BioAssayDoubleThresholdFilter bioAssayFilter =
-        new BioAssayDoubleThresholdFilter(BioAssay.FIELD_NAME_M, threshold,
-            comparator, absolute);
+        new BioAssayDoubleThresholdFilter(BioAssay.FIELD_NAME_M, comparator,
+            threshold, absolute);
 
     ExpressionMatrixFilter matrixfilter =
         new ExpressionMatrixRowFilterBioAssayFilterAdapter(bioAssayFilter, 0);

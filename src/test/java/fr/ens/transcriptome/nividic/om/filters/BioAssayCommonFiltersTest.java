@@ -46,7 +46,11 @@ public class BioAssayCommonFiltersTest extends TestCase {
     InputStream is = this.getClass().getResourceAsStream(FILE);
 
     GPRReader gprr = new GPRReader(is);
-    gprr.addAllFieldsToRead();
+    //gprr.addAllFieldsToRead();
+    gprr.addFieldToRead("Dia.");
+    gprr.addFieldToRead("F635 SD");
+    gprr.addFieldToRead("F532 SD");
+    gprr.addFieldToRead("Ratio of Medians (532/635)");
 
     this.bioAssay = gprr.read();
   }
@@ -55,40 +59,32 @@ public class BioAssayCommonFiltersTest extends TestCase {
 
     BioAssayFilter filter = new BioAssayAbscentSpotFilter();
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(ROW_COUNT - 361, result.size());
+    assertEquals(ROW_COUNT - 361, this.bioAssay.filter(filter).size());
   }
 
   public void testAllBadFlagFilter() {
 
     BioAssayFilter filter = new BioAssayAllBadFlagsFilter();
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(10079, result.size());
+    assertEquals(10079, this.bioAssay.filter(filter).size());
   }
 
   public void testNotFoundFlagFilter() {
 
     BioAssayFilter filter = new BioAssayNotfoundFeatureFilter();
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(11777, result.size());
+    assertEquals(11777, this.bioAssay.filter(filter).size());
   }
 
   public void testDiameterFilter() {
 
     BioAssayFilter filter = new BioAssayDiameterFeatureFilter(145, 155);
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(ROW_COUNT - 4732, result.size());
+    assertEquals(ROW_COUNT - 4732, this.bioAssay.filter(filter).size());
 
   }
 
@@ -96,40 +92,32 @@ public class BioAssayCommonFiltersTest extends TestCase {
 
     BioAssayFilter filter = new BioAssayMinDiameterFeatureFilter(145);
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(11529, result.size());
+    assertEquals(11529, this.bioAssay.filter(filter).size());
   }
 
   public void testMaxDiameterFilter() {
 
     BioAssayFilter filter = new BioAssayMaxDiameterFeatureFilter(155);
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(6643, result.size());
+    assertEquals(6643, this.bioAssay.filter(filter).size());
   }
 
   public void testHeterogeneousFeatureFilter() {
 
     BioAssayFilter filter = new BioAssayHeterogeneousFeatureFilter(100);
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(9022, result.size());
+    assertEquals(9022, this.bioAssay.filter(filter).size());
   }
 
   public void testMinimalIntensityFilter() {
 
     BioAssayFilter filter = new BioAssayMinimalIntensityFilter(100);
 
-    BioAssay result = this.bioAssay.filter(filter);
-
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(9304, result.size());
+    assertEquals(9304, this.bioAssay.filter(filter).size());
   }
 
   public void testMaxmalIntensityFilter() {
@@ -139,7 +127,25 @@ public class BioAssayCommonFiltersTest extends TestCase {
     BioAssay result = this.bioAssay.filter(filter);
 
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(13141, result.size());
+    assertEquals(13141, this.bioAssay.filter(filter).size());
+  }
+
+  public void testBioAssayIntegerThresholdFilterFilter() {
+
+    BioAssayFilter filter =
+        new BioAssayIntegerThresholdFilter(BioAssay.FIELD_NAME_FLAG, ">=", 0);
+
+    assertEquals(ROW_COUNT, this.bioAssay.size());
+    assertEquals(10079, this.bioAssay.filter(filter).size());
+  }
+
+  public void testBioAssayDoubleThresholdFilterFilter() {
+
+    BioAssayFilter filter =
+        new BioAssayDoubleThresholdFilter("Ratio of Medians (532/635)", ">", 1);
+
+    assertEquals(ROW_COUNT, this.bioAssay.size());
+    assertEquals(558, this.bioAssay.filter(filter).size());
   }
 
 }
