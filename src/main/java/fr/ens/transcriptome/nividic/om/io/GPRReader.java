@@ -52,10 +52,10 @@ public class GPRReader extends ATFReader {
 
   /** Name of double field names. */
   private static final String[] doubleFieldNames =
-      {"Ratio of Medians (635/532)", "Ratio of Means (635/532)",
-          "Median of Ratios (635/532)", "Mean of Ratios (635/532)",
-          "Ratios SD (635/532)", "Rgn Ratio (635/532)", "Rgn R2 (635/532)",
-          "Log Ratio (635/532)", "SNR 635", "SNR 532"};
+      {"Ratio of Medians (532/635)", "Ratio of Means (532/635)",
+          "Median of Ratios (532/635)", "Mean of Ratios (532/635)",
+          "Ratios SD (532/635)", "Rgn Ratio (532/635)", "Rgn R2 (532/635)",
+          "Log Ratio (532/635)", "SNR 635", "SNR 532"};
 
   /**
    * Get the convert of fiednames
