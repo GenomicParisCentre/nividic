@@ -20,13 +20,17 @@
  *
  */
 
-package fr.ens.transcriptome.nividic.om;
+package fr.ens.transcriptome.nividic.om.filters;
 
 import junit.framework.TestCase;
-import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixMFloorRowFilter;
-import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixMThresholdRowFilter;
-import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixRowNAFilter;
+import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.BioAssayFactory;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
+import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
+import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixDoubleThresholdRowFilter;
 import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixRowFilter;
+import fr.ens.transcriptome.nividic.om.filters.ExpressionMatrixRowNAFilter;
 
 /**
  * JUnit test class for ExpressionMatrixNARowFilter
@@ -132,7 +136,7 @@ public class ExpressionMatrixRowFilterTest extends TestCase {
     assertNotNull(em);
     // printValues(em);
 
-    ExpressionMatrixRowFilter emrf = new ExpressionMatrixRowNAFilter();
+    ExpressionMatrixRowFilter emrf = new ExpressionMatrixRowNAFilter(2 / 3);
 
     ExpressionMatrix em2 = emrf.filter(em);
     ExpressionMatrixDimension mMatrix2 = em2.getDefaultDimension();
@@ -143,45 +147,6 @@ public class ExpressionMatrixRowFilterTest extends TestCase {
     for (int i = 0; i < em2.getRowCount(); i++) {
       assertTrue(emrf.testRow(mMatrix2.getRowToArray(ids[i])));
     }
-  }
-
-  public void testExpressionMatrixMThresholdRowFilter() {
-
-    ExpressionMatrix em = makeExpressionMatrix();
-    em.addRow("NAN");
-    assertNotNull(em);
-    // printValues(em);
-
-    ExpressionMatrixRowFilter emrf = new ExpressionMatrixMThresholdRowFilter();
-
-    ExpressionMatrix em2 = emrf.filter(em);
-    ExpressionMatrixDimension mMatrix2 = em2.getDefaultDimension();
-
-    final String[] ids = em2.getRowNames();
-    for (int i = 0; i < em2.getRowCount(); i++) {
-      assertTrue(emrf.testRow(mMatrix2.getRowToArray(ids[i])));
-    }
-
-  }
-
-  public void testExpressionMatrixMFloorRowFilter() {
-
-    ExpressionMatrix em = makeExpressionMatrix();
-    em.addRow("NAN");
-    assertNotNull(em);
-    // printValues(em);
-
-    ExpressionMatrixRowFilter emrf = new ExpressionMatrixMFloorRowFilter();
-
-    ExpressionMatrix em2 = emrf.filter(em);
-    ExpressionMatrixDimension mMatrix2 = em2.getDefaultDimension();
-
-    // printValues(em2);
-    final String[] ids = em2.getRowNames();
-    for (int i = 0; i < em2.getRowCount(); i++) {
-      assertTrue(emrf.testRow(mMatrix2.getRowToArray(ids[i])));
-    }
-
   }
 
 }
