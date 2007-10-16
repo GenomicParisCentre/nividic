@@ -38,6 +38,7 @@ import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.DesignFactory;
 import fr.ens.transcriptome.nividic.om.design.Slide;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatRegistery;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 
 /**
@@ -127,7 +128,7 @@ public class GoulpharDesignReader extends InputStreamDesignReader {
             else
               sourceFile = rootFilename + GOULPHAR_RESULT_EXTENSION;
 
-            slide.setSourceFormat(BioAssayFormat.IDMA);
+            slide.setSourceFormat(BioAssayFormatRegistery.IDMA_BIOASSAY_FORMAT);
           }
 
           slide.setSource(new FileDataSource(this.baseDir, sourceFile));

@@ -37,11 +37,9 @@ import fr.ens.transcriptome.nividic.om.design.Slide;
 import fr.ens.transcriptome.nividic.om.design.SlideDescription;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormatFinderInputStream;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatRegistery;
 import fr.ens.transcriptome.nividic.om.io.InputStreamBioAssayReader;
-import fr.ens.transcriptome.nividic.om.io.GPRReader;
-import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
-import fr.ens.transcriptome.nividic.sgdb.io.TotalSummaryReader;
 
 /**
  * This class implements a slide object.
@@ -299,23 +297,7 @@ class SlideImpl implements Slide {
       is = finder;
     }
 
-    switch (format) {
-
-    case IDMA:
-      reader = new IDMAReader(is);
-      break;
-
-    case TOTALSUMMARY:
-
-      reader = new TotalSummaryReader(is);
-      break;
-
-    case GPR:
-    default:
-      reader = new GPRReader(is);
-      break;
-
-    }
+    reader = format.getBioAssayReader(is);
 
     reader.addAllFieldsToRead();
     BioAssay result = reader.read();
@@ -323,7 +305,7 @@ class SlideImpl implements Slide {
 
     setBioAssay(result);
 
-    if (format == BioAssayFormat.GPR)
+    if (BioAssayFormatRegistery.GPR_BIOASSAY_FORMAT.equals(format.getType()))
       DesignUtils.addBioAssayScanSettingToDesign(this);
 
     final HistoryEntry entry =

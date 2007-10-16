@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatRegistery;
 
 /**
  * This class provides utility methods for DataSource.
@@ -80,9 +81,9 @@ public final class DataSourceUtils {
       return null;
 
     if (source.getSourceInfo().startsWith(SGDB_URL_PREFIX))
-      return BioAssayFormat.GPR;
+      return BioAssayFormatRegistery.GPR_BIOASSAY_FORMAT;
 
-    return BioAssayFormat.getBioAssayFormat(sourceInfo);
+    return BioAssayFormatRegistery.getBioAssayFormat(sourceInfo);
   }
 
   //

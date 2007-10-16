@@ -27,8 +27,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BioAssayFormatFinderInputStream extends InputStream {
 
@@ -38,10 +36,9 @@ public class BioAssayFormatFinderInputStream extends InputStream {
 
   private static final String MAGIC_IMAGENE = "Begin Header";
   private static final String MAGIC_IDMA = "ID\tName\tR\tRb\tG\tGb\tMnorm\tA";
-  private static final String MAGIC_IDMA_QUOTES = "\"ID\"\t\"Name\"\t\"R\"\t\"Rb\"\t\"G\"\t\"Gb\"\t\"Mnorm\"\t\"A\"";
-  private static final String MAGIC_TOTAL_SUMMARY = "Name\tmedianMnorm\tmedianA\tSDMnorm\tn\ttotal n";
-  private static final String MAGIC_TOTAL_SUMMARY_QUOTES = "\"Name\"\t\"medianMnorm\"\t\"medianA\"\t\"SDMnorm\"\t\"n\"\t\"total n\"";
-
+  private static final String MAGIC_IDMA_QUOTES =
+      "\"ID\"\t\"Name\"\t\"R\"\t\"Rb\"\t\"G\"\t\"Gb\"\t\"Mnorm\"\t\"A\"";
+  
   private static final String MAGIC_ATF = "ATF";
   private static final String MAGIC_GPR = "Type=GenePix Results";
   private static final String MAGIC_GAL = "Type=GenePix ArrayList";
@@ -70,51 +67,21 @@ public class BioAssayFormatFinderInputStream extends InputStream {
       BufferedReader reader = new BufferedReader(new InputStreamReader(bais));
 
       String line;
-      List<String> lines = new ArrayList<String>();
+      StringBuilder lines = new StringBuilder();
 
-      while ((line = reader.readLine()) != null)
-        lines.add(line);
+      while ((line = reader.readLine()) != null) {
+        lines.append(line);
+        lines.append("\n");
+      }
 
-      return testTypes(lines);
+      return BioAssayFormatRegistery.getBioAssayFormatFromFirstLines(lines
+          .toString());
 
     } catch (IOException e) {
 
       throw new NividicIOException("Unable to define the format");
     }
 
-  }
-
-  private BioAssayFormat testTypes(final List<String> lines) {
-
-    if (lines.size() < 1)
-      return null;
-
-    final String firstLine = lines.get(0);
-
-    if (firstLine.startsWith("Begin Header"))
-      return BioAssayFormat.IMAGENE;
-
-    if (firstLine.startsWith(MAGIC_IDMA)
-        || firstLine.startsWith(MAGIC_IDMA_QUOTES))
-      return BioAssayFormat.IDMA;
-
-    if (firstLine.startsWith(MAGIC_TOTAL_SUMMARY)
-        || firstLine.startsWith(MAGIC_TOTAL_SUMMARY_QUOTES))
-      return BioAssayFormat.TOTALSUMMARY;
-
-    if (firstLine.startsWith(MAGIC_ATF)) {
-
-      for (String line : lines) {
-        if (line.contains(MAGIC_GPR))
-          return BioAssayFormat.GPR;
-
-        if (line.contains(MAGIC_GAL))
-          return BioAssayFormat.GAL;
-      }
-
-    }
-
-    return null;
   }
 
   /**

@@ -46,6 +46,7 @@ import fr.ens.transcriptome.nividic.om.filters.DesignFilter;
 import fr.ens.transcriptome.nividic.om.impl.BiologicalName;
 import fr.ens.transcriptome.nividic.om.impl.HistoryImpl;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatRegistery;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.om.samples.Samples;
 import fr.ens.transcriptome.nividic.om.samples.SamplesFactory;
@@ -735,7 +736,8 @@ public class DesignImpl implements Design {
     if (formatName == null)
       setSourceFormat(slideName, (BioAssayFormat) null);
     else {
-      BioAssayFormat format = BioAssayFormat.getBioAssayFormat(formatName);
+      BioAssayFormat format =
+          BioAssayFormatRegistery.getBioAssayFormat(formatName);
       setSourceFormat(slideName, format);
     }
   }

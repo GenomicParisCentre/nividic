@@ -24,22 +24,13 @@ package fr.ens.transcriptome.nividic.om.io;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import fr.ens.transcriptome.nividic.sgdb.io.TotalSummaryReader;
-import fr.ens.transcriptome.nividic.sgdb.io.TotalSummaryWriter;
+import java.util.List;
 
 /**
  * Define an enum for the BioAssay files format.
  * @author Laurent Jourdren
  */
-public enum BioAssayFormat {
-
-  GPR("GPR", "Genepix Result File", ".gpr", true), GAL("GAL",
-      "Genepix Array List File", ".gal", false), IDMA("IDMA",
-      "Goulphar IDMA File", ".gal", true), TOTALSUMMARY("TOTALSUMMARY",
-      "Goulphar Total Summary result File", ".txt", true), IMAGENE("IMAGENE",
-      "Imagene Result File", ".txt", true), IMAGENE_ARRAYLIST(
-      "IMAGENE_ARRAYLIST", "Imagene Array list File", ".txt", false);
+public abstract class BioAssayFormat {
 
   private String type;
   private String description;
@@ -88,30 +79,8 @@ public enum BioAssayFormat {
    * @return a BioAssayReader object to read the data
    * @throws NividicIOException if an error occurs while creating the reader
    */
-  public InputStreamBioAssayReader getBioAssayReader(final InputStream is)
-      throws NividicIOException {
-
-    switch (this) {
-
-    case GAL:
-      return new GALReader(is);
-
-    case GPR:
-      return new GPRReader(is);
-
-    case IDMA:
-      return new IDMAReader(is);
-
-    case TOTALSUMMARY:
-      return new TotalSummaryReader(is);
-
-    case IMAGENE_ARRAYLIST:
-      return new ImaGeneArrayListReader(is);
-
-    default:
-      return null;
-    }
-  }
+  public abstract InputStreamBioAssayReader getBioAssayReader(
+      final InputStream is) throws NividicIOException;
 
   /**
    * Get the BioAssayWriter for the format.
@@ -119,61 +88,28 @@ public enum BioAssayFormat {
    * @return a BioAssayWriter object to write the data
    * @throws NividicIOException if an error occurs while creating the writer
    */
-  public BioAssayWriter getBioAssayWriter(final OutputStream os)
-      throws NividicIOException {
-
-    switch (this) {
-
-    case GAL:
-      return new GALWriter(os);
-
-    case GPR:
-      return new GPRWriter(os);
-
-    case IDMA:
-      return new GPRWriter(os);
-
-    case TOTALSUMMARY:
-      return new TotalSummaryWriter(os);
-
-    case IMAGENE_ARRAYLIST:
-      return new ImaGeneArrayListWriter(os);
-
-    default:
-      return null;
-    }
-  }
-
-  //
-  // Other methods
-  //
+  public abstract BioAssayWriter getBioAssayWriter(final OutputStream os)
+      throws NividicIOException;
 
   /**
-   * Get a BioAssayFormat from its type.
-   * @param type Type of the BioAssayFormat
-   * @return a BioAssayFormat enum
+   * Check if the first lines come from the format.
+   * @param firstLines first lines of the file to test
+   * @return true if the String come from the format
    */
-  public static BioAssayFormat getBioAssayFormat(final String type) {
-
-    if (type == null)
-      return null;
-
-    String s = type.trim();
-
-    BioAssayFormat[] values = BioAssayFormat.values();
-
-    for (int i = 0; i < values.length; i++)
-      if (s.equalsIgnoreCase(values[i].getType()))
-        return values[i];
-
-    return null;
-  }
+  public abstract boolean testFormat(final String firstLines);
 
   //
   // Constructor
   //
 
-  BioAssayFormat(final String type, final String description,
+  /**
+   * Public constructor.
+   * @param type get the type of the format
+   * @param description Description of the format
+   * @param extension extension for the file format
+   * @param result true if the format is a result file
+   */
+  public BioAssayFormat(final String type, final String description,
       final String extension, final boolean result) {
 
     this.type = type;
