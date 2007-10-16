@@ -98,6 +98,16 @@ public abstract class BioAssayFormat {
    */
   public abstract boolean testFormat(final String firstLines);
 
+  /**
+   * toString method.
+   * @return the type of the format
+   */
+  @Override
+  public String toString() {
+
+    return type;
+  }
+
   //
   // Constructor
   //
