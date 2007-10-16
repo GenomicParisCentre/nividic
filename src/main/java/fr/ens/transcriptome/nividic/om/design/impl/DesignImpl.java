@@ -812,8 +812,8 @@ public class DesignImpl implements Design {
     if (slideName == null)
       throw new NullPointerException("Slide name is null");
 
-    if (bioassay == null)
-      throw new NullPointerException("The biossay for the slide is null");
+    // if (bioassay == null)
+    // throw new NullPointerException("The biossay for the slide is null");
 
     if (!isSlide(slideName))
       throw new NividicRuntimeException("The slide doesn't exists");

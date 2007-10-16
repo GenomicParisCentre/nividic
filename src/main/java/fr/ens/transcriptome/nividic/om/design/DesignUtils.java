@@ -215,7 +215,7 @@ public final class DesignUtils {
 
         slide.setSource(new FileDataSource(file));
 
-        if (bioAssayAlreadyLoaded)
+        if (!bioAssayAlreadyLoaded)
           slide.setBioAssay(null);
 
       } catch (NividicIOException e) {
