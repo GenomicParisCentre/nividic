@@ -24,8 +24,10 @@ package fr.ens.transcriptome.nividic.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +37,8 @@ import java.util.List;
  * @author Laurent jourdren
  */
 public final class NividicUtils {
+
+  private static int BUFFER_SIZE = 32 * 1024;
 
   /**
    * Do nothing.
@@ -389,6 +393,41 @@ public final class NividicUtils {
       result.add(Boolean.valueOf(array[i]));
 
     return result;
+  }
+
+  /**
+   * Write an inputStream to an outputStream
+   * @param is Input stream
+   * @param os output stream
+   * @throws IOException if an error occurs while reading or writing data
+   */
+  public static void writeInputStream(final InputStream is,
+      final OutputStream os) throws IOException {
+
+    if (is == null || os == null)
+      return;
+
+    byte[] buf = new byte[BUFFER_SIZE];
+    int i = 0;
+
+    while ((i = is.read(buf)) != -1)
+      os.write(buf, 0, i);
+
+  }
+
+  /**
+   * Write an inputStream to a File
+   * @param is Input stream
+   * @param outputFile output File
+   * @throws IOException if an error occurs while reading or writing data
+   */
+  public static void writeInputStream(final InputStream is,
+      final File outputFile) throws IOException {
+
+    if (outputFile == null)
+      throw new NullPointerException("outputFile is null");
+
+    writeInputStream(is, new FileOutputStream(outputFile));
   }
 
   //

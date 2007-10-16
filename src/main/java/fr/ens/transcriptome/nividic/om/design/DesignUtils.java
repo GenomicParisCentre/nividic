@@ -23,14 +23,19 @@
 package fr.ens.transcriptome.nividic.om.design;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.GenepixResults;
 import fr.ens.transcriptome.nividic.om.PhysicalConstants;
+import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
-import fr.ens.transcriptome.nividic.om.io.GPRWriter;
+import fr.ens.transcriptome.nividic.om.io.BioAssayWriter;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 import fr.ens.transcriptome.nividic.util.StringUtils;
 
 /**
@@ -201,26 +206,32 @@ public final class DesignUtils {
 
       try {
 
-        boolean bioAssayAlreadyLoaded = false;
+        if (slide.getBioAssay() == null) {
 
-        if (slide.getBioAssay() == null)
-          slide.loadSource();
-        else
-          bioAssayAlreadyLoaded = true;
+          // slide.loadSource();
 
-        GPRWriter gw = new GPRWriter(file);
-        gw.addAllFieldsToWrite();
+          final DataSource source = slide.getSource();
 
-        gw.write(slide.getBioAssay());
+          if (source != null)
+            NividicUtils.writeInputStream(source.getInputStream(), file);
 
-        slide.setSource(new FileDataSource(file));
+        } else {
 
-        if (!bioAssayAlreadyLoaded)
-          slide.setBioAssay(null);
+          BioAssayWriter writer =
+              slide.getFormat().getBioAssayWriter(new FileOutputStream(file));
+
+          writer.addAllFieldsToWrite();
+          writer.write(slide.getBioAssay());
+        }
 
       } catch (NividicIOException e) {
         e.printStackTrace();
         continue;
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+        continue;
+      } catch (IOException e) {
+        e.printStackTrace();
       }
     }
 
