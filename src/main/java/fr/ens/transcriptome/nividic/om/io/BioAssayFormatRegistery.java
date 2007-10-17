@@ -114,7 +114,7 @@ public final class BioAssayFormatRegistery {
       };
   /** IDMA BioAssayFormat. */
   public static final BioAssayFormat IDMA_BIOASSAY_FORMAT =
-      new BioAssayFormat("IDMA", "Goulphar IDMA File", ".gal", true) {
+      new BioAssayFormat("IDMA", "Goulphar IDMA File", ".idma", true) {
 
         @Override
         public InputStreamBioAssayReader getBioAssayReader(final InputStream is)
