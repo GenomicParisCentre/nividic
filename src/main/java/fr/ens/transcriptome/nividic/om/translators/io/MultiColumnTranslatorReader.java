@@ -202,7 +202,7 @@ public class MultiColumnTranslatorReader {
     try {
       setInputStream(new FileInputStream(file));
     } catch (FileNotFoundException e) {
-      throw new NividicIOException("Error while reading file : "
+      throw new NividicIOException("File not found : "
           + file.getName());
     }
 
