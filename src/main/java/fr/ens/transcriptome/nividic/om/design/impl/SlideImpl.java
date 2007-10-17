@@ -235,7 +235,7 @@ class SlideImpl implements Slide {
     if (slideName == null)
       throw new NividicRuntimeException("The slide doesn't exists");
 
-    return this.design.getFormat(slideName);
+    return this.design.getSourceFormat(slideName);
   }
 
   /*
