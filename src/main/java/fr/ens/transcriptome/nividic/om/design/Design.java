@@ -189,7 +189,7 @@ public interface Design extends BiologicalObject {
    * @param slideName Name of the slide
    * @return the format of the data source
    */
-  BioAssayFormat getFormat(final String slideName);
+  BioAssayFormat getSourceFormat(final String slideName);
 
   /**
    * Extract a slide object from the design.

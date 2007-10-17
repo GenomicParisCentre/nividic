@@ -289,7 +289,15 @@ public class DesignImpl implements Design {
     this.slides.put(newName, slideId);
     this.slidesReverse.put(slideId, newName);
 
-    final int index = Collections.binarySearch(this.slidesOrder, oldName);
+    int index = -1;
+    int count = 0;
+    for (String s : this.slidesOrder)
+      if (s.equals(oldName))
+        index = count;
+      else
+        count++;
+
+    // final int index = Collections.binarySearch(this.slidesOrder, oldName);
     this.slidesOrder.set(index, newName);
   }
 
@@ -785,7 +793,7 @@ public class DesignImpl implements Design {
    * @param slideName Name of the slide
    * @return the format of the data source
    */
-  public BioAssayFormat getFormat(final String slideName) {
+  public BioAssayFormat getSourceFormat(final String slideName) {
 
     if (slideName == null)
       throw new NullPointerException("Slide name is null");
