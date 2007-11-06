@@ -77,6 +77,15 @@ public class SelectAnnotationFieldsTranslator extends BasicTranslator implements
     return this.translator.getLinkInfo(translatedId, field);
   }
 
+  /**
+   * Get the available identifiers by the translator if possible.
+   * @return a array of string with the identifiers
+   */
+  public String[] getIds() {
+
+    return this.translator.getIds();
+  }
+
   //
   // Constructor
   //

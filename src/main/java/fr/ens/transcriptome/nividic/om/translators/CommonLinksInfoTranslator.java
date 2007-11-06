@@ -67,7 +67,7 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
 
     return field.equals("TranscriptID")
         || field.equals("MGI") || field.equals("EntrezID")
-        || field.equals("SGDID");
+        || field.equals("SGDID") || field.equals("Phatr2 Protein HyperLink");
   }
 
   /**
@@ -101,11 +101,25 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
       return "http://db.yeastgenome.org/cgi-bin/locus.pl?dbid=" + translatedId;
     }
 
+    if (field.equals("Phatr2 Protein HyperLink")) {
+      return "http://genome.jgi-psf.org/cgi-bin/dispGeneModel?db=Phatr2&tid="
+          + translatedId;
+    }
+
     return null;
   }
 
+  /**
+   * Get the available identfiers by the translator if possible.
+   * @return a array of string with the identifiers
+   */
+  public String[] getIds() {
+
+    return this.translator.getIds();
+  }
+
   //
-  // Construtor
+  // Constructor
   //
 
   /**

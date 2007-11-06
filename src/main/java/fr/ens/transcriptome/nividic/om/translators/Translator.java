@@ -126,4 +126,10 @@ public interface Translator {
    */
   Translator getReverseTranslator();
 
+  /**
+   * Get the available identfiers by the translator if possible.
+   * @return a array of string with the identifiers
+   */
+  String[] getIds();
+
 }

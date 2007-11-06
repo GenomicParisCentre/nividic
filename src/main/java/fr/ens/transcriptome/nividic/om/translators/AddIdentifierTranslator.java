@@ -119,6 +119,15 @@ public class AddIdentifierTranslator extends BasicTranslator implements
       this.newFieldName = newFieldName;
   }
 
+  /**
+   * Get the available identfiers by the translator if possible.
+   * @return a array of string with the identifiers
+   */
+  public String[] getIds() {
+
+    return this.translator.getIds();
+  }
+
   //
   // Constructor
   //

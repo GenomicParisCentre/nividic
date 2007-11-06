@@ -225,4 +225,13 @@ public abstract class BasicTranslator implements Translator, Serializable {
     return null;
   }
 
+  /**
+   * Get the available identifiers by the translator if possible.
+   * @return a array of string with the identifiers
+   */
+  public String[] getIds() {
+
+    return null;
+  }
+
 }

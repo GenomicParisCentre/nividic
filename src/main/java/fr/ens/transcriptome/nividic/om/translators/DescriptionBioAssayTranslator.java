@@ -31,6 +31,7 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.SpotIterator;
 import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.Slide;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This class implement a feature annotation for BioAssay
@@ -164,6 +165,15 @@ public class DescriptionBioAssayTranslator extends BasicTranslator implements
   public void clear() {
 
     this.annotations.clear();
+  }
+
+  /**
+   * Get the available identfiers by the translator if possible.
+   * @return a array of string with the identifiers
+   */
+  public String[] getIds() {
+
+    return NividicUtils.toArray(this.annotations.keySet());
   }
 
   //

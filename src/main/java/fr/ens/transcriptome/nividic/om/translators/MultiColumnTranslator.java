@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This class implements a translator for multicolumn annotation. The first
@@ -143,6 +144,15 @@ public class MultiColumnTranslator extends BasicTranslator implements
     System.arraycopy(data, 1, result, 0, size - 1);
 
     return result;
+  }
+
+  /**
+   * Get the available identfiers by the translator if possible.
+   * @return a array of string with the identifiers
+   */
+  public String[] getIds() {
+
+    return NividicUtils.toArray(this.annotations.keySet());
   }
 
   //
