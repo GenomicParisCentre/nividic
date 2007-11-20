@@ -478,7 +478,8 @@ public class RSConnection {
 
       REXP exists = c.eval("file.exists(\"" + filename + "\")");
       if (exists.asBool().isTRUE())
-        c.voidEval("unlink(\"" + filename + "\", recursive = FALSE)");
+
+        c.voidEval("file.remove(\"" + filename + "\")");
 
     } catch (RSrvException e) {
       e.printStackTrace();
