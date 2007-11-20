@@ -269,8 +269,8 @@ public class JSShell {
     this.engine = new RhinoJavaScriptEngine();
     // this.engine = new JSR223JavaScriptEngine();
 
-    System.out.println("Javascript engine: "
-        + this.engine.getClass().getSimpleName());
+//    System.out.println("Javascript engine: "
+//        + this.engine.getClass().getSimpleName());
 
     this.engine.init();
     this.scriptLoader = new ScriptLoader(this.engine);
