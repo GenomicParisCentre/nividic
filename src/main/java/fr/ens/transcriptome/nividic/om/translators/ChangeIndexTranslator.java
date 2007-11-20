@@ -48,7 +48,17 @@ public class ChangeIndexTranslator extends BasicTranslator implements
    */
   public String getLinkInfo(final String translatedId, final String field) {
 
-    return this.translator.getLinkInfo(translatedId, field);
+    return this.translator.getLinkInfo(this.index.get(translatedId), field);
+  }
+
+  /**
+   * Test if the link information is available for the field
+   * @param field Field to test
+   * @return true if link information is available
+   */
+  public boolean isLinkInfo(final String field) {
+
+    return this.translator.isLinkInfo(field);
   }
 
   /**
@@ -108,8 +118,7 @@ public class ChangeIndexTranslator extends BasicTranslator implements
    * @param translator Translator to use
    * @param field Field to use for the new index
    */
-  public ChangeIndexTranslator(final Translator translator,
-      final String field) {
+  public ChangeIndexTranslator(final Translator translator, final String field) {
 
     if (translator == null)
       throw new NullPointerException("Translator is null");
