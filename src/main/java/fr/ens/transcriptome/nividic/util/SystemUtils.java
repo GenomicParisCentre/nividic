@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -35,6 +35,7 @@ import java.net.URLDecoder;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 
 /**
@@ -140,7 +141,9 @@ public final class SystemUtils {
       if (url == null)
         return null;
       InputStream is = url.openStream();
-      BufferedReader in = new BufferedReader(new InputStreamReader(is));
+      BufferedReader in =
+          new BufferedReader(new InputStreamReader(is,
+              Globals.DEFAULT_FILE_ENCODING));
       StringBuffer sb = new StringBuffer();
       boolean first = true;
       String line;

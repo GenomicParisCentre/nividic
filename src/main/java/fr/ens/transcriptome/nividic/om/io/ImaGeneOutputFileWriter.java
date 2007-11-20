@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
@@ -439,14 +440,16 @@ public class ImaGeneOutputFileWriter extends BioAssayWriter {
   @Override
   protected void writeHeaders() throws NividicIOException {
 
-    bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
-
-    final BioAssay bioAssay = getBioAssay();
-    final Annotation annot = bioAssay.getAnnotation();
-
-    Header header = new Header(annot);
-
     try {
+
+      bw =
+          new BufferedWriter(new OutputStreamWriter(getOutputStream(),
+              Globals.DEFAULT_FILE_ENCODING));
+
+      final BioAssay bioAssay = getBioAssay();
+      final Annotation annot = bioAssay.getAnnotation();
+
+      Header header = new Header(annot);
 
       bw.write(header.getHeader());
       bw.write(writeColumnsHeader());

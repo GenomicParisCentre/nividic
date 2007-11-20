@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -27,7 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
@@ -70,7 +72,15 @@ public class ATFWriter extends BioAssayWriter {
   }
 
   protected void writeHeaders() throws NividicIOException {
-    bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
+
+    try {
+      bw =
+          new BufferedWriter(new OutputStreamWriter(getOutputStream(),
+              Globals.DEFAULT_FILE_ENCODING));
+    } catch (UnsupportedEncodingException e) {
+      throw new NividicIOException("Error while writing stream header : "
+          + e.getMessage());
+    }
 
     // Write MagicString
 
@@ -188,7 +198,7 @@ public class ATFWriter extends BioAssayWriter {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *                 the file is null.
+   *             the file is null.
    */
   public ATFWriter(final File file) throws NividicIOException {
     super(file);

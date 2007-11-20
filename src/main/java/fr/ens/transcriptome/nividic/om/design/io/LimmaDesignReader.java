@@ -32,13 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.PhysicalConstants;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.datasources.DataSourceUtils;
-import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
 import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.DesignFactory;
 import fr.ens.transcriptome.nividic.om.design.SlideDescription;
@@ -60,20 +60,20 @@ public class LimmaDesignReader extends InputStreamDesignReader {
   @Override
   public Design read() throws NividicIOException {
 
-    setBufferedReader(new BufferedReader(
-        new InputStreamReader(getInputStream())));
-
-    BufferedReader br = getBufferedReader();
-    final String separator = getSeparatorField();
-    String line = null;
-
     Map<String, List<String>> data = new HashMap<String, List<String>>();
     List<String> fieldnames = new ArrayList<String>();
 
-    boolean firstLine = true;
-    // String ref = null;
-
     try {
+
+      setBufferedReader(new BufferedReader(new InputStreamReader(
+          getInputStream(), Globals.DEFAULT_FILE_ENCODING)));
+
+      BufferedReader br = getBufferedReader();
+      final String separator = getSeparatorField();
+      String line = null;
+
+      boolean firstLine = true;
+      // String ref = null;
 
       while ((line = br.readLine()) != null) {
 

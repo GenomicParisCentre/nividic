@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -34,12 +34,13 @@ import fr.ens.transcriptome.nividic.om.BioAssay;
 public class IDMAWriter extends BioAssayTabularWriter {
 
   /** Order of the fields. */
-  public static final String[] FIELDS_ORDER = {"ID", "Name", "R", "Rb", "G",
-      "Gb", "Mnorm", "A"};
+  public static final String[] FIELDS_ORDER =
+      {"ID", "Name", "R", "Rb", "G", "Gb", "Mnorm", "A"};
 
   /** Fields names usualy readed in a ID-M-A file. */
-  private static final String[] DEFAULT_FIELD_TO_WRITE = {
-      BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_M, BioAssay.FIELD_NAME_A};
+  private static final String[] DEFAULT_FIELD_TO_WRITE =
+      {BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_M, BioAssay.FIELD_NAME_A,
+          "R", "G"};
 
   //
   // Implememented methods
@@ -78,7 +79,7 @@ public class IDMAWriter extends BioAssayTabularWriter {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public IDMAWriter(final File file) throws NividicIOException {
     super(file);

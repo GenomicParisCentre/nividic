@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.NoSuchElementException;
 
 import org.biojava.bio.BioException;
@@ -37,6 +38,7 @@ import org.biojavax.bio.seq.RichSequence;
 import org.biojavax.bio.seq.RichSequenceIterator;
 import org.biojavax.bio.seq.RichSequence.IOTools;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.translators.BasicTranslator;
 
@@ -99,7 +101,8 @@ public class FastaTranslator extends BasicTranslator {
 
     try {
       BufferedReader reader =
-          new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+          new BufferedReader(new InputStreamReader(new FileInputStream(file),
+              Globals.DEFAULT_FILE_ENCODING));
 
       RichSequenceIterator iterator = IOTools.readFastaDNA(reader, null);
 
@@ -119,6 +122,10 @@ public class FastaTranslator extends BasicTranslator {
       throw new NividicRuntimeException("Error reading fasta file: "
           + e.getMessage());
     } catch (BioException e) {
+
+      throw new NividicRuntimeException("Error reading fasta file: "
+          + e.getMessage());
+    } catch (UnsupportedEncodingException e) {
 
       throw new NividicRuntimeException("Error reading fasta file: "
           + e.getMessage());

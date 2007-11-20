@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.PhysicalConstants;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
@@ -48,7 +49,7 @@ public class LimmaDesignWriter extends DesignWriter {
 
   private BufferedWriter bw;
   private static final String SEPARATOR = "\t";
-  private static final String NEWLINE = "\r\n"; //System.getProperty("line.separator");
+  private static final String NEWLINE = "\r\n"; // System.getProperty("line.separator");
   private boolean writeScanLabelsSettings = true;
 
   @Override
@@ -57,12 +58,13 @@ public class LimmaDesignWriter extends DesignWriter {
     if (design == null)
       throw new NullPointerException("Design is null");
 
-    bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
-
-    if (this.bw == null)
-      throw new NividicIOException("No stream to write");
-
     try {
+      bw =
+          new BufferedWriter(new OutputStreamWriter(getOutputStream(),
+              Globals.DEFAULT_FILE_ENCODING));
+
+      if (this.bw == null)
+        throw new NividicIOException("No stream to write");
 
       List<String> labels = design.getLabelsNames();
       List<String> descriptionFields = design.getDescriptionFieldsNames();
@@ -184,7 +186,7 @@ public class LimmaDesignWriter extends DesignWriter {
   /**
    * Set if the scan labels settings must be written.
    * @param writeScanLabelsSettings true if he scan labels settings must be
-   *          written
+   *            written
    */
   void setWriteScanLabelsSettings(final boolean writeScanLabelsSettings) {
     this.writeScanLabelsSettings = writeScanLabelsSettings;
@@ -220,7 +222,7 @@ public class LimmaDesignWriter extends DesignWriter {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public LimmaDesignWriter(final File file) throws NividicIOException {
 

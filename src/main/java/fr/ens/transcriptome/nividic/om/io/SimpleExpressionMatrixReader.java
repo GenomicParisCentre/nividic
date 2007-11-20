@@ -27,10 +27,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixFactory;
@@ -168,8 +170,13 @@ public class SimpleExpressionMatrixReader extends
     if (getInputStream() == null)
       throw new NividicIOException("No stream to read");
 
-    setBufferedReader(new BufferedReader(
-        new InputStreamReader(getInputStream())));
+    try {
+      setBufferedReader(new BufferedReader(new InputStreamReader(
+          getInputStream(), Globals.DEFAULT_FILE_ENCODING)));
+    } catch (UnsupportedEncodingException e1) {
+      new NividicIOException("Unknown encoding: "
+          + Globals.DEFAULT_FILE_ENCODING);
+    }
 
     readHeader();
 

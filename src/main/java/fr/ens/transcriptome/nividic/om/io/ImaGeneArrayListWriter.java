@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -28,8 +28,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
+/**
+ * This class write ImaGene array lists.
+ * @author Laurent Jourdren
+ */
 public class ImaGeneArrayListWriter extends BioAssayWriter {
 
   private static final String DOS_EOL = "\r\n";
@@ -48,9 +53,9 @@ public class ImaGeneArrayListWriter extends BioAssayWriter {
   public static final String FIELD_NAME_COLUMN = "Column";
 
   /** Order of the fields. */
-  public static final String[] FIELDS_ORDER = {FIELD_NAME_META_ROW,
-      FIELD_NAME_META_COLUMN, FIELD_NAME_ROW, FIELD_NAME_COLUMN,
-      BioAssay.FIELD_NAME_ID};
+  public static final String[] FIELDS_ORDER =
+      {FIELD_NAME_META_ROW, FIELD_NAME_META_COLUMN, FIELD_NAME_ROW,
+          FIELD_NAME_COLUMN, BioAssay.FIELD_NAME_ID};
 
   protected FieldNameConverter getFieldNameConverter() {
     // TODO Auto-generated method stub
@@ -104,16 +109,18 @@ public class ImaGeneArrayListWriter extends BioAssayWriter {
 
   protected void writeData() throws NividicIOException {
 
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-        getOutputStream()));
-
-    if (bw == null)
-      throw new NividicIOException("No stream to write");
-
-    final int countCol = getColumnCount();
-    final int countRow = getRowColumn();
-
     try {
+
+      BufferedWriter bw =
+          new BufferedWriter(new OutputStreamWriter(getOutputStream(),
+              Globals.DEFAULT_FILE_ENCODING));
+
+      if (bw == null)
+        throw new NividicIOException("No stream to write");
+
+      final int countCol = getColumnCount();
+      final int countRow = getRowColumn();
+
       StringBuffer sb = new StringBuffer();
       for (int i = 0; i < countRow; i++) {
 
@@ -170,7 +177,7 @@ public class ImaGeneArrayListWriter extends BioAssayWriter {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public ImaGeneArrayListWriter(final File file) throws NividicIOException {
     super(file);

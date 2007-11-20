@@ -29,7 +29,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.om.translators.MultiColumnTranslator;
 import fr.ens.transcriptome.nividic.util.StringUtils;
@@ -126,8 +128,13 @@ public class MultiColumnTranslatorReader {
    */
   public MultiColumnTranslator read() throws NividicIOException {
 
-    setBufferedReader(new BufferedReader(
-        new InputStreamReader(getInputStream())));
+    try {
+      setBufferedReader(new BufferedReader(new InputStreamReader(
+          getInputStream(), Globals.DEFAULT_FILE_ENCODING)));
+    } catch (UnsupportedEncodingException e1) {
+      throw new NividicIOException("Unknown encoding: "
+          + Globals.DEFAULT_FILE_ENCODING);
+    }
 
     final boolean removeQuotes = isRemoveQuotes();
 
@@ -202,8 +209,7 @@ public class MultiColumnTranslatorReader {
     try {
       setInputStream(new FileInputStream(file));
     } catch (FileNotFoundException e) {
-      throw new NividicIOException("File not found : "
-          + file.getName());
+      throw new NividicIOException("File not found : " + file.getName());
     }
 
   }

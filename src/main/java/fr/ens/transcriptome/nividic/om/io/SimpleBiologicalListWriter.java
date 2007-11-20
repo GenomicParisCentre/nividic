@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BiologicalList;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
@@ -59,12 +60,13 @@ public class SimpleBiologicalListWriter implements BiologicalListWriter {
     if (this.os == null)
       throw new NividicRuntimeException("The stream to read is null");
 
-    final BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-        this.os));
-
-    Iterator it = list.iterator();
-
     try {
+
+      final BufferedWriter out =
+          new BufferedWriter(new OutputStreamWriter(this.os,
+              Globals.DEFAULT_FILE_ENCODING));
+
+      Iterator<String> it = list.iterator();
 
       while (it.hasNext())
         out.write(it.next() + "\n");
@@ -91,9 +93,10 @@ public class SimpleBiologicalListWriter implements BiologicalListWriter {
     else
       s = "";
 
-    final HistoryEntry entry = new HistoryEntry(
-        this.getClass().getSimpleName(), HistoryActionType.SAVE, s
-            + "RowSize=" + list.size(), HistoryActionResult.PASS);
+    final HistoryEntry entry =
+        new HistoryEntry(this.getClass().getSimpleName(),
+            HistoryActionType.SAVE, s + "RowSize=" + list.size(),
+            HistoryActionResult.PASS);
 
     list.getHistory().add(entry);
   }

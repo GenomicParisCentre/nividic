@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -22,12 +22,10 @@
 
 package fr.ens.transcriptome.nividic.om.io;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Arrays;
 
@@ -49,8 +47,6 @@ public class IDMAIOTest extends TestCase {
     super(arg0);
   }
 
-  
-
   public void testReadWriteIDMA() {
 
     try {
@@ -71,16 +67,16 @@ public class IDMAIOTest extends TestCase {
 
       assertNotNull(b);
 
-      String outputFile = "/tmp/testIDMA.txt";
+      File tmpFile1 = File.createTempFile("idma", ".txt");
 
-      OutputStream os = new FileOutputStream(outputFile);
+      OutputStream os = new FileOutputStream(tmpFile1);
 
       BioAssayWriter baw = new IDMAWriter(os);
       baw.addAllFieldsToWrite();
 
       baw.write(b);
 
-      InputStream is2 = new FileInputStream(outputFile);
+      InputStream is2 = new FileInputStream(tmpFile1);
       InputStreamBioAssayReader bar2 = new IDMAReader(is2);
       bar2.addAllFieldsToRead();
 
@@ -92,9 +88,11 @@ public class IDMAIOTest extends TestCase {
       assertTrue(Arrays.equals(b.getRatios(), b2.getRatios()));
       assertTrue(Arrays.equals(b.getDescriptions(), b2.getDescriptions()));
 
-      String outputFile2 = "/tmp/testIDMA2.txt";
-      OutputStream os2 = new FileOutputStream(outputFile2);
+      File tmpFile2 = File.createTempFile("idma", ".txt");
+
+      OutputStream os2 = new FileOutputStream(tmpFile2);
       BioAssayWriter baw2 = new IDMAWriter(os2);
+      baw2.addAllFieldsToWrite();
       baw2.addFieldToWrite(BioAssay.FIELD_NAME_ID);
       baw2.addFieldToWrite(BioAssay.FIELD_NAME_RATIO);
       baw2.addFieldToWrite(BioAssay.FIELD_NAME_BRIGHT);
@@ -104,7 +102,11 @@ public class IDMAIOTest extends TestCase {
       os2.close();
       os.close();
 
-      assertTrue(NividicUtils.compareFile(outputFile2, outputFile));
+
+      assertTrue(NividicUtils.compareFile(tmpFile2, tmpFile1));
+
+      tmpFile1.delete();
+      tmpFile2.delete();
 
     } catch (Exception e) {
 

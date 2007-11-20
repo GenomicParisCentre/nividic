@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -27,7 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
@@ -104,8 +106,13 @@ public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
     addFieldToRead(getMetaColumnField());
     addFieldToRead(getColumnField());
 
-    setBufferedReader(new BufferedReader(
-        new InputStreamReader(getInputStream())));
+    try {
+      setBufferedReader(new BufferedReader(new InputStreamReader(
+          getInputStream(), Globals.DEFAULT_FILE_ENCODING)));
+    } catch (UnsupportedEncodingException e2) {
+      throw new NividicIOException("Unknown encoding: "
+          + Globals.DEFAULT_FILE_ENCODING);
+    }
 
     readHeader();
     final String[] existingFields = getFieldNamesOrder();
@@ -261,7 +268,7 @@ public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
    * Public constructor.
    * @param file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public BioAssayTextReader(final File file) throws NividicIOException {
 

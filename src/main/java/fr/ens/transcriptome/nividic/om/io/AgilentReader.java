@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
@@ -276,13 +277,13 @@ public class AgilentReader extends InputStreamBioAssayReader {
     private Map<String, List<String>> mapString =
         new HashMap<String, List<String>>();
 
-    private Set<String> FieldsToRead;
+    private Set<String> fieldsToRead;
 
     private int location;
 
     public void setFieldsToRead(final Set<String> fieldsToRead) {
 
-      this.FieldsToRead = fieldsToRead;
+      this.fieldsToRead = fieldsToRead;
     }
 
     @Override
@@ -302,7 +303,7 @@ public class AgilentReader extends InputStreamBioAssayReader {
     @Override
     public void setFloat(final String field, final double value) {
 
-      if (!this.FieldsToRead.contains(field))
+      if (!this.fieldsToRead.contains(field))
         return;
 
       List<Double> doubles =
@@ -313,7 +314,7 @@ public class AgilentReader extends InputStreamBioAssayReader {
     @Override
     public void setInteger(final String field, final int value) {
 
-      if (!this.FieldsToRead.contains(field))
+      if (!this.fieldsToRead.contains(field))
         return;
 
       if (ROW_FIELD.equals(field)) {
@@ -343,7 +344,7 @@ public class AgilentReader extends InputStreamBioAssayReader {
     @Override
     public void setText(final String field, final String value) {
 
-      if (!this.FieldsToRead.contains(field))
+      if (!this.fieldsToRead.contains(field))
         return;
 
       List<String> strings =
@@ -373,7 +374,7 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
       for (final String fieldName : this.getFields()) {
 
-        if (!this.FieldsToRead.contains(fieldName))
+        if (!this.fieldsToRead.contains(fieldName))
           continue;
 
         if (ROW_FIELD.equals(fieldName) || COLUMN_FIELD.equals(fieldName))
@@ -514,14 +515,18 @@ public class AgilentReader extends InputStreamBioAssayReader {
     addFieldToRead(getRowField());
     addFieldToRead(getColumnField());
 
-    final BufferedReader reader =
-        new BufferedReader(new InputStreamReader(getInputStream()));
-
     final BioAssay bioAssay = BioAssayFactory.createBioAssay();
 
-    final TableReader feparams = new AnnotationTableReader(reader, bioAssay);
+    final BufferedReader reader;
 
     try {
+
+      reader =
+          new BufferedReader(new InputStreamReader(getInputStream(),
+              Globals.DEFAULT_FILE_ENCODING));
+
+      final TableReader feparams = new AnnotationTableReader(reader, bioAssay);
+
       feparams.read();
     } catch (IOException e) {
       throw new NividicIOException(e);

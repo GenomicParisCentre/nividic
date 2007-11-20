@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fr.ens.transcriptome.nividic.Globals;
+
 /**
  * This class allow to auto determinate annotations and data columns of matrix
  * files.
@@ -62,7 +64,9 @@ public class ExpressionMatrixFinderInputStream extends InputStream {
         this.cache = readed;
 
       InputStream bais = new ByteArrayInputStream(this.cache);
-      BufferedReader reader = new BufferedReader(new InputStreamReader(bais));
+      BufferedReader reader =
+          new BufferedReader(new InputStreamReader(bais,
+              Globals.DEFAULT_FILE_ENCODING));
 
       String line;
 

@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -171,52 +171,5 @@ public class UniversalBioAssayReaderTest extends TestCase {
     return null;
   }
   
-  public void testReadTotalSummary() throws NividicIOException, IOException {
-
-    String file1 = "/files/total.summary.txt";
-
-    InputStream is = this.getClass().getResourceAsStream(file1);
-    assertNotNull(is);
-
-    InputStreamBioAssayReader bar1 = new UniversalBioAssayReader(is);
-    bar1.addAllFieldsToRead();
-
-    BioAssay b = bar1.read();
-
-    is.close();
-
-    assertNotNull(b);
-
-    String[] fields = b.getFields();
-
-    String[] ids = b.getIds();
-    assertNotNull(ids);
-
-    double[] ms = b.getMs();
-    assertNotNull(ms);
-
-    double[] as = b.getAs();
-    assertNotNull(as);
-
-    double[] sds = b.getStdDevMs();
-    assertNotNull(sds);
-
-    int[] ns = b.getDataFieldInt("n");
-    assertNotNull(ns);
-
-    int[] totalns = b.getDataFieldInt("total n");
-    assertNotNull(totalns);
-
-    assertEquals("Q0045_01   |Q0045|COX1|cytochrome c oxidase subunit I",
-        ids[3]);
-    assertEquals(0.917, ms[3], 0);
-    assertEquals(8.239, as[3], 0);
-    assertEquals(0.398, sds[3], 0);
-    assertEquals(4, ns[3], 0);
-    assertEquals(4, totalns[3], 0);
-
-    // medianMnorm medianA SDMnorm n total n
-    // 0.917 8.239 0.398 4 4
-  }
 
 }

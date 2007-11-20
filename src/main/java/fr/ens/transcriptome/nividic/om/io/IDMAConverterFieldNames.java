@@ -36,6 +36,8 @@ public class IDMAConverterFieldNames extends FieldNameConverter {
   public IDMAConverterFieldNames() {
 
     add(BioAssay.FIELD_NAME_ID, "ID");
+    add(BioAssay.FIELD_NAME_RED, "R");
+    add(BioAssay.FIELD_NAME_GREEN, "G");
     add(BioAssay.FIELD_NAME_A, "A");
     add(BioAssay.FIELD_NAME_M, "Mnorm");
     add(BioAssay.FIELD_NAME_DESCRIPTION, "Name");

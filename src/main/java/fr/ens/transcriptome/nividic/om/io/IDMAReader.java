@@ -33,7 +33,8 @@ import java.io.InputStream;
 public class IDMAReader extends BioAssayTabularReader {
 
   /** Fields names usualy readed in a ID-M-A file. */
-  private static String[] fieldNameInIDMA = {"ID", "Name", "Mnorm", "A"};
+  private static String[] fieldNameInIDMA =
+      {"ID", "Name", "Mnorm", "A", "R", "G"};
   /** Name of integer field names. */
   private static String[] intFieldNames = {"R", "Rb", "G", "Gb"};
   /** Name of double field names. */
@@ -92,7 +93,7 @@ public class IDMAReader extends BioAssayTabularReader {
    * Public constructor
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public IDMAReader(final File file) throws NividicIOException {
 

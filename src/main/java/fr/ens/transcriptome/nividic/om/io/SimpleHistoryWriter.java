@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.History;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
@@ -63,10 +64,11 @@ public class SimpleHistoryWriter implements HistoryWriter {
     if (history == null)
       throw new NividicRuntimeException("History is null");
 
-    final BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-        this.os));
-
     try {
+
+      final BufferedWriter out =
+          new BufferedWriter(new OutputStreamWriter(this.os,
+              Globals.DEFAULT_FILE_ENCODING));
 
       out.write("#Date\tType\tName\tResult\tArguments\tComments\n");
 

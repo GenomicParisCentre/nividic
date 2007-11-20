@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 
@@ -479,12 +480,14 @@ public class AgilentWriter extends BioAssayWriter {
   @Override
   protected void writeHeaders() throws NividicIOException {
 
-    bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
-
-    final BioAssay bioAssay = getBioAssay();
-    final Annotation annot = bioAssay.getAnnotation();
-
     try {
+
+      bw =
+          new BufferedWriter(new OutputStreamWriter(getOutputStream(),
+              Globals.DEFAULT_FILE_ENCODING));
+
+      final BioAssay bioAssay = getBioAssay();
+      final Annotation annot = bioAssay.getAnnotation();
 
       bw.write(writeAgilentHeader(annot, FEPARAMS_NAMES, FEPARAMS_TYPES,
           FEPARAMS_BLOCK, isDoubleFormatStrict()));

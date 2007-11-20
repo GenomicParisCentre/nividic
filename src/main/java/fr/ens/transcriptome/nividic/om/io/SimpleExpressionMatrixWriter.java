@@ -28,11 +28,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrix;
 import fr.ens.transcriptome.nividic.om.ExpressionMatrixDimension;
 import fr.ens.transcriptome.nividic.om.HistoryEntry;
@@ -66,19 +66,21 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
    */
   public void write(final ExpressionMatrix em) throws NividicIOException {
 
-    bw = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
-
-    if (this.bw == null)
-      throw new NividicIOException("No stream to write");
-
-    final int countRow = em.getRowCount();
-
-    final String[] ids = em.getRowNames();
-    final String[] columnNames = getColumns(em);
-    final ExpressionMatrixDimension[] dimensions = getDimensions(em);
-    final Translator annot = getTranslator();
-
     try {
+
+      bw =
+          new BufferedWriter(new OutputStreamWriter(getOutputStream(),
+              Globals.DEFAULT_FILE_ENCODING));
+
+      if (this.bw == null)
+        throw new NividicIOException("No stream to write");
+
+      final int countRow = em.getRowCount();
+
+      final String[] ids = em.getRowNames();
+      final String[] columnNames = getColumns(em);
+      final ExpressionMatrixDimension[] dimensions = getDimensions(em);
+      final Translator annot = getTranslator();
 
       // Write header
 
@@ -280,7 +282,7 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *           the file is null.
+   *             the file is null.
    */
   public SimpleExpressionMatrixWriter(final File file)
       throws NividicIOException {

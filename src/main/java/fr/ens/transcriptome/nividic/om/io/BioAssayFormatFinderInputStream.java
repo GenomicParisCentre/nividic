@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fr.ens.transcriptome.nividic.Globals;
+
 public class BioAssayFormatFinderInputStream extends InputStream {
 
   private InputStream is;
@@ -38,7 +40,7 @@ public class BioAssayFormatFinderInputStream extends InputStream {
   private static final String MAGIC_IDMA = "ID\tName\tR\tRb\tG\tGb\tMnorm\tA";
   private static final String MAGIC_IDMA_QUOTES =
       "\"ID\"\t\"Name\"\t\"R\"\t\"Rb\"\t\"G\"\t\"Gb\"\t\"Mnorm\"\t\"A\"";
-  
+
   private static final String MAGIC_ATF = "ATF";
   private static final String MAGIC_GPR = "Type=GenePix Results";
   private static final String MAGIC_GAL = "Type=GenePix ArrayList";
@@ -64,7 +66,9 @@ public class BioAssayFormatFinderInputStream extends InputStream {
         this.cache = readed;
 
       InputStream bais = new ByteArrayInputStream(this.cache);
-      BufferedReader reader = new BufferedReader(new InputStreamReader(bais));
+      BufferedReader reader =
+          new BufferedReader(new InputStreamReader(bais,
+              Globals.DEFAULT_FILE_ENCODING));
 
       String line;
       StringBuilder lines = new StringBuilder();
