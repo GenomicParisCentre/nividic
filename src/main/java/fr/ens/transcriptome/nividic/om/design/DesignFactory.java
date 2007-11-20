@@ -38,8 +38,8 @@ public final class DesignFactory {
   public static Design create2ColorsDesign() {
 
     final Design d = new DesignImpl();
-    d.addLabel(PhysicalConstants.CY3_COLOR);
     d.addLabel(PhysicalConstants.CY5_COLOR);
+    d.addLabel(PhysicalConstants.CY3_COLOR);
 
     return d;
   }
