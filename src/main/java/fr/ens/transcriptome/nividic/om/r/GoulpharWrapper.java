@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -33,13 +33,19 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.datasources.DataSource;
+import fr.ens.transcriptome.nividic.om.design.Design;
+import fr.ens.transcriptome.nividic.om.design.Slide;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatRegistery;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.GPRWriter;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
 import fr.ens.transcriptome.nividic.om.io.IDMAWriter;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
+import fr.ens.transcriptome.nividic.util.NividicUtils;
 
 /**
  * This class define a wrapper for Goulphar.
@@ -108,6 +114,8 @@ public class GoulpharWrapper {
 
   private int graphicalOutputType = PDF_OUTPUT;
 
+  private boolean designMode;
+
   //
   // Getters
   //
@@ -142,13 +150,13 @@ public class GoulpharWrapper {
    */
   public BioAssay getNormalizedBioAssay() {
 
-    if (this.bioAssay == null)
+    if (this.bioAssay == null && !this.designMode)
       return null;
 
     if (this.normalizedBioAssay == null)
       loadNormalizedBioAssay();
 
-    return bioAssay;
+    return this.normalizedBioAssay;
   }
 
   /**
@@ -364,7 +372,9 @@ public class GoulpharWrapper {
 
       InputStream is = new URL(GOULPHAR_SCRIPT_URL).openStream();
 
-      BufferedReader in = new BufferedReader(new InputStreamReader(is));
+      BufferedReader in =
+          new BufferedReader(new InputStreamReader(is,
+              Globals.DEFAULT_FILE_ENCODING));
 
       String line;
       StringBuilder sb = new StringBuilder();
@@ -387,31 +397,79 @@ public class GoulpharWrapper {
   }
 
   /**
-   * Normalize a bioAssay.
-   * @param bioAssay bioAssay to normalize
+   * Normalize the bioAssay of a design.
+   * @param design Design which bioAssay must be normalized
    */
-  public void normalize(final BioAssay bioAssay) {
+  public void normalize(final Design design) {
+
+    if (design == null)
+      return;
+
+    this.designMode = true;
+
+    for (Slide s : design.getSlides()) {
+
+      final String prefix = design.getBiologicalId() + "-" + s.getName();
+
+      normalize(s, null, prefix);
+
+      BioAssay ba = getNormalizedBioAssay();
+
+      s.setBioAssay(ba);
+      s.setSource(s.getName() + ".gpr_norm.txt");
+      s.setSourceFormat(BioAssayFormatRegistery.IDMA_BIOASSAY_FORMAT);
+      s.swapSlide();
+    }
+
+    this.designMode = false;
+  }
+
+  private void normalize(final Slide slide, final BioAssay bioAssay,
+      final String prefix) {
 
     if (this.script == null)
       throw new NividicRuntimeException("Unable to load Goulphar script");
-
-    if (bioAssay == null)
-      return;
 
     clean();
     setBioAssay(bioAssay);
     setNormalizedBioAssay(null);
 
-    this.prefixGPRFilename = "toprocess-" + System.currentTimeMillis();
+    this.prefixGPRFilename = prefix;
     String gpr = this.prefixGPRFilename + ".gpr";
     String param = createParameterFileContent(gpr);
 
     try {
 
       OutputStream os = con.getFileOutputStream(gpr);
-      GPRWriter gw = new GPRWriter(os);
-      gw.addAllFieldsToWrite();
-      gw.write(getBioAssay());
+
+      if (slide != null) {
+
+        if (slide.getBioAssay() != null)
+          this.bioAssay = slide.getBioAssay();
+        else {
+
+          final DataSource source = slide.getSource();
+
+          if (BioAssayFormatRegistery.GPR_BIOASSAY_FORMAT != slide.getFormat())
+            throw new NividicIOException("Invalid format of BioAssay: "
+                + source.getBioAssayFormat());
+
+          if (source != null)
+            try {
+              NividicUtils.writeInputStream(source.getInputStream(), os);
+            } catch (IOException e) {
+
+              throw new NividicIOException(e);
+            }
+        }
+      }
+
+      if (this.bioAssay != null) {
+
+        GPRWriter gw = new GPRWriter(os);
+        gw.addAllFieldsToWrite();
+        gw.write(getBioAssay());
+      }
 
       con.writeStringAsFile("param_goulphar.dat", param);
 
@@ -424,6 +482,18 @@ public class GoulpharWrapper {
       e.printStackTrace();
     }
 
+  }
+
+  /**
+   * Normalize a bioAssay.
+   * @param bioAssay bioAssay to normalize
+   */
+  public void normalize(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return;
+
+    normalize(null, bioAssay, "toprocess-" + System.currentTimeMillis());
   }
 
   private void loadNormalizedBioAssay() {
