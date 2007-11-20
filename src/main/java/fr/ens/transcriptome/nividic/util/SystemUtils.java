@@ -263,7 +263,10 @@ public final class SystemUtils {
     if (!isMacOsX())
       return;
 
-    final String[] tab = System.getenv("java.version").split("\\.");
+    final String[] tab = System.getProperty("java.version").split("\\.");
+
+    if (tab.length < 2)
+      return;
 
     final int version = Integer.parseInt(tab[1]);
 
