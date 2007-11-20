@@ -276,7 +276,7 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
    */
   public void addVariable(final String name, final Object value) {
 
-    System.out.println("Add global variable: " + name);
+    // System.out.println("Add global variable: " + name);
 
     Object jsObj = Context.javaToJS(value, scope);
     ScriptableObject.putProperty(scope, name, jsObj);
@@ -312,8 +312,9 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
     this.scope = cx.initStandardObjects(jsf);
 
     // Define some global functions particular to the shell. Note
-    String[] names = {"asDoubles", "asFloats", "asLongs", "asInts",
-        "asStrings", "isNativeObjectArray", "isNativePrimitiveArray"};
+    String[] names =
+        {"asDoubles", "asFloats", "asLongs", "asInts", "asStrings",
+            "isNativeObjectArray", "isNativePrimitiveArray"};
     jsf.defineFunctionProperties(names, JavaScriptFunctions.class,
         ScriptableObject.DONTENUM);
 
@@ -387,7 +388,7 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
    */
   public void eval(final InputStream is, final String comment) {
 
-    System.out.println("Load script: " + comment);
+    // System.out.println("Load script: " + comment);
 
     Reader in = new InputStreamReader(is);
 
@@ -398,12 +399,13 @@ public class RhinoJavaScriptEngine implements JavaScriptEngine {
       this.cx.evaluateReader(scope, in, comment == null ? "file" : comment, 1,
           null);
     } catch (WrappedException we) {
-      System.err.println(we.getWrappedException().toString());
+      System.err
+          .println(we.getWrappedException().toString() + " in " + comment);
       we.printStackTrace();
     } catch (EvaluatorException ee) {
-      System.err.println("js: " + ee.getMessage());
+      System.err.println("js: " + ee.getMessage() + " in " + comment);
     } catch (JavaScriptException jse) {
-      System.err.println("js: " + jse.getMessage());
+      System.err.println("js: " + jse.getMessage() + " in " + comment);
     } catch (IOException ioe) {
       System.err.println(ioe.toString());
     } finally {
