@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -55,7 +55,7 @@ public class RSConnection {
   private Rconnection rConnection;
   private String sourceDirectory = "/tmp/rspsources";
 
-  private static int BUFFER_SIZE = 32 * 1024;
+  private static final int BUFFER_SIZE = 32 * 1024;
 
   //
   // Getters

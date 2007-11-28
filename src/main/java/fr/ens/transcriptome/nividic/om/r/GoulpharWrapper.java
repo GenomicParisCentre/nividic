@@ -40,10 +40,8 @@ import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.Slide;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormatRegistery;
-import fr.ens.transcriptome.nividic.om.io.GPRReader;
 import fr.ens.transcriptome.nividic.om.io.GPRWriter;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
-import fr.ens.transcriptome.nividic.om.io.IDMAWriter;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.util.NividicUtils;
 
@@ -56,36 +54,59 @@ public class GoulpharWrapper {
   private static final String GOULPHAR_SCRIPT_URL =
       "http://hestia.ens.fr/R/Goulphar.R";
 
+  /** Foreground method median. */
   public static final int FOREGROUND_METHOD_MEDIAN = 0;
+  /** Foreground method mean. */
   public static final int FOREGROUND_METHOD_MEAN = 1;
 
+  /** Background median substraction. */
   public static final int BACKGROUND_MEDIAN_SUBSTRACTION = 1;
+  /** Background mean substraction. */
   public static final int BACKGROUND_MEAN_SUBSTRACTION = 2;
+  /** Background no substraction. */
   public static final int BACKGROUND_NO_SUBSTRACTION = 0;
 
-  public static final String PRINT_TIP_GROUP_LOWESS_NORMALISATION_METHOD = "p";
-  public static final String GLOBAL_LOWESS_NORMALISATION_METHOD = "l";
-  public static final String GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALISATION_METHOD =
+  /** Print-tip group lowess normalization method. */
+  public static final String PRINT_TIP_GROUP_NORMAZISATION_METHOD = "p";
+  /** Global Lowess normalization method. */
+  public static final String GLOBAL_LOWESS_NORMALIZATION_METHOD = "l";
+  /** Global Lowess and Print-tip group group normalization method. */
+  public static final String GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD =
       "lmb";
-  public static final String GLOBAL_MEDIAN_NORMALISATION_METHOD = "m";
-  public static final String PRINT_TIP_GROUP_MEDIAN_NORMALISATION_METHOD = "mb";
+  /** Global median normalization method. */
+  public static final String GLOBAL_MEDIAN_NORMALIZATION_METHOD = "m";
+  /** Print-tip median normalization method. */
+  public static final String PRINT_TIP_GROUP_MEDIAN_NORMALIZATION_METHOD = "mb";
 
+  /** Keep saturing spots. */
   public static final boolean REMOVE_SATURING_SPOTS = true;
+  /** Remove saturing spots. */
   public static final boolean KEEP_SATURING_SPOTS = false;
 
+  /** Remove small spots. */
   public static final boolean REMOVE_SMALL_SPOTS = true;
+  /** Keep small spots. */
   public static final boolean KEEP_SMALL_SPOTS = false;
 
+  /** Flag filter all. */
   public static final String FLAG_FILTER_ALL = "all";
+  /** Flag filter none. */
   public static final String FLAG_FILTER_NONE = "none";
 
+  /** PDF output. */
   public static final int PDF_OUTPUT = 1;
+  /** PNG output. */
   public static final int PNG_OUTPUT = 2;
+  /** JPEG output. */
   public static final int JPEG_OUTPUT = 3;
 
+  /** Default saturing threshold. */
   public static final int DEFAULT_SATURING_THRESHOLD = 50000;
+  /** Default diameter threshold. */
   public static final int DEFAULT_DIAMETER_THRESHOLD = 0;
-  public static final int DEFAULT_ALERT_PRINTTIP = 200;
+  /** Default alter print-tip. */
+  public static final int DEFAULT_ALERT_PRINT_TIP = 200;
+  /** Default flag filter. */
   public static final String DEFAULT_FLAG_FILTER = FLAG_FILTER_ALL;
 
   private BioAssay bioAssay;
@@ -101,7 +122,7 @@ public class GoulpharWrapper {
   private int backgroundSubstraction = BACKGROUND_NO_SUBSTRACTION;
   // private String normalisationMethod = GLOBAL_LOWESS_NORMALISATION_METHOD;
   private String normalisationMethod =
-      GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALISATION_METHOD;
+      GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD;
   private String flagFilter = DEFAULT_FLAG_FILTER;
   // private String flagFilterValue;
   private boolean removeSaturingSpots = REMOVE_SATURING_SPOTS;
@@ -576,53 +597,17 @@ public class GoulpharWrapper {
    */
   public GoulpharWrapper() {
 
-    loadScript();
+    this(null);
   }
 
-  public static void main(final String[] args) throws NividicIOException {
+  /**
+   * Public constructor.
+   * @param serverName RServe server name
+   */
+  public GoulpharWrapper(final String serverName) {
 
-    System.out.println("start");
-
-    // String filename = "/tmp/genepix.gpr";
-    String filename =
-        "/home/jourdren/analyses/7eme/agilent_serie1/"
-            + "D-cone-croissance_900-950_0635.gpr";
-
-    GPRReader reader = new GPRReader(new File(filename));
-    reader.addAllFieldsToRead();
-
-    BioAssay ba = reader.read();
-
-    long start = System.currentTimeMillis();
-
-    GoulpharWrapper gw = new GoulpharWrapper();
-
-    gw.normalize(ba);
-
-    BioAssay nba = gw.getNormalizedBioAssay();
-
-    long end1 = System.currentTimeMillis();
-    System.out.println("time: " + (end1 - start));
-
-    System.out.println("Write idma");
-    IDMAWriter writer = new IDMAWriter(new File("/tmp/toto.idma"));
-    writer.write(nba);
-
-    long end2 = System.currentTimeMillis();
-    System.out.println("time: " + (end2 - start));
-
-    System.out.println("Write pdf");
-    gw.saveNormalizationReport(new File("/tmp/toto.pdf"));
-
-    long end3 = System.currentTimeMillis();
-    System.out.println("time: " + (end3 - start));
-
-    System.out.println("time: " + (end3 - end2));
-
-    gw.disConnect();
-
-    System.out.println("end.");
-
+    this.con = new RSConnection(serverName);
+    loadScript();
   }
 
 }
