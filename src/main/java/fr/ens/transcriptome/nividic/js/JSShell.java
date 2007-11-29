@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -33,6 +33,7 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Properties;
 
+import fr.ens.transcriptome.nividic.Settings;
 import fr.ens.transcriptome.nividic.util.SystemUtils;
 
 /**
@@ -269,8 +270,8 @@ public class JSShell {
     this.engine = new RhinoJavaScriptEngine();
     // this.engine = new JSR223JavaScriptEngine();
 
-//    System.out.println("Javascript engine: "
-//        + this.engine.getClass().getSimpleName());
+    // System.out.println("Javascript engine: "
+    // + this.engine.getClass().getSimpleName());
 
     this.engine.init();
     this.scriptLoader = new ScriptLoader(this.engine);
@@ -283,6 +284,8 @@ public class JSShell {
 
     this.engine.addVariable("args", args == null ? new String[] {} : args);
     this.engine.addVariable("homedir", System.getProperty("user.home"));
+    this.engine.addVariable("defaultrservehost", Settings.getSettings()
+        .getRServeHost());
 
     for (int i = 0; i < Defaults.BUILTIN_SCRIPTS.length; i++) {
 
@@ -356,6 +359,12 @@ public class JSShell {
      * System.out.println("fileToExecute: " + filetoExecute);
      * System.out.println("Args: " + Arrays.toString(finalArgs));
      */
+
+    try {
+      Settings.getSettings().loadSettings();
+    } catch (IOException e) {
+      System.err.println("can't read configuration file.");
+    }
 
     new JSShell(javascriptPath, filetoExecute, finalArgs).shell(System.in,
         System.out, System.err);

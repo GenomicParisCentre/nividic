@@ -39,11 +39,14 @@ public final class Globals {
 
   /** Name of the application. */
   public static final String APP_NAME = "Nividic";
+  /** Name of the application in lower case. */
+  public static final String APP_NAME_LOWER_CASE = APP_NAME.toLowerCase();
+  
   /** Name of the application. */
   public static final String APP_DESCRITPION =
       "A framework for DNA chips analysis";
   /** Version of the application. */
-  public static final String VERSION = "0.6";
+  public static final String APP_VERSION = "0.6";
   /** Copyright. */
   // public static final String COPYRIGHT = "Copyright (c) 2003-2004 CEA - ENS";
   public static final String COPYRIGHT =
@@ -116,6 +119,11 @@ public final class Globals {
   /** Default Text file encoding. */
   public static final String DEFAULT_FILE_ENCODING = "ISO-8859-1";
 
+  //
+  // RServe
+  //
+  
+  public static final String RSERVE_DEFAULT = "127.0.0.1";
   //
   // Constructor
   //
