@@ -148,6 +148,9 @@ public class MultiColumnTranslatorReader {
 
       while ((line = br.readLine()) != null) {
 
+        if ("".equals(line))
+          continue;
+
         String[] cols = line.split(separator);
 
         if (removeQuotes)

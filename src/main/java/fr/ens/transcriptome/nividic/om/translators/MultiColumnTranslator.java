@@ -50,7 +50,7 @@ public class MultiColumnTranslator extends BasicTranslator implements
    */
   public void addRow(final String[] rowData) {
 
-    if (rowData == null || rowData.length == 1)
+    if (rowData == null || rowData.length == 0 || rowData.length == 1)
       return;
 
     final String[] dataArray = arrayWithoutFirstElement(rowData);
