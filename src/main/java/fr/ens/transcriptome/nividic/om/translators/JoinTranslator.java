@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -104,22 +104,18 @@ public class JoinTranslator extends BasicTranslator implements Serializable {
    */
   public String getLinkInfo(final String translatedId, final String field) {
 
+    System.out.println(this.getClass().getName()
+        + "\ttranslateId=" + translatedId + "\tfield=" + field);
+
     final Translator t = this.mapTranslator.get(field);
 
     if (t == null)
       return null;
+
     if (t == translator1)
       return this.translator1.getLinkInfo(translatedId, field);
 
-    final String result1 =
-        this.translator1.getLinkInfo(translatedId, this.joinField);
-
-    final String result = this.translator2.translateField(result1, field);
-
-    if (result == null && this.returnTranslation1IfNoTranslation)
-      return result1;
-
-    return result;
+    return this.translator2.getLinkInfo(translatedId, field);
   }
 
   //

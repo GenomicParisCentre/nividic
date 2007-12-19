@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -48,7 +48,7 @@ public class ChangeIndexTranslator extends BasicTranslator implements
    */
   public String getLinkInfo(final String translatedId, final String field) {
 
-    return this.translator.getLinkInfo(this.index.get(translatedId), field);
+    return this.translator.getLinkInfo(translatedId, field);
   }
 
   /**

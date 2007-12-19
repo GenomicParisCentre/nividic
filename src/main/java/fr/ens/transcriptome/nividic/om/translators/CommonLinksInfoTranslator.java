@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -97,14 +97,12 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
       return "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?"
           + "db=gene&cmd=Retrieve&dopt=Graphics&list_uids=" + translatedId;
 
-    if (field.equals("SGDID")) {
+    if (field.equals("SGDID"))
       return "http://db.yeastgenome.org/cgi-bin/locus.pl?dbid=" + translatedId;
-    }
 
-    if (field.equals("Phatr2 Protein HyperLink")) {
+    if (field.equals("Phatr2 Protein HyperLink"))
       return "http://genome.jgi-psf.org/cgi-bin/dispGeneModel?db=Phatr2&tid="
           + translatedId;
-    }
 
     return null;
   }
