@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -117,7 +117,7 @@ public abstract class ExpressionMatrixWriter {
     try {
       setOutputStream(new FileOutputStream(file));
     } catch (FileNotFoundException e) {
-      throw new NividicIOException("Error while reading file : "
+      throw new NividicIOException("Error while writing file : "
           + file.getName());
     }
 
