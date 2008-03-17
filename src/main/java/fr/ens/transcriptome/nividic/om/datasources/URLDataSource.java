@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -37,11 +37,6 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
 public class URLDataSource extends FileDataSource {
 
   private String url = "";
-
-  private static final String URL_SGDB_GPR =
-      "http://www.genomic.ens.fr/lims/ws/retrieve_gpr.php?scanId=";
-
-  private static final String SGDB_GPR_PREFIX = "sgdb://gpr/";
 
   /**
    * Configure the source with properties
@@ -89,13 +84,8 @@ public class URLDataSource extends FileDataSource {
    */
   public InputStream getInputStream() {
 
-    String url = this.url;
-
-    if (url != null && url.startsWith(SGDB_GPR_PREFIX))
-      url = url.replaceFirst(SGDB_GPR_PREFIX, URL_SGDB_GPR);
-
     try {
-      return new URL(url).openStream();
+      return new URL(this.url).openStream();
     } catch (MalformedURLException e) {
       throw new NividicRuntimeException("Invalid URL");
     } catch (IOException e) {

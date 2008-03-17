@@ -33,6 +33,7 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Properties;
 
+import fr.ens.transcriptome.nividic.Init;
 import fr.ens.transcriptome.nividic.Settings;
 import fr.ens.transcriptome.nividic.util.SystemUtils;
 
@@ -267,6 +268,9 @@ public class JSShell {
   public JSShell(final String javascriptPath, final String fileToExecute,
       final String[] args) {
 
+    // Load additionnal modules if needed
+    Init.init();
+    
     this.engine = new RhinoJavaScriptEngine();
     // this.engine = new JSR223JavaScriptEngine();
 

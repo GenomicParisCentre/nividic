@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -224,28 +224,6 @@ public final class BioAssayFormatRegistery {
     addBioAssayFormat(IMAGENE_BIOASSAY_FORMAT);
     addBioAssayFormat(IMAGENE_ARRAYLIST_BIOASSAY_FORMAT);
     addBioAssayFormat(AGILENT_BIOASSAY_FORMAT);
-
-    // Load SGDB specific format
-
-    try {
-
-      Class sgdbBioFormatRegisteryInit =
-          Class.forName("fr.ens.transcriptome.nividic.om.sgdb.io."
-              + "SGDBBioAssayFormatRegisteryInit");
-
-      if (sgdbBioFormatRegisteryInit != null)
-        sgdbBioFormatRegisteryInit.newInstance();
-
-    } catch (ClassNotFoundException e) {
-
-    } catch (InstantiationException e) {
-
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-
-      e.printStackTrace();
-    }
-
   }
 
   //
