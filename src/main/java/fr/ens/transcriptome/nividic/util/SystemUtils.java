@@ -188,6 +188,14 @@ public final class SystemUtils {
   }
 
   /**
+   * Test if the system is Unix.
+   * @return true if the operating systeme is Windows.
+   */
+  public static boolean isLinux() {
+    return !System.getProperty("os.name").toLowerCase().startsWith("linux");
+  }
+
+  /**
    * Get the class name without the package name.
    * @param c Class
    * @return the class name without the package name
