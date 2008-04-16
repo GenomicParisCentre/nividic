@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -22,84 +22,87 @@
 
 package fr.ens.transcriptome.nividic.om.samples;
 
+import java.io.Serializable;
+
 /**
  * This class define a sample parameter
  * @author Laurent Jourdren
  */
-class SampleParameter {
+class SampleParameter implements Serializable {
+	static final long serialVersionUID = -3199221790326620241L;
 
-  private static int count;
+	private static int count;
 
-  private int id;
-  private String name;
-  private SampleParameterType type;
+	private int id;
+	private String name;
+	private SampleParameterType type;
 
-  //
-  // Getters
-  //
+	//
+	// Getters
+	//
 
-  int getId() {
+	int getId() {
 
-    return id;
-  }
+		return id;
+	}
 
-  /**
-   * Get the name of the parameter
-   * @return Returns the name
-   */
-  public String getName() {
+	/**
+	 * Get the name of the parameter
+	 * @return Returns the name
+	 */
+	public String getName() {
 
-    return name;
-  }
+		return name;
+	}
 
-  /**
-   * Get the type of the parameter
-   * @return Returns the type
-   */
-  public SampleParameterType getType() {
+	/**
+	 * Get the type of the parameter
+	 * @return Returns the type
+	 */
+	public SampleParameterType getType() {
 
-    return type;
-  }
+		return type;
+	}
 
-  //
-  // Setters
-  //
+	//
+	// Setters
+	//
 
-  /**
-   * Set the name of the parameter.
-   * @param name The name to set
-   */
-  public void setName(final String name) {
+	/**
+	 * Set the name of the parameter.
+	 * @param name The name to set
+	 */
+	public void setName(final String name) {
 
-    if (name == null)
-      throw new NullPointerException("Parameter name can't be null");
-    this.name = name;
-  }
+		if (name == null)
+			throw new NullPointerException("Parameter name can't be null");
+		this.name = name;
+	}
 
-  /**
-   * Set the type of the parameter.
-   * @param type The type to set
-   */
-  public void setType(final SampleParameterType type) {
-    this.type = type;
-  }
+	/**
+	 * Set the type of the parameter.
+	 * @param type The type to set
+	 */
+	public void setType(final SampleParameterType type) {
+		this.type = type;
+	}
 
-  //
-  // Constructor
-  //
+	//
+	// Constructor
+	//
 
-  /**
-   * Public constructor
-   * @param name Name of the parameter
-   * @param type Type of the parameter
-   */
-  public SampleParameter(final String name, final SampleParameterType type) {
+	/**
+	 * Public constructor
+	 * @param name Name of the parameter
+	 * @param type Type of the parameter
+	 */
+	public SampleParameter(final String name, final SampleParameterType type) {
 
-    this.id = count;
-    count++;
+		this.id = count;
+		count++;
 
-    setName(name);
-    setType(type);
-  }
+		setName(name);
+		setType(type);
+	}
 
 }

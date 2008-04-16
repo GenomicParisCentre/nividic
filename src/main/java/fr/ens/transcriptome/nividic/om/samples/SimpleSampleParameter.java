@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -22,82 +22,85 @@
 
 package fr.ens.transcriptome.nividic.om.samples;
 
-public class SimpleSampleParameter implements SampleParameterType {
+import java.io.Serializable;
 
-  private String name = "SimpleParameter-" + count++;
-  private String defaultValue = "";
-  private Class classType;
-  private static int count;
+public class SimpleSampleParameter implements SampleParameterType, Serializable {
+	static final long serialVersionUID = 296845652434328174L;
 
-  //
-  // Getter
-  //
+	private String name = "SimpleParameter-" + count++;
+	private String defaultValue = "";
+	private Class classType;
+	private static int count;
 
-  /**
-   * Get the name of the experiment parameter type
-   * @return Returns the name of the experiement parameter
-   */
-  public String getName() {
-    return name;
-  }
+	//
+	// Getter
+	//
 
-  /**
-   * Get the default value of the parameter.
-   * @return The default value of the parameter
-   */
-  public String getDefaultValue() {
-    return this.defaultValue;
-  }
+	/**
+	 * Get the name of the experiment parameter type
+	 * @return Returns the name of the experiement parameter
+	 */
+	public String getName() {
+		return name;
+	}
 
-  /**
-   * Get the type (integer, double, string) of the value.
-   * @return The type of the value
-   */
-  public Class getValueType() {
-    return this.classType;
-  }
+	/**
+	 * Get the default value of the parameter.
+	 * @return The default value of the parameter
+	 */
+	public String getDefaultValue() {
+		return this.defaultValue;
+	}
 
-  //
-  // Setters
-  //
+	/**
+	 * Get the type (integer, double, string) of the value.
+	 * @return The type of the value
+	 */
+	public Class getValueType() {
+		return this.classType;
+	}
 
-  /**
-   * Set the name of the experiment parameter type
-   * @param name The name to set. Must be not null
-   */
-  public void setName(final String name) {
-    if (name != null)
-      this.name = name;
-  }
+	//
+	// Setters
+	//
 
-  /**
-   * Set the default value of the parameter.
-   * @param defaultValue The default value of the parameter. Must be not null.
-   */
-  public void setDefaultValue(final String defaultValue) {
-    if (defaultValue != null)
-      this.defaultValue = defaultValue;
-  }
+	/**
+	 * Set the name of the experiment parameter type
+	 * @param name The name to set. Must be not null
+	 */
+	public void setName(final String name) {
+		if (name != null)
+			this.name = name;
+	}
 
-  /**
-   * Get the type (integer, double, string) of the value.
-   * @param classType The class type of the value
-   */
-  public void setValueType(final Class classType) {
-    this.classType = classType;
-  }
+	/**
+	 * Set the default value of the parameter.
+	 * @param defaultValue The default value of the parameter. Must be not null.
+	 */
+	public void setDefaultValue(final String defaultValue) {
+		if (defaultValue != null)
+			this.defaultValue = defaultValue;
+	}
 
-  //
-  // Other methods
-  //
+	/**
+	 * Get the type (integer, double, string) of the value.
+	 * @param classType The class type of the value
+	 */
+	public void setValueType(final Class classType) {
+		this.classType = classType;
+	}
 
-  /**
-   * Test if the value of parameter is correct.
-   * @param value Value to test
-   * @return true if the value of the parameter is correct
-   */
-  public boolean isCorrectValue(final String value) {
-    return true;
-  }
+	//
+	// Other methods
+	//
+
+	/**
+	 * Test if the value of parameter is correct.
+	 * @param value Value to test
+	 * @return true if the value of the parameter is correct
+	 */
+	public boolean isCorrectValue(final String value) {
+		return true;
+	}
 
 }
