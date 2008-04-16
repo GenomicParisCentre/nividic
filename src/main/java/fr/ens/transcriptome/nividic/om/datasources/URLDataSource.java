@@ -22,6 +22,7 @@
 
 package fr.ens.transcriptome.nividic.om.datasources;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -87,7 +88,13 @@ public class URLDataSource extends FileDataSource {
     try {
       return new URL(this.url).openStream();
     } catch (MalformedURLException e) {
-      throw new NividicRuntimeException("Invalid URL");
+      try {
+        return (new File(this.url)).toURL().openStream();
+      } catch (MalformedURLException e1) {
+        throw new NividicRuntimeException("Invalid URL");
+      } catch (IOException e1) {
+        throw new NividicRuntimeException("IO error while reading URL data");
+      }
     } catch (IOException e) {
       throw new NividicRuntimeException("IO error while reading URL data");
     }
