@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Properties;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
@@ -35,122 +36,123 @@ import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
  * This class implements a DataSource for a file.
  * @author Laurent Jourdren
  */
-public class FileDataSource implements DataSource {
+public class FileDataSource implements DataSource, Serializable {
+	static final long serialVersionUID = 3045302852608368293L;
 
-  private String file = "";
-  private String baseDir = "";
+	private String file = "";
+	private String baseDir = "";
 
-  /**
-   * Configure the source with properties
-   * @param properties Properties to config the source
-   */
-  public void configSource(final Properties properties) {
+	/**
+	 * Configure the source with properties
+	 * @param properties Properties to config the source
+	 */
+	public void configSource(final Properties properties) {
 
-    if (properties == null)
-      return;
+		if (properties == null)
+			return;
 
-    String val = properties.getProperty("file");
-    if (val == null)
-      this.file = "";
-    else
-      this.file = val;
+		String val = properties.getProperty("file");
+		if (val == null)
+			this.file = "";
+		else
+			this.file = val;
 
-  }
+	}
 
-  /**
-   * Configure the source with a string
-   * @param config String to configure the source
-   */
-  public void configSource(final String config) {
+	/**
+	 * Configure the source with a string
+	 * @param config String to configure the source
+	 */
+	public void configSource(final String config) {
 
-    this.baseDir = "";
+		this.baseDir = "";
 
-    if (config == null)
-      this.file = "";
-    else
-      this.file = config;
+		if (config == null)
+			this.file = "";
+		else
+			this.file = config;
 
-  }
+	}
 
-  /**
-   * Get a message that describe the source.
-   * @return a message that describe the source
-   */
+	/**
+	 * Get a message that describe the source.
+	 * @return a message that describe the source
+	 */
 
-  public String getSourceInfo() {
+	public String getSourceInfo() {
 
-    return this.file;
-  }
+		return this.file;
+	}
 
-  /**
-   * Get the source type (file, database...)
-   * @return The type of source
-   */
-  public String getSourceType() {
+	/**
+	 * Get the source type (file, database...)
+	 * @return The type of source
+	 */
+	public String getSourceType() {
 
-    return "File";
-  }
+		return "File";
+	}
 
-  /**
-   * Get the inputStream for the source
-   * @return The input stream
-   */
-  public InputStream getInputStream() {
+	/**
+	 * Get the inputStream for the source
+	 * @return The input stream
+	 */
+	public InputStream getInputStream() {
 
-    try {
+		try {
 
-      return new FileInputStream(new File(this.baseDir, this.file));
-    } catch (FileNotFoundException e) {
-      throw new NividicRuntimeException("File not Found: " + this.file);
-    }
-  }
+			return new FileInputStream(new File(this.baseDir, this.file));
+		} catch (FileNotFoundException e) {
+			throw new NividicRuntimeException("File not Found: " + this.file);
+		}
+	}
 
-  /**
-   * Get the bioAssay format if data is ALWAYS in the same format.
-   * @return The format of the data source
-   */
-  public BioAssayFormat getBioAssayFormat() {
+	/**
+	 * Get the bioAssay format if data is ALWAYS in the same format.
+	 * @return The format of the data source
+	 */
+	public BioAssayFormat getBioAssayFormat() {
 
-    return null;
-  }
+		return null;
+	}
 
-  //
-  // Constructors
-  //
+	//
+	// Constructors
+	//
 
-  /**
-   * Public constructor.
-   */
-  public FileDataSource() {
-  }
+	/**
+	 * Public constructor.
+	 */
+	public FileDataSource() {
+	}
 
-  /**
-   * Public constructor
-   * @param file File to set
-   */
-  public FileDataSource(final String file) {
+	/**
+	 * Public constructor
+	 * @param file File to set
+	 */
+	public FileDataSource(final String file) {
 
-    configSource(file);
-  }
+		configSource(file);
+	}
 
-  /**
-   * Public constructor
-   * @param baseDir of the file
-   * @param file File to set
-   */
-  public FileDataSource(final String baseDir, final String file) {
+	/**
+	 * Public constructor
+	 * @param baseDir of the file
+	 * @param file File to set
+	 */
+	public FileDataSource(final String baseDir, final String file) {
 
-    configSource(file);
-    this.baseDir = baseDir;
-  }
+		configSource(file);
+		this.baseDir = baseDir;
+	}
 
-  /**
-   * Public constructor
-   * @param file File to set
-   */
-  public FileDataSource(final File file) {
+	/**
+	 * Public constructor
+	 * @param file File to set
+	 */
+	public FileDataSource(final File file) {
 
-    configSource(file == null ? null : file.getPath());
-  }
+		configSource(file == null ? null : file.getPath());
+	}
 
 }

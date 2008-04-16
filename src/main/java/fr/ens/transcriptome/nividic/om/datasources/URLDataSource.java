@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.om.datasources;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
@@ -35,7 +36,7 @@ import fr.ens.transcriptome.nividic.NividicRuntimeException;
  * This class define an URL DataSource.
  * @author Laurent Jourdren
  */
-public class URLDataSource extends FileDataSource {
+public class URLDataSource extends FileDataSource implements Serializable {
 
   private String url = "";
 
