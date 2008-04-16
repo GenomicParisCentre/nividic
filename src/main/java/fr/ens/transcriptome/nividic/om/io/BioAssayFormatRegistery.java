@@ -254,7 +254,30 @@ public final class BioAssayFormatRegistery {
 
     final String s = type.trim();
 
-    return formats.get(s);
+    BioAssayFormat result = formats.get(s);
+
+    if (result == null)
+      return getBioAssayFormatByExtension(s.substring(s.lastIndexOf(".")));
+
+    return result;
+  }
+
+  /**
+   * Get a BioAssayFormat from its extension.
+   * @param type Type of the BioAssayFormat
+   * @return a BioAssayFormat enum
+   */
+  public static BioAssayFormat getBioAssayFormatByExtension(
+      final String extension) {
+
+    if (extension == null)
+      return null;
+
+    for (BioAssayFormat baf : formats.values())
+      if (baf.getExtension().equals(extension))
+        return baf;
+
+    return null;
   }
 
   /**
