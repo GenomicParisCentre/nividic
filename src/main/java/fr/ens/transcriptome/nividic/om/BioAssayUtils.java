@@ -872,19 +872,37 @@ public final class BioAssayUtils {
       if (id == null)
         continue;
 
-      int count;
-
       if (!idsCount.containsKey(id))
-        count = 0;
-      else
-        count = idsCount.get(id);
+        idsCount.put(id, 1);
+      else {
 
-      count++;
+        int count = idsCount.get(id);
+        idsCount.put(id, ++count);
+      }
+    }
 
-      if (count > 1)
-        ids[i] = id + "#" + count;
+    for (Map.Entry<String, Integer> e : idsCount.entrySet())
+      if (e.getValue() == 1)
+        e.setValue(-1);
+      else e.setValue(1);
 
-      idsCount.put(id, count);
+    for (int i = 0; i < ids.length; i++) {
+
+      final String id = ids[i];
+
+      if (id == null)
+        continue;
+
+      if (idsCount.containsKey(id)) {
+
+        int count = idsCount.get(id);
+
+        if (count != -1) {
+          ids[i] = id + "#" + count;
+          idsCount.put(id, ++count);
+        }
+      }
+
     }
 
     final HistoryEntry entry =
