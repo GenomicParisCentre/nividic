@@ -24,6 +24,7 @@ package fr.ens.transcriptome.nividic.om.io;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ import java.util.Map;
  * This class define a registery for BioAssayFormat objects.
  * @author Laurent Jourdren
  */
-public final class BioAssayFormatRegistery {
+public final class BioAssayFormatRegistery implements Serializable {
 
   private static Map<String, BioAssayFormat> formats =
       new HashMap<String, BioAssayFormat>();
