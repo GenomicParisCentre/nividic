@@ -48,6 +48,7 @@ import org.rosuda.JRclient.Rconnection;
 /**
  * This class define an enhanced connection to RServe.
  * @author Laurent Jourdren
+ * @author Marion Gaussen
  */
 public class RSConnection {
 
@@ -82,6 +83,8 @@ public class RSConnection {
     return sourceDirectory;
   }
 
+
+
   //
   // Setters
   //
@@ -105,7 +108,7 @@ public class RSConnection {
    * @throws if an error occurs while assigning data
    */
   public void assign(final String varName, final Object value)
-      throws RSException {
+  throws RSException {
 
     // System.out.println("value=" + value);
 
@@ -135,7 +138,7 @@ public class RSConnection {
         System.out.println("this is a boolean");
 
         REXP exp =
-            new REXP(REXP.XT_BOOL, new RBool(((Boolean) value).booleanValue()));
+          new REXP(REXP.XT_BOOL, new RBool(((Boolean) value).booleanValue()));
 
         System.out.println("exp=" + exp.asBool());
 
@@ -348,7 +351,7 @@ public class RSConnection {
    * @throws RSException if an error occurs while writing the file
    */
   public void writeStringAsFile(final String outputFilename, final String value)
-      throws RSException {
+  throws RSException {
 
     if (outputFilename == null)
       return;
@@ -367,7 +370,7 @@ public class RSConnection {
    * @throws RSException if an exception occurs while reading file
    */
   public InputStream getFileInputStream(final String filename)
-      throws RSException {
+  throws RSException {
 
     Rconnection c = getRConnection();
 
@@ -387,7 +390,7 @@ public class RSConnection {
    * @throws RSException if an exception occurs while reading file
    */
   public OutputStream getFileOutputStream(final String filename)
-      throws RSException {
+  throws RSException {
 
     Rconnection c = getRConnection();
 
@@ -407,7 +410,7 @@ public class RSConnection {
    * @throws RSException if an error occurs while downloading the file
    */
   public void putFile(final File inputFile, final String rServeFilename)
-      throws RSException {
+  throws RSException {
 
     try {
 
@@ -440,7 +443,7 @@ public class RSConnection {
    * @throws RSException if an error occurs while downloading the file
    */
   public void getFile(final String rServeFilename, final File outputfile)
-      throws RSException {
+  throws RSException {
 
     try {
       InputStream is = getFileInputStream(rServeFilename);
@@ -465,6 +468,7 @@ public class RSConnection {
     }
 
   }
+
 
   /**
    * Remove a file on the RServer
@@ -504,7 +508,6 @@ public class RSConnection {
 
       // Test if the file exists
       Rconnection c = getRConnection();
-
       REXP exists = c.eval("file.exists(\"" + filename + "\")");
 
       // Create the file on the server if doesn't exists
@@ -557,10 +560,10 @@ public class RSConnection {
           break;
       }
       if (imgLength < 10) { // this shouldn't be the case actually,
-        // beause we did some error checking, but
+        // because we did some error checking, but
         // for those paranoid ...
         throw new RSRuntimeException(
-            "Cannot load image, check R output, probably R didn't produce anything.");
+        "Cannot load image, check R output, probably R didn't produce anything.");
 
       }
       System.out.println("The image file is " + imgLength + " bytes big.");
@@ -595,6 +598,69 @@ public class RSConnection {
     }
 
   }
+  /**
+   * Get file from RServe
+   * @param filename file to load
+   * @return an byte[] object
+   * @throws RSException if an error occurs while loading the image
+   */
+  public byte[] getFileAsArray(final String filename) throws RSException {
+
+    final Rconnection connection = getRConnection();
+
+    if (connection == null)
+      throw new RSException("Connection is null");
+
+    try {
+      RFileInputStream is = connection.openFile(filename);
+      ArrayList<byte[]> buffers = new ArrayList<byte[]>();
+
+      int bufSize = 65536;
+      byte[] buf = new byte[bufSize]; 	
+
+      int imgLength = 0;
+      int n = 0;
+      while (true) {
+        n = is.read(buf);
+        if (n == bufSize) {				 
+          buffers.add(buf);
+          buf = new byte[bufSize];
+        }
+        if (n > 0)
+          imgLength += n;
+        if (n < bufSize)
+          break;
+      }
+      if (imgLength < 10) { 
+        throw new RSRuntimeException(
+            "Cannot load image, check R output, probably R didn't produce anything.");
+
+      }
+      System.out.println("The image file is " + imgLength + " bytes big.");
+
+      byte[] imgCode = new byte[imgLength];
+      int imgPos = 0;
+
+      final int nbBuffers = buffers.size();
+
+      for (int i = 0; i < nbBuffers; i++) {
+        byte[] b = buffers.get(i);
+        System.arraycopy(b, 0, imgCode, imgPos, bufSize);
+        imgPos += bufSize;
+      }
+      if (n > 0)
+        System.arraycopy(buf, 0, imgCode, imgPos, n);
+
+      is.close();
+
+      return imgCode;
+
+    } catch (IOException e) {
+      throw new RSException("Error while load image");
+    } 
+
+
+  }
 
   /**
    * Show an image.
@@ -604,7 +670,7 @@ public class RSConnection {
 
     javax.swing.JFrame f = new javax.swing.JFrame("Test image");
     javax.swing.JLabel b =
-        new javax.swing.JLabel(new javax.swing.ImageIcon(image));
+      new javax.swing.JLabel(new javax.swing.ImageIcon(image));
     f.getContentPane().add(b);
     f.pack();
     f.setVisible(true);

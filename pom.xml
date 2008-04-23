@@ -3,7 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ens-transcriptome</groupId>
+	<!--groupId>ens-transcriptome</groupId-->
+	<groupId>fr.ens.transcriptome</groupId>
 	<artifactId>nividic</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
@@ -79,8 +80,9 @@
 			</snapshots>
 			<id>java.net</id>
 			<name>java.net repository</name>
-			<url>https://maven-repository.dev.java.net/nonav/repository</url>
-			<layout>legacy</layout>
+			<!--url>https://maven-repository.dev.java.net/nonav/repository</url>
+			<layout>legacy</layout-->
+			<url>https://maven2-repository.dev.java.net</url>
 		</repository>
 		<repository>
 			<id>mygrid-repository</id>
@@ -112,7 +114,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.2</version>
+			<version>3.8.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -202,36 +204,6 @@
 			<version>1.6R5</version>
 			<scope>compile</scope>
 		</dependency>
-                <dependency>
-			<groupId>trolltech</groupId>
-			<artifactId>qtjambi</artifactId>
-			<version>1.0.0-beta</version>
-			<scope>compile</scope>
-		</dependency>
-                <dependency>
-			<groupId>trolltech</groupId>
-			<artifactId>qtjambi-mac</artifactId>
-			<version>1.0.0-beta</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>trolltech</groupId>
-			<artifactId>qtjambi-linux</artifactId>
-			<version>1.0.0-beta</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>trolltech</groupId>
-			<artifactId>qtjambi-win32</artifactId>
-			<version>1.0.0-beta</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>trolltech</groupId>
-			<artifactId>qtjambi-launcher</artifactId>
-			<version>1.0.0-beta</version>
-			<scope>compile</scope>
-		</dependency>
 		<!-- to remove later -->
 		<dependency>
 			<groupId>sun</groupId>
@@ -242,7 +214,7 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.0-FINAL</version>
+			<version>3.0.1-FINAL</version>
 		</dependency>
 		<dependency>
 			<groupId>biojava</groupId>
@@ -255,12 +227,10 @@
 			<version>1.5</version>
 		</dependency>
 		<dependency>
-			<groupId>uk.org.mygrid.taverna.processors</groupId>
-			<artifactId>taverna-java-processor</artifactId>
-			<version>1.5.2.0</version>
-			<scope>compile</scope>
-                </dependency>
-		
+			<groupId>com.lowagie</groupId>
+			<artifactId>iText</artifactId>
+			<version>2.7.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -296,7 +266,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
-						<skip>false</skip>
+						<skip>true</skip>
 					</configuration>
 			</plugin>
 			<!--plugin>
@@ -319,26 +289,6 @@
 			<plugin>
        				<artifactId>maven-antrun-plugin</artifactId>
        				<executions>
-         				<execution>
-						<id>integrate-jnlp-site</id>
-           					<phase>install</phase>
-           					<configuration>
-             						<tasks>
-								<mkdir dir="${basedir}/target/site/webstart"/>
-								<unzip src="${basedir}/target/${artifactId}-${version}.zip" dest="${basedir}/target/site/webstart"/>
-								<delete file="${basedir}/target/site/webstart/keystore"/>
-
-								<replace dir="${basedir}/target/site" value="${pom.url}">
-									<include name="**/*.jnlp"/>
-									<include name="**/*.html"/>
-									<replacetoken>@@@WEBSITE@@@</replacetoken>
-								</replace>
-             						</tasks>
-           					</configuration>
-           					<goals>
-             						<goal>run</goal>
-           					</goals>
-         				</execution>
 					<execution>
 						<id>add-ressources-jar</id>
            					<phase>generate-resources</phase>
@@ -347,6 +297,9 @@
 								<mkdir dir="${basedir}/target/classes/javascript"/>	
 								<copy todir="${basedir}/target/classes/javascript">
 									<fileset dir="${basedir}/src/main/javascript" includes="*.js"/>
+								</copy>
+								<copy todir="${basedir}/target/classes">
+									<fileset dir="${basedir}/src/main/resources" includes="**/*"/>
 								</copy>
              						</tasks>
            					</configuration>
@@ -374,111 +327,6 @@
 					<goalPrefix>hello</goalPrefix>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>webstart-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jnlp</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<!--outputDirectory></outputDirectory-->
-					<!-- not required?? -->
-
-					<!-- transitive dependencies filter -->
-					<dependencies>
-						<!-- Note that only groupId and artifactId must be specified here. because of a limitation of the Include/ExcludesArtifactFilter -->
-						<includes>
-							<!--include>commons-cli:commons-cli</include-->
-							<!--include>commons-logging:commons-logging</include-->
-							<include>commons-collections:commons-collections</include>
-							<!--include>dom4j:dom4j</include>
-							<include>log4j:log4j</include-->
-							<include>commons-primitives:commons-primitives</include>
-							<include>commons-lang:commons-lang</include>
-							<!--include>rosuda:JRclient</include-->
-							<include>commons-math:commons-math</include>
-							<!--include>commons-codec:commons-codec</include>
-							<include>axis:axis</include>
-							<include>axis:axis-jaxrpc</include-->
-							<include>com.sun.phobos:jsr223-api</include>
-							<include>com.sun.phobos:phobos-rhino</include>
-							<include>mozilla:js</include>
-							<!--include>trolltech:qtjambi-launcher</include-->
-							<!--include>trolltech:qtjambi</include>
-							<include>trolltech:qtjambi-linux</include>
-							<include>trolltech:qtjambi-mac</include>
-							<include>trolltech:qtjambi-win32</include-->
-							<!-- excludes>
-								<exclude></exclude>
-							<excludes-->
-						</includes>
-					</dependencies>
-
-					<!-- JNLP generation -->
-					<jnlp>
-						<!-- default values -->
-						<resources>${project.basedir}/src/jnlp/resources</resources>
-						<inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath>
-						<inputTemplate>src/jnlp/template.vm</inputTemplate>
-						<!-- relative to inputTemplateResourcePath -->
-						<outputFile>jsconsole.jnlp</outputFile><!-- defaults to launch.jnlp -->
-
-						<!-- used to automatically identify the jar containing the main class. -->
-						<!-- this is perhaps going to change -->
-						<mainClass>fr.ens.transcriptome.nividic.js.swing.JSConsole</mainClass>
-						<!--mainClass>fr.ens.transcriptome.nividic.js.swing.AnalogClock</mainClass-->
-					</jnlp>
-
-
-					<!-- SIGNING -->
-					<!-- defining this will automatically sign the jar and its dependencies, if necessary -->
-					<sign>
-						<keystore>keystore</keystore>
-						<keypass>m2m2m2</keypass><!-- we need to override passwords easily from the command line. ${keypass} -->
-						<storepass>m2m2m2m</storepass><!-- ${storepass} -->
-						<storetype />
-						<alias>leburonkey</alias>
-						<validity>36000</validity>
-
-						<dnameCn>ENS Microarray Platform Bioinformatic Team</dnameCn>
-						<dnameOu>Microarray Platform</dnameOu>
-						<dnameO>École Normale Supérieure</dnameO>
-						<dnameL>Paris</dnameL>
-						<dnameSt>Ile de France</dnameSt>
-						<dnameC>fr</dnameC>
-
-						<verify>true</verify>
-					</sign>
-
-					<!-- KEYSTORE MANGEMENT -->
-					<keystore>
-						<delete>true</delete><!-- delete the keystore -->
-						<gen>true</gen><!-- optional shortcut to generate the store. -->
-					</keystore>
-
-					<!-- BUILDING PROCESS -->
-					<!--usejnlpservlet>true</usejnlpservlet-->
-					<!-- not yet supported -->
-
-					<!-- should we have some more configurations here? E.g. compression level (aka packing effort) -->
-					<!-- not yet implemented -->
-					<!--pack200>true</pack200>
-					<gzip>true</gzip--><!-- default force when pack200 false, true when pack200 selected ?? -->
-
-					<!-- misc -->
-					<!-- if there are multiple apps, do we need to mark one as default? (app/ redirects to app/default.jnlp in jnlp servlet ??)-->
-					<!-- -->
-
-					<!--install>false</install--><!-- not yet supported -->
-					<verbose>false</verbose>
-
-				</configuration>
-			</plugin>
-
 		</plugins>
 		<extensions>
 			<extension>

@@ -932,7 +932,7 @@ public class DesignImpl implements Design, Serializable {
 	 * @return the bioassay object for the slide if exists
 	 */
 	public BioAssay getBioAssay(final String slideName) {
-
+		
 		if (slideName == null)
 			throw new NullPointerException("Slide name is null");
 
@@ -940,7 +940,7 @@ public class DesignImpl implements Design, Serializable {
 			throw new NividicRuntimeException("The slide doesn't exists");
 
 		final int id = this.slides.get(slideName);
-
+		
 		return this.bioassays.get(id);
 	}
 

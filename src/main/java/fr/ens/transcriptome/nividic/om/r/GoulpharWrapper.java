@@ -23,7 +23,6 @@
 package fr.ens.transcriptome.nividic.om.r;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,6 +47,7 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
 /**
  * This class define a wrapper for Goulphar.
  * @author Laurent Jourdren
+ * @author Marion Gaussen
  */
 public class GoulpharWrapper {
 
@@ -141,6 +141,7 @@ public class GoulpharWrapper {
   // Getters
   //
 
+  
   /**
    * Get the alert print tip value.
    * @return Returns the alertPrintTip
@@ -164,10 +165,10 @@ public class GoulpharWrapper {
   public BioAssay getBioAssay() {
     return bioAssay;
   }
-
+  
   /**
-   * Get the BioAssay to use.
-   * @return Returns the bioAssay
+   * Get the Normalized BioAssay to use.
+   * @return Returns the Normalized bioAssay
    */
   public BioAssay getNormalizedBioAssay() {
 
@@ -179,7 +180,37 @@ public class GoulpharWrapper {
 
     return this.normalizedBioAssay;
   }
+  
+  /**
+   * Get the PDF file as array.
+   * @return Returns the PDF file as array
+   */
+  public byte[] getPdf() {
+	  
+	  try {
+		  byte[] fileasarray = this.con.getFileAsArray(this.prefixGPRFilename + ".gpr.pdf");
+		  if (fileasarray == null){
+			  return null;
+		  }
 
+		  return fileasarray;
+	      } 
+	  
+	  catch (RSException e) {
+		  throw new NividicRuntimeException("Unable to get the report");} 
+
+  }
+  /**
+   * Get the Png Images As ByteArray List.
+   * @return Returns the Png Images as bytearray list
+   * @throws RSException 
+   */
+  public byte[] getPng(String filename) throws RSException {
+	  byte[] png = this.con.getFileAsArray(filename);
+	  return png;
+
+  }
+  
   /**
    * Get the flagfilter.
    * @return Returns the flagFilter
@@ -493,7 +524,7 @@ public class GoulpharWrapper {
       }
 
       con.writeStringAsFile("param_goulphar.dat", param);
-
+      
       con.executeRCode(this.script);
 
     } catch (RSException e) {
@@ -510,19 +541,17 @@ public class GoulpharWrapper {
    * @param bioAssay bioAssay to normalize
    */
   public void normalize(final BioAssay bioAssay) {
-
-    if (bioAssay == null)
-      return;
-
-    normalize(null, bioAssay, "toprocess-" + System.currentTimeMillis());
+	  
+	  if (bioAssay == null)
+		  return;
+	  
+	  normalize(null, bioAssay, "toprocess-" + System.currentTimeMillis());
   }
 
   private void loadNormalizedBioAssay() {
 
     try {
-
-      InputStream is =
-          this.con.getFileInputStream(this.prefixGPRFilename + ".gpr_norm.txt");
+      InputStream is = this.con.getFileInputStream(this.prefixGPRFilename + ".gpr_norm.txt");
 
       this.normalizedBioAssay = new IDMAReader(is).read();
 
@@ -536,23 +565,7 @@ public class GoulpharWrapper {
     }
 
   }
-
-  /**
-   * Save the report.
-   * @param outputfile Output file
-   */
-  public void saveNormalizationReport(final File outputfile) {
-
-    String pdfFilename = this.prefixGPRFilename + ".gpr.pdf";
-
-    try {
-      this.con.getFile(pdfFilename, outputfile);
-    } catch (RSException e) {
-      throw new NividicRuntimeException(
-          "An error occur while downloading the file");
-    }
-
-  }
+  
 
   /**
    * Clean imported and generated file on the RServer.

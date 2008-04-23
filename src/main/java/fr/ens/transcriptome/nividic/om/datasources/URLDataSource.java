@@ -88,9 +88,13 @@ public class URLDataSource extends FileDataSource implements Serializable {
 
     try {
       return new URL(this.url).openStream();
+
     } catch (MalformedURLException e) {
+
       try {
-        return (new File(this.url)).toURL().openStream();
+        URL url = (new File(this.url)).toURL();
+        return url.openStream();
+
       } catch (MalformedURLException e1) {
         throw new NividicRuntimeException("Invalid URL");
       } catch (IOException e1) {

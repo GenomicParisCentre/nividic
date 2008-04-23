@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/home/gaussen/.taverna-1.7.0/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/axis.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/biojava-1.5.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/bytecode.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/checkstyle-3.4.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/checkstyle-optional-3.4.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/commons-cli-1.0.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/commons-lang-2.0.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/commons-math-1.1.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/commons-primitives-1.0.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/dom4j-1.4-dev-8.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/javacompiler.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/jcommon-1.0.0-rc1.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/jfreechart-1.0.0-rc1.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/jsr223-api-1.0.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/netscape.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/org.apache.commons.logging_1.0.4.v200706111724.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/phobos-rhino-0.5.6-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/poi-3.0-FINAL.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/raven-1.6.1.0.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/saaj.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/wsdl4j-1.5.1.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/jvm/java-1.5.0-sun-1.5.0.14/jre/lib/javaws.jar"/>
+	<classpathentry kind="lib" path="/usr/local/java/lib/JRclient-RE817.jar"/>
+	<classpathentry kind="lib" path="/home/gaussen/.taverna-1.7.0/lib/iText-2.0.7.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
