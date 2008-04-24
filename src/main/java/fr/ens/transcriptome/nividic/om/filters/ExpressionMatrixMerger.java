@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -307,6 +307,44 @@ public class ExpressionMatrixMerger {
   }
 
   /**
+   * Merge rows with the same prefix
+   * @param finalRowName name of the output row
+   * @param prefix prefix of the rows to merge
+   */
+  public void mergeRowsWithPrefix(final String finalRowName, final String prefix) {
+
+    if (prefix == null || finalRowName == null)
+      return;
+
+    List<String> rowsToMerge = new ArrayList<String>();
+
+    for (String rowName : this.rowReverseIndex.keySet())
+      if (rowName.startsWith(prefix))
+        rowsToMerge.add(rowName);
+
+    mergeRows(finalRowName, rowsToMerge.toArray(new String[0]));
+  }
+
+  /**
+   * Merge rows with the same suffix
+   * @param finalRowName name of the row column
+   * @param suffix suffix of the rows to merge
+   */
+  public void mergeRowsWithSuffix(final String finalRowName, final String suffix) {
+
+    if (suffix == null || finalRowName == null)
+      return;
+
+    List<String> rowsToMerge = new ArrayList<String>();
+
+    for (String rowName : this.rowReverseIndex.keySet())
+      if (rowName.endsWith(suffix))
+        rowsToMerge.add(rowName);
+
+    mergeRows(finalRowName, rowsToMerge.toArray(new String[0]));
+  }
+
+  /**
    * Merge some rows.
    * @param finalRowName name of the output row
    * @param rowsToMerge Names of the rows to merge
@@ -340,6 +378,46 @@ public class ExpressionMatrixMerger {
       if (rowIdsToMerge.contains(loc.row))
         loc.row = finalRowId;
 
+  }
+
+  /**
+   * Merge columns with the same prefix
+   * @param finalColumnName name of the output column
+   * @param prefix prefix of the columns to merge
+   */
+  public void mergeColumnsWithPrefix(final String finalColumnName,
+      final String prefix) {
+
+    if (prefix == null || finalColumnName == null)
+      return;
+
+    List<String> columnsToMerge = new ArrayList<String>();
+
+    for (String colName : this.columnReverseIndex.keySet())
+      if (colName.startsWith(prefix))
+        columnsToMerge.add(colName);
+
+    mergeColumns(finalColumnName, columnsToMerge.toArray(new String[0]));
+  }
+
+  /**
+   * Merge columns with the same suffix
+   * @param finalColumnName name of the output column
+   * @param suffix suffix of the columns to merge
+   */
+  public void mergeColumnsWithSuffix(final String finalColumnName,
+      final String suffix) {
+
+    if (suffix == null || finalColumnName == null)
+      return;
+
+    List<String> columnsToMerge = new ArrayList<String>();
+
+    for (String colName : this.columnReverseIndex.keySet())
+      if (colName.endsWith(suffix))
+        columnsToMerge.add(colName);
+
+    mergeColumns(finalColumnName, columnsToMerge.toArray(new String[0]));
   }
 
   /**
