@@ -712,8 +712,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
         final ExpressionMatrixDimension dimension =
             getDimension(dimensionNames[i]);
 
-        dimension
-            .addBioAssay(bioAssay, columnName, translator, translatorField);
+        dimension.addBioAssay(bioAssay, columnName, translator, translatorField);
       }
 
     final int rowsAfter = getRowCount();
