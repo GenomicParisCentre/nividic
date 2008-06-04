@@ -52,7 +52,7 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
 public class GoulpharWrapper {
 
   private static final String GOULPHAR_SCRIPT_URL =
-      "http://hestia.ens.fr/R/Goulphar.R";
+    "http://hestia.ens.fr/R/Goulphar.R";
 
   /** Foreground method median. */
   public static final int FOREGROUND_METHOD_MEDIAN = 0;
@@ -72,7 +72,7 @@ public class GoulpharWrapper {
   public static final String GLOBAL_LOWESS_NORMALIZATION_METHOD = "l";
   /** Global Lowess and Print-tip group group normalization method. */
   public static final String GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD =
-      "lmb";
+    "lmb";
   /** Global median normalization method. */
   public static final String GLOBAL_MEDIAN_NORMALIZATION_METHOD = "m";
   /** Print-tip median normalization method. */
@@ -122,7 +122,7 @@ public class GoulpharWrapper {
   private int backgroundSubstraction = BACKGROUND_NO_SUBSTRACTION;
   // private String normalisationMethod = GLOBAL_LOWESS_NORMALISATION_METHOD;
   private String normalisationMethod =
-      GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD;
+    GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD;
   private String flagFilter = DEFAULT_FLAG_FILTER;
   // private String flagFilterValue;
   private boolean removeSaturingSpots = REMOVE_SATURING_SPOTS;
@@ -141,7 +141,7 @@ public class GoulpharWrapper {
   // Getters
   //
 
-  
+
   /**
    * Get the alert print tip value.
    * @return Returns the alertPrintTip
@@ -165,7 +165,7 @@ public class GoulpharWrapper {
   public BioAssay getBioAssay() {
     return bioAssay;
   }
-  
+
   /**
    * Get the Normalized BioAssay to use.
    * @return Returns the Normalized bioAssay
@@ -180,24 +180,28 @@ public class GoulpharWrapper {
 
     return this.normalizedBioAssay;
   }
-  
+
+
   /**
    * Get the PDF file as array.
    * @return Returns the PDF file as array
    */
   public byte[] getPdf() {
-	  
-	  try {
-		  byte[] fileasarray = this.con.getFileAsArray(this.prefixGPRFilename + ".gpr.pdf");
-		  if (fileasarray == null){
-			  return null;
-		  }
 
-		  return fileasarray;
-	      } 
-	  
-	  catch (RSException e) {
-		  throw new NividicRuntimeException("Unable to get the report");} 
+    try {
+
+      System.out.println(this.prefixGPRFilename + ".gpr.pdf");
+      byte[] fileasarray = this.con.getFileAsArray(this.prefixGPRFilename + ".gpr.pdf");
+
+      if (fileasarray == null){
+        return null;
+      }
+
+      return fileasarray;
+    } 
+
+    catch (RSException e) {
+      throw new NividicRuntimeException("Unable to get the report");} 
 
   }
   /**
@@ -206,11 +210,11 @@ public class GoulpharWrapper {
    * @throws RSException 
    */
   public byte[] getPng(String filename) throws RSException {
-	  byte[] png = this.con.getFileAsArray(filename);
-	  return png;
+    byte[] png = this.con.getFileAsArray(filename);
+    return png;
 
   }
-  
+
   /**
    * Get the flagfilter.
    * @return Returns the flagFilter
@@ -425,8 +429,8 @@ public class GoulpharWrapper {
       InputStream is = new URL(GOULPHAR_SCRIPT_URL).openStream();
 
       BufferedReader in =
-          new BufferedReader(new InputStreamReader(is,
-              Globals.DEFAULT_FILE_ENCODING));
+        new BufferedReader(new InputStreamReader(is,
+            Globals.DEFAULT_FILE_ENCODING));
 
       String line;
       StringBuilder sb = new StringBuilder();
@@ -524,7 +528,7 @@ public class GoulpharWrapper {
       }
 
       con.writeStringAsFile("param_goulphar.dat", param);
-      
+
       con.executeRCode(this.script);
 
     } catch (RSException e) {
@@ -541,11 +545,11 @@ public class GoulpharWrapper {
    * @param bioAssay bioAssay to normalize
    */
   public void normalize(final BioAssay bioAssay) {
-	  
-	  if (bioAssay == null)
-		  return;
-	  
-	  normalize(null, bioAssay, "toprocess-" + System.currentTimeMillis());
+
+    if (bioAssay == null)
+      return;
+
+    normalize(null, bioAssay, "toprocess-" + System.currentTimeMillis());
   }
 
   private void loadNormalizedBioAssay() {
@@ -565,7 +569,7 @@ public class GoulpharWrapper {
     }
 
   }
-  
+
 
   /**
    * Clean imported and generated file on the RServer.
@@ -589,7 +593,7 @@ public class GoulpharWrapper {
         throw new NividicRuntimeException("An error occur while remove a file");
       }
 
-    this.prefixGPRFilename = null;
+      this.prefixGPRFilename = null;
   }
 
   /**
