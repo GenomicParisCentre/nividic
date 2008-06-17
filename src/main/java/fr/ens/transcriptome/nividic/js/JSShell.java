@@ -297,7 +297,7 @@ public class JSShell {
 
       if (javascriptPath != null) {
 
-        String path = javascriptPath + "/" + Defaults.BUILTIN_SCRIPTS[i];
+        String path = javascriptPath + File.separator + Defaults.BUILTIN_SCRIPTS[i];
         try {
           is = new FileInputStream(path);
         } catch (IOException e) {
@@ -306,7 +306,7 @@ public class JSShell {
 
       } else {
         // JAVASCRIPT_PATH
-        String path = JAVASCRIPT_PATH + "/" + Defaults.BUILTIN_SCRIPTS[i];
+        String path = JAVASCRIPT_PATH + File.separator + Defaults.BUILTIN_SCRIPTS[i];
 
         if (JSShell.class.getResource(path) != null)
           is = JSShell.class.getResourceAsStream(path);
