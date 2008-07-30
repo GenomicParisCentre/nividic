@@ -168,7 +168,7 @@ public class DescriptionBioAssayTranslator extends BasicTranslator implements
   }
 
   /**
-   * Get the available identfiers by the translator if possible.
+   * Get the available identifiers by the translator if possible.
    * @return a array of string with the identifiers
    */
   public String[] getIds() {
