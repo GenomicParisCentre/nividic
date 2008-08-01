@@ -286,6 +286,26 @@ function createMatrixColumnFilterAdapter(bioAssayFilter, threshold) {
   }
 }
 
+/**
+ * Create an ExpressionMatrix filter based on the number of na in a row.
+ * @param dimension dimension to filter. If null all dimension will be filtered
+ * @param threshold threshold to apply
+ */
+function createMatrixRowNAFilter(dimension, threshold) {
+
+  var nividicNames = JavaImporter();
+  nividicNames.importPackage(Packages.fr.ens.transcriptome.nividic.om.filters);
+
+  with(nividicNames) {
+    
+    if (dimension==null)
+      return new ExpressionMatrixRowNAFilter(threshold);
+      
+    return new ExpressionMatrixRowNAFilter(dimension, threshold);
+  }
+
+}
+
 /*
  * Other methods
  */

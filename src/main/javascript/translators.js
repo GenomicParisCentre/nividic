@@ -168,4 +168,16 @@ function createJoinTranslator(translator1, joinField, translator2, returnTransla
     .JoinTranslator(translator1, joinField, translator2, rNoTranslation);
 }
 
+/**
+ * Create a translator that call another translator but with a
+ * different index field.
+ * @param translator Translator to use
+ * @param field Field to use for the new index
+ * @return a new translator 
+ */
+function createChangeIndexTranslator(translator, field) {
+  
+  return new Packages.fr.ens.transcriptome.nividic.om.translators
+    .ChangeIndexTranslator(translator,field);
+}
 

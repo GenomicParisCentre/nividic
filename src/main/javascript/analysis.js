@@ -86,3 +86,53 @@ function extractFirstGALBlock(ba) {
   }
 }
 
+/*
+ * Execute the first step of the analysis that allow to choose scans to use 
+ * in the second step of the analysis
+ * @param design Design to use
+ * @param pdfFile output pdf result file
+ * @param thresholdsFile output result file with the threshold the slides
+ * @return nothing
+ */
+function analysisPhase1(design, pdfFile, thresholdsFile, threshold, rservehost) {
+
+	if (pdfFile.constructor==String) { pdfFile = sf(pdfFile); }  
+	if (thresholdsFile.constructor==String) { thresholdsFile = sf(thresholdsFile); }  
+	if (rservehost==undefined) { rservehost = defaultrservehost; }
+
+	var goulpharAroma = new Packages.fr.ens.transcriptome.nividic.sgdb.r.GoulpharAromaWrapper(rservehost);
+	
+	goulpharAroma.setSaturating(threshold);
+	goulpharAroma.normalize(design);
+	goulpharAroma.saveNormalizationReport(pdfFile);
+    goulpharAroma.saveAboutSpotsAndTresholdReport(thresholdsFile);
+    
+    // Clean remote files
+	goulpharAroma.clean();
+	
+    goulpharAroma.disConnect();
+}
+
+/*
+ * Execute the second step of the analysis
+ * @param design Design to use
+ * @param normalizationMethod Normalization method to use
+ * @return nothing
+ */
+function goulpharNormalize(design, threshold, normalizationMethod, rservehost) {
+
+	if (normalizationMethod == undefined) normalizationMethod="l";
+	if (rservehost==undefined) { rservehost = defaultrservehost; }
+	
+	var goulphar = new Packages.fr.ens.transcriptome.nividic.om.r.GoulpharWrapper(rservehost);
+	goulphar.setRemoveSaturingSpotsIntensity(threshold);
+	goulphar.setNormalisationMethod(normalizationMethod);
+	goulphar.normalize(design);
+
+	// Clean remote files
+	goulphar.clean();
+
+    goulphar.disConnect();
+}
+
+

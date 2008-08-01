@@ -148,12 +148,13 @@ function readGAL(file, allFields) {
 /**
  * Shortcut to read IDMA file(s).
  * @param file File(s) to read
+ * @param allField read all fields
  * @param comma true if comma is the decimal separator
  * @return A BioAssay Object
  */
-function readIDMA(file, comma) {
+function readIDMA(file, allFields, comma) {
 
-  return readBioAssay(file, "idma", false, comma);
+  return readBioAssay(file, "idma", allFields, comma);
 }
 
 /**
@@ -208,6 +209,9 @@ function _getBioAssayWriter(file, type) {
       case "idma": 
         return new IDMAWriter(file);
 
+      case "soft":
+        return new Packages.fr.ens.transcriptome.nividic.sgdb.io.SOFTBioAssayWriter(file);
+      
       case "total.summary":
         return new Packages.fr.ens.transcriptome.nividic.sgdb.io.TotalSummaryWriter(file);
        
@@ -270,6 +274,16 @@ function writeGAL(bioAssay, file) {
 function writeIDMA(bioAssay, file) {
 
   writeBioAssay(bioAssay, file, "idma", true);
+}
+
+/**
+ * Shortcut to write SOFT file.
+ * @param file File to write
+ * @return nothing
+ */
+function writeSOFT(bioAssay, file) {
+
+  writeBioAssay(bioAssay, file, "soft", true);
 }
 
 /**
@@ -397,7 +411,7 @@ function renameBioAssayIdsWithUniqueIdentifiers(bioAssay) {
  * @param threshold
  * @param condition
  */
-function createThresholdFilter(field, threshold, condition) {
+function createThresholdFilter(field, condition, threshold) {
 
   if (field==null || threshold==null || condition ==null) return null;
 
@@ -409,7 +423,7 @@ function createThresholdFilter(field, threshold, condition) {
     /*obj = { test: function (v) { return !isNaN(v)  && v <= threshold; } };
     return new BioAssayMFilter(obj);*/
     
-    return new BioAssayDoubleThresholdFilter(field, threshold, condition);
+    return new BioAssayDoubleThresholdFilter(field, condition, threshold);
   }
 
 }
@@ -421,7 +435,7 @@ function createThresholdFilter(field, threshold, condition) {
  */
 function createInfFilter(field,threshold) {
 
-  return createThresholdFilter(field, threshold, "<=");
+  return createThresholdFilter(field, "<=", threshold);
 }
 
 /*
@@ -430,7 +444,7 @@ function createInfFilter(field,threshold) {
  */
 function createSupFilter(field, threshold) {
 
-  return createThresholdFilter(field, threshold, ">=");
+  return createThresholdFilter(field, ">=", threshold);
 }
 
 /*

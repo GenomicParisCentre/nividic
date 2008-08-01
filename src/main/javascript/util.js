@@ -26,3 +26,13 @@ function split(s, regex) {
   }
 
 }
+
+/**
+  * Get the extension of a filename
+  * @param filename The filename
+  * @return The extension of the filename if exists, null if filename is null.
+  */
+function getFilenameWithoutExtension(filename) {
+
+	return Packages.fr.ens.transcriptome.nividic.util.StringUtils.getFilenameWithoutExtension(filename);
+}
