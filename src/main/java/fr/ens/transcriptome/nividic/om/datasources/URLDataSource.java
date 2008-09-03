@@ -87,7 +87,9 @@ public class URLDataSource extends FileDataSource implements Serializable {
   public InputStream getInputStream() {
 
     try {
+      System.out.println("url = " + this.url.toString());
       return new URL(this.url).openStream();
+      
 
     } catch (MalformedURLException e) {
 

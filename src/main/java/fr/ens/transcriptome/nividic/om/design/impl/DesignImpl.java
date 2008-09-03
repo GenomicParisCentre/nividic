@@ -566,7 +566,7 @@ public class DesignImpl implements Design, Serializable {
 	 * 
 	 * @param name
 	 *            Name of the slide
-	 * @return a slide decription object
+	 * @return a slide description object
 	 */
 	public SlideDescription getSlideDescription(final String name) {
 
@@ -914,7 +914,7 @@ public class DesignImpl implements Design, Serializable {
 			throw new NullPointerException("Slide name is null");
 
 		// if (bioassay == null)
-		// throw new NullPointerException("The biossay for the slide is null");
+		// throw new NullPointerException("The bioassay for the slide is null");
 
 		if (!isSlide(slideName))
 			throw new NividicRuntimeException("The slide doesn't exists");

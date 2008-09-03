@@ -86,8 +86,11 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
       bw.write(type);
 
+      final int nbAnnotationFields;
+
       if (annot != null) {
         final String[] annotationFields = annot.getFields();
+        nbAnnotationFields = annotationFields.length;
 
         for (int i = 0; i < annotationFields.length; i++) {
 
@@ -96,7 +99,8 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
           bw.write(annotationFields[i]);
           bw.write('"');
         }
-      }
+      } else
+        nbAnnotationFields = 0;
 
       for (int i = 0; i < columnNames.length; i++) {
         for (int j = 0; j < dimensions.length; j++) {
@@ -124,9 +128,10 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
         if (annot != null) {
           final String[] annotationValues = annot.translate(id);
-          for (int j = 0; j < annotationValues.length; j++) {
+          for (int j = 0; j < nbAnnotationFields; j++) {
             bw.write(SEPARATOR);
-            final String val = annotationValues[j];
+            final String val =
+                annotationValues != null ? annotationValues[j] : null;
             bw.write(val == null ? "" : val);
           }
         }

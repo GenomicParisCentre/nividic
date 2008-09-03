@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -50,7 +50,7 @@ public class BioAssayCommonFiltersTest extends TestCase {
     gprr.addFieldToRead("Dia.");
     gprr.addFieldToRead("F635 SD");
     gprr.addFieldToRead("F532 SD");
-    gprr.addFieldToRead("Ratio of Medians (532/635)");
+    gprr.addFieldToRead("Ratio of Medians (635/532)");
 
     this.bioAssay = gprr.read();
   }
@@ -142,7 +142,7 @@ public class BioAssayCommonFiltersTest extends TestCase {
   public void testBioAssayDoubleThresholdFilterFilter() {
 
     BioAssayFilter filter =
-        new BioAssayDoubleThresholdFilter("Ratio of Medians (532/635)", ">", 1);
+        new BioAssayDoubleThresholdFilter("Ratio of Medians (635/532)", ">", 1);
 
     assertEquals(ROW_COUNT, this.bioAssay.size());
     assertEquals(558, this.bioAssay.filter(filter).size());

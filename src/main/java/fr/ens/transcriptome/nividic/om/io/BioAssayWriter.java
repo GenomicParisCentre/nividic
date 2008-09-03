@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -66,7 +66,7 @@ public abstract class BioAssayWriter {
   //
 
   /**
-   * Ge the bioAssay object to write.
+   * Get the bioAssay object to write.
    * @return Returns the bioAssay
    */
   public BioAssay getBioAssay() {
@@ -145,7 +145,7 @@ public abstract class BioAssayWriter {
   //
 
   /**
-   * Get the convert of fiednames
+   * Get the convert of fieldnames
    * @return The converter of fieldnames
    */
   protected abstract FieldNameConverter getFieldNameConverter();
@@ -422,11 +422,11 @@ public abstract class BioAssayWriter {
       throw new NividicIOException("No bioassay to write");
 
     setBioAssay(bioAssay);
+    
     addFieldToWrite(getMetaRowField());
     addFieldToWrite(getRowField());
     addFieldToWrite(getMetaColumnField());
     addFieldToWrite(getColumnField());
-
     createFieldsArrays();
 
     writeHeaders();
@@ -436,7 +436,7 @@ public abstract class BioAssayWriter {
 
   /**
    * Add history entry for reading data
-   * @param bioAssay Bioassay readed
+   * @param bioAssay Bioassay read
    */
   private void addWriterHistoryEntry(final BioAssay bioAssay) {
 
@@ -489,5 +489,5 @@ public abstract class BioAssayWriter {
 
     setOutputStream(is);
   }
-
+ 
 }

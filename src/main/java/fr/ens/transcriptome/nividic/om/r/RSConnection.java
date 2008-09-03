@@ -24,10 +24,14 @@ package fr.ens.transcriptome.nividic.om.r;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -435,6 +439,54 @@ public class RSConnection {
     }
 
   }
+  
+  /**
+   * Get a file from RServe
+   * @param filename file to load
+   * @return a file object
+   * @throws RSException if an error occurs while loading the file
+   */
+  public File getTable(final String filename) throws RSException {
+
+    final Rconnection connection = getRConnection();
+
+    if (connection == null)
+      throw new RSException("Connection is null");
+
+    try {
+      
+      File input = new File(filename);
+      
+      FileReader fluxLectureTexte = new FileReader(input);
+      BufferedReader bufferreader = new BufferedReader(fluxLectureTexte);
+      
+      String ligne;
+      StringBuffer content = new StringBuffer();
+      while((ligne = bufferreader.readLine()) != null){
+          System.out.print (ligne);
+          content.append(ligne);
+          content.append("\r\n");
+      }
+      
+      bufferreader.close();
+      fluxLectureTexte.close();
+
+      File output = new File(filename);
+      FileWriter fluxEcritureTexte = new FileWriter(output);
+      BufferedWriter bufferwriter = new BufferedWriter(fluxEcritureTexte);
+      bufferwriter.write(content.toString());
+      bufferwriter.flush();
+      bufferwriter.close();
+      fluxEcritureTexte.close();
+      
+      return output;
+      
+      } catch (IOException e) {
+        throw new RSException("Error while loading file");
+      } 
+    
+  }
+
 
   /**
    * Get a file from the RServer.

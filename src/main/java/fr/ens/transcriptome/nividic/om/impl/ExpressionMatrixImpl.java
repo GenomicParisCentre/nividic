@@ -708,11 +708,10 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
     String[] dimensionNames = getDimensionNames();
     for (int i = 0; i < dimensionNames.length; i++)
       if (bioAssay.isField(dimensionNames[i])) {
-
         final ExpressionMatrixDimension dimension =
             getDimension(dimensionNames[i]);
-
-        dimension.addBioAssay(bioAssay, columnName, translator, translatorField);
+        dimension
+            .addBioAssay(bioAssay, columnName, translator, translatorField);
       }
 
     final int rowsAfter = getRowCount();
@@ -740,7 +739,7 @@ public class ExpressionMatrixImpl implements ExpressionMatrix,
    * Add a column to the matrix
    * @param bioAssay The new column to add
    * @param fieldName The fieldName of the bioAssay column to add
-   * @param dimensionName The name of the dimenson to add
+   * @param dimensionName The name of the dimension to add
    */
   public void addBioAssayDimension(final BioAssay bioAssay,
       final String fieldName, final String dimensionName) {
