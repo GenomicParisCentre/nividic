@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.om.design;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -80,6 +81,29 @@ public class LimmaDesignIOTest extends TestCase {
 
     assertTrue(NividicUtils.compareFile(this.getClass().getResourceAsStream(
         file3), new FileInputStream("/tmp/design.txt")));
+
+  }
+
+  public void testRead2() throws NividicIOException, FileNotFoundException,
+      IOException {
+
+    try {
+      LimmaDesignWriter ldw = new LimmaDesignWriter((File) null);
+      assertTrue(false);
+    } catch (NividicIOException e) {
+      assertTrue(true);
+    }
+
+    LimmaDesignWriter ldw =
+        new LimmaDesignWriter(new FileOutputStream("/tmp/design2.txt"));
+
+    try {
+
+      ldw.write(null);
+      assertTrue(false);
+    } catch (NullPointerException e) {
+      assertTrue(true);
+    }
 
   }
 
