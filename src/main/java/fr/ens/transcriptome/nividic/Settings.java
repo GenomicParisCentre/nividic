@@ -61,8 +61,8 @@ public final class Settings {
 
     if (os.toLowerCase().startsWith("windows"))
       return home
-          + File.separator + "Application DataDouble"
-          + Globals.APP_NAME_LOWER_CASE + " .conf";
+          + File.separator + "Application Data" + File.separator
+          + Globals.APP_NAME_LOWER_CASE + ".conf";
 
     return home + File.separator + "." + Globals.APP_NAME_LOWER_CASE;
   }
