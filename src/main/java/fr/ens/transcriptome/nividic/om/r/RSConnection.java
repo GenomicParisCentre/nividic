@@ -87,8 +87,6 @@ public class RSConnection {
     return sourceDirectory;
   }
 
-
-
   //
   // Setters
   //
@@ -112,7 +110,7 @@ public class RSConnection {
    * @throws if an error occurs while assigning data
    */
   public void assign(final String varName, final Object value)
-  throws RSException {
+      throws RSException {
 
     // System.out.println("value=" + value);
 
@@ -142,7 +140,7 @@ public class RSConnection {
         System.out.println("this is a boolean");
 
         REXP exp =
-          new REXP(REXP.XT_BOOL, new RBool(((Boolean) value).booleanValue()));
+            new REXP(REXP.XT_BOOL, new RBool(((Boolean) value).booleanValue()));
 
         System.out.println("exp=" + exp.asBool());
 
@@ -355,7 +353,7 @@ public class RSConnection {
    * @throws RSException if an error occurs while writing the file
    */
   public void writeStringAsFile(final String outputFilename, final String value)
-  throws RSException {
+      throws RSException {
 
     if (outputFilename == null)
       return;
@@ -374,7 +372,7 @@ public class RSConnection {
    * @throws RSException if an exception occurs while reading file
    */
   public InputStream getFileInputStream(final String filename)
-  throws RSException {
+      throws RSException {
 
     Rconnection c = getRConnection();
 
@@ -394,7 +392,7 @@ public class RSConnection {
    * @throws RSException if an exception occurs while reading file
    */
   public OutputStream getFileOutputStream(final String filename)
-  throws RSException {
+      throws RSException {
 
     Rconnection c = getRConnection();
 
@@ -414,7 +412,7 @@ public class RSConnection {
    * @throws RSException if an error occurs while downloading the file
    */
   public void putFile(final File inputFile, final String rServeFilename)
-  throws RSException {
+      throws RSException {
 
     try {
 
@@ -439,7 +437,7 @@ public class RSConnection {
     }
 
   }
-  
+
   /**
    * Get a file from RServe
    * @param filename file to load
@@ -454,20 +452,20 @@ public class RSConnection {
       throw new RSException("Connection is null");
 
     try {
-      
+
       File input = new File(filename);
-      
+
       FileReader fluxLectureTexte = new FileReader(input);
       BufferedReader bufferreader = new BufferedReader(fluxLectureTexte);
-      
+
       String ligne;
       StringBuffer content = new StringBuffer();
-      while((ligne = bufferreader.readLine()) != null){
-          System.out.print (ligne);
-          content.append(ligne);
-          content.append("\r\n");
+      while ((ligne = bufferreader.readLine()) != null) {
+        System.out.print(ligne);
+        content.append(ligne);
+        content.append("\r\n");
       }
-      
+
       bufferreader.close();
       fluxLectureTexte.close();
 
@@ -478,15 +476,14 @@ public class RSConnection {
       bufferwriter.flush();
       bufferwriter.close();
       fluxEcritureTexte.close();
-      
-      return output;
-      
-      } catch (IOException e) {
-        throw new RSException("Error while loading file");
-      } 
-    
-  }
 
+      return output;
+
+    } catch (IOException e) {
+      throw new RSException("Error while loading file");
+    }
+
+  }
 
   /**
    * Get a file from the RServer.
@@ -495,7 +492,7 @@ public class RSConnection {
    * @throws RSException if an error occurs while downloading the file
    */
   public void getFile(final String rServeFilename, final File outputfile)
-  throws RSException {
+      throws RSException {
 
     try {
       InputStream is = getFileInputStream(rServeFilename);
@@ -520,7 +517,6 @@ public class RSConnection {
     }
 
   }
-
 
   /**
    * Remove a file on the RServer
@@ -554,7 +550,7 @@ public class RSConnection {
       return;
 
     int hashCode = source.hashCode();
-    String filename = getSourceDirectory() + File.separator + hashCode + ".R";
+    String filename = getSourceDirectory() + "/" + hashCode + ".R";
 
     try {
 
@@ -615,7 +611,7 @@ public class RSConnection {
         // because we did some error checking, but
         // for those paranoid ...
         throw new RSRuntimeException(
-        "Cannot load image, check R output, probably R didn't produce anything.");
+            "Cannot load image, check R output, probably R didn't produce anything.");
 
       }
       System.out.println("The image file is " + imgLength + " bytes big.");
@@ -650,6 +646,7 @@ public class RSConnection {
     }
 
   }
+
   /**
    * Get file from RServe
    * @param filename file to load
@@ -668,13 +665,13 @@ public class RSConnection {
       ArrayList<byte[]> buffers = new ArrayList<byte[]>();
 
       int bufSize = 65536;
-      byte[] buf = new byte[bufSize]; 	
+      byte[] buf = new byte[bufSize];
 
       int imgLength = 0;
       int n = 0;
       while (true) {
         n = is.read(buf);
-        if (n == bufSize) {				 
+        if (n == bufSize) {
           buffers.add(buf);
           buf = new byte[bufSize];
         }
@@ -683,7 +680,7 @@ public class RSConnection {
         if (n < bufSize)
           break;
       }
-      if (imgLength < 10) { 
+      if (imgLength < 10) {
         throw new RSRuntimeException(
             "Cannot load image, check R output, probably R didn't produce anything.");
 
@@ -709,8 +706,7 @@ public class RSConnection {
 
     } catch (IOException e) {
       throw new RSException("Error while load image");
-    } 
-
+    }
 
   }
 
@@ -722,7 +718,7 @@ public class RSConnection {
 
     javax.swing.JFrame f = new javax.swing.JFrame("Test image");
     javax.swing.JLabel b =
-      new javax.swing.JLabel(new javax.swing.ImageIcon(image));
+        new javax.swing.JLabel(new javax.swing.ImageIcon(image));
     f.getContentPane().add(b);
     f.pack();
     f.setVisible(true);
@@ -737,7 +733,8 @@ public class RSConnection {
     try {
       this.rConnection = new Rconnection(this.serverName);
     } catch (RSrvException e) {
-      throw new RSException("Unable to connect to the server.");
+      throw new RSException("Unable to connect to the server: "
+          + e.getMessage());
     }
 
     testAndCreateSourceDirectory();
@@ -769,7 +766,7 @@ public class RSConnection {
    */
   public RSConnection(final String serverName) {
 
-    this.serverName = serverName == null ? "127.0.0.1" : serverName;
+    this.serverName = serverName == null ? "127.0.0.1" : serverName.trim();
   }
 
 }
