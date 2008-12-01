@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -57,9 +57,9 @@ public class ExpressionMatrixRowNAFilter extends ExpressionMatrixRowFilter {
       if (Double.isNaN(values[i]))
         count++;
 
-    final double ratio = (double) count / (double) size;
+    final double ratio = 1.0 - ((double) count / (double) size);
 
-    return ratio < this.threshold;
+    return ratio >= this.threshold;
   }
 
   /**
@@ -111,6 +111,9 @@ public class ExpressionMatrixRowNAFilter extends ExpressionMatrixRowFilter {
 
     if (threshold < 0)
       throw new NividicRuntimeException("Threshold can't be lower than 0.");
+
+    if (threshold > 1)
+      throw new NividicRuntimeException("Threshold can't be upper than 1.");
 
     this.threshold = threshold;
   }
