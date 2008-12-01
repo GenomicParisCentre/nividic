@@ -196,7 +196,7 @@ public class GoulpharDesignReader extends InputStreamDesignReader {
    * @param filename filename to process
    * @return the "root" of the filename
    */
-  private static String rootFilename(final File file) {
+  private static final String rootFilename(final File file) {
 
     if (file == null)
       return null;
