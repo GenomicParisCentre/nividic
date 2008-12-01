@@ -785,7 +785,7 @@ public class SubExpressionMatrix implements ExpressionMatrix,
     for (int i = 0; i < ids.length; i++) {
 
       if (!em.containsRow(ids[i]))
-        this.throwExceptionIfColumnDoesntExists(ids[i]);
+        this.throwExceptionIfRowIdDoesntExists(ids[i]);
 
       this.idsSet.add(ids[i]);
     }
