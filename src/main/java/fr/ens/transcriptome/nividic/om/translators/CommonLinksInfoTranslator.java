@@ -66,7 +66,7 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
       return false;
 
     return field.equals("TranscriptID")
-        || field.equals("MGI") || field.equals("EntrezID")
+        || field.equals("MGIID") || field.equals("EntrezID")
         || field.equals("SGDID") || field.equals("Phatr2 Protein HyperLink");
   }
 
@@ -85,7 +85,7 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
       return "http://www.ensembl.org/Homo_sapiens/searchview?species=;idx=;q="
           + translatedId;
 
-    if (field.equals("MGI") && translatedId.startsWith("MGI:")) {
+    if (field.equals("MGIID") && translatedId.startsWith("MGI:")) {
 
       final String id = translatedId.substring(4, translatedId.length());
 
