@@ -65,8 +65,8 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
     if (field == null)
       return false;
 
-    return field.equals("TranscriptID")
-        || field.equals("MGIID") || field.equals("EntrezID")
+    return field.equals("EnsemblGeneID")
+        || field.equals("EntrezGeneID") || field.equals("MGIID")
         || field.equals("SGDID") || field.equals("Phatr2 Protein HyperLink");
   }
 
@@ -81,8 +81,12 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
     if (translatedId == null || field == null)
       return null;
 
-    if (field.equals("TranscriptID"))
-      return "http://www.ensembl.org/Homo_sapiens/searchview?species=;idx=;q="
+    if (field.equals("EnsemblGeneID"))
+      return "http://www.ensembl.org/Homo_sapiens/Search/Summary?species=all;q="
+          + translatedId;
+
+    if (field.equals("EntrezGeneID"))
+      return "http://www.ncbi.nlm.nih.gov/sites/entrez?Db=gene&Cmd=ShowDetailView&TermToSearch="
           + translatedId;
 
     if (field.equals("MGIID") && translatedId.startsWith("MGI:")) {
@@ -93,9 +97,9 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
           + id;
     }
 
-    if (field.equals("EntrezID"))
-      return "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?"
-          + "db=gene&cmd=Retrieve&dopt=Graphics&list_uids=" + translatedId;
+    // if (field.equals("EntrezID"))
+    // return "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?"
+    // + "db=gene&cmd=Retrieve&dopt=Graphics&list_uids=" + translatedId;
 
     if (field.equals("SGDID"))
       return "http://db.yeastgenome.org/cgi-bin/locus.pl?dbid=" + translatedId;
