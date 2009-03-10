@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -80,6 +80,17 @@ public final class ExpressionMatrixFactory {
   public static ExpressionMatrix createExpressionMatrixMA() {
 
     return addADimension(new ExpressionMatrixImpl());
+  }
+
+  /**
+   * Create a ExpressionMatrix Object with M and A dimensions.
+   * @param matrixName The name of the matrix
+   * @return A new ExpressionMatrix Object
+   */
+  public static ExpressionMatrix createExpressionMatrixMA(
+      final String matrixName) {
+
+    return addADimension(new ExpressionMatrixImpl(matrixName));
   }
 
   /**
