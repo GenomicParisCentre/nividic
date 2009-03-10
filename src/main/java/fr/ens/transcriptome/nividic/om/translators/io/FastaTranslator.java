@@ -89,6 +89,18 @@ public class FastaTranslator extends BasicTranslator {
 
   /**
    * Public constructor.
+   * @param filename Fasta file to read
+   * @throws FileNotFoundException
+   * @throws BioException
+   * @throws NoSuchElementException
+   */
+  public FastaTranslator(final String filename) {
+
+    this(new File(filename));
+  }
+
+  /**
+   * Public constructor.
    * @param file Fasta file to read
    * @throws FileNotFoundException
    * @throws BioException
