@@ -84,7 +84,7 @@ public final class BioAssayUtils {
    * @param rowsToRemove Array of the number of the rows to remove
    * @return A new BioAssay object without the deleted rows
    * @throws BioAssayRuntimeException if an error occurs while creating the new
-   *             bioassay object
+   *           bioassay object
    */
   public static BioAssay removeRowsFromBioAssay(final BioAssay bioAssay,
       final int[] rowsToRemove) throws BioAssayRuntimeException {
@@ -884,7 +884,8 @@ public final class BioAssayUtils {
     for (Map.Entry<String, Integer> e : idsCount.entrySet())
       if (e.getValue() == 1)
         e.setValue(-1);
-      else e.setValue(1);
+      else
+        e.setValue(1);
 
     for (int i = 0; i < ids.length; i++) {
 
@@ -934,6 +935,26 @@ public final class BioAssayUtils {
 
     for (int i = 0; i < fields.length; i++)
       bioAssay.setDataFieldString(fields[i], data[i]);
+
+  }
+
+  /**
+   * Set metaRow and metaColumn to 1 for BioAssay without meta rows and blocks.
+   * @param bioAssay BioAssay to use
+   */
+  public static void addMetaRowMetacolumnToLocations(final BioAssay bioAssay) {
+
+    if (bioAssay == null)
+      return;
+
+    final int[] locations = bioAssay.getLocations();
+
+    for (int i = 0; i < locations.length; i++) {
+
+      int l = locations[i];
+      l = setMetaColumn(l, 1);
+      locations[i] = setMetaRow(l, 1);
+    }
 
   }
 
