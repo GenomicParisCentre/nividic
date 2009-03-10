@@ -52,20 +52,22 @@ public class GPRReader extends ATFReader {
 
   /** Name of double field names. */
   private static final String[] doubleFieldNames =
-  {"Ratio of Medians (635/532)", "Ratio of Means (635/532)",
-      "Median of Ratios (635/532)", "Mean of Ratios (635/532)",
-      "Ratios SD (635/532)", "Rgn Ratio (635/532)", "Rgn R2 (635/532)",
-      "Log Ratio (635/532)", "SNR 635", "SNR 532"};
-  
-//  private static final String[] doubleFieldNames =
-//      {"Ratio of Medians (635/532)", "Ratio of Means (635/532)",
-//          "Median of Ratios (635/532)", "Mean of Ratios (635/532)",
-//          "Ratios SD (635/532)", "Rgn Ratio (635/532)", "Rgn R2 (635/532)",
-//          "Log Ratio (635/532)", "SNR 635", "SNR 532"};
+      {"Ratio of Medians (635/532)", "Ratio of Means (635/532)",
+          "Median of Ratios (635/532)", "Mean of Ratios (635/532)",
+          "Ratios SD (635/532)", "Rgn Ratio (635/532)", "Rgn R2 (635/532)",
+          "Log Ratio (635/532)", "SNR 635", "SNR 532"};
 
-//  "Mean of Ratios (635/532)"    "Ratio of Medians (635/532)"    "Sum of Medians (635/532)"  "Sum of Means (635/532)"    "Log Ratio (635/532)"   "Ratio of Means (635/532)"  "Median of Ratios (635/532)"    "Ratios SD (635/532)"   "Rgn R2 (635/532)"
+  // private static final String[] doubleFieldNames =
+  // {"Ratio of Medians (635/532)", "Ratio of Means (635/532)",
+  // "Median of Ratios (635/532)", "Mean of Ratios (635/532)",
+  // "Ratios SD (635/532)", "Rgn Ratio (635/532)", "Rgn R2 (635/532)",
+  // "Log Ratio (635/532)", "SNR 635", "SNR 532"};
 
-  
+  // "Mean of Ratios (635/532)" "Ratio of Medians (635/532)"
+  // "Sum of Medians (635/532)" "Sum of Means (635/532)" "Log Ratio (635/532)"
+  // "Ratio of Means (635/532)" "Median of Ratios (635/532)"
+  // "Ratios SD (635/532)" "Rgn R2 (635/532)"
+
   /**
    * Get the convert of fieldnames
    * @return The converter of fieldnames
@@ -99,6 +101,17 @@ public class GPRReader extends ATFReader {
   //
   // Constructors
   //
+
+  /**
+   * Public constructor.
+   * @param filename file to read
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public GPRReader(final String filename) throws NividicIOException {
+
+    this(new File(filename));
+  }
 
   /**
    * Public constructor.
