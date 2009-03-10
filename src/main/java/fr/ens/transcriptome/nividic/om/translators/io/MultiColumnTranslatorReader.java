@@ -185,9 +185,34 @@ public class MultiColumnTranslatorReader {
 
   /**
    * Public constructor.
+   * @param filename file to read
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public MultiColumnTranslatorReader(final String filename)
+      throws NividicIOException {
+
+    this(new File(filename), false);
+  }
+
+  /**
+   * Public constructor.
+   * @param filename file to read
+   * @param noHeader true if there is no header for column names
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public MultiColumnTranslatorReader(final String filename,
+      final boolean noHeader) throws NividicIOException {
+
+    this(new File(filename), noHeader);
+  }
+
+  /**
+   * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public MultiColumnTranslatorReader(final File file) throws NividicIOException {
 
@@ -199,7 +224,7 @@ public class MultiColumnTranslatorReader {
    * @param file file to read
    * @param noHeader true if there is no header for column names
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public MultiColumnTranslatorReader(final File file, final boolean noHeader)
       throws NividicIOException {
