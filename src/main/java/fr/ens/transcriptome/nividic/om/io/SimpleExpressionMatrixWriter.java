@@ -285,6 +285,17 @@ public class SimpleExpressionMatrixWriter extends ExpressionMatrixWriter {
 
   /**
    * Public constructor.
+   * @param filename file to read
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *             the file is null.
+   */
+  public SimpleExpressionMatrixWriter(final String filename)
+      throws NividicIOException {
+    this(new File(filename));
+  }
+  
+  /**
+   * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
    *             the file is null.
