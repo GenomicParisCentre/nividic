@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.ens.transcriptome.nividic.Globals;
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.Annotation;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayFactory;
@@ -356,10 +357,25 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
       final Annotation annot = this.bioAssay.getAnnotation();
 
-      final int numRows =
-          Integer.parseInt(annot.getProperty("SpotFinder_NumRows"));
-      final int numCols =
-          Integer.parseInt(annot.getProperty("SpotFinder_NumCols"));
+      final int numRows;
+
+      if (annot.containsProperty("SpotFinder_NumRows"))
+        numRows = Integer.parseInt(annot.getProperty("SpotFinder_NumRows"));
+      else if (annot.containsProperty("Grid_NumRows"))
+        numRows = Integer.parseInt(annot.getProperty("Grid_NumRows"));
+      else
+        throw new NividicRuntimeException(
+            "Invalid Agilent File: No information about the number of rows");
+
+      final int numCols;
+
+      if (annot.containsProperty("SpotFinder_NumRows"))
+        numCols = Integer.parseInt(annot.getProperty("SpotFinder_NumCols"));
+      else if (annot.containsProperty("Grid_NumRows"))
+        numCols = Integer.parseInt(annot.getProperty("Grid_NumCols"));
+      else
+        throw new NividicRuntimeException(
+            "Invalid Agilent File: No information about the number of columns");
 
       return numRows * (numCols / 2);
     }
@@ -514,6 +530,11 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
     addFieldToRead(getRowField());
     addFieldToRead(getColumnField());
+    addFieldToRead("FeatureNum");
+    addFieldToRead("ProbeName");
+    addFieldToRead("gMedianSignal");
+    addFieldToRead("rMedianSignal");
+    addFieldToRead("ControlType");
 
     final BioAssay bioAssay = BioAssayFactory.createBioAssay();
 
@@ -560,9 +581,20 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
   /**
    * Public constructor.
+   * @param filename to read
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public AgilentReader(final String filename) throws NividicIOException {
+
+    this(new File(filename));
+  }
+
+  /**
+   * Public constructor.
    * @param file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public AgilentReader(final File file) throws NividicIOException {
 
