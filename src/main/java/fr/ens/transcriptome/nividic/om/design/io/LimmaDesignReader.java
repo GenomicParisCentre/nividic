@@ -24,6 +24,8 @@ package fr.ens.transcriptome.nividic.om.design.io;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -282,6 +284,17 @@ public class LimmaDesignReader extends InputStreamDesignReader {
   public LimmaDesignReader(final InputStream is) throws NividicIOException {
 
     super(is);
+  }
+  
+  /**
+   * Public constructor
+   * @param filename File to read
+   * @throws NividicIOException if the stream is null
+   * @throws FileNotFoundException if the file doesn't exist
+   */
+  public LimmaDesignReader(final String filename) throws NividicIOException, FileNotFoundException {
+
+    this(new FileInputStream(filename));
   }
 
 }
