@@ -24,6 +24,9 @@ package fr.ens.transcriptome.nividic.om.design.io;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -236,5 +239,16 @@ public class LimmaDesignWriter extends DesignWriter {
    */
   public LimmaDesignWriter(final OutputStream os) throws NividicIOException {
     super(os);
+  }
+  
+  /**
+   * Public constructor
+   * @param filename File to write
+   * @throws NividicIOException if the stream is null
+   * @throws FileNotFoundException if the file doesn't exist
+   */
+  public LimmaDesignWriter(final String filename) throws NividicIOException, FileNotFoundException {
+
+    this(new FileOutputStream(filename));
   }
 }
