@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -45,7 +45,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
   /*
    * TODO Forcer les champs a avoir tous la meme longueur. Creer un champ length
    * contenant la longueur du tableau. Si un champ d'une longueur differente est
-   * ajouter doit jeter une exception. Si un des vecteur est modifié (dans sa
+   * ajouter doit jeter une exception. Si un des vecteur est modifiï¿½ (dans sa
    * taille) doit jetter une exception. Ceci doit etre possible en utilisant le
    * mecanisme de Listener.
    */
@@ -190,7 +190,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     if (isField(field) && getFieldType(field) != BioAssayBase.DATATYPE_INTEGER)
       removeField(field);
 
-    // met à jour la map _dir à chaque fois qu'il y a un setData()
+    // met ï¿½ jour la map _dir ï¿½ chaque fois qu'il y a un setData()
     this.hashInteger.put(field, value);
     this.hashDir.put(field, BioAssayBase.DATATYPE_INTEGER);
 
@@ -220,7 +220,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     if (isField(field) && getFieldType(field) != BioAssayBase.DATATYPE_DOUBLE)
       removeField(field);
 
-    // met à jour la map _dir à chaque fois qu'il y a un setData()
+    // met ï¿½ jour la map _dir ï¿½ chaque fois qu'il y a un setData()
     this.hashDouble.put(field, value);
     this.hashDir.put(field, BioAssayBase.DATATYPE_DOUBLE);
   }
@@ -249,7 +249,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     if (isField(field) && getFieldType(field) != BioAssayBase.DATATYPE_STRING)
       removeField(field);
 
-    // met à jour la map _dir à chaque fois qu'il y a un setData()
+    // met ï¿½ jour la map _dir ï¿½ chaque fois qu'il y a un setData()
     this.hashString.put(field, value);
     this.hashDir.put(field, BioAssayBase.DATATYPE_STRING);
 
@@ -521,7 +521,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
       return;
 
     if (!isField(oldName))
-      throw new BioAssayRuntimeException("Unknown Field");
+      throw new BioAssayRuntimeException("Unknown Field: "+oldName);
     if (isField(newName))
       throw new BioAssayRuntimeException(
           "A field with the new name of the field already exists");
@@ -561,6 +561,9 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     if (oldName.equals(this.referenceField))
       this.referenceField = newName;
+    
+    this.hashDir.remove(oldName);
+    this.hashDir.put(newName, fieldType);
   }
 
   /**
