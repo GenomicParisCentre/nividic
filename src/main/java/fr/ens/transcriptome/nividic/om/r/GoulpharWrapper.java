@@ -52,7 +52,7 @@ import fr.ens.transcriptome.nividic.util.NividicUtils;
 public class GoulpharWrapper {
 
   private static final String GOULPHAR_SCRIPT_URL =
-    "http://hestia.ens.fr/R/Goulphar.R";
+      "http://transcriptome.ens.fr/goulphar/Goulphar.R";
 
   /** Foreground method median. */
   public static final int FOREGROUND_METHOD_MEDIAN = 0;
@@ -72,7 +72,7 @@ public class GoulpharWrapper {
   public static final String GLOBAL_LOWESS_NORMALIZATION_METHOD = "l";
   /** Global Lowess and Print-tip group group normalization method. */
   public static final String GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD =
-    "lmb";
+      "lmb";
   /** Global median normalization method. */
   public static final String GLOBAL_MEDIAN_NORMALIZATION_METHOD = "m";
   /** Print-tip median normalization method. */
@@ -122,7 +122,7 @@ public class GoulpharWrapper {
   private int backgroundSubstraction = BACKGROUND_NO_SUBSTRACTION;
   // private String normalisationMethod = GLOBAL_LOWESS_NORMALISATION_METHOD;
   private String normalisationMethod =
-    GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD;
+      GLOBAL_LOWESS_AND_PRINT_TIP_GROUP_NORMALIZATION_METHOD;
   private String flagFilter = DEFAULT_FLAG_FILTER;
   // private String flagFilterValue;
   private boolean removeSaturingSpots = REMOVE_SATURING_SPOTS;
@@ -140,7 +140,6 @@ public class GoulpharWrapper {
   //
   // Getters
   //
-
 
   /**
    * Get the alert print tip value.
@@ -181,7 +180,6 @@ public class GoulpharWrapper {
     return this.normalizedBioAssay;
   }
 
-
   /**
    * Get the PDF file as array.
    * @return Returns the PDF file as array
@@ -191,23 +189,26 @@ public class GoulpharWrapper {
     try {
 
       System.out.println(this.prefixGPRFilename + ".gpr.pdf");
-      byte[] fileasarray = this.con.getFileAsArray(this.prefixGPRFilename + ".gpr.pdf");
+      byte[] fileasarray =
+          this.con.getFileAsArray(this.prefixGPRFilename + ".gpr.pdf");
 
-      if (fileasarray == null){
+      if (fileasarray == null) {
         return null;
       }
 
       return fileasarray;
-    } 
+    }
 
     catch (RSException e) {
-      throw new NividicRuntimeException("Unable to get the report");} 
+      throw new NividicRuntimeException("Unable to get the report");
+    }
 
   }
+
   /**
    * Get the Png Images As ByteArray List.
    * @return Returns the Png Images as bytearray list
-   * @throws RSException 
+   * @throws RSException
    */
   public byte[] getPng(String filename) throws RSException {
     byte[] png = this.con.getFileAsArray(filename);
@@ -429,8 +430,8 @@ public class GoulpharWrapper {
       InputStream is = new URL(GOULPHAR_SCRIPT_URL).openStream();
 
       BufferedReader in =
-        new BufferedReader(new InputStreamReader(is,
-            Globals.DEFAULT_FILE_ENCODING));
+          new BufferedReader(new InputStreamReader(is,
+              Globals.DEFAULT_FILE_ENCODING));
 
       String line;
       StringBuilder sb = new StringBuilder();
@@ -555,7 +556,8 @@ public class GoulpharWrapper {
   private void loadNormalizedBioAssay() {
 
     try {
-      InputStream is = this.con.getFileInputStream(this.prefixGPRFilename + ".gpr_norm.txt");
+      InputStream is =
+          this.con.getFileInputStream(this.prefixGPRFilename + ".gpr_norm.txt");
 
       this.normalizedBioAssay = new IDMAReader(is).read();
 
@@ -569,7 +571,6 @@ public class GoulpharWrapper {
     }
 
   }
-
 
   /**
    * Clean imported and generated file on the RServer.
@@ -593,7 +594,7 @@ public class GoulpharWrapper {
         throw new NividicRuntimeException("An error occur while remove a file");
       }
 
-      this.prefixGPRFilename = null;
+    this.prefixGPRFilename = null;
   }
 
   /**
