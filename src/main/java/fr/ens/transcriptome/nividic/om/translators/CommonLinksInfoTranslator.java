@@ -81,6 +81,9 @@ public class CommonLinksInfoTranslator extends BasicTranslator implements
     if (translatedId == null || field == null)
       return null;
 
+    if (field.equals("GI"))
+      return "http://www.ncbi.nlm.nih.gov/nuccore/" + translatedId;
+
     if (field.equals("EnsemblGeneID"))
       return "http://www.ensembl.org/Homo_sapiens/Search/Summary?species=all;q="
           + translatedId;
