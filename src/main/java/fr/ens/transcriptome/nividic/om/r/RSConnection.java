@@ -41,6 +41,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.rosuda.JRclient.RBool;
 import org.rosuda.JRclient.REXP;
@@ -499,7 +501,7 @@ public class RSConnection {
 
       OutputStream fos = new FileOutputStream(outputfile);
 
-      byte[] buf = new byte[BUFFER_SIZE];
+      final byte[] buf = new byte[BUFFER_SIZE];
       int i = 0;
 
       while ((i = is.read(buf)) != -1)
@@ -509,13 +511,55 @@ public class RSConnection {
       fos.close();
 
     } catch (RSException e) {
+      throw new RSException("Unable to get the file: " + rServeFilename);
+    } catch (FileNotFoundException e) {
+      throw new RSException("Unable to get the file: " + rServeFilename);
+    } catch (IOException e) {
+      throw new RSException("Unable to get the file: " + rServeFilename);
+    }
+
+  }
+
+  /**
+   * Get a list of files from the RServer.
+   * @param rServeFilenames list of filenames of the files to retrieve
+   * @param zipFile zip output file for the files to retrieve
+   * @throws RSException if an error occurs while downloading the file
+   */
+  public void getFilesIntoZip(final List<String> rServeFilenames,
+      final File zipFile) throws RSException {
+
+    try {
+      ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+
+      final byte[] buf = new byte[BUFFER_SIZE];
+
+      for (String f : rServeFilenames) {
+        final InputStream is = getFileInputStream(f);
+
+        // Add Zip entry to output stream.
+        out.putNextEntry(new ZipEntry(f));
+
+        int i = 0;
+
+        while ((i = is.read(buf)) != -1)
+          out.write(buf, 0, i);
+
+        // Complete the entry
+        out.closeEntry();
+        is.close();
+      }
+
+      // Complete the Zip file
+      out.close();
+
+    } catch (RSException e) {
       throw new RSException("Unable to get the normalized bioAssay");
     } catch (FileNotFoundException e) {
       throw new RSException("Unable to create report.");
     } catch (IOException e) {
       throw new RSException("Unable to create report.");
     }
-
   }
 
   /**
