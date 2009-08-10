@@ -25,6 +25,7 @@ package fr.ens.transcriptome.nividic.om.impl;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
@@ -53,7 +54,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
   private Map<String, String[]> hashString = new HashMap<String, String[]>();
   private Map<String, int[]> hashInteger = new HashMap<String, int[]>();
   private Map<String, double[]> hashDouble = new HashMap<String, double[]>();
-  private Map<String, Integer> hashDir = new HashMap<String, Integer>();
+  private Map<String, Integer> hashDir = new LinkedHashMap<String, Integer>();
   private Map<Integer, Integer> indexLoc = new HashMap<Integer, Integer>();
   private Map<String, int[]> references = new HashMap<String, int[]>();
   private String referenceField;
@@ -109,9 +110,8 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
     String[] result = new String[hashDir.size()];
     int i = 0;
 
-    Iterator it = hashDir.keySet().iterator();
-    while (it.hasNext())
-      result[i++] = (String) it.next();
+    for (String f : this.hashDir.keySet())
+      result[i++] = f;
 
     return result;
   }
@@ -437,7 +437,8 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
    */
   public void makeReferences() {
 
-    if (this.referenceField == null || !isField(referenceField)
+    if (this.referenceField == null
+        || !isField(referenceField)
         || getFieldType(referenceField) != BioAssayBase.DATATYPE_STRING
         || !isLocations()
         || getLocations().length != getDataFieldString(referenceField).length)
@@ -521,7 +522,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
       return;
 
     if (!isField(oldName))
-      throw new BioAssayRuntimeException("Unknown Field: "+oldName);
+      throw new BioAssayRuntimeException("Unknown Field: " + oldName);
     if (isField(newName))
       throw new BioAssayRuntimeException(
           "A field with the new name of the field already exists");
@@ -561,7 +562,7 @@ class BioAssayBaseImpl implements BioAssayBase, Serializable {
 
     if (oldName.equals(this.referenceField))
       this.referenceField = newName;
-    
+
     this.hashDir.remove(oldName);
     this.hashDir.put(newName, fieldType);
   }

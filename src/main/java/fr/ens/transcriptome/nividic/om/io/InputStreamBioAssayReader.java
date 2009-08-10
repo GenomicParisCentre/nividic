@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +53,7 @@ public abstract class InputStreamBioAssayReader implements BioAssayReader {
   private boolean readAllFields;
   private String dataSource;
   private InputStream is;
-  private Map<String, List> data = new HashMap<String, List>();
+  private Map<String, List> data = new LinkedHashMap<String, List>();
 
   private static final int INITIAL_CAPACITY = 1000;
 
