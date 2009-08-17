@@ -117,7 +117,7 @@ public final class Globals {
   public static final String LOG_LEVEL = "debug";
 
   /** Default Text file encoding. */
-  public static final String DEFAULT_FILE_ENCODING = "ISO-8859-1";
+  public static final String DEFAULT_FILE_ENCODING = "UTF-8";
 
   //
   // RServe
