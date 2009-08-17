@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -40,7 +40,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import fr.ens.transcriptome.nividic.js.JSShell;
+import fr.ens.transcriptome.nividic.js.JavascriptScriptEngine;
 
 public class JSConsole extends JFrame implements ActionListener {
   static final long serialVersionUID = 2551225560631876300L;
@@ -163,7 +163,7 @@ public class JSConsole extends JFrame implements ActionListener {
 
     // System.out.println("out.println(fs.ls()[0])");
 
-    final JSShell shell = new JSShell();
+    final JavascriptScriptEngine shell = new JavascriptScriptEngine();
 
     shell.shell(consoleTextArea.getIn(), consoleTextArea.getOut(),
         consoleTextArea.getErr());

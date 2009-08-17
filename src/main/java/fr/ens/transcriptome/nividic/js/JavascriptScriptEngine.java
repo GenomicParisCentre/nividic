@@ -33,15 +33,15 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Properties;
 
-import fr.ens.transcriptome.nividic.Init;
 import fr.ens.transcriptome.nividic.Settings;
+import fr.ens.transcriptome.nividic.scripts.NividicScriptEngine;
 import fr.ens.transcriptome.nividic.util.SystemUtils;
 
 /**
  * This class define a shell wrapper for javascript.
  * @author Laurent Jourdren
  */
-public class JSShell {
+public class JavascriptScriptEngine implements NividicScriptEngine {
 
   private JavaScriptEngine engine;
   private ScriptLoader scriptLoader;
@@ -236,7 +236,7 @@ public class JSShell {
    * Load a script.
    * @param file File to load
    * @throws FileNotFoundException throws FileNotFoundException if cannot find
-   *             the script
+   *           the script
    */
   public void source(final File file) throws FileNotFoundException {
 
@@ -265,11 +265,10 @@ public class JSShell {
    * @param args command line arguments
    * @param fileToExecute file to execute
    */
-  public JSShell(final String javascriptPath, final String fileToExecute,
-      final String[] args) {
+  public JavascriptScriptEngine(final String javascriptPath,
+      final String fileToExecute, final String[] args) {
 
-    // Load additionnal modules if needed
-    Init.init();
+
 
     this.engine = new RhinoJavaScriptEngine();
     // this.engine = new JSR223JavaScriptEngine();
@@ -310,8 +309,8 @@ public class JSShell {
         String path =
             JAVASCRIPT_PATH + File.separator + Defaults.BUILTIN_SCRIPTS[i];
 
-        if (JSShell.class.getResource(path) != null)
-          is = JSShell.class.getResourceAsStream(path);
+        if (JavascriptScriptEngine.class.getResource(path) != null)
+          is = JavascriptScriptEngine.class.getResourceAsStream(path);
       }
 
       if (is != null)
@@ -331,60 +330,13 @@ public class JSShell {
   }
 
   //
-  // Main methos
-  //
-
-  /**
-   * Main class for javascript interpreter.
-   * @param args command line arguments
-   */
-  public static void main(final String[] args) {
-
-    String javascriptPath = null;
-    String filetoExecute = null;
-    String[] finalArgs = null;
-
-    if (args != null && args.length > 0) {
-
-      javascriptPath = args[0];
-
-      if (args.length > 1)
-        filetoExecute = args[1];
-
-      if (args.length > 2) {
-
-        finalArgs = new String[args.length - 2];
-        for (int i = 2; i < args.length; i++)
-          finalArgs[i - 2] = args[i];
-      }
-
-    }
-
-    /*
-     * System.out.println("Javascript path: " + javascriptPath);
-     * System.out.println("fileToExecute: " + filetoExecute);
-     * System.out.println("Args: " + Arrays.toString(finalArgs));
-     */
-
-    try {
-      Settings.getSettings().loadSettings();
-    } catch (IOException e) {
-      System.err.println("can't read configuration file. ("
-          + e.getMessage() + ")");
-    }
-
-    new JSShell(javascriptPath, filetoExecute, finalArgs).shell(System.in,
-        System.out, System.err);
-  }
-
-  //
   // Constructor
   //
 
   /**
    * Public constructor.
    */
-  public JSShell() {
+  public JavascriptScriptEngine() {
 
     this(null, null, null);
   }
