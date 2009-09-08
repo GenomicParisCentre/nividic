@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om.r;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,6 +36,7 @@ import java.util.List;
 import fr.ens.transcriptome.nividic.Globals;
 import fr.ens.transcriptome.nividic.NividicRuntimeException;
 import fr.ens.transcriptome.nividic.om.BioAssay;
+import fr.ens.transcriptome.nividic.om.BioAssayConverter;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.Slide;
@@ -470,7 +472,7 @@ public class GoulpharWrapper {
 
       normalize(s, null, prefix);
 
-      BioAssay ba = getNormalizedBioAssay();
+      final BioAssay ba = getNormalizedBioAssay();
 
       s.setBioAssay(ba);
       s.setSource(s.getName() + ".gpr_norm.txt");
@@ -507,17 +509,22 @@ public class GoulpharWrapper {
 
           final DataSource source = slide.getSource();
 
-          if (BioAssayFormatRegistery.GPR_BIOASSAY_FORMAT != slide.getFormat())
-            throw new NividicIOException("Invalid format of BioAssay: "
-                + source.getBioAssayFormat());
+          if (source != null) {
 
-          if (source != null)
-            try {
-              NividicUtils.writeInputStream(source.getInputStream(), os);
-            } catch (IOException e) {
+            if (BioAssayFormatRegistery.GPR_BIOASSAY_FORMAT == slide
+                .getFormat())
+              try { // Transmit GPR
+                NividicUtils.writeInputStream(source.getInputStream(), os);
+              } catch (IOException e) {
 
-              throw new NividicIOException(e);
+                throw new NividicIOException(e);
+              }
+            else {
+              slide.loadSource();
+              this.bioAssay =
+                  BioAssayConverter.convertAgilentToGPR(slide.getBioAssay());
             }
+          }
         }
       }
 
