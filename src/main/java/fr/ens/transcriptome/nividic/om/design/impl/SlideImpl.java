@@ -31,6 +31,7 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
+import fr.ens.transcriptome.nividic.om.datasources.DataSourceUtils;
 import fr.ens.transcriptome.nividic.om.design.DesignUtils;
 import fr.ens.transcriptome.nividic.om.design.ScanLabelsSettings;
 import fr.ens.transcriptome.nividic.om.design.Slide;
@@ -154,7 +155,7 @@ class SlideImpl implements Slide {
   /*
    * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#setTarget(java.lang.String,
-   *      java.lang.String)
+   * java.lang.String)
    */
   public void setTarget(final String label, final String sample) {
 
@@ -169,7 +170,7 @@ class SlideImpl implements Slide {
   /*
    * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#
-   *      setSource(fr.ens.transcriptome.nividic.om.exp.DataSource)
+   * setSource(fr.ens.transcriptome.nividic.om.exp.DataSource)
    */
   public void setSource(final DataSource source) {
 
@@ -198,7 +199,7 @@ class SlideImpl implements Slide {
   /*
    * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#
-   *      setBioAssay(fr.ens.transcriptome.nividic.om.BioAssay)
+   * setBioAssay(fr.ens.transcriptome.nividic.om.BioAssay)
    */
   public void setBioAssay(final BioAssay bioassay) {
 
@@ -240,7 +241,8 @@ class SlideImpl implements Slide {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.exp.Slide#setSourceFormat(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.exp.Slide#setSourceFormat(java.lang.String)
    */
   public void setSourceFormat(final String format) {
 
@@ -255,7 +257,7 @@ class SlideImpl implements Slide {
   /*
    * (non-Javadoc)
    * @see fr.ens.transcriptome.nividic.om.exp.Slide#
-   *      setSourceFormat(fr.ens.transcriptome.nividic.om.io.BioAssayFormat)
+   * setSourceFormat(fr.ens.transcriptome.nividic.om.io.BioAssayFormat)
    */
   public void setSourceFormat(final BioAssayFormat format) {
 
@@ -288,12 +290,13 @@ class SlideImpl implements Slide {
 
     InputStreamBioAssayReader reader;
 
-    if (format == null) {
+    if (format == null || format==BioAssayFormatRegistery.UNDEFINED_TXT_BIOASSAY_FORMAT) {
 
       BioAssayFormatFinderInputStream finder =
           new BioAssayFormatFinderInputStream(is);
 
       format = finder.getBioAssayFormat();
+      setSourceFormat(format);
       is = finder;
     }
 

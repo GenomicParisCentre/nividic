@@ -166,10 +166,7 @@ public class LimmaDesignReader extends InputStreamDesignReader {
 
       DataSource source =
           DataSourceUtils.identifyDataSource(this.baseDir, filenames.get(i));
-
       design.setSource(ids.get(i), source);
-      design.setSourceFormat(ids.get(i), DataSourceUtils
-          .identifyBioAssayFormat(source));
     }
 
     for (String fd : fieldnames) {
@@ -267,7 +264,7 @@ public class LimmaDesignReader extends InputStreamDesignReader {
    * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public LimmaDesignReader(final File file) throws NividicIOException {
 
@@ -285,14 +282,15 @@ public class LimmaDesignReader extends InputStreamDesignReader {
 
     super(is);
   }
-  
+
   /**
    * Public constructor
    * @param filename File to read
    * @throws NividicIOException if the stream is null
    * @throws FileNotFoundException if the file doesn't exist
    */
-  public LimmaDesignReader(final String filename) throws NividicIOException, FileNotFoundException {
+  public LimmaDesignReader(final String filename) throws NividicIOException,
+      FileNotFoundException {
 
     this(new FileInputStream(filename));
   }
