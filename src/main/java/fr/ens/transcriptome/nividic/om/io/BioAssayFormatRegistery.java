@@ -217,6 +217,32 @@ public final class BioAssayFormatRegistery implements Serializable {
         }
       };
 
+  /** Undefined BioAssayFormat. */
+  public static final BioAssayFormat UNDEFINED_TXT_BIOASSAY_FORMAT =
+      new BioAssayFormat("UNDEFINED", "Undefined .txt result file", ".txt",
+          false) {
+
+        @Override
+        public InputStreamBioAssayReader getBioAssayReader(InputStream is)
+            throws NividicIOException {
+
+          return null;
+        }
+
+        @Override
+        public BioAssayWriter getBioAssayWriter(OutputStream os)
+            throws NividicIOException {
+
+          return null;
+        }
+
+        @Override
+        public boolean testFormat(String firstLines) {
+
+          return false;
+        }
+      };
+
   static {
 
     addBioAssayFormat(GAL_BIOASSAY_FORMAT);
@@ -225,6 +251,7 @@ public final class BioAssayFormatRegistery implements Serializable {
     addBioAssayFormat(IMAGENE_BIOASSAY_FORMAT);
     addBioAssayFormat(IMAGENE_ARRAYLIST_BIOASSAY_FORMAT);
     addBioAssayFormat(AGILENT_BIOASSAY_FORMAT);
+    addBioAssayFormat(UNDEFINED_TXT_BIOASSAY_FORMAT);
   }
 
   //
@@ -274,8 +301,13 @@ public final class BioAssayFormatRegistery implements Serializable {
     if (extension == null)
       return null;
 
+    final String ext = extension.trim().toLowerCase();
+
+    if (ext.equals(".txt"))
+      return UNDEFINED_TXT_BIOASSAY_FORMAT;
+
     for (BioAssayFormat baf : formats.values())
-      if (baf.getExtension().equals(extension))
+      if (baf.getExtension().equals(ext))
         return baf;
 
     return null;
