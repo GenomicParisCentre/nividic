@@ -40,6 +40,8 @@ import fr.ens.transcriptome.nividic.om.BioAssayConverter;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.design.Design;
 import fr.ens.transcriptome.nividic.om.design.Slide;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatFinderInputStream;
 import fr.ens.transcriptome.nividic.om.io.BioAssayFormatRegistery;
 import fr.ens.transcriptome.nividic.om.io.GPRWriter;
 import fr.ens.transcriptome.nividic.om.io.IDMAReader;
@@ -503,36 +505,50 @@ public class GoulpharWrapper {
 
       if (slide != null) {
 
-        if (slide.getBioAssay() != null)
-          this.bioAssay = slide.getBioAssay();
-        else {
+        // Test if bioAssay in memory
+        if (slide.getBioAssay() == null) {
 
+          // Find the format of the source
           final DataSource source = slide.getSource();
+          final BioAssayFormatFinderInputStream baffis =
+              new BioAssayFormatFinderInputStream(source.getInputStream());
 
-          if (source != null) {
+          final BioAssayFormat format = baffis.getBioAssayFormat();
 
-            if (BioAssayFormatRegistery.GPR_BIOASSAY_FORMAT == slide
-                .getFormat())
-              try { // Transmit GPR
-                NividicUtils.writeInputStream(source.getInputStream(), os);
-              } catch (IOException e) {
+          if (format == BioAssayFormatRegistery.GPR_BIOASSAY_FORMAT) {
 
-                throw new NividicIOException(e);
-              }
-            else {
-              slide.loadSource();
-              this.bioAssay =
-                  BioAssayConverter.convertAgilentToGPR(slide.getBioAssay());
+            // Transmit GPR
+            try {
+              NividicUtils.writeInputStream(source.getInputStream(), os);
+            } catch (IOException e) {
+              throw new NividicIOException(e);
             }
-          }
+          } else if (format == BioAssayFormatRegistery.AGILENT_BIOASSAY_FORMAT) {
+
+            // Convert Agilent result in a GPR bioAssay
+            slide.loadSource();
+            final BioAssay ba =
+                BioAssayConverter.convertAgilentToGPR(slide.getBioAssay());
+
+            // Writer the bioAssay on Rserve server without set the bioAssay in
+            // the slide
+            final GPRWriter writer = new GPRWriter(os);
+            writer.addAllFieldsToWrite();
+            writer.write(ba);
+          } else
+            new NividicIOException("Unable to find the format of the source");
+
+        } else {
+
+          // The bioAssay is in memory (and must be a GPR bioAssay
+          GPRWriter writer = new GPRWriter(os);
+          writer.addAllFieldsToWrite();
+          writer.write(slide.getBioAssay());
+
+          // Keep in memory data
+          // slide.setBioAssay(null);
         }
-      }
 
-      if (this.bioAssay != null) {
-
-        GPRWriter gw = new GPRWriter(os);
-        gw.addAllFieldsToWrite();
-        gw.write(getBioAssay());
       }
 
       con.writeStringAsFile("param_goulphar.dat", param);
