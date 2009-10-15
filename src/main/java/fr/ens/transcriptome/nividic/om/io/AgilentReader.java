@@ -54,6 +54,14 @@ public class AgilentReader extends InputStreamBioAssayReader {
   private static final String COLUMN_FIELD = "Col";
   private static final String SEPARATOR = "\t";
 
+  private static final String[] DEFAULT_FIELDS_TO_READ =
+      {"FeatureNum", "ProbeName", "gMedianSignal", "rMedianSignal",
+          "rBGMedianSignal", "gBGMedianSignal", "ControlType", "IsManualFlag",
+          "gIsFeatPopnOL", "rIsFeatPopnOL", "gIsBGPopnOL", "rIsBGPopnOL",
+          "gIsFeatNonUnifOL", "rIsFeatNonUnifOL", "gIsBGNonUnifOL",
+          "rIsBGNonUnifOL", "gIsFound", "rIsFound", "gIsPosAndSignif",
+          "rIsPosAndSignif"};
+
   private abstract class TableReader {
 
     private static final String TEXT_TYPE = "text";
@@ -183,7 +191,7 @@ public class AgilentReader extends InputStreamBioAssayReader {
           switch (getFieldType(field)) {
 
           case BioAssay.DATATYPE_STRING:
-            setText(field, value);
+            setText(field, new String(value));
             break;
 
           case BioAssay.DATATYPE_INTEGER:
@@ -530,11 +538,9 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
     addFieldToRead(getRowField());
     addFieldToRead(getColumnField());
-    addFieldToRead("FeatureNum");
-    addFieldToRead("ProbeName");
-    addFieldToRead("gMedianSignal");
-    addFieldToRead("rMedianSignal");
-    addFieldToRead("ControlType");
+
+    for (int i = 0; i < DEFAULT_FIELDS_TO_READ.length; i++)
+      addFieldToRead(DEFAULT_FIELDS_TO_READ[i]);
 
     final BioAssay bioAssay = BioAssayFactory.createBioAssay();
 
