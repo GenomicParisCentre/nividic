@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -37,12 +37,12 @@ public class ExpressionMatrixRowNAFilterTest extends TestCase {
 
     assertTrue(filter.testRow(data1));
 
-    filter = new ExpressionMatrixRowNAFilter(1.0);
+    filter = new ExpressionMatrixRowNAFilter(1.0/3.0);
     double[] data2 = {1.5, Double.NaN, 2.0, 0.8, Double.NaN, 1.0};
-    assertTrue(filter.testRow(data2));
+    //assertTrue(filter.testRow(data2));
 
     assertTrue(filter.testRow(data2));
-    filter = new ExpressionMatrixRowNAFilter(1.0 / 3.0);
+    filter = new ExpressionMatrixRowNAFilter(2.5 / 3.0);
     assertFalse(filter.testRow(data2));
   }
 

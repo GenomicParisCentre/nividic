@@ -23,6 +23,7 @@
 package fr.ens.transcriptome.nividic.om.filters;
 
 import java.io.InputStream;
+import java.util.Arrays;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.io.GPRReader;
@@ -46,11 +47,12 @@ public class BioAssayCommonFiltersTest extends TestCase {
     InputStream is = this.getClass().getResourceAsStream(FILE);
 
     GPRReader gprr = new GPRReader(is);
-    //gprr.addAllFieldsToRead();
+    // gprr.addAllFieldsToRead();
     gprr.addFieldToRead("Dia.");
     gprr.addFieldToRead("F635 SD");
     gprr.addFieldToRead("F532 SD");
-    gprr.addFieldToRead("Ratio of Medians (635/532)");
+    gprr.addFieldToRead("Ratio of Medians (532/635)");
+    gprr.addFieldToRead("SNR 635");
 
     this.bioAssay = gprr.read();
   }
@@ -142,10 +144,10 @@ public class BioAssayCommonFiltersTest extends TestCase {
   public void testBioAssayDoubleThresholdFilterFilter() {
 
     BioAssayFilter filter =
-        new BioAssayDoubleThresholdFilter("Ratio of Medians (635/532)", ">", 1);
+        new BioAssayDoubleThresholdFilter("SNR 635", ">", 1);
 
     assertEquals(ROW_COUNT, this.bioAssay.size());
-    assertEquals(558, this.bioAssay.filter(filter).size());
+    assertEquals(10860, this.bioAssay.filter(filter).size());
   }
 
 }

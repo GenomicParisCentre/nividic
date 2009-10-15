@@ -27,12 +27,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import fr.ens.transcriptome.nividic.om.AnnotationUtils;
+import junit.framework.TestCase;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.BioAssayUtils;
 import fr.ens.transcriptome.nividic.util.NividicUtils;
-
-import junit.framework.TestCase;
 
 public class ImaGeneOutputFileIOTest extends TestCase {
 
@@ -114,7 +112,6 @@ public class ImaGeneOutputFileIOTest extends TestCase {
     BioAssay ba = igofr.read();
 
     File tmpFile = File.createTempFile("ImaGene", ".txt");
-
     ImaGeneOutputFileWriter aw = new ImaGeneOutputFileWriter(tmpFile);
 
     aw.setBioAssay(ba);
