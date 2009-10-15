@@ -142,6 +142,21 @@ public interface Slide {
    * @throws NividicIOException if an error occurs while reading data
    */
   void loadSource() throws NividicIOException;
+  
+  /**
+   * Load a source data and set the bioAssay of a slide.
+   * @param readAllFields true if all the fields must be read
+   * @throws NividicIOException if an error occurs while reading data
+   */
+  void loadSource(boolean readAllFields) throws NividicIOException;
+  
+  /**
+   * Load a source data and set the bioAssay of a slide.
+   * @param readAllFields true if all the fields must be read
+   * @param additionalfieldsToRead List of additional fields to read
+   * @throws NividicIOException if an error occurs while reading data
+   */
+  void loadSource(boolean readAllFields, String [] additionalfieldsToRead) throws NividicIOException;
 
   /**
    * Swap the slide if the slide is a dye-swap.

@@ -31,7 +31,6 @@ import fr.ens.transcriptome.nividic.om.HistoryEntry;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionResult;
 import fr.ens.transcriptome.nividic.om.HistoryEntry.HistoryActionType;
 import fr.ens.transcriptome.nividic.om.datasources.DataSource;
-import fr.ens.transcriptome.nividic.om.datasources.DataSourceUtils;
 import fr.ens.transcriptome.nividic.om.design.DesignUtils;
 import fr.ens.transcriptome.nividic.om.design.ScanLabelsSettings;
 import fr.ens.transcriptome.nividic.om.design.Slide;
@@ -279,6 +278,25 @@ class SlideImpl implements Slide {
    */
   public void loadSource() throws NividicIOException {
 
+    loadSource(false, null);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.exp.Slide#loadSource()
+   */
+  public void loadSource(final boolean readAllFields) throws NividicIOException {
+
+    loadSource(readAllFields, null);
+  }
+
+  /*
+   * (non-Javadoc)
+   * @see fr.ens.transcriptome.nividic.om.exp.Slide#loadSource()
+   */
+  public void loadSource(final boolean readAllFields,
+      final String[] additionalfieldsToRead) throws NividicIOException {
+
     final DataSource ds = getSource();
 
     if (ds == null)
@@ -290,7 +308,8 @@ class SlideImpl implements Slide {
 
     InputStreamBioAssayReader reader;
 
-    if (format == null || format==BioAssayFormatRegistery.UNDEFINED_TXT_BIOASSAY_FORMAT) {
+    if (format == null
+        || format == BioAssayFormatRegistery.UNDEFINED_TXT_BIOASSAY_FORMAT) {
 
       BioAssayFormatFinderInputStream finder =
           new BioAssayFormatFinderInputStream(is);
@@ -302,7 +321,17 @@ class SlideImpl implements Slide {
 
     reader = format.getBioAssayReader(is);
 
-    reader.addAllFieldsToRead();
+    // Add additional fields to read
+    if (readAllFields)
+      reader.addAllFieldsToRead();
+    else if (additionalfieldsToRead != null) {
+
+      for (int i = 0; i < additionalfieldsToRead.length; i++)
+        if (additionalfieldsToRead[i] != null)
+          reader.addFieldToRead(additionalfieldsToRead[i]);
+
+    }
+
     BioAssay result = reader.read();
     result.setName(getName());
 

@@ -1012,11 +1012,32 @@ public class DesignImpl implements Design, Serializable {
    */
   public void loadAllSources() throws NividicIOException {
 
+    loadAllSources(false, null);
+  }
+
+  /**
+   * Load all source and set all the bioassays of a design.
+   * @param readAllFields true if all the fields must be read
+   * @throws NividicIOException if an error occurs while reading data
+   */
+  public void loadAllSources(boolean readAllFields) throws NividicIOException {
+
+    loadAllSources(readAllFields, null);
+  }
+
+  /**
+   * Load all source and set all the bioassays of a design.
+   * @param readAllFields true if all the fields must be read
+   * @param additionalfieldsToRead List of additional fields to read
+   * @throws NividicIOException if an error occurs while reading data
+   */
+  public void loadAllSources(boolean readAllFields,
+      String[] additionalfieldsToRead) throws NividicIOException {
+
     final List<Slide> slides = getSlides();
 
     for (Slide slide : slides)
-      slide.loadSource();
-
+      slide.loadSource(readAllFields, additionalfieldsToRead);
   }
 
   /**

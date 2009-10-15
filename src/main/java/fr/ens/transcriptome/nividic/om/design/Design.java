@@ -343,6 +343,22 @@ public interface Design extends BiologicalObject {
   void loadAllSources() throws NividicIOException;
 
   /**
+   * Load all source and set all the bioassays of a design.
+   * @param readAllFields true if all the fields must be read
+   * @throws NividicIOException if an error occurs while reading data
+   */
+  void loadAllSources(boolean readAllFields) throws NividicIOException;
+
+  /**
+   * Load all source and set all the bioassays of a design.
+   * @param readAllFields true if all the fields must be read
+   * @param additionalfieldsToRead List of additional fields to read
+   * @throws NividicIOException if an error occurs while reading data
+   */
+  void loadAllSources(boolean readAllFields, String[] additionalfieldsToRead)
+      throws NividicIOException;
+
+  /**
    * Swap all the slides if the slides are a dye-swap.
    */
   void swapAllSlides();
