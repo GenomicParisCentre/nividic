@@ -442,8 +442,12 @@ public class SpotImpl implements Spot, Serializable {
     testIndex();
     final int[] data = this.bioAssay.getDataFieldInt(field);
 
-    if (data == null)
-      throw new BioAssayRuntimeException("The field doesn't exists");
+    if (data == null) {
+      if (!this.bioAssay.isField(field))
+        throw new BioAssayRuntimeException("The field doesn't exists: " + field);
+      throw new BioAssayRuntimeException("The field is not an integer field: "
+          + field);
+    }
 
     return data[this.index];
   }
@@ -460,8 +464,12 @@ public class SpotImpl implements Spot, Serializable {
     testIndex();
     final double[] data = this.bioAssay.getDataFieldDouble(field);
 
-    if (data == null)
-      throw new BioAssayRuntimeException("The field doesn't exists");
+    if (data == null) {
+      if (!this.bioAssay.isField(field))
+        throw new BioAssayRuntimeException("The field doesn't exists: " + field);
+      throw new BioAssayRuntimeException("The field is not a double field: "
+          + field);
+    }
 
     return data[this.index];
   }
@@ -478,8 +486,12 @@ public class SpotImpl implements Spot, Serializable {
     testIndex();
     final String[] data = this.bioAssay.getDataFieldString(field);
 
-    if (data == null)
-      throw new BioAssayRuntimeException("The field doesn't exists");
+    if (data == null) {
+      if (!this.bioAssay.isField(field))
+        throw new BioAssayRuntimeException("The field doesn't exists: " + field);
+      throw new BioAssayRuntimeException("The field is not a string field: "
+          + field);
+    }
 
     return data[this.index];
   }
