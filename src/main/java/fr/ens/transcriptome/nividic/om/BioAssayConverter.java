@@ -25,6 +25,8 @@ package fr.ens.transcriptome.nividic.om;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.ens.transcriptome.nividic.NividicRuntimeException;
+
 /**
  * This class implements methods to convert BioAssay.
  * @author Laurent Jourdren
@@ -33,6 +35,10 @@ public class BioAssayConverter {
 
   private static final int SPOT_DIAMETER = 60;
 
+  /**
+   * Default Annotation added to BioAssay for converted Agilent files
+   * @param bioAssay BioAssay GPRized
+   */
   private static void GPRizeAnnotation(final BioAssay bioAssay) {
 
     Annotation aOut = bioAssay.getAnnotation();
@@ -59,32 +65,29 @@ public class BioAssayConverter {
     // Output BioAssay
     BioAssay out = BioAssayFactory.createBioAssay();
 
-    Annotation aIn = ba.getAnnotation();
-
     // Get the number of channels
-    final int nChannels = Integer.parseInt(aIn.getProperty("Scan_NumChannels"));
+    final int nChannels =
+        Integer.parseInt(ba.getAnnotation().getProperty("Scan_NumChannels"));
+    if (nChannels == 1)
+      throw new NividicRuntimeException(
+          "Converter work only with 2 colors Agilent files.");
 
     // Set Ids and descriptions
     out.setIds(ba.getIds().clone());
     out.setDescriptions(ba.getDescriptions().clone());
 
-    GPRizeLocationsAndFlags(ba, out, nChannels == 1);
+    GPRizeLocationsAndFlags(ba, out);
     GPRizeAnnotation(out);
 
     // Add Red and Greens foregrounds
     bioAssayFieldDoubleToInt(ba, out, BioAssay.FIELD_NAME_GREEN,
         BioAssay.FIELD_NAME_GREEN, 1);
-    bioAssayFieldDoubleToInt(ba, out, nChannels == 1
-        ? BioAssay.FIELD_NAME_GREEN : BioAssay.FIELD_NAME_RED,
+    bioAssayFieldDoubleToInt(ba, out, BioAssay.FIELD_NAME_RED,
         BioAssay.FIELD_NAME_RED, 1);
 
     // Add Red and Greens backgrounds
-    bioAssayFieldDoubleToInt(ba, out, nChannels == 1
-        ? "gBGMedianSignal" : "rBGMedianSignal", "B635 Median", 1); // red
-    bioAssayFieldDoubleToInt(ba, out, "gBGMedianSignal", "B532 Median", 1);
-
-    // bioAssayFieldDoubleToInt(ba, out, "PositionX", "X", 100);
-    // bioAssayFieldDoubleToInt(ba, out, "PositionY", "Y", 100);
+    bioAssayFieldDoubleToInt(ba, out, "rBGMedianSignal", "B635 Median", 1); // red
+    bioAssayFieldDoubleToInt(ba, out, "gBGMedianSignal", "B532 Median", 1); // green
 
     // Set diameters
     int[] dia = new int[ba.size()];
@@ -95,6 +98,14 @@ public class BioAssayConverter {
     return insertMissingSpots(out);
   }
 
+  /**
+   * Convert a double field into a int fiels
+   * @param in Input BioAssay
+   * @param out Output BioAssay
+   * @param inField Name of the field in the input bioAssay
+   * @param outField Name of the field in the output bioAssay
+   * @param factor factor to apply on converted values
+   */
   private static void bioAssayFieldDoubleToInt(final BioAssay in, BioAssay out,
       String inField, String outField, final double factor) {
 
@@ -108,8 +119,45 @@ public class BioAssayConverter {
     out.setDataFieldInt(outField, after);
   }
 
+  /**
+   * Test if a field exist. If not thrown an exception
+   * @param ba BioAssay to test
+   * @param fieldName field name to search
+   * @return true if the field exist or throw an exception
+   */
+  private static boolean isAgilentField(final BioAssay ba,
+      final String fieldName) {
+
+    final boolean result = ba.isField(fieldName);
+    if (!result)
+      throw new NividicRuntimeException(
+          "Cannot found field in Agilent result file: " + fieldName);
+
+    return result;
+  }
+
+  /**
+   * Add Spots locations and flags
+   * @param in Agilent bioAssay
+   * @param out GPR bioAssay
+   */
   private static void GPRizeLocationsAndFlags(final BioAssay in,
-      final BioAssay out, final boolean oneColor) {
+      final BioAssay out) {
+
+    if (!(isAgilentField(in, "ControlType")
+        && isAgilentField(in, "IsManualFlag")
+        && isAgilentField(in, "gIsFeatPopnOL")
+        && isAgilentField(in, "rIsFeatPopnOL")
+        && isAgilentField(in, "gIsBGPopnOL")
+        && isAgilentField(in, "rIsBGPopnOL")
+        && isAgilentField(in, "gIsFeatNonUnifOL")
+        && isAgilentField(in, "rIsFeatNonUnifOL")
+        && isAgilentField(in, "gIsBGNonUnifOL")
+        && isAgilentField(in, "rIsBGNonUnifOL")
+        && isAgilentField(in, "gIsFound") && isAgilentField(in, "rIsFound")
+        && isAgilentField(in, "gIsPosAndSignif") && isAgilentField(in,
+        "rIsPosAndSignif")))
+      throw new NividicRuntimeException("Invalid input Agilent file");
 
     // Set the
     final int[] flags = new int[in.size()];
@@ -136,7 +184,7 @@ public class BioAssayConverter {
       // Test If the spot is standard spot
       final int controlType = si.getDataFieldInt("ControlType");
 
-      if (controlType != 0) {
+      if (controlType < -1000) {
         flags[i] = -75;
         continue;
       }
@@ -149,25 +197,54 @@ public class BioAssayConverter {
       }
 
       final int gIsFeatPopnOL = si.getDataFieldInt("gIsFeatPopnOL");
-      final int rIsFeatPopnOL =
-          si.getDataFieldInt(oneColor ? "gIsFeatPopnOL" : "rIsFeatPopnOL");
+      final int rIsFeatPopnOL = si.getDataFieldInt("rIsFeatPopnOL");
+      final int gIsBGPopnOL = si.getDataFieldInt("gIsBGPopnOL");
+      final int rIsBGPopnOL = si.getDataFieldInt("rIsBGPopnOL");
 
       final int gIsFeatNonUnifOL = si.getDataFieldInt("gIsFeatNonUnifOL");
-      final int rIsFeatNonUnifOL =
-          si
-              .getDataFieldInt(oneColor
-                  ? "gIsFeatNonUnifOL" : "rIsFeatNonUnifOL");
+      final int rIsFeatNonUnifOL = si.getDataFieldInt("rIsFeatNonUnifOL");
+      final int gIsBGNonUnifOL = si.getDataFieldInt("gIsBGNonUnifOL");
+      final int rIsBGNonUnifOL = si.getDataFieldInt("rIsBGNonUnifOL");
 
-      if (gIsFeatPopnOL == 1
-          || rIsFeatPopnOL == 1 || gIsFeatNonUnifOL == 1
-          || rIsFeatNonUnifOL == 1) {
+      // Non uniform spot
+      if ((gIsFeatNonUnifOL == 1 && rIsFeatNonUnifOL == 1)
+          || (gIsBGNonUnifOL == 1 && rIsBGNonUnifOL == 1)) {
+        flags[i] = -100;
+        continue;
+      }
+
+      // Outlier
+      if ((gIsFeatPopnOL == 1 && rIsFeatPopnOL == 1)
+          || (gIsBGPopnOL == 1 && rIsBGPopnOL == 1)) {
+        flags[i] = -100;
+        continue;
+      }
+
+      final int gIsFound = si.getDataFieldInt("gIsFound");
+      final int rIsFound = si.getDataFieldInt("rIsFound");
+
+      // Not found
+      if (gIsFound == 0 && rIsFound == 0) {
         flags[i] = -50;
         continue;
       }
-    }
 
+      final int gIsPosAndSignif = si.getDataFieldInt("gIsPosAndSignif");
+      final int rIsPosAndSignif = si.getDataFieldInt("rIsPosAndSignif");
+
+      // Good (significative difference between red and green values
+      if (gIsPosAndSignif == 0 && rIsPosAndSignif == 0) {
+        flags[i] = 100;
+        continue;
+      }
+    }
   }
 
+  /**
+   * Insert missing spots to the output bioAssay
+   * @param ba BioAssay to use
+   * @return a new BioAssay with no missing spots
+   */
   private static BioAssay insertMissingSpots(final BioAssay ba) {
 
     final BioAssay out = BioAssayFactory.createBioAssay();
@@ -196,7 +273,7 @@ public class BioAssayConverter {
 
     // Transform coordinates
     final Map<String, Integer> translatedSpotsLocations =
-        changeCoordinates(spotsLocations);
+        translateCoordinates(spotsLocations);
 
     maxColumn = -1;
     maxRow = -1;
@@ -377,7 +454,13 @@ public class BioAssayConverter {
     return out;
   }
 
-  private static Map<String, Integer> changeCoordinates(Map<String, Integer> in) {
+  /**
+   * Translate coordinates of spots from Agilent coordinates to GPR coordinates
+   * @param in Input coordinates map
+   * @return output coordinates map
+   */
+  private static Map<String, Integer> translateCoordinates(
+      final Map<String, Integer> in) {
 
     // Output result
     final Map<String, Integer> out = new HashMap<String, Integer>(in.size());
