@@ -25,14 +25,14 @@ package fr.ens.transcriptome.nividic.om.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.translators.Translator;
@@ -41,12 +41,12 @@ import fr.ens.transcriptome.nividic.om.translators.Translator;
  * This class define a backend for BioAssayTabularWriter that create a xls file.
  * @author Laurent Jourdren
  */
-class BioAssayTabularWriterXSLBackend implements BioAssayTabularWriterBackend {
+class BioAssayTabularWriterOOXMLBackend implements BioAssayTabularWriterBackend {
 
   private BioAssayWriter writer;
 
-  private HSSFWorkbook wb;
-  private HSSFSheet sheet;
+  private XSSFWorkbook wb;
+  private XSSFSheet sheet;
 
   /**
    * Set the BioAssayWriter.
@@ -81,7 +81,7 @@ class BioAssayTabularWriterXSLBackend implements BioAssayTabularWriterBackend {
       StringBuffer sb = new StringBuffer();
       for (int i = 0; i < countRow; i++) {
 
-        HSSFRow row = sheet.createRow(i + 1);
+        XSSFRow row = sheet.createRow(i + 1);
 
         for (int j = 0; j < countCol; j++) {
 
@@ -92,7 +92,7 @@ class BioAssayTabularWriterXSLBackend implements BioAssayTabularWriterBackend {
           switch (writer.getFieldType(j)) {
           case BioAssay.DATATYPE_STRING:
             row.createCell((short) j).setCellValue(
-                new HSSFRichTextString(value));
+                new XSSFRichTextString(value));
             break;
 
           case BioAssay.DATATYPE_INTEGER:
@@ -134,10 +134,10 @@ class BioAssayTabularWriterXSLBackend implements BioAssayTabularWriterBackend {
 
             if (value != null) {
 
-              final HSSFCell cell = row.createCell((short) (countCol + j));
+              final XSSFCell cell = row.createCell(countCol + j);
 
               if (link == null)
-                cell.setCellValue(new HSSFRichTextString(value));
+                cell.setCellValue(new XSSFRichTextString(value));
               else
                 cell.setCellFormula("HYPERLINK(\""
                     + link + "\",\"" + value + "\")");
@@ -166,30 +166,27 @@ class BioAssayTabularWriterXSLBackend implements BioAssayTabularWriterBackend {
 
     final BioAssayWriter writer = this.writer;
 
-    this.wb = new HSSFWorkbook();
+    this.wb = new XSSFWorkbook();
     this.sheet = wb.createSheet("new sheet");
 
-    HSSFRow row = sheet.createRow((short) 0);
+    XSSFRow row = sheet.createRow((short) 0);
 
     // Create a new font and alter it.
-    HSSFFont font = wb.createFont();
-    // font.setFontHeightInPoints((short)24);
-    // font.setFontName("Courier New");
+    XSSFFont font = wb.createFont();
     font.setItalic(true);
-    // font.setStrikeout(true);
 
     // Fonts are set into a style so create a new one to use.
-    HSSFCellStyle style = wb.createCellStyle();
-    style.setFillForegroundColor(HSSFColor.ORANGE.index);
-    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+    XSSFCellStyle style = wb.createCellStyle();
+    style.setFillForegroundColor(IndexedColors.ORANGE.getIndex());
+    style.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
     style.setFont(font);
 
     int count = 0;
 
     for (int i = 0; i < writer.getColumnCount(); i++) {
 
-      final HSSFCell cell = row.createCell((short) count++);
-      cell.setCellValue(new HSSFRichTextString(writer.getFieldName(i)));
+      final XSSFCell cell = row.createCell(count++);
+      cell.setCellValue(new XSSFRichTextString(writer.getFieldName(i)));
       cell.setCellStyle(style);
     }
 
@@ -199,8 +196,8 @@ class BioAssayTabularWriterXSLBackend implements BioAssayTabularWriterBackend {
       if (fields != null)
         for (int i = 0; i < fields.length; i++) {
 
-          final HSSFCell cell = row.createCell((short) count++);
-          cell.setCellValue(new HSSFRichTextString(fields[i]));
+          final XSSFCell cell = row.createCell(count++);
+          cell.setCellValue(new XSSFRichTextString(fields[i]));
           cell.setCellStyle(style);
         }
     }
@@ -215,7 +212,7 @@ class BioAssayTabularWriterXSLBackend implements BioAssayTabularWriterBackend {
    * Public constructor.
    * @param writer Writer to set
    */
-  public BioAssayTabularWriterXSLBackend(final BioAssayWriter writer) {
+  public BioAssayTabularWriterOOXMLBackend(final BioAssayWriter writer) {
 
     setBioAssayWriter(writer);
   }

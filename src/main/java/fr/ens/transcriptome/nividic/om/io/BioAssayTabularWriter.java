@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -31,8 +31,12 @@ import java.io.OutputStream;
  */
 public abstract class BioAssayTabularWriter extends BioAssayWriter {
 
+  public String TSV_BACKEND = "tsv";
+  public String XSL_BACKEND = "xsl";
+  public String OOXML_BACKEND = "ooxml";
+
   private BioAssayTabularWriterBackend backend;
-  private boolean xslBackend;
+  private String backendType = "";
 
   /**
    * Get the meta row field name.
@@ -68,8 +72,11 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
 
   protected void writeHeaders() throws NividicIOException {
 
-    if (isXSLBackend())
+    // Set the backend
+    if (this.backendType.equals(XSL_BACKEND))
       this.backend = new BioAssayTabularWriterXSLBackend(this);
+    else if (this.backendType.equals(OOXML_BACKEND))
+      this.backend = new BioAssayTabularWriterOOXMLBackend(this);
     else
       this.backend = new BioAssayTabularWriterTSVBackend(this);
 
@@ -95,21 +102,19 @@ public abstract class BioAssayTabularWriter extends BioAssayWriter {
   //
 
   /**
-   * Enable the XSL backend.
-   * @param xslBackend switch to enable XSL backend
+   * Set the backend to use.
+   * @param backendType backend name to use
    */
-  public void setXSLBackend(final boolean xslBackend) {
+  public void setBackendType(final String backendType) {
 
-    this.xslBackend = xslBackend;
-  }
+    if (backendType == null)
+      return;
 
-  /**
-   * Test if XSL backend is enabled.
-   * @return true if the XSL backend is enable
-   */
-  public boolean isXSLBackend() {
+    final String s = backendType.trim().toLowerCase();
 
-    return this.xslBackend;
+    if (s.equals(TSV_BACKEND)
+        || s.equals(XSL_BACKEND) || s.equals(OOXML_BACKEND))
+      this.backendType = backendType;
   }
 
   /**
