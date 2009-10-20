@@ -23,7 +23,6 @@
 package fr.ens.transcriptome.nividic.om.r;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -495,13 +494,14 @@ public class GoulpharWrapper {
     setBioAssay(bioAssay);
     setNormalizedBioAssay(null);
 
-    this.prefixGPRFilename = prefix;
-    String gpr = this.prefixGPRFilename + ".gpr";
-    String param = createParameterFileContent(gpr);
+    // Avoid issues with '/' in file names
+    this.prefixGPRFilename = prefix.replace('/', '\\');
+    final String gpr = this.prefixGPRFilename + ".gpr";
+    final String param = createParameterFileContent(gpr);
 
     try {
 
-      OutputStream os = con.getFileOutputStream(gpr);
+      final OutputStream os = con.getFileOutputStream(gpr);
 
       if (slide != null) {
 
