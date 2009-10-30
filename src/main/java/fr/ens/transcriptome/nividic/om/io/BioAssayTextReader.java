@@ -39,13 +39,14 @@ import java.util.regex.Pattern;
 
 /**
  * This abstract class defines how to read text BioAssay File. Warning: when
- * reading integer fields in <code>read</code>, non int values will be
- * replaced by 0
+ * reading integer fields in <code>read</code>, non int values will be replaced
+ * by 0
  * @author Laurent Jourdren
  */
 public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
 
   private BufferedReader bufferedReader;
+  private String encoding = Globals.DEFAULT_FILE_ENCODING;
   private boolean commaDecimalSeparator;
 
   /**
@@ -108,10 +109,9 @@ public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
 
     try {
       setBufferedReader(new BufferedReader(new InputStreamReader(
-          getInputStream(), Globals.DEFAULT_FILE_ENCODING)));
+          getInputStream(), getEncoding())));
     } catch (UnsupportedEncodingException e2) {
-      throw new NividicIOException("Unknown encoding: "
-          + Globals.DEFAULT_FILE_ENCODING);
+      throw new NividicIOException("Unknown encoding: " + getEncoding());
     }
 
     readHeader();
@@ -218,6 +218,24 @@ public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
   }
 
   /**
+   * Get the encoding used to read the file.
+   * @return The encoding used to read the file
+   */
+  public String getEncoding() {
+
+    return encoding;
+  }
+
+  /**
+   * Set the encoding use to read the file.
+   * @param encoding The encoding to use
+   */
+  public void setEncoding(final String encoding) {
+
+    this.encoding = encoding;
+  }
+
+  /**
    * Add history entry for reading data
    * @param bioAssay Bioassay readed
    * @return bioAssay
@@ -268,7 +286,7 @@ public abstract class BioAssayTextReader extends InputStreamBioAssayReader {
    * Public constructor.
    * @param file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public BioAssayTextReader(final File file) throws NividicIOException {
 

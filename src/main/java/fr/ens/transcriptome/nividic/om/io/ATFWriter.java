@@ -45,8 +45,28 @@ public class ATFWriter extends BioAssayWriter {
 
   private static final String eol = DOS_EOL;
   private static final char separator = SEPARATOR_TAB;
+  private String encoding = Globals.DEFAULT_FILE_ENCODING;
+  
   private BufferedWriter bw;
 
+  /**
+   * Get the encoding used to write the file.
+   * @return The encoding used to write the file
+   */
+  public String getEncoding() {
+
+    return encoding;
+  }
+
+  /**
+   * Set the encoding use to write the file.
+   * @param encoding The encoding to use
+   */
+  public void setEncoding(final String encoding) {
+
+    this.encoding = encoding;
+  }
+  
   protected FieldNameConverter getFieldNameConverter() {
     return null;
   }
@@ -76,10 +96,9 @@ public class ATFWriter extends BioAssayWriter {
     try {
       bw =
           new BufferedWriter(new OutputStreamWriter(getOutputStream(),
-              Globals.DEFAULT_FILE_ENCODING));
+              getEncoding()));
     } catch (UnsupportedEncodingException e) {
-      throw new NividicIOException("Error while writing stream header : "
-          + e.getMessage());
+      throw new NividicIOException("Unknown encoding: " + getEncoding());
     }
 
     // Write MagicString
