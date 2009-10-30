@@ -31,8 +31,9 @@ import java.util.List;
 import fr.ens.transcriptome.nividic.om.BioAssay;
 import fr.ens.transcriptome.nividic.om.GenepixResults;
 import fr.ens.transcriptome.nividic.om.PhysicalConstants;
-import fr.ens.transcriptome.nividic.om.datasources.DataSource;
 import fr.ens.transcriptome.nividic.om.datasources.FileDataSource;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormat;
+import fr.ens.transcriptome.nividic.om.io.BioAssayFormatFinderInputStream;
 import fr.ens.transcriptome.nividic.om.io.BioAssayWriter;
 import fr.ens.transcriptome.nividic.om.io.NividicIOException;
 import fr.ens.transcriptome.nividic.util.NividicUtils;
@@ -144,7 +145,7 @@ public final class DesignUtils {
     if (!gpr.isGPRData())
       return;
 
-    final int[] wavelengths = gpr.getWavelengths();
+    final int[] wavelengths = gpr.getWaveLengths();
     final int[] pmts = gpr.getPMTGains();
     final int[] scanPowers = gpr.getScanPowers();
     final double[] laserPowers = gpr.getLaserPowers();
@@ -182,9 +183,10 @@ public final class DesignUtils {
    * Convert all the DataSource of a design to FileDataSources.
    * @param design Design to use
    * @param baseDir Base directory of the BioAssays files of the design
+   * @throws NividicIOException
    */
   public static void convertAllDataSourceToFileDataSources(final Design design,
-      final String baseDir) {
+      final String baseDir) throws NividicIOException {
 
     if (design == null)
       return;
@@ -193,16 +195,7 @@ public final class DesignUtils {
 
       Slide slide = design.getSlide(i);
 
-      final String filename =
-          StringUtils.escapeFileSeparators(slide.getName()
-              + slide.getFormat().getExtension());
-
       final File file;
-
-      if (baseDir == null || "".equals(baseDir))
-        file = new File(filename);
-      else
-        file = new File(baseDir, filename);
 
       try {
 
@@ -210,12 +203,21 @@ public final class DesignUtils {
 
           // slide.loadSource();
 
-          final DataSource source = slide.getSource();
+          final BioAssayFormatFinderInputStream baffis =
+              new BioAssayFormatFinderInputStream(slide.getSource()
+                  .getInputStream());
 
-          if (source != null)
-            NividicUtils.writeInputStream(source.getInputStream(), file);
+          final BioAssayFormat format = baffis.getBioAssayFormat();
+
+          file = createBioAssayFile(baseDir, slide.getName(), format);
+
+          if (format != null)
+            NividicUtils.writeInputStream(baffis, file);
 
         } else {
+
+          file =
+              createBioAssayFile(baseDir, slide.getName(), slide.getFormat());
 
           BioAssayWriter writer =
               slide.getFormat().getBioAssayWriter(new FileOutputStream(file));
@@ -225,7 +227,7 @@ public final class DesignUtils {
         }
 
         slide.setSource(new FileDataSource(file));
-        
+
       } catch (NividicIOException e) {
         e.printStackTrace();
         continue;
@@ -237,6 +239,22 @@ public final class DesignUtils {
       }
     }
 
+  }
+
+  private static File createBioAssayFile(final String baseDir,
+      final String slideName, final BioAssayFormat format) {
+
+    final String filename =
+        StringUtils.escapeFileSeparators(slideName + format.getExtension());
+
+    final File file;
+
+    if (baseDir == null || "".equals(baseDir))
+      file = new File(filename);
+    else
+      file = new File(baseDir, filename);
+
+    return file;
   }
 
   //
