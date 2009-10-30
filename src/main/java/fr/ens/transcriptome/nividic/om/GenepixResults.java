@@ -41,6 +41,9 @@ public final class GenepixResults {
 
   private static final String GPR_MAGIC_STRING = "GenePix Results";
 
+  private static final String GPR_VERSION_1 = "GenePix Results 1.";
+  private static final String GPR_VERSION_3 = "GenePix Results 3";
+
   private static final DateFormat DATE_FORMAT =
       new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
   private static final String GPR_HEADER_TYPE = "Type";
@@ -51,7 +54,7 @@ public final class GenepixResults {
   private static final String GPR_HEADER_WAVELENGTH = "Wavelengths";
   private static final String GPR_HEADER_IMAGE_FILES = "ImageFiles";
   private static final String GPR_HEADER_NORMALIZATION_METHOD =
-      "NormalisationMethod";
+      "NormalizationMethod";
   private static final String GPR_HEADER_NORMALIZATION_FACTORS =
       "NormalizationFactors";
   private static final String GPR_HEADER_JPEG_IMAGE = "JpegImage";
@@ -75,6 +78,8 @@ public final class GenepixResults {
   private static final String GPR_HEADER_FILTERS = "FILTERS";
   private static final String GPR_HEADER_SCAN_REGION = "ScanRegion";
   private static final String GPR_HEADER_SUPPLIER = "Supplier";
+  private static final String GPR_HEADER_ARRAY_NAME = "ArrayName";
+  private static final String GPR_HEADER_DESIGN_ID = "DesignID";
 
   /** Spot shape circular. */
   public static final int SPOT_SHAPE_CIRCULAR = 0;
@@ -391,7 +396,14 @@ public final class GenepixResults {
     if (annotation == null)
       return null;
 
-    String s = annotation.getProperty(GPR_HEADER_PMT_GAIN);
+    final String field;
+
+    if (getType()!=null && getType().startsWith(GPR_VERSION_1))
+      field = "PMTVolts";
+    else
+      field = GPR_HEADER_PMT_GAIN;
+
+    final String s = annotation.getProperty(field);
 
     return s == null ? null : NividicUtils.toArrayInt(s.split("\t"));
   }
@@ -538,15 +550,48 @@ public final class GenepixResults {
    * Get the installed laser excitation sources im nm.
    * @return The installed laser excitation sources.
    */
-  public int[] getWavelengths() {
+  public int[] getWaveLengths() {
 
     Annotation annotation = getBioAssay().getAnnotation();
     if (annotation == null)
       return null;
 
-    String s = annotation.getProperty(GPR_HEADER_WAVELENGTH);
+    final String field;
+
+    if (getType()!=null && getType().startsWith(GPR_VERSION_1))
+      field = "ImageName";
+    else
+      field = GPR_HEADER_WAVELENGTH;
+
+    final String s = annotation.getProperty(field).replace(" nm", "");
 
     return s == null ? null : NividicUtils.toArrayInt(s.split("\t"));
+  }
+
+  /**
+   * Get the name of the array.
+   * @return The name of the array
+   */
+  public String getArrayName() {
+
+    Annotation annotation = getBioAssay().getAnnotation();
+    if (annotation == null)
+      return null;
+
+    return annotation.getProperty(GPR_HEADER_ARRAY_NAME);
+  }
+
+  /**
+   * Get the id of the design.
+   * @return The id of the design
+   */
+  public String getDesignId() {
+
+    Annotation annotation = getBioAssay().getAnnotation();
+    if (annotation == null)
+      return null;
+
+    return annotation.getProperty(GPR_HEADER_DESIGN_ID);
   }
 
   //
@@ -997,6 +1042,38 @@ public final class GenepixResults {
     }
 
     annotation.setProperty(GPR_HEADER_WAVELENGTH, sb.toString());
+  }
+
+  /**
+   * Set the name of the array
+   * @param arrayName The arrayname
+   */
+  public void setArrayName(final String arrayName) {
+
+    Annotation annotation = getBioAssay().getAnnotation();
+    if (annotation == null)
+      return;
+
+    if (arrayName == null)
+      return;
+
+    annotation.setProperty(GPR_HEADER_ARRAY_NAME, arrayName);
+  }
+
+  /**
+   * Set the id of the design
+   * @param designId The design Id
+   */
+  public void setDesignId(final String designId) {
+
+    Annotation annotation = getBioAssay().getAnnotation();
+    if (annotation == null)
+      return;
+
+    if (designId == null)
+      return;
+
+    annotation.setProperty(GPR_HEADER_DESIGN_ID, designId);
   }
 
   //
