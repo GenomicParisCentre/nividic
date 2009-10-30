@@ -38,7 +38,9 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getDescription(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#getDescription(java
+   * .lang.String)
    */
   public String getDescription(final String field) {
 
@@ -97,7 +99,8 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#getSerialNumber()
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#getSerialNumber()
    */
   public String getSerialNumber() {
 
@@ -120,14 +123,40 @@ public class SlideDescriptionImpl implements SlideDescription {
     return s.equals("true") || s.equals("t") || s.equals("1");
   }
 
+  public String getDesignRef() {
+
+    return getDescription(DESIGN_REF_FIELD);
+  }
+
+  public String getFileType() {
+
+    return getDescription(FILE_TYPE_FIELD);
+  }
+
+  public int getTiffBits() {
+
+    String s = getDescription(TIFF_BITS_FIELD);
+
+    if (s == null)
+      return 0;
+
+    try {
+      return Integer.parseInt(s.trim());
+    } catch (NumberFormatException e) {
+      return 0;
+    }
+
+  }
+
   //
   // Setters
   //
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setDescription(java.lang.String,
-   *      java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#setDescription(java
+   * .lang.String, java.lang.String)
    */
   public void setDescription(final String field, final String value) {
 
@@ -141,7 +170,9 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setComment(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#setComment(java.lang
+   * .String)
    */
   public void setComment(final String comment) {
 
@@ -150,7 +181,9 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setDate(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#setDate(java.lang
+   * .String)
    */
   public void setDate(final String date) {
 
@@ -159,7 +192,9 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setOperator(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#setOperator(java.
+   * lang.String)
    */
   public void setOperator(final String operator) {
 
@@ -168,7 +203,9 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSlideNumber(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSlideNumber(java
+   * .lang.String)
    */
   public void setSlideNumber(final int slideNumber) {
 
@@ -177,7 +214,9 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSerialNumber(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSerialNumber(java
+   * .lang.String)
    */
   public void setSerialNumber(final String serialNumber) {
 
@@ -195,12 +234,29 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSwap(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#setSwap(java.lang
+   * .String)
    */
   public void setSwap(final String swap) {
 
     setSwap(swap == null ? false : swap.equals("true")
         || swap.equals("t") || swap.equals("1"));
+  }
+
+  public void setDesignRef(final String designRef) {
+
+    setDescription(DESIGN_REF_FIELD, "" + designRef);
+  }
+
+  public void setFileType(final String fileType) {
+
+    setDescription(FILE_TYPE_FIELD, "" + fileType);
+  }
+
+  public void setTiffBits(int tiffBits) {
+
+    setDescription(TIFF_BITS_FIELD, "" + tiffBits);
   }
 
   //
@@ -209,7 +265,9 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isField(java.lang.String)
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#isField(java.lang
+   * .String)
    */
   public boolean isField(final String field) {
 
@@ -241,7 +299,8 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isOperatorField()
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#isOperatorField()
    */
   public boolean isOperatorField() {
 
@@ -250,7 +309,8 @@ public class SlideDescriptionImpl implements SlideDescription {
 
   /*
    * (non-Javadoc)
-   * @see fr.ens.transcriptome.nividic.om.impl.SlideDescription#isSerialNumberField()
+   * @see
+   * fr.ens.transcriptome.nividic.om.impl.SlideDescription#isSerialNumberField()
    */
   public boolean isSerialNumberField() {
 
@@ -264,6 +324,21 @@ public class SlideDescriptionImpl implements SlideDescription {
   public boolean isSwapField() {
 
     return isField(SWAP_FIELD);
+  }
+
+  public boolean isDesignRefField() {
+
+    return isField(DESIGN_REF_FIELD);
+  }
+
+  public boolean isFileType() {
+
+    return isField(FILE_TYPE_FIELD);
+  }
+
+  public boolean isTiffBitsField() {
+
+    return isField(TIFF_BITS_FIELD);
   }
 
   //

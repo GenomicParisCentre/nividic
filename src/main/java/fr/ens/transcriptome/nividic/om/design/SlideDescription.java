@@ -42,6 +42,12 @@ public interface SlideDescription {
   String OPERATOR_FIELD = "Operator";
   /** Swap field. */
   String SWAP_FIELD = "Swap";
+  /** Design ref field. */
+  String DESIGN_REF_FIELD = "DesignRef";
+  /** Tiff bits field. */
+  String TIFF_BITS_FIELD = "TiffBits";
+  /** File type field. */
+  String FILE_TYPE_FIELD = "FileType";
 
   /**
    * Get a description.
@@ -94,6 +100,24 @@ public interface SlideDescription {
   boolean getSwap();
 
   /**
+   * Get the reference of the design of the microarray.
+   * @return The reference of the design of the microarray
+   */
+  String getDesignRef();
+
+  /**
+   * Get the number of bit by pixel in the original tiff image
+   * @return the number of bit of the tiff image
+   */
+  int getTiffBits();
+
+  /**
+   * Get the file type of the data.
+   * @return the file type of the data
+   */
+  String getFileType();
+
+  /**
    * Set a field of the description.
    * @param field Field to set
    * @param value value to set
@@ -143,6 +167,24 @@ public interface SlideDescription {
   void setSwap(final String swap);
 
   /**
+   * Set the reference of the design of the microarray.
+   * @param designRef The reference of the design of the microarray
+   */
+  void setDesignRef(final String designRef);
+
+  /**
+   * Set the number of bit by pixel in the original tiff image
+   * @param tiffBits the number of bit of the tiff image
+   */
+  void setTiffBits(final int tiffBits);
+
+  /**
+   * Get the file type of the data.
+   * @param fileType the file type of the data
+   */
+  void setFileType(final String fileType);
+
+  /**
    * Test if a field exists.
    * @param field The field to test
    * @return true if the field exists
@@ -178,5 +220,23 @@ public interface SlideDescription {
    * @return true if the field exists
    */
   boolean isSwapField();
+
+  /**
+   * Test if the design ref field exists.
+   * @return true if the field exists
+   */
+  boolean isDesignRefField();
+
+  /**
+   * Test if the tiff bits field exists.
+   * @return true if the field exists
+   */
+  boolean isTiffBitsField();
+
+  /**
+   * Test if the file type field exists.
+   * @return true if the field exists
+   */
+  boolean isFileType();
 
 }
