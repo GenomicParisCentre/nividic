@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -304,10 +304,10 @@ public class ATFReader extends BioAssayTextReader {
 
       if (!st.hasMoreTokens())
         return false;
-      String nbHeaders = st.nextToken();
+      final String nbHeaders = st.nextToken();
       if (!st.hasMoreTokens())
         return false;
-      String nbDataFields = st.nextToken();
+      final String nbDataFields = st.nextToken();
       if (st.hasMoreTokens())
         return false;
 
