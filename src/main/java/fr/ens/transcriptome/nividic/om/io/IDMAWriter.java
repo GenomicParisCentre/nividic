@@ -77,9 +77,20 @@ public class IDMAWriter extends BioAssayTabularWriter {
 
   /**
    * Public constructor.
+   * @param filename file to read
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public IDMAWriter(final String filename) throws NividicIOException {
+    this(new File(filename));
+
+  }
+
+  /**
+   * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public IDMAWriter(final File file) throws NividicIOException {
     super(file);

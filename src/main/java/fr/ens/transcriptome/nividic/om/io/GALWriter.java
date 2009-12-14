@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -41,8 +41,8 @@ public class GALWriter extends ATFWriter {
   public static final String FIELD_NAME_ROW = "Row";
 
   /** Order of the fields. */
-  public static final String[] FIELDS_ORDER = {"Block", "Column", "Row",
-      "Name", "ID"};
+  public static final String[] FIELDS_ORDER =
+      {"Block", "Column", "Row", "Name", "ID"};
 
   /**
    * Get the convert of fiednames
@@ -99,9 +99,20 @@ public class GALWriter extends ATFWriter {
 
   /**
    * Public constructor.
+   * @param filename file to read
+   * @throws NividicIOException if an error occurs while reading the file or if
+   *           the file is null.
+   */
+  public GALWriter(final String filename) throws NividicIOException {
+
+    this(new File(filename));
+  }
+
+  /**
+   * Public constructor.
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *                 the file is null.
+   *           the file is null.
    */
   public GALWriter(final File file) throws NividicIOException {
     super(file);
