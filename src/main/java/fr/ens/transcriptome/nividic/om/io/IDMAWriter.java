@@ -38,7 +38,7 @@ public class IDMAWriter extends BioAssayTabularWriter {
       {"ID", "Name", "R", "Rb", "G", "Gb", "Mnorm", "A"};
 
   /** Fields names usualy readed in a ID-M-A file. */
-  private static final String[] DEFAULT_FIELD_TO_WRITE =
+  private static final String[] DEFAULT_FIELDS_TO_WRITE =
       {BioAssay.FIELD_NAME_ID, BioAssay.FIELD_NAME_M, BioAssay.FIELD_NAME_A,
           "R", "G"};
 
@@ -68,7 +68,7 @@ public class IDMAWriter extends BioAssayTabularWriter {
    */
   protected String[] getDefaultsFieldsToWrite() {
 
-    return DEFAULT_FIELD_TO_WRITE;
+    return DEFAULT_FIELDS_TO_WRITE;
   }
 
   //

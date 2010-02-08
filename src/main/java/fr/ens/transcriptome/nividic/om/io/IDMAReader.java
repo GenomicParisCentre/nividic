@@ -33,12 +33,13 @@ import java.io.InputStream;
 public class IDMAReader extends BioAssayTabularReader {
 
   /** Fields names usualy readed in a ID-M-A file. */
-  private static String[] fieldNameInIDMA =
+  private static String[] fieldsNamesInIDMA =
       {"ID", "Name", "Mnorm", "A", "R", "G"};
   /** Name of integer field names. */
-  private static String[] intFieldNames = {"R", "Rb", "G", "Gb"};
+  private static String[] intFieldsNames = {};
   /** Name of double field names. */
-  private static String[] doubleFieldNames = {"Mnorm", "A"};
+  private static String[] doubleFieldsNames =
+      {"Mnorm", "A", "R", "Rb", "G", "Gb"};
 
   //
   // Implememented methods
@@ -49,7 +50,7 @@ public class IDMAReader extends BioAssayTabularReader {
    * @return An string array of field names
    */
   protected String[] getIntFieldNames() {
-    return IDMAReader.intFieldNames;
+    return IDMAReader.intFieldsNames;
   }
 
   /**
@@ -57,7 +58,7 @@ public class IDMAReader extends BioAssayTabularReader {
    * @return An string array of field names
    */
   protected String[] getDoubleFieldNames() {
-    return IDMAReader.doubleFieldNames;
+    return IDMAReader.doubleFieldsNames;
   }
 
   /**
@@ -82,7 +83,7 @@ public class IDMAReader extends BioAssayTabularReader {
    */
   protected String[] getDefaultFieldToRead() {
 
-    return fieldNameInIDMA;
+    return fieldsNamesInIDMA;
   }
 
   //
@@ -93,18 +94,18 @@ public class IDMAReader extends BioAssayTabularReader {
    * Public constructor
    * @param filename file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public IDMAReader(final String filename) throws NividicIOException {
 
     this(new File(filename));
   }
-  
+
   /**
    * Public constructor
    * @param file file to read
    * @throws NividicIOException if an error occurs while reading the file or if
-   *             the file is null.
+   *           the file is null.
    */
   public IDMAReader(final File file) throws NividicIOException {
 
