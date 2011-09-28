@@ -234,7 +234,7 @@ public final class NividicUtils {
    * @param col collection to convert
    * @return a new array of ints
    */
-  public static int[] toArray(final Collection<Integer> col) {
+  public static int[] toIntArray(final Collection<Integer> col) {
 
     if (col == null)
       return null;
@@ -253,7 +253,7 @@ public final class NividicUtils {
    * @param col collection to convert
    * @return a new array of double
    */
-  public static double[] toArray(final Collection<Double> col) {
+  public static double[] toDoubleArray(final Collection<Double> col) {
 
     if (col == null)
       return null;

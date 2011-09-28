@@ -436,11 +436,11 @@ public class AgilentReader extends InputStreamBioAssayReader {
 
       for (final String fieldName : this.mapDouble.keySet())
         this.bioAssay.setDataFieldDouble(fieldName, NividicUtils
-            .toArray(this.mapDouble.get(fieldName)));
+            .toDoubleArray(this.mapDouble.get(fieldName)));
 
       for (final String fieldName : this.mapInt.keySet())
         this.bioAssay.setDataFieldInt(fieldName, NividicUtils
-            .toArray(this.mapInt.get(fieldName)));
+            .toIntArray(this.mapInt.get(fieldName)));
 
       for (final String fieldName : this.mapString.keySet())
         this.bioAssay.setDataFieldString(fieldName, NividicUtils

@@ -230,7 +230,7 @@ public class ExpressionMatrixDimensionImpl implements
     matrix.throwExceptionIfColumnDoesntExists(columnName);
 
     try {
-      return NividicUtils.toArray(this.store.getColumnValuesAsArray(
+      return NividicUtils.toDoubleArray(this.store.getColumnValuesAsArray(
           getRowsIndex(this.matrix.getRowNames()), columnName));
     } catch (MatrixStoreException e) {
       e.printStackTrace();

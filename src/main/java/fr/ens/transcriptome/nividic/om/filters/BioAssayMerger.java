@@ -9,7 +9,7 @@
  *      http://www.gnu.org/copyleft/lesser.html
  *
  * Copyright for this code is held jointly by the microarray platform
- * of the École Normale Supérieure and the individual authors.
+ * of the ï¿½cole Normale Supï¿½rieure and the individual authors.
  * These should be listed in @author doc comments.
  *
  * For more information on the Nividic project and its aims,
@@ -117,7 +117,7 @@ public class BioAssayMerger {
         }
       }
 
-      mergeRows(NividicUtils.toArray(listToMerge));
+      mergeRows(NividicUtils.toIntArray(listToMerge));
     }
 
   }
@@ -171,7 +171,7 @@ public class BioAssayMerger {
      */
 
     for (Map.Entry<String, List<Integer>> e : map.entrySet())
-      mergeRows(NividicUtils.toArray(e.getValue()));
+      mergeRows(NividicUtils.toIntArray(e.getValue()));
   }
 
   /**
