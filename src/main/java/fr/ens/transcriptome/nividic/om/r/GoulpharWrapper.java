@@ -117,7 +117,7 @@ public class GoulpharWrapper {
 
   private BioAssay normalizedBioAssay;
   private String script;
-  private RSConnection con = new RSConnection();
+  private final RSConnection con;
 
   // Goulphar parameters
 
@@ -647,7 +647,7 @@ public class GoulpharWrapper {
    */
   public GoulpharWrapper(final String serverName) {
 
-    this.con = new RSConnection(serverName);
+    this.con = RSConnectionFactory.createConnection(serverName);
     loadScript();
   }
 
