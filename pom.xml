@@ -36,9 +36,11 @@
 			<timezone>1</timezone>
 			<properties />
 		</developer>
-		<developer>
+	</developers>
+
+	<contributors>
+		<contributor>
 			<name>Lory Montout</name>
-			<id>montout</id>
 			<email>montout 0 biologie ens fr</email>
 			<organization>
 				École Normale Supérieure Microarray platform
@@ -50,8 +52,8 @@
 				<role>Developer</role>
 			</roles>
 			<timezone>1</timezone>
-		</developer>
-	</developers>
+		</contributor>
+	</contributors>
 
 	<licenses>
 		<license>
@@ -82,9 +84,11 @@
 			<name>java.net repository</name>
 			<!--url>https://maven-repository.dev.java.net/nonav/repository</url>
 			<layout>legacy</layout-->
-			<url>https://maven2-repository.dev.java.net</url>
+			<!--url>https://maven2-repository.dev.java.net</url-->
+			<url>http://download.java.net/maven/2/</url>
+			<layout>default</layout>
 		</repository>
-		<repository>
+		<!--repository>
 			<id>mygrid-repository</id>
 			<name>myGrid Repository</name>
 			<url>http://www.mygrid.org.uk/maven/repository</url>
@@ -94,7 +98,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-		</repository>
+		</repository-->
 	</repositories>
 
 	<scm>
@@ -186,16 +190,17 @@
 			<version>1.4</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>com.sun.phobos</groupId>
 			<artifactId>jsr223-api</artifactId>
 			<version>1.0</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>com.sun.phobos</groupId>
 			<artifactId>phobos-rhino</artifactId>
-			<version>0.5.6-SNAPSHOT</version>
+			<!--version>0.5.6-SNAPSHOT</version-->
+			<version>0.6.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -214,7 +219,16 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.0.1-FINAL</version>
+			<!--version>3.0.1-FINAL</version-->
+			<version>3.5-beta5</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<!--version>3.0.1-FINAL</version-->
+			<version>3.5-beta5</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>biojava</groupId>
@@ -227,9 +241,20 @@
 			<version>1.5</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>iText</artifactId>
-			<version>2.7.0</version>
+
+			<groupId>org.python</groupId>
+			<artifactId>jython</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuiton.thirdparty</groupId>
+			<artifactId>REngine</artifactId>
+			<version>0.6-1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuiton.thirdparty</groupId>
+			<artifactId>Rserve</artifactId>
+			<version>0.6-1</version>
 		</dependency>
 	</dependencies>
 
